@@ -104,7 +104,7 @@ struct ContentView: View
             }
         }
         .onAppear {
-            orientation.callback = self.onChangeOrientation
+            orientation.register(self.onChangeOrientation)
         }
         .onDisappear {
             orientation.deregister()
