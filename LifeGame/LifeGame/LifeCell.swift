@@ -4,8 +4,8 @@ import CellGridView
 public final class LifeCell: Cell {
 
     private var _active: Bool
-    private var _activeColor: CellColor = DefaultLifeSettings.cellActiveColor
-    private var _inactiveColor: CellColor = DefaultLifeSettings.cellInactiveColor
+    private var _activeColor: CellColor = Defaults.cellActiveColor
+    private var _inactiveColor: CellColor = Defaults.cellInactiveColor
 
     init(cellGridView: CellGridView, x: Int, y: Int, foreground: CellColor, active: Bool = false) {
         self._active = active

@@ -11,7 +11,7 @@ import CellGridView
 @main
 struct PixelBabelApp: App {
     @StateObject var pixelMap: CellGridView = LifeCellGridView()
-    @StateObject var settings: Settings = LifeSettings()
+    @StateObject var settings: Settings = Settings()
     var body: some Scene {
         WindowGroup {
             ContentView()

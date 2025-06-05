@@ -9,7 +9,7 @@ struct ContentView: View
     @EnvironmentObject var cellGridView: CellGridView
     @EnvironmentObject var settings: Settings
 
-    @State private var ignoreSafeArea: Bool = DefaultSettings.ignoreSafeArea
+    @State private var ignoreSafeArea: Bool = Defaults.ignoreSafeArea
     @State private var viewRectangle: CGRect = CGRect.zero
     @State private var image: CGImage? = nil
     @State private var imageAngle: Angle = Angle.zero
@@ -45,8 +45,8 @@ struct ContentView: View
                             .frame(width: geometry.size.width, height: geometry.size.height)
                             .rotationEffect(self.imageAngle)
                             .onSmartGesture(
-                                dragThreshold: DefaultSettings.dragThreshold,
-                                swipeThreshold: DefaultSettings.swipeThreshold,
+                                dragThreshold: Defaults.dragThreshold,
+                                swipeThreshold: Defaults.swipeThreshold,
                                 normalizePoint: self.normalizePoint,
                                 orientation: self.orientation,
                                 onDrag:      { value in self.cellGridView.onDrag(value) },
@@ -72,16 +72,16 @@ struct ContentView: View
                         self.cellGridView.initialize(screen: screen,
                                                      viewWidth: landscape ? screen.height : screen.width,
                                                      viewHeight: landscape ? screen.width : screen.height,
-                                                     viewBackground: DefaultSettings.viewBackground,
-                                                     viewTransparency: DefaultSettings.viewTransparency,
-                                                     viewScaling: DefaultSettings.viewScaling,
-                                                     cellSize: DefaultSettings.cellSize,
-                                                     cellPadding: DefaultSettings.cellPadding,
-                                                     cellSizeFit: DefaultSettings.cellSizeFit,
-                                                     cellShape: DefaultSettings.cellShape,
-                                                     cellForeground: DefaultSettings.cellForeground,
-                                                     gridColumns: DefaultSettings.gridColumns,
-                                                     gridRows: DefaultSettings.gridRows,
+                                                     viewBackground: Defaults.viewBackground,
+                                                     viewTransparency: Defaults.viewTransparency,
+                                                     viewScaling: Defaults.viewScaling,
+                                                     cellSize: Defaults.cellSize,
+                                                     cellPadding: Defaults.cellPadding,
+                                                     cellSizeFit: Defaults.cellSizeFit,
+                                                     cellShape: Defaults.cellShape,
+                                                     cellForeground: Defaults.cellForeground,
+                                                     gridColumns: Defaults.gridColumns,
+                                                     gridRows: Defaults.gridRows,
                                                      updateImage: self.updateImage)
                         self.rotateImage()
                     }
@@ -159,7 +159,7 @@ struct ContentView: View
 
 struct ContentView_Previews: PreviewProvider {
     static let cellGridView: CellGridView = LifeCellGridView()
-    static let settings: Settings = LifeSettings()
+    static let settings: Settings = Settings()
     static var previews: some View {
         ContentView()
             .environmentObject(cellGridView)

@@ -3,7 +3,7 @@ import SwiftUI
 import Utils
 import CellGridView
 
-public class DefaultSettings
+public class Defaults
 {
     public static let ignoreSafeArea: Bool              = true
     public static let automationInterval: Double        = 0.2
@@ -32,24 +32,30 @@ public class DefaultSettings
     public static let restrictShiftStrict: Bool         = false
     public static let centerCellGrid: Bool              = false
     public static let unscaledZoom: Bool                = false
+
+    public static let cellActiveColor: CellColor = CellColor.red
+    public static let cellInactiveColor: CellColor = CellColor.white
 }
 
 class Settings: ObservableObject
 {
-    @Published var viewBackground: CellColor         = DefaultSettings.viewBackground
-    @Published var viewScaling: Bool                 = DefaultSettings.viewScaling
+    @Published var viewBackground: CellColor         = Defaults.viewBackground
+    @Published var viewScaling: Bool                 = Defaults.viewScaling
 
-    @Published var cellSize: Int                     = DefaultSettings.cellSize
-    @Published var cellSizeFit: Bool                 = DefaultSettings.cellSizeFit
-    @Published var cellPadding: Int                  = DefaultSettings.cellPadding
-    @Published var cellShape: CellShape              = DefaultSettings.cellShape
-    @Published var cellAntialiasFade: Float          = DefaultSettings.cellAntialiasFade
-    @Published var cellRoundedRectangleRadius: Float = DefaultSettings.cellRoundedRectangleRadius
-    @Published var soundEnabled: Bool                = DefaultSettings.soundEnabled
-    @Published var hapticEnabled: Bool               = DefaultSettings.hapticEnabled
+    @Published var cellSize: Int                     = Defaults.cellSize
+    @Published var cellSizeFit: Bool                 = Defaults.cellSizeFit
+    @Published var cellPadding: Int                  = Defaults.cellPadding
+    @Published var cellShape: CellShape              = Defaults.cellShape
+    @Published var cellAntialiasFade: Float          = Defaults.cellAntialiasFade
+    @Published var cellRoundedRectangleRadius: Float = Defaults.cellRoundedRectangleRadius
+    @Published var soundEnabled: Bool                = Defaults.soundEnabled
+    @Published var hapticEnabled: Bool               = Defaults.hapticEnabled
 
-    @Published var gridColumns: Int                  = DefaultSettings.gridColumns
-    @Published var gridRows: Int                     = DefaultSettings.gridRows
+    @Published var gridColumns: Int                  = Defaults.gridColumns
+    @Published var gridRows: Int                     = Defaults.gridRows
 
-    @Published var updateMode: Bool                  = DefaultSettings.updateMode
+    @Published var updateMode: Bool                  = Defaults.updateMode
+
+    @Published var cellActiveColor: CellColor = CellColor.red
+    @Published var cellInactiveColor: CellColor = CellColor.white
 }
