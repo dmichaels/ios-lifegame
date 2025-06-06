@@ -16,15 +16,18 @@ public final class LifeCellGridView: CellGridView
         #if targetEnvironment(simulator)
             let debugStart = Date()
         #endif
-        var states: [[Bool]] = Array(repeating: Array(repeating: false, count: self.gridColumns), count: self.gridRows)
+     // var states: [[Bool]] = Array(repeating: Array(repeating: false, count: self.gridColumns), count: self.gridRows)
+        var states: [Bool] = Array(repeating: false, count: self.gridRows * self.gridColumns)
         for row in 0..<self.gridRows {
             for column in 0..<self.gridColumns {
                 if let cell: LifeCell = self.gridCell(column, row) {
                     let liveNeighbors: Int = self.activeNeighbors(cell)
                     if cell.active {
-                        states[row][column] = ((liveNeighbors == 2) || (liveNeighbors == 3))
+                     // states[row][column] = ((liveNeighbors == 2) || (liveNeighbors == 3))
+                        states[column * self.gridColumns + row] = ((liveNeighbors == 2) || (liveNeighbors == 3))
                     } else {
-                        states[row][column] = (liveNeighbors == 3)
+                     // states[row][column] = (liveNeighbors == 3)
+                        states[column * self.gridColumns + row] = (liveNeighbors == 3)
                     }
                 }
             }
@@ -32,7 +35,8 @@ public final class LifeCellGridView: CellGridView
         for row in 0..<self.gridRows {
             for column in 0..<self.gridColumns {
                 if let cell: LifeCell = self.gridCell(column, row) {
-                    if (states[row][column]) {
+                 // if (states[row][column]) {
+                    if (states[column * self.gridColumns + row]) {
                         cell.activate()
                     }
                     else {
