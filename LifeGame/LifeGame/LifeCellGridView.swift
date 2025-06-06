@@ -95,53 +95,6 @@ public final class LifeCellGridView: CellGridView
         #endif
     }
 
-    private func nextGenerationNonSparse() {
-        var states: [Bool] = Array(repeating: false, count: self.gridRows * self.gridColumns)
-        for row in 0..<self.gridRows {
-            for column in 0..<self.gridColumns {
-                if let cell: LifeCell = self.gridCell(column, row) {
-                    let liveNeighbors: Int = self.activeNeighborsNonSparse(cell)
-                    if cell.active {
-                        states[column * self.gridColumns + row] = ((liveNeighbors == 2) || (liveNeighbors == 3))
-                    } else {
-                        states[column * self.gridColumns + row] = (liveNeighbors == 3)
-                    }
-                }
-            }
-        }
-        for row in 0..<self.gridRows {
-            for column in 0..<self.gridColumns {
-                if let cell: LifeCell = self.gridCell(column, row) {
-                    if (states[column * self.gridColumns + row]) {
-                        cell.activate()
-                    }
-                    else {
-                        cell.deactivate()
-                    }
-                }
-            }
-        }
-    }
-
-    private func activeNeighborsNonSparse(_ cell: LifeCell) -> Int {
-        var count = 0
-        for dy in -1...1 {
-            for dx in -1...1 {
-                if ((dx == 0) && (dy == 0)) {
-                    continue
-                }
-                let nx = (cell.x + dx + self.gridColumns) % self.gridColumns
-                let ny = (cell.y + dy + self.gridRows) % self.gridRows
-                if let cell: LifeCell = self.gridCell(nx, ny) {
-                    if (cell.active) {
-                        count += 1
-                    }
-                }
-            }
-        }
-        return count
-    }
-
     private func printNextGenerationResult(_ start: Date) {
         let interval: TimeInterval = Date().timeIntervalSince(start)
         let ms = interval * 1000
