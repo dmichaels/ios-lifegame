@@ -12,6 +12,10 @@ public final class LifeCell: Cell {
         super.init(cellGridView: cellGridView, x: x, y: y, foreground: foreground)
     }
 
+    public override var cellGridView: LifeCellGridView {
+        return super.cellGridView as! LifeCellGridView
+    }
+
     public override func select(dragging: Bool = false) {
         dragging ? self.activate() : self.toggle()
     }
@@ -30,6 +34,7 @@ public final class LifeCell: Cell {
             if (!nowrite)  {
                 self.write()
             }
+            self.cellGridView.noteCellActivated(self)
         }
     }
 
@@ -39,6 +44,7 @@ public final class LifeCell: Cell {
             if (!nowrite)  {
                 self.write()
             }
+            self.cellGridView.noteCellDeactivated(self)
         }
     }
 
