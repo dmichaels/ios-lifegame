@@ -13,6 +13,9 @@ public final class LifeCellGridView: CellGridView
     }
 
     private func nextGeneration() {
+        #if targetEnvironment(simulator)
+            let debugStart = Date()
+        #endif
         var states: [[Bool]] = Array(repeating: Array(repeating: false, count: self.gridColumns), count: self.gridRows)
         for row in 0..<self.gridRows {
             for column in 0..<self.gridColumns {
@@ -38,6 +41,9 @@ public final class LifeCellGridView: CellGridView
                 }
             }
         }
+        #if targetEnvironment(simulator)
+            self.printNextGenerationResult(debugStart)
+        #endif
     }
 
     private func activeNeighbors(_ cell: LifeCell) -> Int {
@@ -63,5 +69,10 @@ public final class LifeCellGridView: CellGridView
         if (self.gridCellLocation(viewPoint: viewPoint) != nil) {
             self.automationToggle()
         }
+    }
+
+    private func printNextGenerationResult(_ start: Date) {
+        let time: TimeInterval = Date().timeIntervalSince(start)
+        print("NEXTG> \(time)")
     }
 }
