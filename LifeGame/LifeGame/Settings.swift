@@ -32,7 +32,7 @@ public class Defaults
     // Life Game specific properties.
 
     public static let gridColumns: Int                  = 10
-    public static let gridRows: Int                     = 12
+    public static let gridRows: Int                     = 22
 
     public static let cellActiveColor: CellColor        = CellColor.red
     public static let cellInactiveColor: CellColor      = CellColor.white
