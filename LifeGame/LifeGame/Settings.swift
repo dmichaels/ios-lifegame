@@ -16,6 +16,7 @@ public class Defaults
     public static let cellPadding: Int                  = CellGridView.Defaults.cellPadding
     public static let cellShape: CellShape              = CellGridView.Defaults.cellShape
     public static let cellForeground: CellColor         = CellGridView.Defaults.cellForeground
+    public static let cellColorMode: CellColorMode      = CellColorMode.monochrome
 
     public static let cellSizeMax: Int                  = CellGridView.Defaults.cellSizeMax
     public static let cellSizeInnerMin: Int             = CellGridView.Defaults.cellSizeInnerMin
@@ -31,8 +32,8 @@ public class Defaults
 
     // Life Game specific properties.
 
-    public static let gridColumns: Int                  = 10
-    public static let gridRows: Int                     = 22
+    public static let gridColumns: Int                  = 1000
+    public static let gridRows: Int                     = 2000
 
     public static let cellActiveColor: CellColor        = CellColor.red
     public static let cellInactiveColor: CellColor      = CellColor.white
@@ -56,6 +57,7 @@ class Settings: ObservableObject
     @Published var cellSizeFit: Bool                 = Defaults.cellSizeFit
     @Published var cellPadding: Int                  = Defaults.cellPadding
     @Published var cellShape: CellShape              = Defaults.cellShape
+    @Published var cellColorMode: CellColorMode      = Defaults.cellColorMode
 
     @Published var soundEnabled: Bool                = Defaults.soundEnabled
     @Published var hapticEnabled: Bool               = Defaults.hapticEnabled
