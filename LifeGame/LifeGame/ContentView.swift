@@ -170,9 +170,6 @@ struct ContentView: View
                                     viewScaling: settings.viewScaling, // self.cellGridView.viewScaling,
                                     adjustShift: true,
                                     refreshCells: true)
-        if let cell = self.cellGridView.gridCell(0, 0) {
-            cell.select()
-        }
         self.updateImage()
     }
 }
