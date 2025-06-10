@@ -84,7 +84,8 @@ struct ContentView: View
                                                      cellForeground: Defaults.cellForeground,
                                                      gridColumns: Defaults.gridColumns,
                                                      gridRows: Defaults.gridRows,
-                                                     updateImage: self.updateImage)
+                                                     onChangeImage: self.updateImage,
+                                                     onChangeCellSize: self.onChangeCellSize)
                         self.rotateImage()
                     }
                 }
@@ -120,6 +121,10 @@ struct ContentView: View
 
     private func updateImage() {
         self.image = self.cellGridView.image
+    }
+
+    private func onChangeCellSize(cellSize: Int) {
+        self.settings.cellSize = cellSize
     }
 
     private func rotateImage() {

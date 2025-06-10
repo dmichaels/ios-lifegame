@@ -17,7 +17,7 @@ public final class LifeCellGridView: CellGridView
 
     public override func automationStep() {
         self.nextGeneration()
-        self.updateImage()
+        self.onChangeImage()
     }
 
     internal func noteCellActivated(_ cell: LifeCell) {

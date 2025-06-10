@@ -19,7 +19,7 @@ public class Defaults
     public static let cellColorMode: CellColorMode      = CellColorMode.monochrome
 
     public static let cellSizeMax: Int                  = CellGridView.Defaults.cellSizeMax
-    public static let cellSizeInnerMin: Int             = CellGridView.Defaults.cellSizeInnerMin
+    public static let cellSizeInnerMin: Int             = 2
     public static let cellPaddingMax: Int               = CellGridView.Defaults.cellPaddingMax
     public static let cellPreferredSizeMarginMax: Int   = CellGridView.Defaults.cellPreferredSizeMarginMax
     public static let cellAntialiasFade: Float          = CellGridView.Defaults.cellAntialiasFade
