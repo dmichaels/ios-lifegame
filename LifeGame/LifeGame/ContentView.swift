@@ -26,7 +26,6 @@ struct ContentView: View
                         Image(decorative: image, scale: self.cellGridView.viewScale)
                             .background(GeometryReader { geo in Color.clear
                                 .onAppear {
-                                    print("Image.onAppear")
                                     let parentOrigin: CGPoint = geo.frame(in: .named("zstack")).origin
                                     self.viewRectangle = CGRect(origin: self.orientation.current.isLandscape
                                                                         ? CGPoint(x: parentOrigin.y, y: parentOrigin.x)
@@ -69,7 +68,6 @@ struct ContentView: View
                     }
                 }
                 .onAppear {
-                    print("ZStack.onAppear")
                     if (!self.cellGridView.initialized) {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         let landscape = self.orientation.current.isLandscape
@@ -108,7 +106,6 @@ struct ContentView: View
             }
         }
         .onAppear {
-            print("NavigationView.onAppear")
             orientation.register(self.onChangeOrientation)
         }
         .onDisappear {
@@ -162,10 +159,6 @@ struct ContentView: View
     }
 
     private func onChangeSettings() {
-        print("onChangeSettings:")
-        print(settings.cellShape)
-        print(settings.cellColorMode)
-        print(settings.cellSize)
         let cellSizeChanged: Bool = (settings.cellSize != self.cellGridView.cellSize)
         self.cellGridView.configure(cellSize: settings.cellSize,
                                     cellPadding: self.cellGridView.cellPadding,
@@ -174,18 +167,12 @@ struct ContentView: View
                                     viewHeight: self.cellGridView.viewHeight,
                                     viewBackground: self.cellGridView.viewBackground,
                                     viewTransparency: self.cellGridView.viewTransparency,
-                                    viewScaling: self.cellGridView.viewScaling,
-                                    adjust: true)
+                                    viewScaling: settings.viewScaling, // self.cellGridView.viewScaling,
+                                    adjustShift: true,
+                                    refreshCells: true)
         if let cell = self.cellGridView.gridCell(0, 0) {
             cell.select()
         }
-        // self.cellGridView.writeCells(shiftTotalX: 0, shiftTotalY: 0)
-        /*
-        if (cellSizeChanged) {
-            print("onChangeSettings: resizeCells")
-            self.cellGridView.resizeCells(cellSize: settings.cellSize, adjust: true)
-        }
-        */
         self.updateImage()
     }
 }
