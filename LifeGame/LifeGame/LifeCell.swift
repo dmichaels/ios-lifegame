@@ -5,13 +5,19 @@ public final class LifeCell: Cell {
 
     private var _active: Bool
 
-    init(cellGridView: CellGridView, x: Int, y: Int, color: CellColor, active: Bool = false) {
+    init(cellGridView: LifeCellGridView, x: Int, y: Int,  active: Bool = false) {
         self._active = active
+        let color: CellColor = active ? cellGridView.cellActiveColor : cellGridView.cellInactiveColor
         super.init(cellGridView: cellGridView, x: x, y: y, color: color)
     }
 
     public override var cellGridView: LifeCellGridView {
         return super.cellGridView as! LifeCellGridView
+    }
+
+    public override var color: CellColor {
+        get { self._active ? self.cellGridView.cellActiveColor : self.cellGridView.cellInactiveColor }
+        set { super.color = newValue }
     }
 
     public override func select(dragging: Bool = false) {
@@ -48,10 +54,5 @@ public final class LifeCell: Cell {
 
     public func toggle(nowrite: Bool = false) {
         self._active ? self.deactivate(nowrite: nowrite) : self.activate(nowrite: nowrite)
-    }
-
-    func write(foregroundOnly: Bool = false) {
-        super.write(color: self._active ? self.cellGridView.cellActiveColor : self.cellGridView.cellInactiveColor,
-                    foregroundOnly: true)
     }
 }

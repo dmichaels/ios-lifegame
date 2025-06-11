@@ -84,6 +84,7 @@ struct ContentView: View
                                                      cellForeground: Defaults.cellForeground,
                                                      gridColumns: Defaults.gridColumns,
                                                      gridRows: Defaults.gridRows,
+                                                     gridCenter: Defaults.gridCenter,
                                                      onChangeImage: self.updateImage,
                                                      onChangeCellSize: self.onChangeCellSize)
                         self.settings.preferredCellSizes = self.cellGridView.preferredCellSizes

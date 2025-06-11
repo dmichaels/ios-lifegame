@@ -8,13 +8,8 @@ public final class LifeCellGridView: CellGridView
     private var _cellInactiveColor: CellColor = LifeGame.Defaults.cellInactiveColor
     private var _liveCells: Set<CellLocation> = []
 
-    override public init() {
-        super.init()
-        var x = 1
-    }
-
     public override func createCell<T: Cell>(x: Int, y: Int, color: CellColor) -> T? {
-        return LifeCell(cellGridView: self, x: x, y: y, color: color) as? T
+        return LifeCell(cellGridView: self, x: x, y: y) as? T
     }
 
     public override func onLongTap(_ viewPoint: CGPoint) {
