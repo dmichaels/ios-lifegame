@@ -4,6 +4,7 @@ import CellGridView
 public final class LifeCell: Cell {
 
     private var _active: Bool
+    private var _randomColorSentinel: Int = 0
 
     init(cellGridView: LifeCellGridView, x: Int, y: Int,  active: Bool = false) {
         self._active = active
@@ -16,7 +17,19 @@ public final class LifeCell: Cell {
     }
 
     public override var color: CellColor {
-        get { self._active ? self.cellGridView.cellActiveColor : self.cellGridView.cellInactiveColor }
+        get {
+            if (self._active) {
+                return self.cellGridView.cellActiveColor
+            }
+            else {
+                if (self.cellGridView._randomColorSentinel != self._randomColorSentinel) {
+                    self.color = CellColor.random(mode: CellColorMode.grayscale)
+                    self._randomColorSentinel = self.cellGridView._randomColorSentinel
+                }
+                return super.color
+                // return self.cellGridView.cellInactiveColor
+            }
+        }
         set { super.color = newValue }
     }
 

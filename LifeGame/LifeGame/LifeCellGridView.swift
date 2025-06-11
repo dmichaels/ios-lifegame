@@ -7,6 +7,7 @@ public final class LifeCellGridView: CellGridView
     private var _cellActiveColor: CellColor = LifeGame.Defaults.cellActiveColor
     private var _cellInactiveColor: CellColor = LifeGame.Defaults.cellInactiveColor
     private var _liveCells: Set<CellLocation> = []
+    internal var _randomColorSentinel: Int = 0
 
     public override func createCell<T: Cell>(x: Int, y: Int, color: CellColor) -> T? {
         return LifeCell(cellGridView: self, x: x, y: y) as? T
@@ -21,6 +22,23 @@ public final class LifeCellGridView: CellGridView
     public override func automationStep() {
         self.nextGeneration()
         self.onChangeImage()
+        self._randomColorSentinel += 1
+        /*
+        for vx in 0...super.viewCellEndX {
+            for vy in 0...super.viewCellEndY {
+                if let cell = super.gridCell(viewCellX: vx, viewCellY: vy) {
+                    cell.color = CellColor.random(mode: CellColorMode.grayscale)
+                }
+            }
+        }
+        */
+        /*
+        for cell in self.gridCells {
+            if !self._liveCells.contains(CellLocation(cell.x, cell.y)) {
+                cell.color = CellColor.random()
+            }
+        }
+        */
     }
 
     public var cellActiveColor: CellColor {

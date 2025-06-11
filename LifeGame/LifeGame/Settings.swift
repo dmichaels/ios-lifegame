@@ -25,7 +25,7 @@ public class Defaults
     public static let cellAntialiasFade: Float          = CellGridView.Defaults.cellAntialiasFade
     public static let cellRoundedRectangleRadius: Float = CellGridView.Defaults.cellRoundedRectangleRadius
 
-    public static let gridCenter: Bool                  = true
+    public static let gridCenter: Bool                  = false // true
     public static let restrictShiftStrict: Bool         = CellGridView.Defaults.restrictShiftStrict
     public static let unscaledZoom: Bool                = CellGridView.Defaults.unscaledZoom
     public static let automationInterval: Double        = CellGridView.Defaults.automationInterval
