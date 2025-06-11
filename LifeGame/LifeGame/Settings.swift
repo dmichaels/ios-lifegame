@@ -58,6 +58,7 @@ class Settings: ObservableObject
     @Published var cellPadding: Int                  = Defaults.cellPadding
     @Published var cellShape: CellShape              = Defaults.cellShape
     @Published var cellColorMode: CellColorMode      = Defaults.cellColorMode
+    @Published var preferredCellSizes: [Int]         = []
 
     @Published var soundEnabled: Bool                = Defaults.soundEnabled
     @Published var hapticEnabled: Bool               = Defaults.hapticEnabled

@@ -4,12 +4,10 @@ import CellGridView
 public final class LifeCell: Cell {
 
     private var _active: Bool
-    private var _activeColor: CellColor = Defaults.cellActiveColor
-    private var _inactiveColor: CellColor = Defaults.cellInactiveColor
 
-    init(cellGridView: CellGridView, x: Int, y: Int, foreground: CellColor, active: Bool = false) {
+    init(cellGridView: CellGridView, x: Int, y: Int, color: CellColor, active: Bool = false) {
         self._active = active
-        super.init(cellGridView: cellGridView, x: x, y: y, foreground: foreground)
+        super.init(cellGridView: cellGridView, x: x, y: y, color: color)
     }
 
     public override var cellGridView: LifeCellGridView {
@@ -52,7 +50,8 @@ public final class LifeCell: Cell {
         self._active ? self.deactivate(nowrite: nowrite) : self.activate(nowrite: nowrite)
     }
 
-    func write() {
-        self.write(foreground: self._active ? self._activeColor : self._inactiveColor)
+    func write(foregroundOnly: Bool = false) {
+        super.write(color: self._active ? self.cellGridView.cellActiveColor : self.cellGridView.cellInactiveColor,
+                    foregroundOnly: true)
     }
 }

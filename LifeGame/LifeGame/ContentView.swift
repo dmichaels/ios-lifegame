@@ -4,10 +4,10 @@ import CellGridView
 
 struct ContentView: View
 {
-    @StateObject var orientation = OrientationObserver()
-
-    @EnvironmentObject var cellGridView: CellGridView
+    @EnvironmentObject var cellGridView: LifeCellGridView
     @EnvironmentObject var settings: Settings
+
+    @StateObject var orientation = OrientationObserver()
 
     @State private var ignoreSafeArea: Bool = Defaults.ignoreSafeArea
     @State private var viewRectangle: CGRect = CGRect.zero
@@ -86,6 +86,7 @@ struct ContentView: View
                                                      gridRows: Defaults.gridRows,
                                                      onChangeImage: self.updateImage,
                                                      onChangeCellSize: self.onChangeCellSize)
+                        self.settings.preferredCellSizes = self.cellGridView.preferredCellSizes
                         self.rotateImage()
                     }
                 }
@@ -170,17 +171,20 @@ struct ContentView: View
                                     cellShape: settings.cellShape,
                                     viewWidth: self.cellGridView.viewWidth,
                                     viewHeight: self.cellGridView.viewHeight,
-                                    viewBackground: self.cellGridView.viewBackground,
+                                    viewBackground: settings.viewBackground,
                                     viewTransparency: self.cellGridView.viewTransparency,
                                     viewScaling: settings.viewScaling, // self.cellGridView.viewScaling,
                                     adjustShift: true,
                                     refreshCells: true)
+        print(settings.cellActiveColor)
+        print(self.cellGridView.cellActiveColor)
+        self.cellGridView.cellActiveColor = settings.cellActiveColor
         self.updateImage()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static let cellGridView: CellGridView = LifeCellGridView()
+    static let cellGridView: LifeCellGridView = LifeCellGridView()
     static let settings: Settings = Settings()
     static var previews: some View {
         ContentView()

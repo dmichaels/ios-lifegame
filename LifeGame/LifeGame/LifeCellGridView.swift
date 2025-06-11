@@ -1,12 +1,20 @@
 import Foundation
+import SwiftUI
 import CellGridView
 
 public final class LifeCellGridView: CellGridView
 {
+    private var _cellActiveColor: CellColor = LifeGame.Defaults.cellActiveColor
+    private var _cellInactiveColor: CellColor = LifeGame.Defaults.cellInactiveColor
     private var _liveCells: Set<CellLocation> = []
 
-    public override func createCell<T: Cell>(x: Int, y: Int, foreground: CellColor) -> T? {
-        return LifeCell(cellGridView: self, x: x, y: y, foreground: foreground) as? T
+    override public init() {
+        super.init()
+        var x = 1
+    }
+
+    public override func createCell<T: Cell>(x: Int, y: Int, color: CellColor) -> T? {
+        return LifeCell(cellGridView: self, x: x, y: y, color: color) as? T
     }
 
     public override func onLongTap(_ viewPoint: CGPoint) {
@@ -18,6 +26,26 @@ public final class LifeCellGridView: CellGridView
     public override func automationStep() {
         self.nextGeneration()
         self.onChangeImage()
+    }
+
+    public var cellActiveColor: CellColor {
+        get { self._cellActiveColor }
+        set {
+            if (newValue != self._cellActiveColor) {
+                self._cellActiveColor = newValue
+                for cellLocation in self._liveCells {
+                    if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
+                        cell.color = newValue
+                        cell.write()
+                    }
+                }
+            }
+        }
+    }
+
+    public var cellInactiveColor: CellColor {
+        get { self._cellInactiveColor }
+        set { self._cellInactiveColor = newValue }
     }
 
     internal func noteCellActivated(_ cell: LifeCell) {

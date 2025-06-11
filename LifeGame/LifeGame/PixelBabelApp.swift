@@ -10,12 +10,12 @@ import CellGridView
 
 @main
 struct PixelBabelApp: App {
-    @StateObject var pixelMap: CellGridView = LifeCellGridView()
+    @StateObject var cellGridView: LifeCellGridView = LifeCellGridView()
     @StateObject var settings: Settings = Settings()
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(pixelMap)
+                .environmentObject(cellGridView)
                 .environmentObject(settings)
         }
     }
