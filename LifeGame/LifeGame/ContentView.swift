@@ -15,8 +15,11 @@ struct ContentView: View
     @State private var imageAngle: Angle = Angle.zero
 
     @State private var showSettingsView = false
+    @State private var showControlBar = false
     @State private var dragging: Bool = false
     @State private var draggingStart: CGPoint? = nil
+    @State private var panMode = false
+    @State private var isPlaying = false
 
     var body: some View {
         NavigationView {
@@ -52,11 +55,12 @@ struct ContentView: View
                                 onDrag:      { value in self.cellGridView.onDrag(value) },
                                 onDragEnd:   { value in self.cellGridView.onDragEnd(value) },
                                 onTap:       { value in self.cellGridView.onTap(value) },
-                                onDoubleTap: { self.cellGridView.onDoubleTap() },
+                                // onDoubleTap: { self.cellGridView.onDoubleTap() },
+                                onDoubleTap: { self.onDoubleTap() },
                                 onLongTap:   { value in self.cellGridView.onLongTap(value) },
                                 onZoom:      { value in self.cellGridView.onZoom(value) },
                                 onZoomEnd:   { value in self.cellGridView.onZoomEnd(value) },
-                                onSwipeLeft: { self.showSettingsView = true },
+                                onSwipeLeft: { self.onShowSettingsView() },
                             )
                             NavigationLink(
                                 destination: SettingsView().onDisappear {
@@ -98,6 +102,22 @@ struct ContentView: View
                 .background(Color.yellow) // xyzzy
                 .statusBar(hidden: true)
                 .coordinateSpace(name: "zstack")
+                .overlay(
+                    Group {
+                        if showControlBar {
+                            ControlBar(
+                                isPlaying: $isPlaying,
+                                panMode: $panMode,
+                                onAnyTap: nil,
+                                onShowSettingsView: self.onShowSettingsView
+                            )
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                            .padding(.bottom, 24)
+                            .zIndex(2)
+                        }
+                    },
+                    alignment: .bottom
+                )
             }
             //
             // TODO: Almost working without this; margins
@@ -181,6 +201,16 @@ struct ContentView: View
         print(self.cellGridView.cellActiveColor)
         self.cellGridView.cellActiveColor = settings.cellActiveColor
         self.updateImage()
+    }
+
+    private func onShowSettingsView() {
+        self.showSettingsView = true
+    }
+
+    private func onDoubleTap() {
+        withAnimation {
+            self.showControlBar.toggle()
+        }
     }
 }
 
