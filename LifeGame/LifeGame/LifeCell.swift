@@ -4,10 +4,11 @@ import CellGridView
 public final class LifeCell: Cell {
 
     private var _active: Bool
-    private var _randomColorSentinel: Int = 0
+    private var _randomColorSentinel: Int
 
     init(cellGridView: LifeCellGridView, x: Int, y: Int,  active: Bool = false) {
         self._active = active
+        self._randomColorSentinel = cellGridView._randomColorSentinel + 1
         let color: CellColor = active ? cellGridView.cellActiveColor : cellGridView.cellInactiveColor
         super.init(cellGridView: cellGridView, x: x, y: y, color: color)
     }
