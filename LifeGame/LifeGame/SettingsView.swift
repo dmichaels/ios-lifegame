@@ -16,7 +16,7 @@ struct SettingsView: View
                 HStack {
                     Label("Color Mode", systemImage: "paintpalette")
                     Picker("", selection: $settings.cellColorMode) {
-                        ForEach(CellColorMode.allCases) { mode in
+                        ForEach(ColourMode.allCases) { mode in
                             Text(mode.rawValue)
                                 .lineLimit(1)
                                 .truncationMode(.tail)
@@ -155,15 +155,15 @@ struct DeveloperSettingsView: View {
 extension Settings {
     var viewBackgroundInternal: Color {
         get { Color(self.viewBackground) }
-        set { self.viewBackground = CellColor(newValue) }
+        set { self.viewBackground = Colour(newValue) }
     }
     var cellActiveColorInternal: Color {
         get { Color(self.cellActiveColor) }
-        set { self.cellActiveColor = CellColor(newValue) }
+        set { self.cellActiveColor = Colour(newValue) }
     }
     var cellInactiveColorInternal: Color {
         get { Color(self.cellInactiveColor) }
-        set { self.cellInactiveColor = CellColor(newValue) }
+        set { self.cellInactiveColor = Colour(newValue) }
     }
 }
 

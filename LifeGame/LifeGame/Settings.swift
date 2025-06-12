@@ -1,13 +1,13 @@
 import Foundation
 import SwiftUI
-import Utils
 import CellGridView
+import Utils
 
 public class Defaults
 {
     // CellGridView base class specific properties.
 
-    public static let viewBackground: CellColor         = CellGridView.Defaults.viewBackground
+    public static let viewBackground: Colour            = CellGridView.Defaults.viewBackground
     public static let viewTransparency: UInt8           = CellGridView.Defaults.viewTransparency
     public static let viewScaling: Bool                 = CellGridView.Defaults.viewScaling
 
@@ -15,8 +15,8 @@ public class Defaults
     public static let cellSizeFit: Bool                 = CellGridView.Defaults.cellSizeFit
     public static let cellPadding: Int                  = CellGridView.Defaults.cellPadding
     public static let cellShape: CellShape              = CellGridView.Defaults.cellShape
-    public static let cellForeground: CellColor         = CellGridView.Defaults.cellForeground
-    public static let cellColorMode: CellColorMode      = CellColorMode.monochrome
+    public static let cellForeground: Colour            = CellGridView.Defaults.cellForeground
+    public static let cellColorMode: ColourMode         = ColourMode.monochrome
 
     public static let cellSizeMax: Int                  = CellGridView.Defaults.cellSizeMax
     public static let cellSizeInnerMin: Int             = 2
@@ -36,8 +36,8 @@ public class Defaults
     public static let gridColumns: Int                  = 1000
     public static let gridRows: Int                     = 2000
 
-    public static let cellActiveColor: CellColor        = CellColor.red
-    public static let cellInactiveColor: CellColor      = CellColor.white
+    public static let cellActiveColor: Colour        = Colour.red
+    public static let cellInactiveColor: Colour      = Colour.white
 
     public static let dragThreshold: Int                = 3
     public static let swipeThreshold: Int               = 100
@@ -50,7 +50,7 @@ public class Defaults
 
 class Settings: ObservableObject
 {
-    @Published var viewBackground: CellColor         = Defaults.viewBackground
+    @Published var viewBackground: Colour            = Defaults.viewBackground
     @Published var viewTransparency: UInt8           = Defaults.viewTransparency
     @Published var viewScaling: Bool                 = Defaults.viewScaling
 
@@ -58,7 +58,7 @@ class Settings: ObservableObject
     @Published var cellSizeFit: Bool                 = Defaults.cellSizeFit
     @Published var cellPadding: Int                  = Defaults.cellPadding
     @Published var cellShape: CellShape              = Defaults.cellShape
-    @Published var cellColorMode: CellColorMode      = Defaults.cellColorMode
+    @Published var cellColorMode: ColourMode         = Defaults.cellColorMode
     @Published var preferredCellSizes: [Int]         = []
 
     @Published var soundEnabled: Bool                = Defaults.soundEnabled
@@ -67,8 +67,8 @@ class Settings: ObservableObject
     @Published var gridColumns: Int                  = Defaults.gridColumns
     @Published var gridRows: Int                     = Defaults.gridRows
 
-    @Published var cellActiveColor: CellColor        = CellColor.red
-    @Published var cellInactiveColor: CellColor      = CellColor.white
+    @Published var cellActiveColor: Colour           = Colour.red
+    @Published var cellInactiveColor: Colour         = Colour.white
 
     @Published var automationEnabled: Bool           = Defaults.automationEnabled
     @Published var automationInterval: Double        = Defaults.automationInterval

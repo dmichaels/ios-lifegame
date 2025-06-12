@@ -1,15 +1,16 @@
 import Foundation
 import SwiftUI
 import CellGridView
+import Utils
 
 public final class LifeCellGridView: CellGridView
 {
-    private var _cellActiveColor: CellColor = LifeGame.Defaults.cellActiveColor
-    private var _cellInactiveColor: CellColor = LifeGame.Defaults.cellInactiveColor
+    private var _cellActiveColor: Colour = LifeGame.Defaults.cellActiveColor
+    private var _cellInactiveColor: Colour = LifeGame.Defaults.cellInactiveColor
     private var _liveCells: Set<CellLocation> = []
     internal var _randomColorSentinel: Int = 0
 
-    public override func createCell<T: Cell>(x: Int, y: Int, color: CellColor) -> T? {
+    public override func createCell<T: Cell>(x: Int, y: Int, color: Colour) -> T? {
         return LifeCell(cellGridView: self, x: x, y: y) as? T
     }
 
@@ -19,7 +20,7 @@ public final class LifeCellGridView: CellGridView
         self._randomColorSentinel += 1
     }
 
-    public var cellActiveColor: CellColor {
+    public var cellActiveColor: Colour {
         get { self._cellActiveColor }
         set {
             if (newValue != self._cellActiveColor) {
@@ -34,7 +35,7 @@ public final class LifeCellGridView: CellGridView
         }
     }
 
-    public var cellInactiveColor: CellColor {
+    public var cellInactiveColor: Colour {
         get { self._cellInactiveColor }
         set { self._cellInactiveColor = newValue }
     }
