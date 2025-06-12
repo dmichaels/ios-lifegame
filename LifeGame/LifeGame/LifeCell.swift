@@ -25,14 +25,10 @@ public final class LifeCell: Cell {
             }
             else {
                 if (self.cellGridView._randomColorSentinel != self._randomColorSentinel) {
-                    // self.color = CellColor.random(mode: CellColorMode.grayscale, filter: ColorFilters.Roo)
-                    // self.color = CellColor(0x000000FF)
-                    // self.color = CellColor(ColorFilters.Roo(pixel: CellColor(Color.purple).value))
-                    self.color = CellColor.random(mode: CellColorMode.color, filter: ColorFilters.Greens)
+                    self.color = CellColor.random(mode: CellColorMode.color, filter: ColourFilters.Greens)
                     self._randomColorSentinel = self.cellGridView._randomColorSentinel
                 }
                 return super.color
-                // return self.cellGridView.cellInactiveColor
             }
         }
         set { super.color = newValue }
