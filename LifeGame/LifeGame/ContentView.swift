@@ -15,11 +15,11 @@ struct ContentView: View
     @State private var imageAngle: Angle = Angle.zero
 
     @State private var showSettingsView = false
-    @State private var showControlBar = false
+    @State private var showControlsBar = false
     @State private var dragging: Bool = false
     @State private var draggingStart: CGPoint? = nil
-    @State private var panMode = false
-    @State private var isPlaying = false
+    @State private var paintMode = false
+    @State private var playMode = false
 
     var body: some View {
         NavigationView {
@@ -55,12 +55,11 @@ struct ContentView: View
                                 onDrag:      { value in self.cellGridView.onDrag(value) },
                                 onDragEnd:   { value in self.cellGridView.onDragEnd(value) },
                                 onTap:       { value in self.cellGridView.onTap(value) },
-                                // onDoubleTap: { self.cellGridView.onDoubleTap() },
-                                onDoubleTap: { self.onDoubleTap() },
+                                onDoubleTap: { self.toggleShowControls() },
                                 onLongTap:   { value in self.cellGridView.onLongTap(value) },
                                 onZoom:      { value in self.cellGridView.onZoom(value) },
                                 onZoomEnd:   { value in self.cellGridView.onZoomEnd(value) },
-                                onSwipeLeft: { self.onShowSettingsView() },
+                                onSwipeLeft: { self.showSettings() },
                             )
                             NavigationLink(
                                 destination: SettingsView().onDisappear {
@@ -104,12 +103,14 @@ struct ContentView: View
                 .coordinateSpace(name: "zstack")
                 .overlay(
                     Group {
-                        if showControlBar {
-                            ControlBar(
-                                isPlaying: $isPlaying,
-                                panMode: $panMode,
+                        if (self.showControlsBar) {
+                            ControlsBar(
+                                playMode: $playMode,
+                                paintMode: $paintMode,
                                 onAnyTap: nil,
-                                onShowSettingsView: self.onShowSettingsView
+                                showSettings: self.showSettings,
+                                togglePaintMode: self.togglePaintMode,
+                                togglePlayMode: self.togglePlayMode
                             )
                             .transition(.move(edge: .bottom).combined(with: .opacity))
                             .padding(.bottom, 24)
@@ -123,7 +124,6 @@ struct ContentView: View
             // TODO: Almost working without this; margins
             // off a bit; would be nice if it did as an option.
             //
-            // .ignoresSafeArea()
             .conditionalModifier(ignoreSafeArea) { view in
                 view.ignoresSafeArea()
             }
@@ -134,11 +134,7 @@ struct ContentView: View
         .onDisappear {
             orientation.deregister()
         }
-        // .conditionalModifier(ignoreSafeArea) { view in
-            // view.ignoresSafeArea()
-        // }
         .navigationViewStyle(.stack)
-        // .ignoresSafeArea()
     }
 
     private func updateImage() {
@@ -177,7 +173,7 @@ struct ContentView: View
         }
     }
 
-    public func normalizePoint(_ location: CGPoint) -> CGPoint {
+    private func normalizePoint(_ location: CGPoint) -> CGPoint {
         return self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)
     }
 
@@ -203,14 +199,24 @@ struct ContentView: View
         self.updateImage()
     }
 
-    private func onShowSettingsView() {
+    private func showSettings() {
         self.showSettingsView = true
     }
 
-    private func onDoubleTap() {
+    private func toggleShowControls() {
         withAnimation {
-            self.showControlBar.toggle()
+            self.showControlsBar.toggle()
         }
+    }
+
+    private func togglePaintMode() {
+        paintMode.toggle()
+        self.cellGridView.togglePaintMode()
+    }
+
+    private func togglePlayMode() {
+        playMode.toggle()
+        self.cellGridView.togglePlayMode()
     }
 }
 
