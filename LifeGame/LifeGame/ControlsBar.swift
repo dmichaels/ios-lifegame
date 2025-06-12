@@ -25,7 +25,10 @@ struct ControlsBar: View {
                 togglePaintMode?()
                 // onAnyTap?()
             }) {
-                Image(systemName: self.paintMode ? "hand.draw.fill" : "paintbrush.fill")
+                // Image(systemName: self.paintMode ? "hand.draw.fill" : "paintbrush.fill")
+                // Image(systemName: self.paintMode ? "arrow.up.and.down.and.arrow.left.and.right" : "paintbrush.fill")
+                // Image(systemName: self.paintMode ? "arrow.up.and.down.and.arrow.left.and.right" : "pencil.line")
+                Image(systemName: self.paintMode ? "arrow.up.and.down.and.arrow.left.and.right" : "square.and.pencil")
                     .font(.system(size: 24, weight: .bold))
             }
             Button(action: {

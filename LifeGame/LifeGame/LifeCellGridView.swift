@@ -13,32 +13,10 @@ public final class LifeCellGridView: CellGridView
         return LifeCell(cellGridView: self, x: x, y: y) as? T
     }
 
-    public override func onLongTap(_ viewPoint: CGPoint) {
-        if (self.gridCellLocation(viewPoint: viewPoint) != nil) {
-            self.automationToggle()
-        }
-    }
-
     public override func automationStep() {
         self.nextGeneration()
         self.onChangeImage()
         self._randomColorSentinel += 1
-        /*
-        for vx in 0...super.viewCellEndX {
-            for vy in 0...super.viewCellEndY {
-                if let cell = super.gridCell(viewCellX: vx, viewCellY: vy) {
-                    cell.color = CellColor.random(mode: CellColorMode.grayscale)
-                }
-            }
-        }
-        */
-        /*
-        for cell in self.gridCells {
-            if !self._liveCells.contains(CellLocation(cell.x, cell.y)) {
-                cell.color = CellColor.random()
-            }
-        }
-        */
     }
 
     public var cellActiveColor: CellColor {

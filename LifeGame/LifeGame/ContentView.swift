@@ -56,7 +56,6 @@ struct ContentView: View
                                 onDragEnd:   { value in self.cellGridView.onDragEnd(value) },
                                 onTap:       { value in self.cellGridView.onTap(value) },
                                 onDoubleTap: { self.toggleShowControls() },
-                                onLongTap:   { value in self.cellGridView.onLongTap(value) },
                                 onZoom:      { value in self.cellGridView.onZoom(value) },
                                 onZoomEnd:   { value in self.cellGridView.onZoomEnd(value) },
                                 onSwipeLeft: { self.showSettings() },
