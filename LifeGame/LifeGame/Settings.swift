@@ -28,7 +28,8 @@ public class Defaults
     public static let gridCenter: Bool                  = false // true
     public static let restrictShiftStrict: Bool         = CellGridView.Defaults.restrictShiftStrict
     public static let unscaledZoom: Bool                = CellGridView.Defaults.unscaledZoom
-    public static let automationInterval: Double        = CellGridView.Defaults.automationInterval
+    public static let automationEnabled: Bool           = true
+    public static let automationInterval: Double        = 0.5
 
     // Life Game specific properties.
 
@@ -66,6 +67,9 @@ class Settings: ObservableObject
     @Published var gridColumns: Int                  = Defaults.gridColumns
     @Published var gridRows: Int                     = Defaults.gridRows
 
-    @Published var cellActiveColor: CellColor = CellColor.red
-    @Published var cellInactiveColor: CellColor = CellColor.white
+    @Published var cellActiveColor: CellColor        = CellColor.red
+    @Published var cellInactiveColor: CellColor      = CellColor.white
+
+    @Published var automationEnabled: Bool           = Defaults.automationEnabled
+    @Published var automationInterval: Double        = Defaults.automationInterval
 }

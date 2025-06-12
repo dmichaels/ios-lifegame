@@ -196,6 +196,7 @@ struct ContentView: View
         print(settings.cellActiveColor)
         print(self.cellGridView.cellActiveColor)
         self.cellGridView.cellActiveColor = settings.cellActiveColor
+        self.cellGridView.automationInterval = settings.automationInterval
         self.updateImage()
     }
 
