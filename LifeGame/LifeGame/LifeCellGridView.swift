@@ -8,16 +8,17 @@ public final class LifeCellGridView: CellGridView
     private var _cellActiveColor: Colour = LifeGame.Defaults.cellActiveColor
     private var _cellInactiveColor: Colour = LifeGame.Defaults.cellInactiveColor
     private var _liveCells: Set<CellLocation> = []
-    internal var _randomColorSentinel: Int = 0
+    private var _generationNumber: Int = 0
 
     public override func createCell<T: Cell>(x: Int, y: Int, color: Colour) -> T? {
         return LifeCell(cellGridView: self, x: x, y: y) as? T
     }
 
     public override func automationStep() {
+        self._generationNumber += 1
         self.nextGeneration()
+        super.writeCells()
         self.onChangeImage()
-        self._randomColorSentinel += 1
     }
 
     public var cellActiveColor: Colour {
@@ -28,9 +29,10 @@ public final class LifeCellGridView: CellGridView
                 for cellLocation in self._liveCells {
                     if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
                         cell.color = newValue
-                        cell.write()
+                        // cell.write()
                     }
                 }
+                super.writeCells()
             }
         }
     }
@@ -48,12 +50,12 @@ public final class LifeCellGridView: CellGridView
         self._liveCells.remove(cell.location)
     }
 
+    internal var generationNumber: Int {
+        self._generationNumber
+    }
+
     private func nextGeneration()
     {
-        #if targetEnvironment(simulator)
-            let debugStart = Date()
-        #endif
-
         var neighborCount: [CellLocation: Int] = [:]
 
         // Count neighbors for all live cells and their neighbors.
@@ -109,15 +111,5 @@ public final class LifeCellGridView: CellGridView
         }
 
         self._liveCells = newLiveCells
-
-        #if targetEnvironment(simulator)
-            self.printNextGenerationResult(debugStart)
-        #endif
-    }
-
-    private func printNextGenerationResult(_ start: Date) {
-        let interval: TimeInterval = Date().timeIntervalSince(start)
-        let ms = interval * 1000
-        print(String(format: "NEXTG> %.4f ms", ms))
     }
 }

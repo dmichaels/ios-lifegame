@@ -5,17 +5,17 @@ import Utils
 public final class LifeCell: Cell {
 
     private var _active: Bool
-    private var _randomColorSentinel: Int
+    private var _generationNumber: Int
 
     init(cellGridView: LifeCellGridView, x: Int, y: Int,  active: Bool = false) {
         self._active = active
-        self._randomColorSentinel = cellGridView._randomColorSentinel + 1
+        self._generationNumber = cellGridView.generationNumber + 1
         let color: Colour = active ? cellGridView.cellActiveColor : cellGridView.cellInactiveColor
         super.init(cellGridView: cellGridView, x: x, y: y, color: color)
     }
 
     public override var cellGridView: LifeCellGridView {
-        return super.cellGridView as! LifeCellGridView
+        super.cellGridView as! LifeCellGridView
     }
 
     public override var color: Colour {
@@ -24,9 +24,9 @@ public final class LifeCell: Cell {
                 return self.cellGridView.cellActiveColor
             }
             else {
-                if (self.cellGridView._randomColorSentinel != self._randomColorSentinel) {
+                if (self.cellGridView.generationNumber != self._generationNumber) {
                     self.color = Colour.random(mode: ColourMode.color, filter: ColourFilters.Greens)
-                    self._randomColorSentinel = self.cellGridView._randomColorSentinel
+                    self._generationNumber = self.cellGridView.generationNumber
                 }
                 return super.color
             }
