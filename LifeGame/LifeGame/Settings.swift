@@ -72,4 +72,6 @@ class Settings: ObservableObject
 
     @Published var automationEnabled: Bool           = Defaults.automationEnabled
     @Published var automationInterval: Double        = Defaults.automationInterval
+
+    @Published var ignoreSafeArea: Bool              = Defaults.ignoreSafeArea
 }

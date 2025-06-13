@@ -70,6 +70,7 @@ struct ContentView: View
                     }
                 }
                 .onAppear {
+                    print("ZStack.onAppear> init: \(self.cellGridView.initialized) \(settings.ignoreSafeArea) \(self.ignoreSafeArea) \(geometry.size)")
                     if (!self.cellGridView.initialized) {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         let landscape = self.orientation.current.isLandscape
@@ -89,7 +90,6 @@ struct ContentView: View
                                                      gridCenter: Defaults.gridCenter,
                                                      onChangeImage: self.updateImage,
                                                      onChangeCellSize: self.onChangeCellSize)
-                        self.settings.preferredCellSizes = self.cellGridView.preferredCellSizes
                         self.rotateImage()
                     }
                 }
@@ -181,6 +181,7 @@ struct ContentView: View
     }
 
     private func onChangeSettings() {
+        print("onChangeSettings> init: \(self.cellGridView.initialized) \(settings.ignoreSafeArea) \(self.ignoreSafeArea)")
         let cellSizeChanged: Bool = (settings.cellSize != self.cellGridView.cellSize)
         self.cellGridView.configure(cellSize: settings.cellSize,
                                     cellPadding: self.cellGridView.cellPadding,
@@ -192,10 +193,10 @@ struct ContentView: View
                                     viewScaling: settings.viewScaling, // self.cellGridView.viewScaling,
                                     adjustShift: true,
                                     refreshCells: true)
-        print(settings.cellActiveColor)
-        print(self.cellGridView.cellActiveColor)
         self.cellGridView.cellActiveColor = settings.cellActiveColor
         self.cellGridView.automationInterval = settings.automationInterval
+        self.ignoreSafeArea = settings.ignoreSafeArea
+        self.ignoreSafeArea = settings.ignoreSafeArea // FYI: This causes another ZStack.onAppear
         self.updateImage()
     }
 
