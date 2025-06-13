@@ -92,6 +92,25 @@ struct ContentView: View
                                                      onChangeCellSize: self.onChangeCellSize)
                         self.rotateImage()
                     }
+                    else {
+                        let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
+                        if ((screen.width != self.cellGridView.screen.width) || (screen.height != self.cellGridView.screen.height)) {
+                            print("ZStack.onAppear> initialized but screen size changed: \(self.cellGridView.screen.width)x\(self.cellGridView.screen.height) -> \(screen.width)x\(screen.height)")
+                            let landscape = self.orientation.current.isLandscape
+                            self.cellGridView.configure(cellSize: settings.cellSize,
+                                                        cellPadding: self.cellGridView.cellPadding,
+                                                        cellShape: settings.cellShape,
+                                                        viewWidth: landscape ? screen.height : screen.width,
+                                                        viewHeight: landscape ? screen.width : screen.height,
+                                                        viewBackground: settings.viewBackground,
+                                                        viewTransparency: self.cellGridView.viewTransparency,
+                                                        viewScaling: settings.viewScaling, // self.cellGridView.viewScaling,
+                                                        screen: screen,
+                                                        adjustShift: true,
+                                                        refreshCells: true)
+                            self.updateImage()
+                        }
+                    }
                 }
                 .navigationTitle("Home")
                 .navigationBarHidden(true)
@@ -181,6 +200,7 @@ struct ContentView: View
     }
 
     private func onChangeSettings() {
+        let configuration: CellGridView.Configuration = CellGridView.Configuration().with(cellSize: 123)
         print("onChangeSettings> init: \(self.cellGridView.initialized) \(settings.ignoreSafeArea) \(self.ignoreSafeArea)")
         let cellSizeChanged: Bool = (settings.cellSize != self.cellGridView.cellSize)
         self.cellGridView.configure(cellSize: settings.cellSize,
@@ -190,12 +210,11 @@ struct ContentView: View
                                     viewHeight: self.cellGridView.viewHeight,
                                     viewBackground: settings.viewBackground,
                                     viewTransparency: self.cellGridView.viewTransparency,
-                                    viewScaling: settings.viewScaling, // self.cellGridView.viewScaling,
+                                    viewScaling: settings.viewScaling,
                                     adjustShift: true,
                                     refreshCells: true)
         self.cellGridView.cellActiveColor = settings.cellActiveColor
         self.cellGridView.automationInterval = settings.automationInterval
-        self.ignoreSafeArea = settings.ignoreSafeArea
         self.ignoreSafeArea = settings.ignoreSafeArea // FYI: This causes another ZStack.onAppear
         self.updateImage()
     }

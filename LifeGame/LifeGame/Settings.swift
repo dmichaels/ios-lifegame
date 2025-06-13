@@ -45,7 +45,7 @@ public class Defaults
     public static let soundEnabled: Bool                = true
     public static let hapticEnabled: Bool               = true
 
-    public static let ignoreSafeArea: Bool              = true
+    public static let ignoreSafeArea: Bool              = false
 }
 
 class Settings: ObservableObject
