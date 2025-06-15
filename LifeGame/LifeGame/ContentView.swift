@@ -9,15 +9,14 @@ struct ContentView: View
 
     @StateObject var orientation = OrientationObserver()
 
-    // This ignoreSafeArea is settable (e.g. in SettingsView); we currently always ignore the
-    // safe area; have not been able to get the geometry working in general when NOT ignoring
-    // the safe area; the image gets incorrectly shifted et cetera; TODO at some point.
+    // This ignoreSafeArea is settable (e.g. in SettingsView); we currently always ignore the safe area;
+    // have not been able to get the geometry working in general when NOT ignoring the safe area;
+    // the image gets incorrectly shifted (up) on orientation change et cetera; todo someday.
     //
     @State private var ignoreSafeArea: Bool = true
     @State private var viewRectangle: CGRect = CGRect.zero
     @State private var image: CGImage? = nil
     @State private var imageAngle: Angle = Angle.zero
-
     @State private var showSettingsView = false
     @State private var showControlsBar = false
     @State private var dragging: Bool = false
@@ -29,7 +28,7 @@ struct ContentView: View
         NavigationView {
             GeometryReader { geometry in
                 ZStack {
-                    if let image = image {
+                    if let image = self.image {
                         Image(decorative: image, scale: self.cellGridView.viewScale)
                             .background(GeometryReader { geo in Color.clear
                                 .onAppear {
@@ -40,14 +39,6 @@ struct ContentView: View
                                                                 size: CGSize(width: self.cellGridView.viewWidth,
                                                                              height: self.cellGridView.viewHeight))
                                 }
-                                // TODO
-                                // Triple check that we don't actually need this; artifact of
-                                // previous development evidently; seems it never gets called,
-                                // except (sometimes) in response to the onAppear setting above.
-                                //
-                                // .onChange(of: self.parentRelativeImagePosition) { value in
-                                //     self.parentRelativeImagePosition = value
-                                // }
                             })
                             .frame(width: geometry.size.width, height: geometry.size.height)
                             .rotationEffect(self.imageAngle)
@@ -117,7 +108,6 @@ struct ContentView: View
                 .navigationTitle("Home")
                 .navigationBarHidden(true)
                 // .background(self.cellGridView.background.color) // xyzzy
-                // .background(Color.pink) // xyzzy
                 .background(Color.yellow) // xyzzy
                 .statusBar(hidden: true)
                 .coordinateSpace(name: "zstack")
@@ -141,7 +131,7 @@ struct ContentView: View
                 )
             }
             //
-            // TODO: Almost working without this; margins
+            // TODO: Almost working without safe area; margins
             // off a bit; would be nice if it did as an option.
             //
             .conditionalModifier(ignoreSafeArea) { view in
