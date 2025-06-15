@@ -5,11 +5,13 @@ import Utils
 public final class LifeCell: Cell {
 
     private var _active: Bool
-    private var _generationNumber: Int
+    private var _cellInactiveColorRandomDynamicNumber: Int
+    private var _cellInactiveColorRandomNumber: Int
 
     init(cellGridView: LifeCellGridView, x: Int, y: Int,  active: Bool = false) {
         self._active = active
-        self._generationNumber = cellGridView.generationNumber + 1
+        self._cellInactiveColorRandomDynamicNumber = cellGridView.generationNumber + 1
+        self._cellInactiveColorRandomNumber = cellGridView.cellInactiveColorRandomNumber + 1
         let color: Colour = active ? cellGridView.cellActiveColor : cellGridView.cellInactiveColor
         super.init(cellGridView: cellGridView, x: x, y: y, color: color)
     }
@@ -23,13 +25,20 @@ public final class LifeCell: Cell {
             if (self._active) {
                 return self.cellGridView.cellActiveColor
             }
-            else {
-                if (self.cellGridView.generationNumber != self._generationNumber) {
-                    self.color = Colour.random(mode: ColourMode.color, filter: ColourFilters.Greens)
-                    self._generationNumber = self.cellGridView.generationNumber
+            else if (self.cellGridView.cellInactiveColorRandom) {
+                if (self.cellGridView.cellInactiveColorRandomDynamic) {
+                    if (self.cellGridView.generationNumber != self._cellInactiveColorRandomDynamicNumber) {
+                        // super.color = Colour.random(mode: ColourMode.color, filter: ColourFilters.Greens)
+                        self.color = self.cellGridView.cellInactiveColorRandomColor()
+                        self._cellInactiveColorRandomDynamicNumber = self.cellGridView.generationNumber
+                    }
                 }
-                return super.color
+                else if (self._cellInactiveColorRandomNumber != self.cellGridView.cellInactiveColorRandomNumber) {
+                    self.color = self.cellGridView.cellInactiveColorRandomColor()
+                    self._cellInactiveColorRandomNumber = self.cellGridView.cellInactiveColorRandomNumber
+                }
             }
+            return super.color
         }
         set { super.color = newValue }
     }

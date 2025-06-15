@@ -76,7 +76,7 @@ struct ContentView: View
                                                      cellPadding: Defaults.cellPadding,
                                                      cellSizeFit: Defaults.cellSizeFit,
                                                      cellShape: Defaults.cellShape,
-                                                     cellForeground: Defaults.cellForeground,
+                                                     cellForeground: Defaults.cellInactiveColor,
                                                      gridColumns: Defaults.gridColumns,
                                                      gridRows: Defaults.gridRows,
                                                      gridCenter: Defaults.gridCenter,

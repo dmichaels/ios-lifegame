@@ -9,6 +9,11 @@ public final class LifeCellGridView: CellGridView
     private var _cellInactiveColor: Colour = LifeGame.Defaults.cellInactiveColor
     private var _liveCells: Set<CellLocation> = []
     private var _generationNumber: Int = 0
+    private var _cellInactiveColorRandom: Bool = LifeGame.Defaults.cellInactiveColorRandom
+    private var _cellInactiveColorRandomColorMode: ColourMode = ColourMode.grayscale
+    private var _cellInactiveColorRandomColorFilter: ColourFilterType = ColourFilters.Blues
+    private var _cellInactiveColorRandomNumber: Int = 0
+    private var _cellInactiveColorRandomDynamic: Bool = LifeGame.Defaults.cellInactiveColorRandomDynamic
 
     public override func createCell<T: Cell>(x: Int, y: Int, color: Colour) -> T? {
         return LifeCell(cellGridView: self, x: x, y: y) as? T
@@ -21,7 +26,7 @@ public final class LifeCellGridView: CellGridView
         self.onChangeImage()
     }
 
-    public var cellActiveColor: Colour {
+    internal var cellActiveColor: Colour {
         get { self._cellActiveColor }
         set {
             if (newValue != self._cellActiveColor) {
@@ -37,9 +42,26 @@ public final class LifeCellGridView: CellGridView
         }
     }
 
-    public var cellInactiveColor: Colour {
+    internal var cellInactiveColor: Colour {
         get { self._cellInactiveColor }
         set { self._cellInactiveColor = newValue }
+    }
+
+    internal var cellInactiveColorRandom: Bool {
+        self._cellInactiveColorRandom
+    }
+
+    internal var cellInactiveColorRandomColor: () -> Colour {
+        let cellInactiveColorRandomColorFunction: () -> Colour = { Colour.random() }
+        return cellInactiveColorRandomColorFunction
+    }
+
+    internal var cellInactiveColorRandomNumber: Int {
+        self._cellInactiveColorRandomNumber
+    }
+
+    internal var cellInactiveColorRandomDynamic: Bool {
+        self._cellInactiveColorRandomDynamic
     }
 
     internal func noteCellActivated(_ cell: LifeCell) {
