@@ -44,8 +44,6 @@ public class Defaults
 
     public static let soundEnabled: Bool                = true
     public static let hapticEnabled: Bool               = true
-
-    public static let ignoreSafeArea: Bool              = false
 }
 
 class Settings: ObservableObject
@@ -72,6 +70,4 @@ class Settings: ObservableObject
 
     @Published var automationEnabled: Bool           = Defaults.automationEnabled
     @Published var automationInterval: Double        = Defaults.automationInterval
-
-    @Published var ignoreSafeArea: Bool              = Defaults.ignoreSafeArea
 }

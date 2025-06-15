@@ -113,14 +113,6 @@ struct SettingsView: View
                         .disabled(!settings.automationEnabled)
                     }
                 }
-                VStack {
-                    HStack {
-                        Label("Ignore Safe Area", systemImage: "play.circle")
-                        Spacer()
-                        Toggle("", isOn: $settings.ignoreSafeArea)
-                            .labelsHidden()
-                    }
-                }
                 //
                 // Experiment showing only preferred sizes ...
                 //

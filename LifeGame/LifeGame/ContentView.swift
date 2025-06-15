@@ -9,7 +9,11 @@ struct ContentView: View
 
     @StateObject var orientation = OrientationObserver()
 
-    @State private var ignoreSafeArea: Bool = Defaults.ignoreSafeArea
+    // This ignoreSafeArea is settable (e.g. in SettingsView); we currently always ignore the
+    // safe area; have not been able to get the geometry working in general when NOT ignoring
+    // the safe area; the image gets incorrectly shifted et cetera; TODO at some point.
+    //
+    @State private var ignoreSafeArea: Bool = true
     @State private var viewRectangle: CGRect = CGRect.zero
     @State private var image: CGImage? = nil
     @State private var imageAngle: Angle = Angle.zero
@@ -70,7 +74,6 @@ struct ContentView: View
                     }
                 }
                 .onAppear {
-                    print("ZStack.onAppear> init: \(self.cellGridView.initialized) \(settings.ignoreSafeArea) \(self.ignoreSafeArea) \(geometry.size)")
                     if (!self.cellGridView.initialized) {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         let landscape = self.orientation.current.isLandscape
@@ -95,7 +98,6 @@ struct ContentView: View
                     else {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         if ((screen.width != self.cellGridView.screen.width) || (screen.height != self.cellGridView.screen.height)) {
-                            print("ZStack.onAppear> initialized but screen size changed: \(self.cellGridView.screen.width)x\(self.cellGridView.screen.height) -> \(screen.width)x\(screen.height)")
                             let landscape = self.orientation.current.isLandscape
                             self.cellGridView.configure(cellSize: settings.cellSize,
                                                         cellPadding: self.cellGridView.cellPadding,
@@ -201,7 +203,6 @@ struct ContentView: View
 
     private func onChangeSettings() {
         let configuration: CellGridView.Configuration = CellGridView.Configuration().with(cellSize: 123)
-        print("onChangeSettings> init: \(self.cellGridView.initialized) \(settings.ignoreSafeArea) \(self.ignoreSafeArea)")
         let cellSizeChanged: Bool = (settings.cellSize != self.cellGridView.cellSize)
         self.cellGridView.configure(cellSize: settings.cellSize,
                                     cellPadding: self.cellGridView.cellPadding,
@@ -215,7 +216,6 @@ struct ContentView: View
                                     refreshCells: true)
         self.cellGridView.cellActiveColor = settings.cellActiveColor
         self.cellGridView.automationInterval = settings.automationInterval
-        self.ignoreSafeArea = settings.ignoreSafeArea // FYI: This causes another ZStack.onAppear
         self.updateImage()
     }
 
