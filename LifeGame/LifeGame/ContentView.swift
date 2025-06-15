@@ -19,8 +19,6 @@ struct ContentView: View
     @State private var imageAngle: Angle = Angle.zero
     @State private var showSettingsView = false
     @State private var showControlsBar = false
-    @State private var dragging: Bool = false
-    @State private var draggingStart: CGPoint? = nil
     @State private var paintMode = false
     @State private var playMode = false
 
@@ -90,14 +88,14 @@ struct ContentView: View
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         if ((screen.width != self.cellGridView.screen.width) || (screen.height != self.cellGridView.screen.height)) {
                             let landscape = self.orientation.current.isLandscape
-                            self.cellGridView.configure(cellSize: settings.cellSize,
+                            self.cellGridView.configure(cellSize: self.settings.cellSize,
                                                         cellPadding: self.cellGridView.cellPadding,
-                                                        cellShape: settings.cellShape,
+                                                        cellShape: self.settings.cellShape,
                                                         viewWidth: landscape ? screen.height : screen.width,
                                                         viewHeight: landscape ? screen.width : screen.height,
-                                                        viewBackground: settings.viewBackground,
+                                                        viewBackground: self.settings.viewBackground,
                                                         viewTransparency: self.cellGridView.viewTransparency,
-                                                        viewScaling: settings.viewScaling, // self.cellGridView.viewScaling,
+                                                        viewScaling: self.settings.viewScaling, // self.cellGridView.viewScaling,
                                                         screen: screen,
                                                         adjustShift: true,
                                                         refreshCells: true)
@@ -134,15 +132,15 @@ struct ContentView: View
             // TODO: Almost working without safe area; margins
             // off a bit; would be nice if it did as an option.
             //
-            .conditionalModifier(ignoreSafeArea) { view in
+            .conditionalModifier(self.ignoreSafeArea) { view in
                 view.ignoresSafeArea()
             }
         }
         .onAppear {
-            orientation.register(self.onChangeOrientation)
+            self.orientation.register(self.onChangeOrientation)
         }
         .onDisappear {
-            orientation.deregister()
+            self.orientation.deregister()
         }
         .navigationViewStyle(.stack)
     }
@@ -193,19 +191,19 @@ struct ContentView: View
 
     private func onChangeSettings() {
         let configuration: CellGridView.Configuration = CellGridView.Configuration().with(cellSize: 123)
-        let cellSizeChanged: Bool = (settings.cellSize != self.cellGridView.cellSize)
-        self.cellGridView.configure(cellSize: settings.cellSize,
+        let cellSizeChanged: Bool = (self.settings.cellSize != self.cellGridView.cellSize)
+        self.cellGridView.configure(cellSize: self.settings.cellSize,
                                     cellPadding: self.cellGridView.cellPadding,
-                                    cellShape: settings.cellShape,
+                                    cellShape: self.settings.cellShape,
                                     viewWidth: self.cellGridView.viewWidth,
                                     viewHeight: self.cellGridView.viewHeight,
-                                    viewBackground: settings.viewBackground,
+                                    viewBackground: self.settings.viewBackground,
                                     viewTransparency: self.cellGridView.viewTransparency,
-                                    viewScaling: settings.viewScaling,
+                                    viewScaling: self.settings.viewScaling,
                                     adjustShift: true,
                                     refreshCells: true)
-        self.cellGridView.cellActiveColor = settings.cellActiveColor
-        self.cellGridView.automationInterval = settings.automationInterval
+        self.cellGridView.cellActiveColor = self.settings.cellActiveColor
+        self.cellGridView.automationInterval = self.settings.automationInterval
         self.updateImage()
     }
 
@@ -220,22 +218,20 @@ struct ContentView: View
     }
 
     private func togglePaintMode() {
-        paintMode.toggle()
+        self.paintMode.toggle()
         self.cellGridView.togglePaintMode()
     }
 
     private func togglePlayMode() {
-        playMode.toggle()
+        self.playMode.toggle()
         self.cellGridView.togglePlayMode()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static let cellGridView: LifeCellGridView = LifeCellGridView()
-    static let settings: Settings = Settings()
     static var previews: some View {
         ContentView()
-            .environmentObject(cellGridView)
-            .environmentObject(settings)
+            .environmentObject(LifeCellGridView())
+            .environmentObject(Settings())
     }
 }
