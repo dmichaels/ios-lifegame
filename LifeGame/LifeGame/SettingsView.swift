@@ -61,7 +61,22 @@ struct SettingsView: View
                         }
                 }
                 HStack {
-                    // Label("Inactive Color Mode", systemImage: "paintpalette")
+                    HStack {
+                        ColorCircleIcon()
+                        Text("Inactive Cell Color")
+                            .padding(.leading, 0)
+                            .frame(width: 152) // TODO: only need to stop wrapping; need better way.
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                            .layoutPriority(1)
+                        Spacer()
+                    }
+                    ColorPicker("", selection: $settings.inactiveColorInternal)
+                        .onChange(of: settings.inactiveColorInternal) { value in
+                           settings.inactiveColorInternal = value
+                        }
+                }
+                HStack {
                     Image(systemName: "paintpalette")
                         .foregroundColor(.accentColor)
                     Text("Inactive Cell Color Mode")

@@ -35,7 +35,6 @@ public final class LifeCellGridView: CellGridView
                         cell.write()
                     }
                 }
-                super.writeCells()
             }
         }
     }

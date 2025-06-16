@@ -29,8 +29,8 @@ public class Defaults
 
     public static let activeColor: Colour                           = Colour.white
     public static let inactiveColor: Colour                         = Colour.black
-    public static let inactiveColorRandom: Bool                     = true
-    public static let inactiveColorRandomDynamic: Bool              = true
+    public static let inactiveColorRandom: Bool                     = false
+    public static let inactiveColorRandomDynamic: Bool              = false
     public static let inactiveColorRandomColorMode: ColourMode?     = ColourMode.color
     public static let inactiveColorRandomColorFilter: ColourFilter? = ColourFilters.Reds
 
