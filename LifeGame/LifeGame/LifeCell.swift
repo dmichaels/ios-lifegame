@@ -12,8 +12,7 @@ public final class LifeCell: Cell {
         self._active = active
         self._cellInactiveColorRandomDynamicNumber = cellGridView.generationNumber + 1
         self._cellInactiveColorRandomNumber = cellGridView.cellInactiveColorRandomNumber + 1
-        let color: Colour = active ? cellGridView.cellActiveColor : cellGridView.cellInactiveColor
-        super.init(cellGridView: cellGridView, x: x, y: y, color: color)
+        super.init(cellGridView: cellGridView, x: x, y: y, color: cellGridView.cellInactiveColor)
     }
 
     public override var cellGridView: LifeCellGridView {
@@ -25,20 +24,21 @@ public final class LifeCell: Cell {
             if (self._active) {
                 return self.cellGridView.cellActiveColor
             }
-            else if (self.cellGridView.cellInactiveColorRandom) {
-                if (self.cellGridView.cellInactiveColorRandomDynamic) {
-                    if (self.cellGridView.generationNumber != self._cellInactiveColorRandomDynamicNumber) {
-                        // super.color = Colour.random(mode: ColourMode.color, filter: ColourFilters.Greens)
-                        self.color = self.cellGridView.cellInactiveColorRandomColor()
-                        self._cellInactiveColorRandomDynamicNumber = self.cellGridView.generationNumber
-                    }
+            else if (self.cellGridView.cellInactiveColorRandomDynamic) {
+                if (self.cellGridView.generationNumber != self._cellInactiveColorRandomDynamicNumber) {
+                    self.color = self.cellGridView.cellInactiveColorRandomColor()
+                    self._cellInactiveColorRandomDynamicNumber = self.cellGridView.generationNumber
                 }
-                else if (self._cellInactiveColorRandomNumber != self.cellGridView.cellInactiveColorRandomNumber) {
+                return super.color
+            }
+            else if (self.cellGridView.cellInactiveColorRandom) {
+                if (self._cellInactiveColorRandomNumber != self.cellGridView.cellInactiveColorRandomNumber) {
                     self.color = self.cellGridView.cellInactiveColorRandomColor()
                     self._cellInactiveColorRandomNumber = self.cellGridView.cellInactiveColorRandomNumber
                 }
+                return super.color
             }
-            return super.color
+            return self.cellGridView.cellInactiveColor
         }
         set { super.color = newValue }
     }
@@ -55,23 +55,27 @@ public final class LifeCell: Cell {
         !self._active
     }
 
-    public func activate(nowrite: Bool = false) {
+    public func activate(nowrite: Bool = false, nonotify: Bool = false) {
         if (!self._active) {
             self._active = true
             if (!nowrite)  {
                 self.write()
             }
-            self.cellGridView.noteCellActivated(self)
+            if (!nonotify) {
+                self.cellGridView.noteCellActivated(self)
+            }
         }
     }
 
-    public func deactivate(nowrite: Bool = false) {
+    public func deactivate(nowrite: Bool = false, nonotify: Bool = false) {
         if (self._active) {
             self._active = false
             if (!nowrite)  {
                 self.write()
             }
-            self.cellGridView.noteCellDeactivated(self)
+            if (!nonotify) {
+                self.cellGridView.noteCellDeactivated(self)
+            }
         }
     }
 

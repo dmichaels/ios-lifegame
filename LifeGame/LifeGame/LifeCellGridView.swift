@@ -10,10 +10,10 @@ public final class LifeCellGridView: CellGridView
     private var _liveCells: Set<CellLocation> = []
     private var _generationNumber: Int = 0
     private var _cellInactiveColorRandom: Bool = LifeGame.Defaults.cellInactiveColorRandom
-    private var _cellInactiveColorRandomColorMode: ColourMode = ColourMode.grayscale
-    private var _cellInactiveColorRandomColorFilter: ColourFilterType = ColourFilters.Blues
-    private var _cellInactiveColorRandomNumber: Int = 0
     private var _cellInactiveColorRandomDynamic: Bool = LifeGame.Defaults.cellInactiveColorRandomDynamic
+    private var _cellInactiveColorRandomColorMode: ColourMode? =  LifeGame.Defaults.cellInactiveColorRandomColorMode
+    private var _cellInactiveColorRandomColorFilter: ColourFilter? = LifeGame.Defaults.cellInactiveColorRandomColorFilter
+    private var _cellInactiveColorRandomNumber: Int = 0
 
     public override func createCell<T: Cell>(x: Int, y: Int, color: Colour) -> T? {
         return LifeCell(cellGridView: self, x: x, y: y) as? T
@@ -33,6 +33,7 @@ public final class LifeCellGridView: CellGridView
                 self._cellActiveColor = newValue
                 for cellLocation in self._liveCells {
                     if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
+                        print("UPDATE-ACTIVE-CELL-COLOR> \(cell.x),\(cell.y): \(cell.color.hex) -> \(newValue.hex)")
                         cell.color = newValue
                         // cell.write()
                     }
@@ -122,16 +123,17 @@ public final class LifeCellGridView: CellGridView
 
         for oldLocation in self._liveCells.subtracting(newLiveCells) {
             if let cell: LifeCell = self.gridCell(oldLocation.x, oldLocation.y) {
-                cell.deactivate()
+                cell.deactivate(nonotify: true)
             }
         }
 
         for newLocation in newLiveCells.subtracting(self._liveCells) {
             if let cell: LifeCell = self.gridCell(newLocation.x, newLocation.y) {
-                cell.activate()
+                cell.activate(nonotify: true)
             }
         }
 
         self._liveCells = newLiveCells
+        print("LIVE-CELLS: \(self._liveCells.count)")
     }
 }
