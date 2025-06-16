@@ -14,21 +14,6 @@ struct SettingsView: View
         Form {
             Section(/* header: Text("CELLS").padding(.leading, -12) */ ) {
                 HStack {
-                    Label("Color Mode", systemImage: "paintpalette")
-                    Picker("", selection: $settings.inactiveColorRandomColorMode) {
-                        ForEach(ColourMode.allCases) { mode in
-                            Text(mode.rawValue)
-                                .lineLimit(1)
-                                .truncationMode(.tail)
-                                .tag(mode)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .onChange(of: settings.inactiveColorRandomColorMode) { newValue in
-                        settings.inactiveColorRandomColorMode = newValue
-                    }
-                }
-                HStack {
                     Label("Cell Shape", systemImage: "puzzlepiece.fill")
                     Picker("", selection: $settings.cellShape) {
                         ForEach(CellShape.allCases) { value in
@@ -74,6 +59,37 @@ struct SettingsView: View
                         .onChange(of: settings.viewBackgroundInternal) { newValue in
                            settings.viewBackgroundInternal = newValue
                         }
+                }
+                HStack {
+                    // Label("Inactive Color Mode", systemImage: "paintpalette")
+                    Image(systemName: "paintpalette")
+                        .foregroundColor(.accentColor)
+                    Text("Inactive Cell Color Mode")
+                        .frame(width: 212) // TODO: only need to stop wrapping; need better way.
+                    Picker("", selection: $settings.inactiveColorRandomColorMode) {
+                        ForEach(ColourMode.allCases) { mode in
+                            Text(mode.rawValue)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
+                                .tag(mode)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .onChange(of: settings.inactiveColorRandomColorMode) { newValue in
+                        settings.inactiveColorRandomColorMode = newValue
+                    }
+                }
+                HStack {
+                    Label("Inactive Cell Color Random", systemImage: "questionmark.app.dashed")
+                    Spacer()
+                    Toggle("", isOn: $settings.inactiveColorRandom)
+                        .labelsHidden()
+                }
+                HStack {
+                    Label("Inactive Cell Color Dynamic", systemImage: "circle.grid.cross")
+                    Spacer()
+                    Toggle("", isOn: $settings.inactiveColorRandomDynamic)
+                        .labelsHidden()
                 }
                 HStack {
                     HStack {
