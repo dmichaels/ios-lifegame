@@ -33,7 +33,6 @@ public final class LifeCellGridView: CellGridView
                 self._cellActiveColor = newValue
                 for cellLocation in self._liveCells {
                     if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
-                        print("UPDATE-ACTIVE-CELL-COLOR> \(cell.x),\(cell.y): \(cell.color.hex) -> \(newValue.hex)")
                         cell.write()
                     }
                 }
@@ -104,14 +103,14 @@ public final class LifeCellGridView: CellGridView
                 //
                 // Survival rules.
                 //
-                if count == 2 || count == 3 {
+                if ((count == 2) || (count == 3)) {
                     newLiveCells.insert(cellLocation)
                 }
             } else {
                 //
                 // Birth rule.
                 //
-                if count == 3 {
+                if (count == 3) {
                     newLiveCells.insert(cellLocation)
                 }
             }
@@ -133,6 +132,5 @@ public final class LifeCellGridView: CellGridView
         }
 
         self._liveCells = newLiveCells
-        print("LIVE-CELLS: \(self._liveCells.count)")
     }
 }

@@ -13,17 +13,15 @@ struct ControlsBar: View {
     var body: some View {
         HStack(spacing: 36) {
             Button(action: {
-                // playMode.toggle()
                 togglePlayMode?()
-                // onAnyTap?()
+                onAnyTap?()
             }) {
                 Image(systemName: self.playMode ? "pause.fill" : "play.fill")
                     .font(.system(size: 24, weight: .bold))
             }
             Button(action: {
-                // paintMode.toggle()
                 togglePaintMode?()
-                // onAnyTap?()
+                onAnyTap?()
             }) {
                 // Image(systemName: self.paintMode ? "hand.draw.fill" : "paintbrush.fill")
                 // Image(systemName: self.paintMode ? "arrow.up.and.down.and.arrow.left.and.right" : "paintbrush.fill")
@@ -33,7 +31,7 @@ struct ControlsBar: View {
             }
             Button(action: {
                 showSettings?()
-                // onAnyTap?()
+                onAnyTap?()
             }) {
                 Image(systemName: "gearshape.fill") // Settings icon
                     .font(.system(size: 24, weight: .bold))

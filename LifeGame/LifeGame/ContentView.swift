@@ -105,8 +105,7 @@ struct ContentView: View
                 }
                 .navigationTitle("Home")
                 .navigationBarHidden(true)
-                // .background(self.cellGridView.background.color) // xyzzy
-                .background(Color.yellow) // xyzzy
+                .background(self.cellGridView.viewBackground.color) // Color.yellow
                 .statusBar(hidden: true)
                 .coordinateSpace(name: "zstack")
                 .overlay(
