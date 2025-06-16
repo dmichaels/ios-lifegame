@@ -5,14 +5,14 @@ import Utils
 public final class LifeCell: Cell {
 
     private var _active: Bool
-    private var _cellInactiveColorRandomDynamicNumber: Int
-    private var _cellInactiveColorRandomNumber: Int
+    private var _inactiveColorRandomDynamicNumber: Int
+    private var _inactiveColorRandomNumber: Int
 
     init(cellGridView: LifeCellGridView, x: Int, y: Int,  active: Bool = false) {
         self._active = active
-        self._cellInactiveColorRandomDynamicNumber = cellGridView.generationNumber + 1
-        self._cellInactiveColorRandomNumber = cellGridView.cellInactiveColorRandomNumber + 1
-        super.init(cellGridView: cellGridView, x: x, y: y, color: cellGridView.cellInactiveColor)
+        self._inactiveColorRandomDynamicNumber = cellGridView.generationNumber + 1
+        self._inactiveColorRandomNumber = cellGridView.inactiveColorRandomNumber + 1
+        super.init(cellGridView: cellGridView, x: x, y: y, color: cellGridView.inactiveColor)
     }
 
     public override var cellGridView: LifeCellGridView {
@@ -22,23 +22,23 @@ public final class LifeCell: Cell {
     public override var color: Colour {
         get {
             if (self._active) {
-                return self.cellGridView.cellActiveColor
+                return self.cellGridView.activeColor
             }
-            else if (self.cellGridView.cellInactiveColorRandomDynamic) {
-                if (self._cellInactiveColorRandomDynamicNumber != self.cellGridView.generationNumber) {
-                    super.color = self.cellGridView.cellInactiveColorRandomColor()
-                    self._cellInactiveColorRandomDynamicNumber = self.cellGridView.generationNumber
+            else if (self.cellGridView.inactiveColorRandomDynamic) {
+                if (self._inactiveColorRandomDynamicNumber != self.cellGridView.generationNumber) {
+                    super.color = self.cellGridView.inactiveColorRandomColor()
+                    self._inactiveColorRandomDynamicNumber = self.cellGridView.generationNumber
                 }
                 return super.color
             }
-            else if (self.cellGridView.cellInactiveColorRandom) {
-                if (self._cellInactiveColorRandomNumber != self.cellGridView.cellInactiveColorRandomNumber) {
-                    super.color = self.cellGridView.cellInactiveColorRandomColor()
-                    self._cellInactiveColorRandomNumber = self.cellGridView.cellInactiveColorRandomNumber
+            else if (self.cellGridView.inactiveColorRandom) {
+                if (self._inactiveColorRandomNumber != self.cellGridView.inactiveColorRandomNumber) {
+                    super.color = self.cellGridView.inactiveColorRandomColor()
+                    self._inactiveColorRandomNumber = self.cellGridView.inactiveColorRandomNumber
                 }
                 return super.color
             }
-            return self.cellGridView.cellInactiveColor
+            return self.cellGridView.inactiveColor
         }
         set { super.color = newValue }
     }

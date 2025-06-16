@@ -201,7 +201,7 @@ struct ContentView: View
                                     viewScaling: self.settings.viewScaling,
                                     adjustShift: true,
                                     refreshCells: true)
-        self.cellGridView.cellActiveColor = self.settings.activeColor
+        self.cellGridView.activeColor = self.settings.activeColor
         self.cellGridView.automationInterval = self.settings.automationInterval
         self.updateImage()
     }

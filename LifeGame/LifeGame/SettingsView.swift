@@ -102,9 +102,9 @@ struct SettingsView: View
                             .layoutPriority(1)
                         Spacer()
                     }
-                    ColorPicker("", selection: $settings.cellActiveColorInternal)
-                        .onChange(of: settings.cellActiveColorInternal) { newValue in
-                           settings.cellActiveColorInternal = newValue
+                    ColorPicker("", selection: $settings.activeColorInternal)
+                        .onChange(of: settings.activeColorInternal) { newValue in
+                           settings.activeColorInternal = newValue
                         }
                 }
                 VStack {
@@ -173,11 +173,11 @@ extension Settings {
         get { Color(self.viewBackground) }
         set { self.viewBackground = Colour(newValue) }
     }
-    var cellActiveColorInternal: Color {
+    var activeColorInternal: Color {
         get { Color(self.activeColor) }
         set { self.activeColor = Colour(newValue) }
     }
-    var cellInactiveColorInternal: Color {
+    var inactiveColorInternal: Color {
         get { Color(self.inactiveColor) }
         set { self.inactiveColor = Colour(newValue) }
     }

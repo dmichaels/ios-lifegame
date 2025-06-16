@@ -5,32 +5,31 @@ import Utils
 
 public final class LifeCellGridView: CellGridView
 {
-    private var _cellActiveColor: Colour = LifeGame.Defaults.activeColor
-    private var _cellInactiveColor: Colour = LifeGame.Defaults.inactiveColor
-    private var _liveCells: Set<CellLocation> = []
+    private var _activeColor: Colour = LifeGame.Defaults.activeColor
+    private var _inactiveColor: Colour = LifeGame.Defaults.inactiveColor
+    private var _inactiveColorRandom: Bool = LifeGame.Defaults.inactiveColorRandom
+    private var _inactiveColorRandomDynamic: Bool = LifeGame.Defaults.inactiveColorRandomDynamic
+    private var _inactiveColorRandomColorMode: ColourMode? =  LifeGame.Defaults.inactiveColorRandomColorMode
+    private var _inactiveColorRandomColorFilter: ColourFilter? = LifeGame.Defaults.inactiveColorRandomColorFilter
+    private var _inactiveColorRandomNumber: Int = 0
     private var _generationNumber: Int = 0
-    private var _cellInactiveColorRandom: Bool = LifeGame.Defaults.inactiveColorRandom
-    private var _cellInactiveColorRandomDynamic: Bool = LifeGame.Defaults.inactiveColorRandomDynamic
-    private var _cellInactiveColorRandomColorMode: ColourMode? =  LifeGame.Defaults.inactiveColorRandomColorMode
-    private var _cellInactiveColorRandomColorFilter: ColourFilter? = LifeGame.Defaults.inactiveColorRandomColorFilter
-    private var _cellInactiveColorRandomNumber: Int = 0
+    private var _liveCells: Set<CellLocation> = []
 
     public override func createCell<T: Cell>(x: Int, y: Int, color: Colour) -> T? {
         return LifeCell(cellGridView: self, x: x, y: y) as? T
     }
 
     public override func automationStep() {
-        self._generationNumber += 1
         self.nextGeneration()
         super.writeCells()
         self.onChangeImage()
     }
 
-    internal var cellActiveColor: Colour {
-        get { self._cellActiveColor }
+    internal var activeColor: Colour {
+        get { self._activeColor }
         set {
-            if (newValue != self._cellActiveColor) {
-                self._cellActiveColor = newValue
+            if (newValue != self._activeColor) {
+                self._activeColor = newValue
                 for cellLocation in self._liveCells {
                     if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
                         cell.write()
@@ -41,26 +40,26 @@ public final class LifeCellGridView: CellGridView
         }
     }
 
-    internal var cellInactiveColor: Colour {
-        get { self._cellInactiveColor }
-        set { self._cellInactiveColor = newValue }
+    internal var inactiveColor: Colour {
+        get { self._inactiveColor }
+        set { self._inactiveColor = newValue }
     }
 
-    internal var cellInactiveColorRandom: Bool {
-        self._cellInactiveColorRandom
+    internal var inactiveColorRandom: Bool {
+        self._inactiveColorRandom
     }
 
-    internal var cellInactiveColorRandomColor: () -> Colour {
-        let cellInactiveColorRandomColorFunction: () -> Colour = { Colour.random(filter: self._cellInactiveColorRandomColorFilter) }
-        return cellInactiveColorRandomColorFunction
+    internal var inactiveColorRandomColor: () -> Colour {
+        let inactiveColorRandomColorFunction: () -> Colour = { Colour.random(filter: self._inactiveColorRandomColorFilter) }
+        return inactiveColorRandomColorFunction
     }
 
-    internal var cellInactiveColorRandomNumber: Int {
-        self._cellInactiveColorRandomNumber
+    internal var inactiveColorRandomNumber: Int {
+        self._inactiveColorRandomNumber
     }
 
-    internal var cellInactiveColorRandomDynamic: Bool {
-        self._cellInactiveColorRandomDynamic
+    internal var inactiveColorRandomDynamic: Bool {
+        self._inactiveColorRandomDynamic
     }
 
     internal func noteCellActivated(_ cell: LifeCell) {
@@ -77,6 +76,8 @@ public final class LifeCellGridView: CellGridView
 
     private func nextGeneration()
     {
+        self._generationNumber += 1
+
         var neighborCount: [CellLocation: Int] = [:]
 
         // Count neighbors for all live cells and their neighbors.
