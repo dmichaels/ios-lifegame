@@ -32,7 +32,7 @@ public class Defaults
     public static let cellActiveColor: Colour                           = Colour.white
     public static let cellInactiveColor: Colour                         = Colour.black
     public static let cellInactiveColorRandom: Bool                     = true
-    public static let cellInactiveColorRandomDynamic: Bool              = false
+    public static let cellInactiveColorRandomDynamic: Bool              = true
     public static let cellInactiveColorRandomColorMode: ColourMode?     = ColourMode.color
     public static let cellInactiveColorRandomColorFilter: ColourFilter? = ColourFilters.Reds
 
