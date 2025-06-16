@@ -26,14 +26,14 @@ public final class LifeCell: Cell {
             }
             else if (self.cellGridView.cellInactiveColorRandomDynamic) {
                 if (self._cellInactiveColorRandomDynamicNumber != self.cellGridView.generationNumber) {
-                    self.color = self.cellGridView.cellInactiveColorRandomColor()
+                    super.color = self.cellGridView.cellInactiveColorRandomColor()
                     self._cellInactiveColorRandomDynamicNumber = self.cellGridView.generationNumber
                 }
                 return super.color
             }
             else if (self.cellGridView.cellInactiveColorRandom) {
                 if (self._cellInactiveColorRandomNumber != self.cellGridView.cellInactiveColorRandomNumber) {
-                    self.color = self.cellGridView.cellInactiveColorRandomColor()
+                    super.color = self.cellGridView.cellInactiveColorRandomColor()
                     self._cellInactiveColorRandomNumber = self.cellGridView.cellInactiveColorRandomNumber
                 }
                 return super.color

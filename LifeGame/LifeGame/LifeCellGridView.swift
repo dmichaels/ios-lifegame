@@ -34,8 +34,7 @@ public final class LifeCellGridView: CellGridView
                 for cellLocation in self._liveCells {
                     if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
                         print("UPDATE-ACTIVE-CELL-COLOR> \(cell.x),\(cell.y): \(cell.color.hex) -> \(newValue.hex)")
-                        cell.color = newValue
-                        // cell.write()
+                        cell.write()
                     }
                 }
                 super.writeCells()
