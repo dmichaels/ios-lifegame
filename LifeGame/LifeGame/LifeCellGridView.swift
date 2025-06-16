@@ -21,7 +21,9 @@ public final class LifeCellGridView: CellGridView
 
     public override func automationStep() {
         self.nextGeneration()
-        super.writeCells()
+        if (self.inactiveColorRandomDynamic) {
+            self.writeCells()
+        }
         self.onChangeImage()
     }
 
@@ -45,7 +47,13 @@ public final class LifeCellGridView: CellGridView
     }
 
     internal var inactiveColorRandom: Bool {
-        self._inactiveColorRandom
+        get { self._inactiveColorRandom }
+        set { if (newValue != self._inactiveColorRandom) { self._inactiveColorRandom = newValue ; super.writeCells() } }
+    }
+
+    internal var inactiveColorRandomDynamic: Bool {
+        get { self._inactiveColorRandomDynamic }
+        set { if (newValue != self._inactiveColorRandomDynamic) { self._inactiveColorRandomDynamic = newValue ; super.writeCells() } }
     }
 
     internal var inactiveColorRandomColor: () -> Colour {
@@ -55,10 +63,6 @@ public final class LifeCellGridView: CellGridView
 
     internal var inactiveColorRandomNumber: Int {
         self._inactiveColorRandomNumber
-    }
-
-    internal var inactiveColorRandomDynamic: Bool {
-        self._inactiveColorRandomDynamic
     }
 
     internal func noteCellActivated(_ cell: LifeCell) {
