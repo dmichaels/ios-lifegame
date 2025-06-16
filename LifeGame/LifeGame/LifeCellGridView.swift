@@ -41,7 +41,7 @@ public final class LifeCellGridView: CellGridView
 
     internal var inactiveColor: Colour {
         get { self._inactiveColor }
-        set { self._inactiveColor = newValue }
+        set { if (newValue != self._inactiveColor) { self._inactiveColor = newValue ; super.writeCells() } }
     }
 
     internal var inactiveColorRandom: Bool {
