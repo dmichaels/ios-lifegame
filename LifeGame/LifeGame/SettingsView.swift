@@ -15,7 +15,7 @@ struct SettingsView: View
             Section(/* header: Text("CELLS").padding(.leading, -12) */ ) {
                 HStack {
                     Label("Color Mode", systemImage: "paintpalette")
-                    Picker("", selection: $settings.cellColorMode) {
+                    Picker("", selection: $settings.inactiveColorRandomColorMode) {
                         ForEach(ColourMode.allCases) { mode in
                             Text(mode.rawValue)
                                 .lineLimit(1)
@@ -24,18 +24,18 @@ struct SettingsView: View
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
-                    .onChange(of: settings.cellColorMode) { newValue in
-                        settings.cellColorMode = newValue
+                    .onChange(of: settings.inactiveColorRandomColorMode) { newValue in
+                        settings.inactiveColorRandomColorMode = newValue
                     }
                 }
                 HStack {
                     Label("Cell Shape", systemImage: "puzzlepiece.fill")
                     Picker("", selection: $settings.cellShape) {
-                        ForEach(CellShape.allCases) { mode in
-                            Text(mode.rawValue)
+                        ForEach(CellShape.allCases) { value in
+                            Text(value.rawValue)
                                 .lineLimit(1)
                                 .truncationMode(.tail)
-                                .tag(mode)
+                                .tag(value)
                         }
                     }
                     .pickerStyle(.menu)
@@ -158,12 +158,12 @@ extension Settings {
         set { self.viewBackground = Colour(newValue) }
     }
     var cellActiveColorInternal: Color {
-        get { Color(self.cellActiveColor) }
-        set { self.cellActiveColor = Colour(newValue) }
+        get { Color(self.activeColor) }
+        set { self.activeColor = Colour(newValue) }
     }
     var cellInactiveColorInternal: Color {
-        get { Color(self.cellInactiveColor) }
-        set { self.cellInactiveColor = Colour(newValue) }
+        get { Color(self.inactiveColor) }
+        set { self.inactiveColor = Colour(newValue) }
     }
 }
 

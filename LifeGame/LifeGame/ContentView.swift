@@ -18,9 +18,9 @@ struct ContentView: View
     @State private var image: CGImage? = nil
     @State private var imageAngle: Angle = Angle.zero
     @State private var showSettingsView = false
-    @State private var showControlsBar = false
-    @State private var paintMode = false
-    @State private var playMode = false
+    @State private var showControlBar = false
+    @State private var selectMode = false
+    @State private var automationMode = false
 
     var body: some View {
         NavigationView {
@@ -76,7 +76,7 @@ struct ContentView: View
                                                      cellPadding: Defaults.cellPadding,
                                                      cellSizeFit: Defaults.cellSizeFit,
                                                      cellShape: Defaults.cellShape,
-                                                     cellForeground: Defaults.cellInactiveColor,
+                                                     cellForeground: Defaults.inactiveColor,
                                                      gridColumns: Defaults.gridColumns,
                                                      gridRows: Defaults.gridRows,
                                                      gridCenter: Defaults.gridCenter,
@@ -110,14 +110,14 @@ struct ContentView: View
                 .coordinateSpace(name: "zstack")
                 .overlay(
                     Group {
-                        if (self.showControlsBar) {
-                            ControlsBar(
-                                playMode: $playMode,
-                                paintMode: $paintMode,
+                        if (self.showControlBar) {
+                            ControlBar(
+                                automationMode: $automationMode,
+                                selectMode: $selectMode,
                                 onAnyTap: nil,
                                 showSettings: self.showSettings,
-                                togglePaintMode: self.togglePaintMode,
-                                togglePlayMode: self.togglePlayMode
+                                toggleSelectMode: self.toggleSelectMode,
+                                toggleAutomationMode: self.toggleAutomationMode
                             )
                             .transition(.move(edge: .bottom).combined(with: .opacity))
                             .padding(.bottom, 24)
@@ -201,7 +201,7 @@ struct ContentView: View
                                     viewScaling: self.settings.viewScaling,
                                     adjustShift: true,
                                     refreshCells: true)
-        self.cellGridView.cellActiveColor = self.settings.cellActiveColor
+        self.cellGridView.cellActiveColor = self.settings.activeColor
         self.cellGridView.automationInterval = self.settings.automationInterval
         self.updateImage()
     }
@@ -212,18 +212,18 @@ struct ContentView: View
 
     private func toggleShowControls() {
         withAnimation {
-            self.showControlsBar.toggle()
+            self.showControlBar.toggle()
         }
     }
 
-    private func togglePaintMode() {
-        self.paintMode.toggle()
-        self.cellGridView.togglePaintMode()
+    private func toggleSelectMode() {
+        self.selectMode.toggle()
+        self.cellGridView.toggleSelectMode()
     }
 
-    private func togglePlayMode() {
-        self.playMode.toggle()
-        self.cellGridView.togglePlayMode()
+    private func toggleAutomationMode() {
+        self.automationMode.toggle()
+        self.cellGridView.toggleAutomationMode()
     }
 }
 

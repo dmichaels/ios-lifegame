@@ -15,7 +15,6 @@ public class Defaults
     public static let cellSizeFit: Bool                 = false
     public static let cellPadding: Int                  = 1
     public static let cellShape: CellShape              = CellShape.rounded
-    public static let cellColorMode: ColourMode         = ColourMode.color
 
     public static let gridCenter: Bool                  = false
     public static let restrictShiftStrict: Bool         = true
@@ -25,16 +24,15 @@ public class Defaults
 
     // Life Game specific properties.
 
-
     public static let gridColumns: Int                  = 1000
     public static let gridRows: Int                     = 2000
 
-    public static let cellActiveColor: Colour                           = Colour.white
-    public static let cellInactiveColor: Colour                         = Colour.black
-    public static let cellInactiveColorRandom: Bool                     = true
-    public static let cellInactiveColorRandomDynamic: Bool              = true
-    public static let cellInactiveColorRandomColorMode: ColourMode?     = ColourMode.color
-    public static let cellInactiveColorRandomColorFilter: ColourFilter? = ColourFilters.Reds
+    public static let activeColor: Colour                           = Colour.white
+    public static let inactiveColor: Colour                         = Colour.black
+    public static let inactiveColorRandom: Bool                     = true
+    public static let inactiveColorRandomDynamic: Bool              = true
+    public static let inactiveColorRandomColorMode: ColourMode?     = ColourMode.color
+    public static let inactiveColorRandomColorFilter: ColourFilter? = ColourFilters.Reds
 
     public static let dragThreshold: Int                = 3
     public static let swipeThreshold: Int               = 100
@@ -55,22 +53,21 @@ class Settings: ObservableObject
     @Published var cellSizeFit: Bool                 = Defaults.cellSizeFit
     @Published var cellPadding: Int                  = Defaults.cellPadding
     @Published var cellShape: CellShape              = Defaults.cellShape
-    @Published var cellColorMode: ColourMode         = Defaults.cellColorMode
+
+    @Published var automationEnabled: Bool           = Defaults.automationEnabled
+    @Published var automationInterval: Double        = Defaults.automationInterval
 
     // Life Game specific properties.
 
     @Published var gridColumns: Int                  = Defaults.gridColumns
     @Published var gridRows: Int                     = Defaults.gridRows
 
-    @Published var cellActiveColor: Colour                           = Defaults.cellActiveColor
-    @Published var cellInactiveColor: Colour                         = Defaults.cellInactiveColor
-    @Published var cellInactiveColorRandom: Bool                     = Defaults.cellInactiveColorRandom
-    @Published var cellInactiveColorRandomDynamic: Bool              = Defaults.cellInactiveColorRandomDynamic
-    @Published var cellInactiveColorRandomColorMode: ColourMode?     = Defaults.cellInactiveColorRandomColorMode
-    @Published var cellInactiveColorRandomColorFilter: ColourFilter? = Defaults.cellInactiveColorRandomColorFilter
-
-    @Published var automationEnabled: Bool           = Defaults.automationEnabled
-    @Published var automationInterval: Double        = Defaults.automationInterval
+    @Published var activeColor: Colour                           = Defaults.activeColor
+    @Published var inactiveColor: Colour                         = Defaults.inactiveColor
+    @Published var inactiveColorRandom: Bool                     = Defaults.inactiveColorRandom
+    @Published var inactiveColorRandomDynamic: Bool              = Defaults.inactiveColorRandomDynamic
+    @Published var inactiveColorRandomColorMode: ColourMode?     = Defaults.inactiveColorRandomColorMode
+    @Published var inactiveColorRandomColorFilter: ColourFilter? = Defaults.inactiveColorRandomColorFilter
 
     @Published var soundEnabled: Bool                = Defaults.soundEnabled
     @Published var hapticEnabled: Bool               = Defaults.hapticEnabled

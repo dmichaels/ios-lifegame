@@ -2,31 +2,31 @@
 import SwiftUI
 import UIKit
 
-struct ControlsBar: View {
-    @Binding var playMode: Bool
-    @Binding var paintMode: Bool
+struct ControlBar: View {
+    @Binding var automationMode: Bool
+    @Binding var selectMode: Bool
     var onAnyTap: (() -> Void)?
     var showSettings: (() -> Void)?
-    var togglePaintMode: (() -> Void)?
-    var togglePlayMode: (() -> Void)?
+    var toggleSelectMode: (() -> Void)?
+    var toggleAutomationMode: (() -> Void)?
 
     var body: some View {
         HStack(spacing: 36) {
             Button(action: {
-                togglePlayMode?()
+                toggleAutomationMode?()
                 onAnyTap?()
             }) {
-                Image(systemName: self.playMode ? "pause.fill" : "play.fill")
+                Image(systemName: self.automationMode ? "pause.fill" : "play.fill")
                     .font(.system(size: 24, weight: .bold))
             }
             Button(action: {
-                togglePaintMode?()
+                toggleSelectMode?()
                 onAnyTap?()
             }) {
-                // Image(systemName: self.paintMode ? "hand.draw.fill" : "paintbrush.fill")
-                // Image(systemName: self.paintMode ? "arrow.up.and.down.and.arrow.left.and.right" : "paintbrush.fill")
-                // Image(systemName: self.paintMode ? "arrow.up.and.down.and.arrow.left.and.right" : "pencil.line")
-                Image(systemName: self.paintMode ? "arrow.up.and.down.and.arrow.left.and.right" : "square.and.pencil")
+                // Image(systemName: self.selectMode ? "hand.draw.fill" : "paintbrush.fill")
+                // Image(systemName: self.selectMode ? "arrow.up.and.down.and.arrow.left.and.right" : "paintbrush.fill")
+                // Image(systemName: self.selectMode ? "arrow.up.and.down.and.arrow.left.and.right" : "pencil.line")
+                Image(systemName: self.selectMode ? "arrow.up.and.down.and.arrow.left.and.right" : "square.and.pencil")
                     .font(.system(size: 24, weight: .bold))
             }
             Button(action: {

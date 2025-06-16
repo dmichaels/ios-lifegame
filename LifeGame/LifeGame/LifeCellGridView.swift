@@ -5,14 +5,14 @@ import Utils
 
 public final class LifeCellGridView: CellGridView
 {
-    private var _cellActiveColor: Colour = LifeGame.Defaults.cellActiveColor
-    private var _cellInactiveColor: Colour = LifeGame.Defaults.cellInactiveColor
+    private var _cellActiveColor: Colour = LifeGame.Defaults.activeColor
+    private var _cellInactiveColor: Colour = LifeGame.Defaults.inactiveColor
     private var _liveCells: Set<CellLocation> = []
     private var _generationNumber: Int = 0
-    private var _cellInactiveColorRandom: Bool = LifeGame.Defaults.cellInactiveColorRandom
-    private var _cellInactiveColorRandomDynamic: Bool = LifeGame.Defaults.cellInactiveColorRandomDynamic
-    private var _cellInactiveColorRandomColorMode: ColourMode? =  LifeGame.Defaults.cellInactiveColorRandomColorMode
-    private var _cellInactiveColorRandomColorFilter: ColourFilter? = LifeGame.Defaults.cellInactiveColorRandomColorFilter
+    private var _cellInactiveColorRandom: Bool = LifeGame.Defaults.inactiveColorRandom
+    private var _cellInactiveColorRandomDynamic: Bool = LifeGame.Defaults.inactiveColorRandomDynamic
+    private var _cellInactiveColorRandomColorMode: ColourMode? =  LifeGame.Defaults.inactiveColorRandomColorMode
+    private var _cellInactiveColorRandomColorFilter: ColourFilter? = LifeGame.Defaults.inactiveColorRandomColorFilter
     private var _cellInactiveColorRandomNumber: Int = 0
 
     public override func createCell<T: Cell>(x: Int, y: Int, color: Colour) -> T? {
