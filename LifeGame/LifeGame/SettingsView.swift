@@ -77,6 +77,18 @@ struct SettingsView: View
                         }
                 }
                 HStack {
+                    Label("Inactive Color Random", systemImage: "questionmark.app.dashed")
+                    Spacer()
+                    Toggle("", isOn: $settings.inactiveColorRandom)
+                        .labelsHidden()
+                }
+                HStack {
+                    Label("Inactive Color Dynamic", systemImage: "circle.grid.cross")
+                    Spacer()
+                    Toggle("", isOn: $settings.inactiveColorRandomDynamic)
+                        .labelsHidden()
+                }
+                HStack {
                     Image(systemName: "paintpalette")
                         .foregroundColor(.accentColor)
                     Text("Inactive Color Mode")
@@ -93,19 +105,7 @@ struct SettingsView: View
                     .onChange(of: settings.inactiveColorRandomColorMode) { newValue in
                         settings.inactiveColorRandomColorMode = newValue
                     }
-                }
-                HStack {
-                    Label("Inactive Color Random", systemImage: "questionmark.app.dashed")
-                    Spacer()
-                    Toggle("", isOn: $settings.inactiveColorRandom)
-                        .labelsHidden()
-                }
-                HStack {
-                    Label("Inactive Color Dynamic", systemImage: "circle.grid.cross")
-                    Spacer()
-                    Toggle("", isOn: $settings.inactiveColorRandomDynamic)
-                        .labelsHidden()
-                }
+                }.disabled(!settings.inactiveColorRandom && !settings.inactiveColorRandomDynamic)
                 HStack {
                     HStack {
                         ColorCircleIcon()
