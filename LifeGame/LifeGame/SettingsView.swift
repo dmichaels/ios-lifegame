@@ -47,25 +47,25 @@ struct SettingsView: View
                 HStack {
                     HStack {
                         ColorCircleIcon()
-                        Text("Background Color")
-                            .padding(.leading, 8)
-                            .frame(width: 152) // TODO: only need to stop wrapping; need better way.
+                        Text("Active Color")
+                            .padding(.leading, 0)
+                            .frame(width: 116) // TODO: only need to stop wrapping; need better way.
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .layoutPriority(1)
                         Spacer()
                     }
-                    ColorPicker("", selection: $settings.viewBackgroundInternal)
-                        .onChange(of: settings.viewBackgroundInternal) { newValue in
-                           settings.viewBackgroundInternal = newValue
+                    ColorPicker("", selection: $settings.activeColorInternal)
+                        .onChange(of: settings.activeColorInternal) { newValue in
+                           settings.activeColorInternal = newValue
                         }
                 }
                 HStack {
                     HStack {
                         ColorCircleIcon()
-                        Text("Inactive Cell Color")
+                        Text("Inactive Color")
                             .padding(.leading, 0)
-                            .frame(width: 152) // TODO: only need to stop wrapping; need better way.
+                            .frame(width: 128) // TODO: only need to stop wrapping; need better way.
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .layoutPriority(1)
@@ -79,13 +79,13 @@ struct SettingsView: View
                 HStack {
                     Image(systemName: "paintpalette")
                         .foregroundColor(.accentColor)
-                    Text("Inactive Cell Color Mode")
-                        .frame(width: 212) // TODO: only need to stop wrapping; need better way.
+                    Text("Inactive Color Mode")
+                        .frame(width: 178) // TODO: only need to stop wrapping; need better way.
                     Picker("", selection: $settings.inactiveColorRandomColorMode) {
                         ForEach(ColourMode.allCases) { mode in
                             Text(mode.rawValue)
                                 .lineLimit(1)
-                                .truncationMode(.tail)
+                                // .truncationMode(.tail)
                                 .tag(mode)
                         }
                     }
@@ -95,13 +95,13 @@ struct SettingsView: View
                     }
                 }
                 HStack {
-                    Label("Inactive Cell Color Random", systemImage: "questionmark.app.dashed")
+                    Label("Inactive Color Random", systemImage: "questionmark.app.dashed")
                     Spacer()
                     Toggle("", isOn: $settings.inactiveColorRandom)
                         .labelsHidden()
                 }
                 HStack {
-                    Label("Inactive Cell Color Dynamic", systemImage: "circle.grid.cross")
+                    Label("Inactive Color Dynamic", systemImage: "circle.grid.cross")
                     Spacer()
                     Toggle("", isOn: $settings.inactiveColorRandomDynamic)
                         .labelsHidden()
@@ -109,17 +109,17 @@ struct SettingsView: View
                 HStack {
                     HStack {
                         ColorCircleIcon()
-                        Text("Active Cell Color")
-                            .padding(.leading, 0)
+                        Text("Background Color")
+                            .padding(.leading, 8)
                             .frame(width: 152) // TODO: only need to stop wrapping; need better way.
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .layoutPriority(1)
                         Spacer()
                     }
-                    ColorPicker("", selection: $settings.activeColorInternal)
-                        .onChange(of: settings.activeColorInternal) { newValue in
-                           settings.activeColorInternal = newValue
+                    ColorPicker("", selection: $settings.viewBackgroundInternal)
+                        .onChange(of: settings.viewBackgroundInternal) { newValue in
+                           settings.viewBackgroundInternal = newValue
                         }
                 }
                 VStack {
