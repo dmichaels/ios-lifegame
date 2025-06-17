@@ -11,7 +11,7 @@ public class Defaults
     public static let viewTransparency: UInt8           = CellGridView.Defaults.viewTransparency
     public static let viewScaling: Bool                 = CellGridView.Defaults.viewScaling
 
-    public static let cellSize: Int                     = 20
+    public static let cellSize: Int                     = 18
     public static let cellSizeFit: Bool                 = false
     public static let cellPadding: Int                  = 1
     public static let cellShape: CellShape              = CellShape.rounded

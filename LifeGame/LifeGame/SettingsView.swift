@@ -7,8 +7,8 @@ import Utils
 
 struct SettingsView: View
 {
+    @EnvironmentObject var cellGridView: LifeCellGridView
     @EnvironmentObject var settings: Settings
-    @EnvironmentObject var cellGridView: CellGridView
 
     var body: some View {
         Form {
@@ -37,7 +37,7 @@ struct SettingsView: View
                             get: { Double(settings.cellSize) },
                             set: { settings.cellSize = Int($0) }
                         ),
-                        in: 1...50, step: 1)
+                        in: Double(cellGridView.minimumCellSize)...Double(cellGridView.maximumCellSize), step: 1)
                         .padding(.top, -8)
                         .padding(.bottom, -2)
                         .onChange(of: settings.cellSize) { newValue in
@@ -49,7 +49,7 @@ struct SettingsView: View
                         ColorCircleIcon()
                         Text("Active Color")
                             .padding(.leading, 0)
-                            .frame(width: 116) // TODO: only need to stop wrapping; need better way.
+                            .frame(width: 116)
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .layoutPriority(1)
@@ -65,7 +65,7 @@ struct SettingsView: View
                         ColorCircleIcon()
                         Text("Inactive Color")
                             .padding(.leading, 0)
-                            .frame(width: 128) // TODO: only need to stop wrapping; need better way.
+                            .frame(width: 128)
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .layoutPriority(1)
@@ -80,7 +80,7 @@ struct SettingsView: View
                     Image(systemName: "paintpalette")
                         .foregroundColor(.accentColor)
                     Text("Inactive Color Mode")
-                        .frame(width: 178) // TODO: only need to stop wrapping; need better way.
+                        .frame(width: 178)
                     Picker("", selection: $settings.inactiveColorRandomColorMode) {
                         ForEach(ColourMode.allCases) { mode in
                             Text(mode.rawValue)
@@ -111,7 +111,7 @@ struct SettingsView: View
                         ColorCircleIcon()
                         Text("Background Color")
                             .padding(.leading, 8)
-                            .frame(width: 152) // TODO: only need to stop wrapping; need better way.
+                            .frame(width: 152)
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .layoutPriority(1)
