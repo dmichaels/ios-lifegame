@@ -16,7 +16,7 @@ struct SettingsView: View
         Form {
             Section {
                 VStack(alignment: .leading) {
-                    HStack(alignment: .firstTextBaseline) {
+                    HStack {
                         IconLabel("Cell Shape", "puzzlepiece.fill")
                         Picker("", selection: $settings.cellShape) {
                             ForEach(CellShape.allCases) { value in
@@ -25,34 +25,25 @@ struct SettingsView: View
                         }
                         .pickerStyle(.menu).disabled(settings.cellSize < 6)
                     }
-                    HStack(alignment: .firstTextBaseline) {
+                    HStack {
                         IconLabel("Cell Size", "magnifyingglass")
                         Spacer()
                         Text("\(settings.cellSize)").foregroundColor(.secondary)
                     }.padding(.bottom, 8)
                     Slider(
                         value: Binding(get: { Double(settings.cellSize) }, set: { settings.cellSize = Int($0) }),
-                                       in: Double(cellGridView.minimumCellSize)...Double(cellGridView.maximumCellSize), step: 1)
+                                       in: Double(cellGridView.minimumCellSize(cellPadding: settings.cellPadding))...Double(cellGridView.maximumCellSize), step: 1)
                         .padding(.top, -8).padding(.bottom, -2)
                         .onChange(of: settings.cellSize) { newValue in settings.cellSize = newValue }
-
-                    /*
-                    HStack(alignment: .firstTextBaseline) {
+                    HStack {
                         IconLabel("Cell Padding", "magnifyingglass")
                         Spacer()
-                        Text("\(settings.cellPadding)").foregroundColor(.secondary)
+                        Picker("", selection: $settings.cellPadding) {
+                            ForEach(cellGridView.minimumCellPadding...cellGridView.maximumCellPadding, id: \.self) { value in
+                                Text("\(value)").tag(value)
+                            }
+                        }.pickerStyle(.menu)
                     }.padding(.bottom, 8)
-                    */
-                    //
-                    // TODO: dropdown for padding
-                    //
-                    /*
-                    Slider(
-                        value: Binding(get: { Double(settings.cellPadding) }, set: { settings.cellPadding = Int($0) }),
-                                       in: Double(cellGridView.minimumCellPadding)...Double(cellGridView.maximumCellPadding), step: 1)
-                        .padding(.top, -8).padding(.bottom, -2)
-                        .onChange(of: settings.cellPadding) { newValue in settings.cellPadding = newValue }
-                    */
                 }
                 VStack {
                     // HStack {

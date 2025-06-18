@@ -192,7 +192,7 @@ struct ContentView: View
         let configuration: CellGridView.Configuration = CellGridView.Configuration().with(cellSize: 123)
         let cellSizeChanged: Bool = (self.settings.cellSize != self.cellGridView.cellSize)
         self.cellGridView.configure(cellSize: self.settings.cellSize,
-                                    cellPadding: self.cellGridView.cellPadding,
+                                    cellPadding: self.settings.cellPadding,
                                     cellShape: self.settings.cellShape,
                                     viewWidth: self.cellGridView.viewWidth,
                                     viewHeight: self.cellGridView.viewHeight,
