@@ -25,43 +25,38 @@ struct SettingsView: View
                         }
                         .pickerStyle(.menu).disabled(settings.cellSize < 6)
                     }
+                }
+                VStack {
                     HStack {
                         IconLabel("Cell Size", "magnifyingglass")
-                        Spacer()
                         Text("\(settings.cellSize)").foregroundColor(.secondary)
-                    }.padding(.bottom, 8)
+                    }.padding(.bottom, 4)
                     Slider(
                         value: Binding(get: { Double(settings.cellSize) }, set: { settings.cellSize = Int($0) }),
                                        in: Double(cellGridView.minimumCellSize(cellPadding: settings.cellPadding))...Double(cellGridView.maximumCellSize), step: 1)
                         .padding(.top, -8).padding(.bottom, -2)
                         .onChange(of: settings.cellSize) { newValue in settings.cellSize = newValue }
+                }
+                VStack {
                     HStack {
                         IconLabel("Cell Padding", "magnifyingglass")
-                        Spacer()
                         Picker("", selection: $settings.cellPadding) {
                             ForEach(cellGridView.minimumCellPadding...cellGridView.maximumCellPadding, id: \.self) { value in
                                 Text("\(value)").tag(value)
                             }
                         }.pickerStyle(.menu)
-                    }.padding(.bottom, 8)
+                    }
                 }
                 VStack {
-                    // HStack {
-                    //     Image(systemName: "play.circle").frame(width: iconWidth, alignment: .leading)
-                    //     Text("Automation").alignmentGuide(.leading) { d in d[.leading] }
-                    //     Spacer()
-                    //     Toggle("", isOn: $settings.automationEnabled).labelsHidden()
-                    // }
                     HStack {
                         IconLabel("Automation Speed", "sparkles")
-                        Spacer()
                         Picker("", selection: $settings.automationInterval) {
                             ForEach(AutomationIntervalOptions, id: \.value) { option in
                                 Text(option.label)
                                     .tag(option.value)
                             }
                         }
-                        .pickerStyle(MenuPickerStyle())
+                        .pickerStyle(.menu)
                         .disabled(!settings.automationEnabled)
                     }
                 }
@@ -70,7 +65,6 @@ struct SettingsView: View
                 HStack {
                     HStack {
                         IconLabel("Active", "COLOR")
-                        Spacer()
                     }
                     ColorPicker("", selection: $settings.activeColorInternal)
                         .onChange(of: settings.activeColorInternal) { newValue in
@@ -80,7 +74,6 @@ struct SettingsView: View
                 HStack {
                     HStack {
                         IconLabel("Inactive", "COLOR")
-                        Spacer()
                     }
                     ColorPicker("", selection: $settings.inactiveColorInternal)
                         .onChange(of: settings.inactiveColorInternal) { value in
@@ -89,7 +82,6 @@ struct SettingsView: View
                 }
                 HStack {
                     IconLabel("Inactive Random", "number")
-                    Spacer()
                     Toggle("", isOn: $settings.inactiveColorRandom).labelsHidden()
                         .onChange(of: settings.inactiveColorRandom) { value in
                             if (!value) {
@@ -99,7 +91,6 @@ struct SettingsView: View
                 }
                 HStack {
                     IconLabel("Inactive Dynamic", "circle.grid.cross")
-                    Spacer()
                     Toggle("", isOn: $settings.inactiveColorRandomDynamic).labelsHidden()
                 }.disabled(!settings.inactiveColorRandom)
                 HStack {
@@ -119,7 +110,6 @@ struct SettingsView: View
                 HStack {
                     HStack {
                         IconLabel("Background", "COLOR")
-                        Spacer()
                     }
                     ColorPicker("", selection: $settings.viewBackgroundInternal)
                         .onChange(of: settings.viewBackgroundInternal) { newValue in
@@ -181,7 +171,7 @@ let AutomationIntervalOptions: [(label: String, value: Double)] = [
 internal struct IconLabel: View {
     private var _text: String
     private var _icon: String
-    private var _iconWidth: CGFloat = 32.0
+    private var _iconWidth: CGFloat
     internal init(_ text: String, _ icon: String, iconWidth: CGFloat = 32.0) {
         self._text = text
         self._icon = icon
