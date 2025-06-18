@@ -31,8 +31,8 @@ public class Defaults
     public static let inactiveColor: Colour                         = Colour.black
     public static let inactiveColorRandom: Bool                     = false
     public static let inactiveColorRandomDynamic: Bool              = true
-    public static let inactiveColorRandomColorMode: ColourMode?     = ColourMode.color
-    public static let inactiveColorRandomColorFilter: ColourFilter? = ColourFilters.Reds
+    public static let inactiveColorRandomColorMode: ColourMode      = ColourMode.color
+    public static let inactiveColorRandomColorFilter: ColourFilter? = nil // ColourFilters.Reds
 
     public static let dragThreshold: Int                = 3
     public static let swipeThreshold: Int               = 100
@@ -66,7 +66,7 @@ class Settings: ObservableObject
     @Published var inactiveColor: Colour                         = Defaults.inactiveColor
     @Published var inactiveColorRandom: Bool                     = Defaults.inactiveColorRandom
     @Published var inactiveColorRandomDynamic: Bool              = Defaults.inactiveColorRandomDynamic
-    @Published var inactiveColorRandomColorMode: ColourMode?     = Defaults.inactiveColorRandomColorMode
+    @Published var inactiveColorRandomColorMode: ColourMode      = Defaults.inactiveColorRandomColorMode
     @Published var inactiveColorRandomColorFilter: ColourFilter? = Defaults.inactiveColorRandomColorFilter
 
     @Published var soundEnabled: Bool                = Defaults.soundEnabled

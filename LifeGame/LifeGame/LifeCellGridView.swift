@@ -9,7 +9,7 @@ public final class LifeCellGridView: CellGridView
     private var _inactiveColor: Colour = LifeGame.Defaults.inactiveColor
     private var _inactiveColorRandom: Bool = LifeGame.Defaults.inactiveColorRandom
     private var _inactiveColorRandomDynamic: Bool = LifeGame.Defaults.inactiveColorRandomDynamic
-    private var _inactiveColorRandomColorMode: ColourMode? =  LifeGame.Defaults.inactiveColorRandomColorMode
+    private var _inactiveColorRandomColorMode: ColourMode =  LifeGame.Defaults.inactiveColorRandomColorMode
     private var _inactiveColorRandomColorFilter: ColourFilter? = LifeGame.Defaults.inactiveColorRandomColorFilter
     private var _inactiveColorRandomNumber: Int = 0
     private var _generationNumber: Int = 0
@@ -43,21 +43,55 @@ public final class LifeCellGridView: CellGridView
 
     internal var inactiveColor: Colour {
         get { self._inactiveColor }
-        set { if (newValue != self._inactiveColor) { self._inactiveColor = newValue ; super.writeCells() } }
+        set {
+            if (newValue != self._inactiveColor) {
+                self._inactiveColor = newValue
+                super.writeCells()
+            }
+        }
+    }
+
+    internal var inactiveColorRandomColorMode: ColourMode {
+        get { self._inactiveColorRandomColorMode }
+        set {
+            if (newValue != self._inactiveColorRandomColorMode) {
+                self._inactiveColorRandomNumber += 1
+                self._inactiveColorRandomColorMode = newValue
+                super.writeCells()
+            }
+        }
     }
 
     internal var inactiveColorRandom: Bool {
         get { self._inactiveColorRandom }
-        set { if (newValue != self._inactiveColorRandom) { self._inactiveColorRandom = newValue ; super.writeCells() } }
+        set {
+            if (newValue != self._inactiveColorRandom) {
+                self._inactiveColorRandom = newValue
+                super.writeCells()
+            }
+        }
     }
 
     internal var inactiveColorRandomDynamic: Bool {
         get { self._inactiveColorRandomDynamic }
-        set { if (newValue != self._inactiveColorRandomDynamic) { self._inactiveColorRandomDynamic = newValue ; super.writeCells() } }
+        set {
+            if (newValue != self._inactiveColorRandomDynamic) {
+                self._inactiveColorRandomDynamic = newValue
+                super.writeCells()
+            }
+        }
     }
 
     internal var inactiveColorRandomColor: () -> Colour {
+        // return { Colour.random(filter: self._inactiveColorRandomColorFilter) }
+        /*
         let inactiveColorRandomColorFunction: () -> Colour = { Colour.random(filter: self._inactiveColorRandomColorFilter) }
+        return inactiveColorRandomColorFunction
+        */
+        let inactiveColorRandomColorFunction: () -> Colour = {
+            var color: Colour = Colour.random(mode: self._inactiveColorRandomColorMode, filter: self._inactiveColorRandomColorFilter)
+            return color
+        }
         return inactiveColorRandomColorFunction
     }
 
