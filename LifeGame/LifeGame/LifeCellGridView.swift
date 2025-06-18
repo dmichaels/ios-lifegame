@@ -46,6 +46,8 @@ public final class LifeCellGridView: CellGridView
         set {
             if (newValue != self._inactiveColor) {
                 self._inactiveColor = newValue
+                self._inactiveColorRandomNumber += 2
+                self._generationNumber += 2
                 super.writeCells()
             }
         }
@@ -55,8 +57,9 @@ public final class LifeCellGridView: CellGridView
         get { self._inactiveColorRandomColorMode }
         set {
             if (newValue != self._inactiveColorRandomColorMode) {
-                self._inactiveColorRandomNumber += 1
                 self._inactiveColorRandomColorMode = newValue
+                self._inactiveColorRandomNumber += 2
+                self._generationNumber += 2
                 super.writeCells()
             }
         }
@@ -89,7 +92,9 @@ public final class LifeCellGridView: CellGridView
         return inactiveColorRandomColorFunction
         */
         let inactiveColorRandomColorFunction: () -> Colour = {
-            var color: Colour = Colour.random(mode: self._inactiveColorRandomColorMode, filter: self._inactiveColorRandomColorFilter)
+            var color: Colour = Colour.random(mode: self._inactiveColorRandomColorMode,
+                                              tint: self._inactiveColor,
+                                              filter: self._inactiveColorRandomColorFilter)
             return color
         }
         return inactiveColorRandomColorFunction
