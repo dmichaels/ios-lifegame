@@ -16,7 +16,7 @@ public class Defaults
     public static let cellPadding: Int                  = 1
     public static let cellShape: CellShape              = CellShape.rounded
 
-    public static let gridCenter: Bool                  = false
+    public static let gridCenter: Bool                  = true
     public static let restrictShiftStrict: Bool         = true
     public static let unscaledZoom: Bool                = false
     public static let automationEnabled: Bool           = true
