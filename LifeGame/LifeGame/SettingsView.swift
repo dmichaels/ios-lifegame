@@ -17,8 +17,7 @@ struct SettingsView: View
             Section {
                 VStack(alignment: .leading) {
                     HStack(alignment: .firstTextBaseline) {
-                        Image(systemName: "puzzlepiece.fill").frame(width: iconWidth, alignment: .leading)
-                        Text("Cell Shape").alignmentGuide(.leading) { d in d[.leading] }
+                        IconLabel("Cell Shape", "puzzlepiece.fill")
                         Picker("", selection: $settings.cellShape) {
                             ForEach(CellShape.allCases) { value in
                                 Text(value.rawValue).lineLimit(1).truncationMode(.tail).tag(value)
@@ -27,8 +26,7 @@ struct SettingsView: View
                         .pickerStyle(.menu).disabled(settings.cellSize < 6)
                     }
                     HStack(alignment: .firstTextBaseline) {
-                        Image(systemName: "magnifyingglass").frame(width: iconWidth, alignment: .leading)
-                        Text("Cell Size").alignmentGuide(.leading) { d in d[.leading] }
+                        IconLabel("Cell Size", "magnifyingglass")
                         Spacer()
                         Text("\(settings.cellSize)").foregroundColor(.secondary)
                     }.padding(.bottom, 8)
@@ -37,6 +35,24 @@ struct SettingsView: View
                                        in: Double(cellGridView.minimumCellSize)...Double(cellGridView.maximumCellSize), step: 1)
                         .padding(.top, -8).padding(.bottom, -2)
                         .onChange(of: settings.cellSize) { newValue in settings.cellSize = newValue }
+
+                    /*
+                    HStack(alignment: .firstTextBaseline) {
+                        IconLabel("Cell Padding", "magnifyingglass")
+                        Spacer()
+                        Text("\(settings.cellPadding)").foregroundColor(.secondary)
+                    }.padding(.bottom, 8)
+                    */
+                    //
+                    // TODO: dropdown for padding
+                    //
+                    /*
+                    Slider(
+                        value: Binding(get: { Double(settings.cellPadding) }, set: { settings.cellPadding = Int($0) }),
+                                       in: Double(cellGridView.minimumCellPadding)...Double(cellGridView.maximumCellPadding), step: 1)
+                        .padding(.top, -8).padding(.bottom, -2)
+                        .onChange(of: settings.cellPadding) { newValue in settings.cellPadding = newValue }
+                    */
                 }
                 VStack {
                     // HStack {
@@ -46,8 +62,7 @@ struct SettingsView: View
                     //     Toggle("", isOn: $settings.automationEnabled).labelsHidden()
                     // }
                     HStack {
-                        Image(systemName: "sparkles").frame(width: iconWidth, alignment: .leading)
-                        Text("Automation Speed").alignmentGuide(.leading) { d in d[.leading] }
+                        IconLabel("Automation Speed", "sparkles")
                         Spacer()
                         Picker("", selection: $settings.automationInterval) {
                             ForEach(AutomationIntervalOptions, id: \.value) { option in
@@ -63,8 +78,7 @@ struct SettingsView: View
             Section(header: Text("COLORS").padding(.leading, -12).padding(.top, -20)) {
                 HStack {
                     HStack {
-                        ColorCircleIcon().frame(width: iconWidth, alignment: .leading)
-                        Text("Active").alignmentGuide(.leading) { d in d[.leading] }
+                        IconLabel("Active", "COLOR")
                         Spacer()
                     }
                     ColorPicker("", selection: $settings.activeColorInternal)
@@ -74,8 +88,7 @@ struct SettingsView: View
                 }
                 HStack {
                     HStack {
-                        ColorCircleIcon().frame(width: iconWidth, alignment: .leading)
-                        Text("Inactive").alignmentGuide(.leading) { d in d[.leading] }
+                        IconLabel("Inactive", "COLOR")
                         Spacer()
                     }
                     ColorPicker("", selection: $settings.inactiveColorInternal)
@@ -84,25 +97,26 @@ struct SettingsView: View
                         }
                 }
                 HStack {
-                    Image(systemName: "number").frame(width: iconWidth, alignment: .leading)
-                    Text("Inactive Random").alignmentGuide(.leading) { d in d[.leading] }
+                    IconLabel("Inactive Random", "number")
                     Spacer()
                     Toggle("", isOn: $settings.inactiveColorRandom).labelsHidden()
+                        .onChange(of: settings.inactiveColorRandom) { value in
+                            if (!value) {
+                                settings.inactiveColorRandomDynamic = false
+                            }
+                        }
                 }
                 HStack {
-                    Image(systemName: "circle.grid.cross").frame(width: iconWidth, alignment: .leading)
-                    Text("Inactive Dynamic").alignmentGuide(.leading) { d in d[.leading] }
+                    IconLabel("Inactive Dynamic", "circle.grid.cross")
                     Spacer()
                     Toggle("", isOn: $settings.inactiveColorRandomDynamic).labelsHidden()
                 }.disabled(!settings.inactiveColorRandom)
                 HStack {
-                    Image(systemName: "paintpalette").frame(width: iconWidth, alignment: .leading)
-                    Text("Inactive Color Mode").alignmentGuide(.leading) { d in d[.leading] }
+                    IconLabel("Inactive Color Mode", "paintpalette")
                     Picker("", selection: $settings.inactiveColorRandomColorMode) {
                         ForEach(ColourMode.allCases) { mode in
                             Text(mode.rawValue)
                                 .lineLimit(1)
-                                // .truncationMode(.tail)
                                 .tag(mode)
                         }
                     }
@@ -113,13 +127,7 @@ struct SettingsView: View
                 }.disabled(!settings.inactiveColorRandom)
                 HStack {
                     HStack {
-                        ColorCircleIcon()
-                        Text("Background")
-                            .padding(.leading, 8)
-                            .frame(width: 152)
-                            .lineLimit(1)
-                            .truncationMode(.tail)
-                            .layoutPriority(1)
+                        IconLabel("Background", "COLOR")
                         Spacer()
                     }
                     ColorPicker("", selection: $settings.viewBackgroundInternal)
@@ -178,3 +186,29 @@ let AutomationIntervalOptions: [(label: String, value: Double)] = [
     ("Wow", 0.05),
     ("Max", 0.0)
 ]
+
+internal struct IconLabel: View {
+    private var _text: String
+    private var _icon: String
+    private var _iconWidth: CGFloat = 32.0
+    internal init(_ text: String, _ icon: String, iconWidth: CGFloat = 32.0) {
+        self._text = text
+        self._icon = icon
+        self._iconWidth = iconWidth
+    }
+    internal var body: some View {
+        HStack(alignment: .center, spacing: 8) {
+            if (self._icon == "COLOR") {
+                ColorCircleIcon().frame(width: self._iconWidth, alignment: .leading)
+            }
+            else {
+                Image(systemName: self._icon).frame(width: self._iconWidth, alignment: .leading)
+            }
+            Text(self._text)
+                .alignmentGuide(.leading) { d in d[.leading] }
+                .fixedSize()
+                .layoutPriority(1)
+            Spacer()
+        }
+    }
+}

@@ -19,7 +19,7 @@ struct ContentView: View
     @State private var imageAngle: Angle = Angle.zero
     @State private var showSettingsView = false
     @State private var showControlBar = false
-    @State private var selectMode = false
+    @State private var selectMode = true
     @State private var automationMode = false
 
     var body: some View {
