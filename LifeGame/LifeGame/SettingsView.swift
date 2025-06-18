@@ -39,16 +39,15 @@ struct SettingsView: View
                         .onChange(of: settings.cellSize) { newValue in settings.cellSize = newValue }
                 }
                 VStack {
+                    // HStack {
+                    //     Image(systemName: "play.circle").frame(width: iconWidth, alignment: .leading)
+                    //     Text("Automation").alignmentGuide(.leading) { d in d[.leading] }
+                    //     Spacer()
+                    //     Toggle("", isOn: $settings.automationEnabled).labelsHidden()
+                    // }
                     HStack {
-                        Label("Automation", systemImage: "play.circle")
-                        Spacer()
-                        Toggle("", isOn: $settings.automationEnabled)
-                            .labelsHidden()
-                    }
-                    HStack {
-                        Label("Automation Speed", systemImage: "sparkles")
-                            .lineLimit(1)
-                            .layoutPriority(1)
+                        Image(systemName: "sparkles").frame(width: iconWidth, alignment: .leading)
+                        Text("Automation Speed").alignmentGuide(.leading) { d in d[.leading] }
                         Spacer()
                         Picker("", selection: $settings.automationInterval) {
                             ForEach(AutomationIntervalOptions, id: \.value) { option in
@@ -60,32 +59,12 @@ struct SettingsView: View
                         .disabled(!settings.automationEnabled)
                     }
                 }
-                //
-                // Experiment showing only preferred sizes ...
-                //
-                // HStack {
-                //     Label("Cell Size", systemImage: "puzzlepiece.fill")
-                //     Picker("", selection: $settings.cellSize) {
-                //         ForEach(self.cellGridView.preferredCellSizes, id: \.self) { value in
-                //             Text("\(value)").tag(value)
-                //                 .lineLimit(1)
-                //                 .truncationMode(.tail)
-                //                 .tag(value)
-                //         }
-                //     }
-                //     .pickerStyle(.menu)
-                // }
             }
             Section(header: Text("COLORS").padding(.leading, -12).padding(.top, -20)) {
                 HStack {
                     HStack {
-                        ColorCircleIcon()
-                        Text("Active")
-                            .padding(.leading, 0)
-                            .frame(alignment: .leading)
-                            .lineLimit(1)
-                            .truncationMode(.tail)
-                            .layoutPriority(1)
+                        ColorCircleIcon().frame(width: iconWidth, alignment: .leading)
+                        Text("Active").alignmentGuide(.leading) { d in d[.leading] }
                         Spacer()
                     }
                     ColorPicker("", selection: $settings.activeColorInternal)
@@ -95,13 +74,8 @@ struct SettingsView: View
                 }
                 HStack {
                     HStack {
-                        ColorCircleIcon()
-                        Text("Inactive")
-                            .padding(.leading, 0)
-                            .frame(width: 128)
-                            .lineLimit(1)
-                            .truncationMode(.tail)
-                            .layoutPriority(1)
+                        ColorCircleIcon().frame(width: iconWidth, alignment: .leading)
+                        Text("Inactive").alignmentGuide(.leading) { d in d[.leading] }
                         Spacer()
                     }
                     ColorPicker("", selection: $settings.inactiveColorInternal)
@@ -110,22 +84,20 @@ struct SettingsView: View
                         }
                 }
                 HStack {
-                    Label("Inactive Random", systemImage: "questionmark.app.dashed")
+                    Image(systemName: "number").frame(width: iconWidth, alignment: .leading)
+                    Text("Inactive Random").alignmentGuide(.leading) { d in d[.leading] }
                     Spacer()
-                    Toggle("", isOn: $settings.inactiveColorRandom)
-                        .labelsHidden()
+                    Toggle("", isOn: $settings.inactiveColorRandom).labelsHidden()
                 }
                 HStack {
-                    Label("Inactive Dynamic", systemImage: "circle.grid.cross")
+                    Image(systemName: "circle.grid.cross").frame(width: iconWidth, alignment: .leading)
+                    Text("Inactive Dynamic").alignmentGuide(.leading) { d in d[.leading] }
                     Spacer()
-                    Toggle("", isOn: $settings.inactiveColorRandomDynamic)
-                        .labelsHidden()
+                    Toggle("", isOn: $settings.inactiveColorRandomDynamic).labelsHidden()
                 }.disabled(!settings.inactiveColorRandom)
                 HStack {
-                    Image(systemName: "paintpalette")
-                        .foregroundColor(.accentColor)
-                    Text("Inactive Color Mode")
-                        .frame(width: 178)
+                    Image(systemName: "paintpalette").frame(width: iconWidth, alignment: .leading)
+                    Text("Inactive Color Mode").alignmentGuide(.leading) { d in d[.leading] }
                     Picker("", selection: $settings.inactiveColorRandomColorMode) {
                         ForEach(ColourMode.allCases) { mode in
                             Text(mode.rawValue)
