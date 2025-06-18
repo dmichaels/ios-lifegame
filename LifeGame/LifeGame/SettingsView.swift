@@ -15,16 +15,13 @@ struct SettingsView: View
     var body: some View {
         Form {
             Section {
-                VStack(alignment: .leading) {
-                    HStack {
-                        IconLabel("Cell Shape", "puzzlepiece.fill")
-                        Picker("", selection: $settings.cellShape) {
-                            ForEach(CellShape.allCases) { value in
-                                Text(value.rawValue).lineLimit(1).truncationMode(.tail).tag(value)
-                            }
+                HStack {
+                    IconLabel("Cell Shape", "puzzlepiece.fill")
+                    Picker("", selection: $settings.cellShape) {
+                        ForEach(CellShape.allCases) { value in
+                            Text(value.rawValue).lineLimit(1).truncationMode(.tail).tag(value)
                         }
-                        .pickerStyle(.menu).disabled(settings.cellSize < 6)
-                    }
+                    }.pickerStyle(.menu).disabled(settings.cellSize < 6)
                 }
                 VStack {
                     HStack {
@@ -37,44 +34,34 @@ struct SettingsView: View
                         .padding(.top, -8).padding(.bottom, -2)
                         .onChange(of: settings.cellSize) { newValue in settings.cellSize = newValue }
                 }
-                VStack {
-                    HStack {
-                        IconLabel("Cell Padding", "magnifyingglass")
-                        Picker("", selection: $settings.cellPadding) {
-                            ForEach(cellGridView.minimumCellPadding...cellGridView.maximumCellPadding, id: \.self) { value in
-                                Text("\(value)").tag(value)
-                            }
-                        }.pickerStyle(.menu)
-                    }
-                }
-                VStack {
-                    HStack {
-                        IconLabel("Automation Speed", "sparkles")
-                        Picker("", selection: $settings.automationInterval) {
-                            ForEach(AutomationIntervalOptions, id: \.value) { option in
-                                Text(option.label)
-                                    .tag(option.value)
-                            }
+                HStack {
+                    IconLabel("Cell Padding", "magnifyingglass")
+                    Picker("", selection: $settings.cellPadding) {
+                        ForEach(cellGridView.minimumCellPadding...cellGridView.maximumCellPadding, id: \.self) { value in
+                            Text("\(value)").tag(value)
                         }
-                        .pickerStyle(.menu)
-                        .disabled(!settings.automationEnabled)
-                    }
+                    }.pickerStyle(.menu)
+                }
+                HStack {
+                    IconLabel("Automation Speed", "sparkles")
+                    Picker("", selection: $settings.automationInterval) {
+                        ForEach(AutomationIntervalOptions, id: \.value) { option in
+                            Text(option.label)
+                                .tag(option.value)
+                        }
+                    }.pickerStyle(.menu).disabled(!settings.automationEnabled)
                 }
             }
             Section(header: Text("COLORS").padding(.leading, -12).padding(.top, -20)) {
                 HStack {
-                    HStack {
-                        IconLabel("Active", "COLOR")
-                    }
+                    IconLabel("Active", "COLOR")
                     ColorPicker("", selection: $settings.activeColorInternal)
                         .onChange(of: settings.activeColorInternal) { newValue in
                            settings.activeColorInternal = newValue
                         }
                 }
                 HStack {
-                    HStack {
-                        IconLabel("Inactive", "COLOR")
-                    }
+                    IconLabel("Inactive", "COLOR")
                     ColorPicker("", selection: $settings.inactiveColorInternal)
                         .onChange(of: settings.inactiveColorInternal) { value in
                            settings.inactiveColorInternal = value
@@ -101,15 +88,12 @@ struct SettingsView: View
                                 .lineLimit(1)
                                 .tag(mode)
                         }
-                    }.pickerStyle(.menu)
-                    .onChange(of: settings.inactiveColorRandomColorMode) { newValue in
+                    }.pickerStyle(.menu).onChange(of: settings.inactiveColorRandomColorMode) { newValue in
                         settings.inactiveColorRandomColorMode = newValue
                     }
                 }.disabled(!settings.inactiveColorRandom)
                 HStack {
-                    HStack {
-                        IconLabel("Background", "COLOR")
-                    }
+                    IconLabel("Background", "COLOR")
                     ColorPicker("", selection: $settings.viewBackgroundInternal)
                         .onChange(of: settings.viewBackgroundInternal) { newValue in
                            settings.viewBackgroundInternal = newValue
