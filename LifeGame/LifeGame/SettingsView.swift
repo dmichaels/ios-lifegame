@@ -101,8 +101,7 @@ struct SettingsView: View
                                 .lineLimit(1)
                                 .tag(mode)
                         }
-                    }
-                    .pickerStyle(MenuPickerStyle())
+                    }.pickerStyle(.menu)
                     .onChange(of: settings.inactiveColorRandomColorMode) { newValue in
                         settings.inactiveColorRandomColorMode = newValue
                     }
