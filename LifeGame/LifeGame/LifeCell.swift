@@ -24,6 +24,10 @@ public final class LifeCell: Cell {
             if (self._active) {
                 return self.cellGridView.activeColor
             }
+            return Colour.random(tint: Colour.red, tintBy: 0.5).darken(by: 0.4)
+            // return Colour.random(tint: Colour.red.opacity(0.5), tintBy: 1.0)
+            // return Colour.random().opacity(0.3).tint(toward: Colour.red.opacity(0.5), by: 1.0, opacity: false)
+/*
             else if (self.cellGridView.inactiveColorRandomDynamic) {
                 if (self._inactiveColorRandomDynamicNumber != self.cellGridView.generationNumber) {
                     super.color = self.cellGridView.inactiveColorRandomColor()
@@ -39,6 +43,7 @@ public final class LifeCell: Cell {
                 return super.color
             }
             return self.cellGridView.inactiveColor
+*/
         }
         set { super.color = newValue }
     }
