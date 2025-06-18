@@ -29,7 +29,7 @@ struct SettingsView: View
                         Text("\(settings.cellSize)").foregroundColor(.secondary)
                     }.padding(.bottom, 4)
                     Slider(
-                        value: Binding(get: { Double(settings.cellSize) }, set: { settings.cellSize = Int($0) }),
+                        value: Binding(get: { Double(settings.cellSize) }, set: { settings.cellSize = Int($0.rounded()) }),
                                        in: Double(cellGridView.minimumCellSize(cellPadding: settings.cellPadding))...Double(cellGridView.maximumCellSize), step: 1)
                         .padding(.top, -8).padding(.bottom, -2)
                 }
@@ -48,7 +48,13 @@ struct SettingsView: View
                     }
                 }
                 HStack {
-                    IconLabel("Automation Speed", "sparkles")
+                    IconLabel("Automation Speed", "waveform")
+                    if (settings.automationInterval < 0.5) {
+                        Image(systemName: "hare").font(.system(size: 14)).padding(.leading, -6)
+                    }
+                    else if (settings.automationInterval > 0.5) {
+                        Image(systemName: "tortoise" ).font(.system(size: 14)).padding(.leading, -6)
+                    }
                     Picker("", selection: $settings.automationInterval) {
                         ForEach(AutomationIntervalOptions, id: \.value) { option in
                             Text(option.label)
@@ -89,9 +95,7 @@ struct SettingsView: View
                     IconLabel("Inactive Color Mode", "paintpalette")
                     Picker("", selection: $settings.inactiveColorRandomColorMode) {
                         ForEach(ColourMode.allCases) { mode in
-                            Text(mode.rawValue)
-                                .lineLimit(1)
-                                .tag(mode)
+                            Text(mode.rawValue).lineLimit(1).tag(mode)
                         }
                     }.pickerStyle(.menu).onChange(of: settings.inactiveColorRandomColorMode) { newValue in
                         settings.inactiveColorRandomColorMode = newValue

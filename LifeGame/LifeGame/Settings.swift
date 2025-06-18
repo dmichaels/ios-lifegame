@@ -27,8 +27,8 @@ public class Defaults
     public static let gridColumns: Int                  = 1000
     public static let gridRows: Int                     = 2000
 
-    public static let activeColor: Colour                           = Colour.white
-    public static let inactiveColor: Colour                         = Colour.black
+    public static let activeColor: Colour                           = Colour.black
+    public static let inactiveColor: Colour                         = Colour.white
     public static let inactiveColorRandom: Bool                     = false
     public static let inactiveColorRandomDynamic: Bool              = false
     public static let inactiveColorRandomColorMode: ColourMode      = ColourMode.color
