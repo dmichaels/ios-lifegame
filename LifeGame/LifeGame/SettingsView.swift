@@ -32,7 +32,6 @@ struct SettingsView: View
                         value: Binding(get: { Double(settings.cellSize) }, set: { settings.cellSize = Int($0) }),
                                        in: Double(cellGridView.minimumCellSize(cellPadding: settings.cellPadding))...Double(cellGridView.maximumCellSize), step: 1)
                         .padding(.top, -8).padding(.bottom, -2)
-                        .onChange(of: settings.cellSize) { newValue in settings.cellSize = newValue }
                 }
                 HStack {
                     IconLabel("Cell Padding", "magnifyingglass")
@@ -41,6 +40,12 @@ struct SettingsView: View
                             Text("\(value)").tag(value)
                         }
                     }.pickerStyle(.menu)
+                    .onChange(of: settings.cellPadding) { value in
+                        let minimumCellSize: Int = cellGridView.minimumCellSize(cellPadding: settings.cellPadding)
+                        if (settings.cellSize < minimumCellSize) {
+                            settings.cellSize = minimumCellSize
+                        }
+                    }
                 }
                 HStack {
                     IconLabel("Automation Speed", "sparkles")
