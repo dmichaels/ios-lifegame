@@ -21,7 +21,7 @@ struct SettingsView: View
                         ForEach(CellShape.allCases) { value in
                             Text(value.rawValue).lineLimit(1).truncationMode(.tail).tag(value)
                         }
-                    }.pickerStyle(.menu).disabled(settings.cellSize < 6)
+                    }.pickerStyle(.menu).disabled((settings.cellSize - settings.cellPadding) < 3)
                 }
                 VStack {
                     HStack {
