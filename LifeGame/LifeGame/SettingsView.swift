@@ -60,7 +60,7 @@ struct SettingsView: View
                             Text(option.label)
                                 .tag(option.value)
                         }
-                    }.pickerStyle(.menu).disabled(!settings.automationEnabled)
+                    }.pickerStyle(.menu)
                 }
             }
             Section(header: Text("COLORS").padding(.leading, -12).padding(.top, -20)) {

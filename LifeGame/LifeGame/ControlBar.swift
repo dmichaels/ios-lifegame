@@ -3,39 +3,19 @@ import SwiftUI
 import UIKit
 
 struct ControlBar: View {
-    @Binding var automationMode: Bool
-    @Binding var selectMode: Bool
-    var showSettings: (() -> Void)?
-    var toggleSelectMode: (() -> Void)?
-    var toggleAutomationMode: (() -> Void)?
-    var erase: (() -> Void)?
+    var selectMode: (() -> Bool)
+    var selectModeToggle: (() -> Void)
+    var automationMode: (() -> Bool)
+    var automationModeToggle: (() -> Void)
+    var showSettings: (() -> Void)
+    var erase: (() -> Void)
 
     var body: some View {
         HStack(spacing: 36) {
-            Button(action: {
-                toggleAutomationMode?()
-            }) {
-                Image(systemName: self.automationMode ? "pause.fill" : "play.fill")
-                    .font(.system(size: 24, weight: .bold))
-            }
-            Button(action: {
-                toggleSelectMode?()
-            }) {
-                Image(systemName: self.selectMode ? "arrow.up.and.down.and.arrow.left.and.right" : "square.and.pencil")
-                    .font(.system(size: 24, weight: .bold))
-            }
-            Button(action: {
-                erase?()
-            }) {
-                Image(systemName: "eraser") // Settings icon
-                    .font(.system(size: 24, weight: .bold))
-            }
-            Button(action: {
-                showSettings?()
-            }) {
-                Image(systemName: "gearshape.fill") // Settings icon
-                    .font(.system(size: 24, weight: .bold))
-            }
+            ActionButton(automationModeToggle, "play.fill", iconToggle: "pause.fill", toggle: self.automationMode())
+            ActionButton(selectModeToggle, "square.and.pencil", iconToggle: "arrow.up.and.down.and.arrow.left.and.right", toggle: self.selectMode())
+            ActionButton(erase, "eraser")
+            ActionButton(showSettings, "gearshape.fill")
         }
         //
         // The padding-veritical controls how far from the bottom the control is;
@@ -89,4 +69,29 @@ struct BlurView: UIViewRepresentable {
         UIVisualEffectView(effect: UIBlurEffect(style: style))
     }
     func updateUIView(_ uiView: UIVisualEffectView, context: Context) {}
+}
+
+public struct ActionButton: View {
+    private let _action: (() -> Void)
+    private let _icon: String
+    private let _iconToggle: String
+    private let _iconWidth: CGFloat = 24.0
+    @State private var _toggle: Bool = false
+    public init(_ action: @escaping (() -> Void), _ icon: String, iconToggle: String? = nil, toggle: Bool = false) {
+        self._action = action
+        self._icon = icon
+        self._iconToggle = iconToggle ?? icon
+        if (toggle) {
+            self._toggle.toggle()
+        }
+        var x = 1
+    }
+    public var body: some View {
+        Button(action: {
+            self._action()
+            self._toggle.toggle()
+        }) {
+            Image(systemName: self._toggle ? self._iconToggle : self._icon).font(.system(size: self._iconWidth, weight: .bold))
+        }
+    }
 }

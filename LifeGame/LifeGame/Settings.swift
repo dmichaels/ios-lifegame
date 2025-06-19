@@ -19,7 +19,6 @@ public class Defaults
     public static let gridCenter: Bool                  = true
     public static let restrictShiftStrict: Bool         = true
     public static let unscaledZoom: Bool                = false
-    public static let automationEnabled: Bool           = true
     public static let automationInterval: Double        = 0.5
 
     // Life Game specific properties.
@@ -54,7 +53,6 @@ class Settings: ObservableObject
     @Published var cellPadding: Int                  = Defaults.cellPadding
     @Published var cellShape: CellShape              = Defaults.cellShape
 
-    @Published var automationEnabled: Bool           = Defaults.automationEnabled
     @Published var automationInterval: Double        = Defaults.automationInterval
 
     // Life Game specific properties.

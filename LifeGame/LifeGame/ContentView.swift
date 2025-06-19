@@ -19,8 +19,6 @@ struct ContentView: View
     @State private var imageAngle: Angle = Angle.zero
     @State private var showSettingsView = false
     @State private var showControlBar = false
-    @State private var selectMode = true
-    @State private var automationMode = false
 
     var body: some View {
         NavigationView {
@@ -83,8 +81,15 @@ struct ContentView: View
                                                      onChangeImage: self.updateImage,
                                                      onChangeCellSize: self.onChangeCellSize)
                         self.rotateImage()
+                        if (self.cellGridView.automationMode) {
+                            self.cellGridView.automationStart()
+                        }
                     }
                     else {
+                        //
+                        // TODO
+                        // Still need to clean up this initialization/re-initializion stuff and on onChangeSettings too.
+                        //
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         if ((screen.width != self.cellGridView.screen.width) || (screen.height != self.cellGridView.screen.height)) {
                             let landscape = self.orientation.current.isLandscape
@@ -112,11 +117,11 @@ struct ContentView: View
                     Group {
                         if (self.showControlBar) {
                             ControlBar(
-                                automationMode: $automationMode,
-                                selectMode: $selectMode,
+                                selectMode: { self.cellGridView.selectMode },
+                                selectModeToggle: self.cellGridView.selectModeToggle,
+                                automationMode: { self.cellGridView.automationMode },
+                                automationModeToggle: self.cellGridView.automationModeToggle,
                                 showSettings: self.showSettings,
-                                toggleSelectMode: self.toggleSelectMode,
-                                toggleAutomationMode: self.toggleAutomationMode,
                                 erase: self.cellGridView.erase
                             )
                             .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -218,16 +223,6 @@ struct ContentView: View
         withAnimation {
             self.showControlBar.toggle()
         }
-    }
-
-    private func toggleSelectMode() {
-        self.selectMode.toggle()
-        self.cellGridView.toggleSelectMode()
-    }
-
-    private func toggleAutomationMode() {
-        self.automationMode.toggle()
-        self.cellGridView.toggleAutomationMode()
     }
 }
 
