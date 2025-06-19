@@ -44,7 +44,7 @@ struct ControlBar: View {
                 //
                 // This opacity controls how transparent the (background of) the control is.
                 //
-                .opacity(0.7)
+                .opacity(1.0)
                 //
                 // This frame-height controls the height of the control; default without this is fairly short.
                 //
