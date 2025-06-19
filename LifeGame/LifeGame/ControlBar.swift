@@ -36,11 +36,12 @@ struct ControlBar: View {
             // The corner-radius controls how rounded the control window corners are;
             // greater is more rounded.
             //
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
                 //
                 // This fill-thin-material makes the control background blend in with what is behind it.
                 //
-                .fill(.thinMaterial)
+                .fill(.black)
+                // .fill(.thinMaterial)
                 //
                 // This opacity controls how transparent the (background of) the control is.
                 //
@@ -48,7 +49,7 @@ struct ControlBar: View {
                 //
                 // This frame-height controls the height of the control; default without this is fairly short.
                 //
-                .frame(height: 38)
+                .frame(height: 42)
                 //
                 // This padding-horizontal controls the internal left/right padding of control.
                 //
@@ -93,7 +94,9 @@ public struct ActionButton: View {
             self._action()
             self._toggled = self._actionToggled()
         }) {
-            Image(systemName: self._toggled ? self._iconToggled : self._icon).font(.system(size: self._iconWidth, weight: .bold))
+            Image(systemName: self._toggled ? self._iconToggled : self._icon)
+                .foregroundColor(.white)
+                .font(.system(size: self._iconWidth , weight: .light ))
         }
         .onAppear {
             self._toggled = self._actionToggled()
