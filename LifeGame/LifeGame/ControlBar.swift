@@ -21,9 +21,6 @@ struct ControlBar: View {
             Button(action: {
                 toggleSelectMode?()
             }) {
-                // Image(systemName: self.selectMode ? "hand.draw.fill" : "paintbrush.fill")
-                // Image(systemName: self.selectMode ? "arrow.up.and.down.and.arrow.left.and.right" : "paintbrush.fill")
-                // Image(systemName: self.selectMode ? "arrow.up.and.down.and.arrow.left.and.right" : "pencil.line")
                 Image(systemName: self.selectMode ? "arrow.up.and.down.and.arrow.left.and.right" : "square.and.pencil")
                     .font(.system(size: 24, weight: .bold))
             }
