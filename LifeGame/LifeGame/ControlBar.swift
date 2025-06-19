@@ -6,6 +6,7 @@ struct ControlBar: View {
     var selectMode: (() -> Bool)
     var selectModeToggle: (() -> Void)
     var automationMode: (() -> Bool)
+    var automationStep: (() -> Void)
     var automationModeToggle: (() -> Void)
     var showSettings: (() -> Void)
     var erase: (() -> Void)
@@ -14,9 +15,10 @@ struct ControlBar: View {
         HStack(spacing: 36) {
             ActionButton(automationModeToggle, "play.fill",
                          actionToggled: self.automationMode, iconToggled: "pause.fill")
+            ActionButton(automationStep, "figure.step.training")
+            ActionButton(erase, "eraser")
             ActionButton(selectModeToggle, "square.and.pencil",
                          actionToggled: self.selectMode, iconToggled: "arrow.up.and.down.and.arrow.left.and.right")
-            ActionButton(erase, "eraser")
             ActionButton(showSettings, "gearshape.fill")
         }
         //

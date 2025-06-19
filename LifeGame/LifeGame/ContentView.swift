@@ -120,6 +120,7 @@ struct ContentView: View
                                 selectMode: { self.cellGridView.selectMode },
                                 selectModeToggle: self.cellGridView.selectModeToggle,
                                 automationMode: { self.cellGridView.automationMode },
+                                automationStep: self.cellGridView.automationStep,
                                 automationModeToggle: self.cellGridView.automationModeToggle,
                                 showSettings: self.showSettings,
                                 erase: self.cellGridView.erase
