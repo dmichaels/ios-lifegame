@@ -12,10 +12,14 @@ struct ControlBar: View {
 
     var body: some View {
         HStack(spacing: 36) {
-            ActionButton(automationModeToggle, "play.fill", iconToggle: "pause.fill", toggle: self.automationMode())
-            ActionButton(selectModeToggle, "square.and.pencil", iconToggle: "arrow.up.and.down.and.arrow.left.and.right", toggle: self.selectMode())
+            ActionButton(automationModeToggle, "play.fill",
+                         actionToggled: self.automationMode, iconToggled: "pause.fill")
+            /*
+            ActionButton(selectModeToggle, "square.and.pencil",
+                         actionToggled: self.selectMode, iconToggled: "arrow.up.and.down.and.arrow.left.and.right")
             ActionButton(erase, "eraser")
             ActionButton(showSettings, "gearshape.fill")
+            */
         }
         //
         // The padding-veritical controls how far from the bottom the control is;
@@ -74,24 +78,25 @@ struct BlurView: UIViewRepresentable {
 public struct ActionButton: View {
     private let _action: (() -> Void)
     private let _icon: String
-    private let _iconToggle: String
+    private let _actionToggled: (() -> Bool)
+    private let _iconToggled: String
     private let _iconWidth: CGFloat = 24.0
-    @State private var _toggle: Bool = false
-    public init(_ action: @escaping (() -> Void), _ icon: String, iconToggle: String? = nil, toggle: Bool = false) {
+    @State private var _toggled: Bool = false
+    public init(_ action: @escaping (() -> Void), _ icon: String, actionToggled: (() -> Bool)? = nil, iconToggled: String? = nil) {
         self._action = action
         self._icon = icon
-        self._iconToggle = iconToggle ?? icon
-        if (toggle) {
-            self._toggle.toggle()
-        }
-        var x = 1
+        self._iconToggled = iconToggled ?? icon
+        self._actionToggled = actionToggled ?? { false }
     }
     public var body: some View {
         Button(action: {
             self._action()
-            self._toggle.toggle()
+            self._toggled = self._actionToggled()
         }) {
-            Image(systemName: self._toggle ? self._iconToggle : self._icon).font(.system(size: self._iconWidth, weight: .bold))
+            Image(systemName: self._toggled ? self._iconToggled : self._icon).font(.system(size: self._iconWidth, weight: .bold))
+        }
+        .onAppear {
+            self._toggled = self._actionToggled()
         }
     }
 }
