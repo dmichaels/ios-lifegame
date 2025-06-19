@@ -14,12 +14,10 @@ struct ControlBar: View {
         HStack(spacing: 36) {
             ActionButton(automationModeToggle, "play.fill",
                          actionToggled: self.automationMode, iconToggled: "pause.fill")
-            /*
             ActionButton(selectModeToggle, "square.and.pencil",
                          actionToggled: self.selectMode, iconToggled: "arrow.up.and.down.and.arrow.left.and.right")
             ActionButton(erase, "eraser")
             ActionButton(showSettings, "gearshape.fill")
-            */
         }
         //
         // The padding-veritical controls how far from the bottom the control is;
