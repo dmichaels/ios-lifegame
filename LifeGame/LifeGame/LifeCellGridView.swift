@@ -116,6 +116,23 @@ public final class LifeCellGridView: CellGridView
         self._generationNumber
     }
 
+    internal func erase() {
+        //
+        // TODO
+        // Should keep track of active cells to avoid going through all of them.
+        //
+        for column in 0..<super.gridColumns {
+            for row in 0..<super.gridRows {
+                if let cell: LifeCell = super.gridCell(column, row) {
+                    if cell.active {
+                        cell.deactivate()
+                    }
+                }
+            }
+        }
+        self.onChangeImage()
+    }
+
     private func nextGeneration()
     {
         self._generationNumber += 1

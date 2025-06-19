@@ -5,23 +5,21 @@ import UIKit
 struct ControlBar: View {
     @Binding var automationMode: Bool
     @Binding var selectMode: Bool
-    var onAnyTap: (() -> Void)?
     var showSettings: (() -> Void)?
     var toggleSelectMode: (() -> Void)?
     var toggleAutomationMode: (() -> Void)?
+    var erase: (() -> Void)?
 
     var body: some View {
         HStack(spacing: 36) {
             Button(action: {
                 toggleAutomationMode?()
-                onAnyTap?()
             }) {
                 Image(systemName: self.automationMode ? "pause.fill" : "play.fill")
                     .font(.system(size: 24, weight: .bold))
             }
             Button(action: {
                 toggleSelectMode?()
-                onAnyTap?()
             }) {
                 // Image(systemName: self.selectMode ? "hand.draw.fill" : "paintbrush.fill")
                 // Image(systemName: self.selectMode ? "arrow.up.and.down.and.arrow.left.and.right" : "paintbrush.fill")
@@ -30,8 +28,13 @@ struct ControlBar: View {
                     .font(.system(size: 24, weight: .bold))
             }
             Button(action: {
+                erase?()
+            }) {
+                Image(systemName: "eraser") // Settings icon
+                    .font(.system(size: 24, weight: .bold))
+            }
+            Button(action: {
                 showSettings?()
-                onAnyTap?()
             }) {
                 Image(systemName: "gearshape.fill") // Settings icon
                     .font(.system(size: 24, weight: .bold))
@@ -75,7 +78,11 @@ struct ControlBar: View {
                 //
                 .shadow(radius: 10)
         )
-        .onTapGesture { onAnyTap?() } // reset timer on any tap in control bar
+        .onTapGesture {
+            //
+            // TODO: reset timer on any tap in control bar.
+            //
+        }
     }
 }
 

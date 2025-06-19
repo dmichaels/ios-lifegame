@@ -114,10 +114,10 @@ struct ContentView: View
                             ControlBar(
                                 automationMode: $automationMode,
                                 selectMode: $selectMode,
-                                onAnyTap: nil,
                                 showSettings: self.showSettings,
                                 toggleSelectMode: self.toggleSelectMode,
-                                toggleAutomationMode: self.toggleAutomationMode
+                                toggleAutomationMode: self.toggleAutomationMode,
+                                erase: self.cellGridView.erase
                             )
                             .transition(.move(edge: .bottom).combined(with: .opacity))
                             .padding(.bottom, 24)
