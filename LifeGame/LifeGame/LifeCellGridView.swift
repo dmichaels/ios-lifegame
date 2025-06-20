@@ -86,14 +86,16 @@ public final class LifeCellGridView: CellGridView
     }
 
     internal var inactiveColorRandomColor: () -> Colour {
-        let inactiveColorRandomColorFunction: () -> Colour = {
-            var color: Colour = Colour.random(mode: self._inactiveColorRandomColorMode,
-                                              tint: self._inactiveColor,
-                                              tintBy: nil,
-                                              filter: self._inactiveColorRandomColorFilter)
-            return color
+        //
+        // This returns a function that returns a random (inactive) color based on the current
+        // color mode (color, grayscale, monochrome), inactive color, and inactive color filter.
+        //
+        return {
+                Colour.random(mode: self._inactiveColorRandomColorMode,
+                              tint: self._inactiveColor,
+                              tintBy: nil,
+                              filter: self._inactiveColorRandomColorFilter)
         }
-        return inactiveColorRandomColorFunction
     }
 
     internal var inactiveColorRandomNumber: Int {
