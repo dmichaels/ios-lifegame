@@ -29,7 +29,7 @@ struct ContentView: View
                             .background(GeometryReader { geo in Color.clear
                                 .onAppear {
                                     let parentOrigin: CGPoint = geo.frame(in: .named("zstack")).origin
-                                    self.viewRectangle = CGRect(origin: self.orientation.current.isLandscape
+                                    self.viewRectangle = CGRect(origin: self.orientation.landscape
                                                                         ? CGPoint(x: parentOrigin.y, y: parentOrigin.x)
                                                                         : parentOrigin,
                                                                 size: CGSize(width: self.cellGridView.viewWidth,
@@ -64,7 +64,7 @@ struct ContentView: View
                 .onAppear {
                     if (!self.cellGridView.initialized) {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
-                        let landscape = self.orientation.current.isLandscape
+                        let landscape = self.orientation.landscape
                         self.cellGridView.initialize(screen: screen,
                                                      viewWidth: landscape ? screen.height : screen.width,
                                                      viewHeight: landscape ? screen.width : screen.height,
@@ -94,7 +94,7 @@ struct ContentView: View
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         if ((screen.width != self.cellGridView.screen.width) ||
                             (screen.height != self.cellGridView.screen.height)) {
-                            let landscape = self.orientation.current.isLandscape
+                            let landscape = self.orientation.landscape
                             self.cellGridView.configure(screen: screen,
                                                         viewWidth: landscape ? screen.height : screen.width,
                                                         viewHeight: landscape ? screen.width : screen.height,
@@ -152,44 +152,20 @@ struct ContentView: View
         .navigationViewStyle(.stack)
     }
 
+    private func normalizePoint(_ location: CGPoint) -> CGPoint {
+        return self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)
+    }
+
+    private func rotateImage() {
+        self.imageAngle = self.orientation.rotationAngle()
+    }
+
     private func updateImage() {
         self.image = self.cellGridView.image
     }
 
     private func onChangeCellSize(cellSize: Int) {
         self.settings.cellSize = cellSize
-    }
-
-    private func rotateImage() {
-        switch self.orientation.current {
-        case .landscapeLeft:
-            self.imageAngle = Angle.degrees(-90)
-        case .landscapeRight:
-            self.imageAngle = Angle.degrees(90)
-        case .portraitUpsideDown:
-            //
-            // All sorts of odd trouble with upside-down mode;
-            // going there from portrait yields portrait mode;
-            // going there from landscape yield upside-down mode.
-            // But still acts weird sometimes (e.g. iPhone SE via
-            // Jake and iPad simulator); best to just disable
-            // upside-down mode in project deployment-info.
-            //
-            if (orientation.ipad) {
-                self.imageAngle = Angle.degrees(180)
-            }
-            else if (self.orientation.previous.isLandscape) {
-                self.imageAngle = Angle.degrees(90)
-            } else {
-                self.imageAngle = Angle.degrees(0)
-            }
-        default:
-            self.imageAngle = Angle.degrees(0)
-        }
-    }
-
-    private func normalizePoint(_ location: CGPoint) -> CGPoint {
-        return self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)
     }
 
     private func onChangeOrientation(_ current: UIDeviceOrientation, _ previous: UIDeviceOrientation) {
@@ -202,7 +178,7 @@ struct ContentView: View
         self.cellGridView.configure(viewWidth: self.cellGridView.viewWidth,
                                     viewHeight: self.cellGridView.viewHeight,
                                     viewBackground: self.settings.viewBackground,
-                                    viewTransparency: self.cellGridView.viewTransparency,
+                                    viewTransparency: self.settings.viewTransparency,
                                     viewScaling: self.settings.viewScaling,
                                     cellSize: self.settings.cellSize,
                                     cellPadding: self.settings.cellPadding,
