@@ -44,30 +44,30 @@ class Settings: ObservableObject
 {
     // CellGridView base class specific properties.
 
-    @Published var viewBackground: Colour            = Defaults.viewBackground
-    @Published var viewTransparency: UInt8           = Defaults.viewTransparency
-    @Published var viewScaling: Bool                 = Defaults.viewScaling
+    @Published var viewBackground: Colour            = LifeGame.Defaults.viewBackground
+    @Published var viewTransparency: UInt8           = LifeGame.Defaults.viewTransparency
+    @Published var viewScaling: Bool                 = LifeGame.Defaults.viewScaling
 
-    @Published var cellSize: Int                     = Defaults.cellSize
-    @Published var cellSizeFit: Bool                 = Defaults.cellSizeFit
-    @Published var cellPadding: Int                  = Defaults.cellPadding
-    @Published var cellShape: CellShape              = Defaults.cellShape
+    @Published var cellSize: Int                     = LifeGame.Defaults.cellSize
+    @Published var cellSizeFit: Bool                 = LifeGame.Defaults.cellSizeFit
+    @Published var cellPadding: Int                  = LifeGame.Defaults.cellPadding
+    @Published var cellShape: CellShape              = LifeGame.Defaults.cellShape
 
-    @Published var automationInterval: Double        = Defaults.automationInterval
+    @Published var automationInterval: Double        = LifeGame.Defaults.automationInterval
 
     // Life Game specific properties.
 
-    @Published var gridColumns: Int                  = Defaults.gridColumns
-    @Published var gridRows: Int                     = Defaults.gridRows
-    @Published var gridCenter: Bool                  = Defaults.gridCenter
+    @Published var gridColumns: Int                  = LifeGame.Defaults.gridColumns
+    @Published var gridRows: Int                     = LifeGame.Defaults.gridRows
+    @Published var gridCenter: Bool                  = LifeGame.Defaults.gridCenter
 
-    @Published var activeColor: Colour                           = Defaults.activeColor
-    @Published var inactiveColor: Colour                         = Defaults.inactiveColor
-    @Published var inactiveColorRandom: Bool                     = Defaults.inactiveColorRandom
-    @Published var inactiveColorRandomDynamic: Bool              = Defaults.inactiveColorRandomDynamic
-    @Published var inactiveColorRandomColorMode: ColourMode      = Defaults.inactiveColorRandomColorMode
-    @Published var inactiveColorRandomColorFilter: ColourFilter? = Defaults.inactiveColorRandomColorFilter
+    @Published var activeColor: Colour                           = LifeGame.Defaults.activeColor
+    @Published var inactiveColor: Colour                         = LifeGame.Defaults.inactiveColor
+    @Published var inactiveColorRandom: Bool                     = LifeGame.Defaults.inactiveColorRandom
+    @Published var inactiveColorRandomDynamic: Bool              = LifeGame.Defaults.inactiveColorRandomDynamic
+    @Published var inactiveColorRandomColorMode: ColourMode      = LifeGame.Defaults.inactiveColorRandomColorMode
+    @Published var inactiveColorRandomColorFilter: ColourFilter? = LifeGame.Defaults.inactiveColorRandomColorFilter
 
-    @Published var soundEnabled: Bool                = Defaults.soundEnabled
-    @Published var hapticEnabled: Bool               = Defaults.hapticEnabled
+    @Published var soundEnabled: Bool                = LifeGame.Defaults.soundEnabled
+    @Published var hapticEnabled: Bool               = LifeGame.Defaults.hapticEnabled
 }
