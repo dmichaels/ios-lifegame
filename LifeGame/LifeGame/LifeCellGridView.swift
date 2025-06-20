@@ -5,12 +5,12 @@ import Utils
 
 public final class LifeCellGridView: CellGridView
 {
-    private var _activeColor: Colour = LifeGame.Defaults.activeColor
-    private var _inactiveColor: Colour = LifeGame.Defaults.inactiveColor
-    private var _inactiveColorRandom: Bool = LifeGame.Defaults.inactiveColorRandom
-    private var _inactiveColorRandomDynamic: Bool = LifeGame.Defaults.inactiveColorRandomDynamic
-    private var _inactiveColorRandomColorMode: ColourMode =  LifeGame.Defaults.inactiveColorRandomColorMode
-    private var _inactiveColorRandomColorFilter: ColourFilter? = LifeGame.Defaults.inactiveColorRandomColorFilter
+    private var _activeColor: Colour = Colour.black
+    private var _inactiveColor: Colour = Colour.white
+    private var _inactiveColorRandom: Bool = false
+    private var _inactiveColorRandomDynamic: Bool = false
+    private var _inactiveColorRandomColorMode: ColourMode = ColourMode.color
+    private var _inactiveColorRandomColorFilter: ColourFilter? = nil
     private var _inactiveColorRandomNumber: Int = 0
     private var _generationNumber: Int = 0
     private var _liveCells: Set<CellLocation> = []

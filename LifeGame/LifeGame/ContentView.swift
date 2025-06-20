@@ -39,8 +39,8 @@ struct ContentView: View
                             .frame(width: geometry.size.width, height: geometry.size.height)
                             .rotationEffect(self.imageAngle)
                             .onSmartGesture(
-                                dragThreshold: LifeGame.Defaults.dragThreshold,
-                                swipeThreshold: LifeGame.Defaults.swipeThreshold,
+                                dragThreshold: self.settings.dragThreshold,
+                                swipeThreshold: self.settings.swipeThreshold,
                                 normalizePoint: self.normalizePoint,
                                 orientation: self.orientation,
                                 onDrag:      { value in self.cellGridView.onDrag(value) },
