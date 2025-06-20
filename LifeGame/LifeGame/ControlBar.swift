@@ -36,7 +36,7 @@ struct ControlBar: View {
             // The corner-radius controls how rounded the control window corners are;
             // greater is more rounded.
             //
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
                 //
                 // This fill-thin-material makes the control background blend in with what is behind it.
                 //
@@ -45,7 +45,7 @@ struct ControlBar: View {
                 //
                 // This opacity controls how transparent the (background of) the control is.
                 //
-                .opacity(1.0)
+                .opacity(0.8)
                 //
                 // This frame-height controls the height of the control; default without this is fairly short.
                 //

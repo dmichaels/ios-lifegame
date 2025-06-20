@@ -156,6 +156,6 @@ let AutomationIntervalOptions: [(label: String, value: Double)] = [
     ("Fast", 0.3),
     ("Faster", 0.2),
     ("Fastest", 0.1),
-    ("Wow", 0.05),
+    ("Wow", 0.02),
     ("Max", 0.0)
 ]

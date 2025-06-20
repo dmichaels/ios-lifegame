@@ -68,17 +68,17 @@ struct ContentView: View
                         self.cellGridView.initialize(screen: screen,
                                                      viewWidth: landscape ? screen.height : screen.width,
                                                      viewHeight: landscape ? screen.width : screen.height,
-                                                     viewBackground: Defaults.viewBackground,
-                                                     viewTransparency: Defaults.viewTransparency,
-                                                     viewScaling: Defaults.viewScaling,
-                                                     cellSize: Defaults.cellSize,
-                                                     cellPadding: Defaults.cellPadding,
-                                                     cellSizeFit: Defaults.cellSizeFit,
-                                                     cellShape: Defaults.cellShape,
-                                                     cellForeground: Defaults.inactiveColor,
-                                                     gridColumns: Defaults.gridColumns,
-                                                     gridRows: Defaults.gridRows,
-                                                     gridCenter: Defaults.gridCenter,
+                                                     viewBackground: self.settings.viewBackground,
+                                                     viewTransparency: self.settings.viewTransparency,
+                                                     viewScaling: self.settings.viewScaling,
+                                                     cellSize: self.settings.cellSize,
+                                                     cellPadding: self.settings.cellPadding,
+                                                     cellSizeFit: self.settings.cellSizeFit,
+                                                     cellShape: self.settings.cellShape,
+                                                     cellForeground: self.settings.inactiveColor,
+                                                     gridColumns: self.settings.gridColumns,
+                                                     gridRows: self.settings.gridRows,
+                                                     gridCenter: self.settings.gridCenter,
                                                      onChangeImage: self.updateImage,
                                                      onChangeCellSize: self.onChangeCellSize)
                         self.rotateImage()
@@ -92,17 +92,18 @@ struct ContentView: View
                         // Still need to clean up this initialization/re-initializion stuff and on onChangeSettings too.
                         //
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
-                        if ((screen.width != self.cellGridView.screen.width) || (screen.height != self.cellGridView.screen.height)) {
+                        if ((screen.width != self.cellGridView.screen.width) ||
+                            (screen.height != self.cellGridView.screen.height)) {
                             let landscape = self.orientation.current.isLandscape
-                            self.cellGridView.configure(cellSize: self.settings.cellSize,
-                                                        cellPadding: self.cellGridView.cellPadding,
-                                                        cellShape: self.settings.cellShape,
+                            self.cellGridView.configure(screen: screen,
                                                         viewWidth: landscape ? screen.height : screen.width,
                                                         viewHeight: landscape ? screen.width : screen.height,
                                                         viewBackground: self.settings.viewBackground,
-                                                        viewTransparency: self.cellGridView.viewTransparency,
-                                                        viewScaling: self.settings.viewScaling, // self.cellGridView.viewScaling,
-                                                        screen: screen,
+                                                        viewTransparency: self.settings.viewTransparency,
+                                                        viewScaling: self.settings.viewScaling,
+                                                        cellSize: self.settings.cellSize,
+                                                        cellPadding: self.settings.cellPadding,
+                                                        cellShape: self.settings.cellShape,
                                                         adjustShift: true,
                                                         refreshCells: true)
                             self.updateImage()
@@ -198,14 +199,14 @@ struct ContentView: View
     private func onChangeSettings() {
         let configuration: CellGridView.Configuration = CellGridView.Configuration().with(cellSize: 123)
         let cellSizeChanged: Bool = (self.settings.cellSize != self.cellGridView.cellSize)
-        self.cellGridView.configure(cellSize: self.settings.cellSize,
-                                    cellPadding: self.settings.cellPadding,
-                                    cellShape: self.settings.cellShape,
-                                    viewWidth: self.cellGridView.viewWidth,
+        self.cellGridView.configure(viewWidth: self.cellGridView.viewWidth,
                                     viewHeight: self.cellGridView.viewHeight,
                                     viewBackground: self.settings.viewBackground,
                                     viewTransparency: self.cellGridView.viewTransparency,
                                     viewScaling: self.settings.viewScaling,
+                                    cellSize: self.settings.cellSize,
+                                    cellPadding: self.settings.cellPadding,
+                                    cellShape: self.settings.cellShape,
                                     adjustShift: true,
                                     refreshCells: true)
         self.cellGridView.activeColor = self.settings.activeColor

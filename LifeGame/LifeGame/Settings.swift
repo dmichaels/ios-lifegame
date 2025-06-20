@@ -59,6 +59,7 @@ class Settings: ObservableObject
 
     @Published var gridColumns: Int                  = Defaults.gridColumns
     @Published var gridRows: Int                     = Defaults.gridRows
+    @Published var gridCenter: Bool                  = Defaults.gridCenter
 
     @Published var activeColor: Colour                           = Defaults.activeColor
     @Published var inactiveColor: Colour                         = Defaults.inactiveColor
