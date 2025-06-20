@@ -79,7 +79,7 @@ struct SettingsView: View
                         }
                 }
                 HStack {
-                    IconLabel("Inactive Random", "number")
+                    IconLabel("Inactive Random", "circle.grid.cross.right.filled" /* "square.grid.3x3.middleright.filled" */ /* "number" */ )
                     Toggle("", isOn: $settings.inactiveColorRandom).labelsHidden()
                         .onChange(of: settings.inactiveColorRandom) { value in
                             if (!value) {
@@ -88,7 +88,7 @@ struct SettingsView: View
                         }
                 }
                 HStack {
-                    IconLabel("Inactive Dynamic", "circle.grid.cross")
+                    IconLabel("Inactive Dynamic", "sparkles" /* "circle.grid.cross" */ )
                     Toggle("", isOn: $settings.inactiveColorRandomDynamic).labelsHidden()
                 }.disabled(!settings.inactiveColorRandom)
                 HStack {
