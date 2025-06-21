@@ -97,6 +97,10 @@ public struct ActionButton: View {
             Image(systemName: self._toggled ? self._iconToggled : self._icon)
                 .foregroundColor(.white)
                 .font(.system(size: self._iconWidth , weight: .light ))
+                //
+                // Hack for pencil-in-square icon drooping too low for some reason.
+                //
+                .offset(y: (self._toggled ? self._iconToggled : self._icon) == "square.and.pencil" ? -1 : 0)
         }
         .onAppear {
             self._toggled = self._actionToggled()
