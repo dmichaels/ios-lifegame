@@ -48,5 +48,5 @@ class Settings: ObservableObject
     // for this app, which are easily accessible elsewhere, without having to define a separate Defaults class;
     // note that we still instantiate this class normally when passing to ContentView; it would otherwise be odd.
     //
-    public static let defaults: Settings = Settings()
+    public static let Defaults: Settings = Settings()
 }
