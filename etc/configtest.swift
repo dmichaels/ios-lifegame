@@ -5,7 +5,7 @@ public class CellGridView
     private var _cellSize: Int
     private var _cellPadding: Int
 
-    public var   cellSize: Int { self._cellSize }
+    public var   cellSize: Int    { self._cellSize }
     public var   cellPadding: Int { self._cellPadding }
 
     public init(_ config: CellGridView.Config? = nil) {
@@ -103,25 +103,15 @@ extension LifeCellGridView
 
 extension Settings
 {
-    // Sets up this Settings object from the given LifeCellGridView.
-    // This is called when we are instantiating the SettingsView.
+    // Sets up this Settings object from the given LifeCellGridView.Config.
+    // This is called when we are instantiating/showing the SettingsView.
     // For example in ContentView we will have something like this:
     //
     //     func gotoSettingsView() {
-    //         self.settings.setupFrom(self.cellGridView)
+    //         self.settings.fromConfig(self.cellGridView.config)
     //         self.showSettingsView = true
     //     }
     //
-    public func setupFrom(_ cellGridView: LifeCellGridView)
-    {
-        self.fromConfig(cellGridView.config)
-        // let config: LifeCellGridView.Config = cellGridView.config as LifeCellGridView.Config
-        // self.cellSize = config.cellSize
-        // self.cellPadding = config.cellPadding
-        // self.activeColor = config.activeColor
-        // self.inactiveColor = config.inactiveColor
-    }
-
     public func fromConfig(_ config: LifeCellGridView.Config)
     {
         self.cellSize = config.cellSize
@@ -168,7 +158,6 @@ public class ContentView
     private var cellGridView: LifeCellGridView = LifeCellGridView()
 
     internal func showSettingsView() {
-        // self.settings.setupFrom(self.cellGridView)
         let config: LifeCellGridView.Config = self.cellGridView.config
         self.settings.fromConfig(config)
     }
