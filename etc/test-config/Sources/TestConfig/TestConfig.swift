@@ -101,10 +101,10 @@ extension LifeCellGridView
 //
 class Settings
 {
-    public var viewBackground: Int = CellGridView.Defaults.viewBackground
-    public var viewScaling: Bool   = CellGridView.Defaults.viewScaling
-    public var cellSize: Int       = CellGridView.Defaults.cellSize
-    public var cellPadding: Int    = CellGridView.Defaults.cellPadding
+    public var viewBackground: Int = LifeCellGridView.Defaults.viewBackground
+    public var viewScaling: Bool   = LifeCellGridView.Defaults.viewScaling
+    public var cellSize: Int       = LifeCellGridView.Defaults.cellSize
+    public var cellPadding: Int    = LifeCellGridView.Defaults.cellPadding
     public var activeColor: Int    = LifeCellGridView.Defaults.activeColor
     public var inactiveColor: Int  = LifeCellGridView.Defaults.inactiveColor
 }
