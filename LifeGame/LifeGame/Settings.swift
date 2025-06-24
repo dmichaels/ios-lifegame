@@ -16,13 +16,18 @@ class Settings: ObservableObject
     @Published var cellPadding: Int           = 1
     @Published var cellShape: CellShape       = CellShape.rounded
 
-    @Published var gridColumns: Int           = 500
-    @Published var gridRows: Int              = 750
-    @Published var gridCenter: Bool           = true
+    @Published var gridColumns: Int           = 50 // 500
+    @Published var gridRows: Int              = 75 // 750
+    @Published var centerCells: Bool          = false
+
+    @Published var restrictShift: Bool        = true
+    @Published var unscaledZoom: Bool         = false
+    @Published var cellAntialiasFade: Float   = CellGridView.Defaults.cellAntialiasFade
+    @Published var cellRoundedRadius: Float   = CellGridView.Defaults.cellRoundedRadius
 
     @Published var selectMode: Bool           = true
-    @Published var automationInterval: Double = 0.5
     @Published var automationMode: Bool       = true
+    @Published var automationInterval: Double = 0.5
 
     // Life Game specific properties.
 

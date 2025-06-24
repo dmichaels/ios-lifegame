@@ -8,7 +8,7 @@ public final class LifeCell: Cell {
     private var _inactiveColorRandomDynamicNumber: Int
     private var _inactiveColorRandomNumber: Int
 
-    init(cellGridView: LifeCellGridView, x: Int, y: Int,  active: Bool = false) {
+    init(cellGridView: LifeCellGridView, x: Int, y: Int, active: Bool = false) {
         self._active = active
         self._inactiveColorRandomDynamicNumber = cellGridView.generationNumber + 1
         self._inactiveColorRandomNumber = cellGridView.inactiveColorRandomNumber + 1

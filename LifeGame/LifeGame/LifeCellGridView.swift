@@ -15,6 +15,32 @@ public final class LifeCellGridView: CellGridView
     private var _generationNumber: Int = 0
     private var _liveCells: Set<CellLocation> = []
 
+    public override var config: CellGridView.Config
+    {
+        let config: CellGridView.Config = super.config
+        return config
+    }
+
+    public override func initialize(_ config: CellGridView.Config)
+    {
+        if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
+            //
+            // TODO
+            //
+            super.initialize(config)
+        }
+    }
+
+    public override func configure(_ config: CellGridView.Config)
+    {
+        if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
+            //
+            // TODO
+            //
+            super.configure(config)
+        }
+    }
+
     public override func createCell<T: Cell>(x: Int, y: Int, color: Colour) -> T? {
         return LifeCell(cellGridView: self, x: x, y: y) as? T
     }
@@ -53,18 +79,6 @@ public final class LifeCellGridView: CellGridView
         }
     }
 
-    internal var inactiveColorRandomColorMode: ColourMode {
-        get { self._inactiveColorRandomColorMode }
-        set {
-            if (newValue != self._inactiveColorRandomColorMode) {
-                self._inactiveColorRandomColorMode = newValue
-                self._inactiveColorRandomNumber += 2
-                self._generationNumber += 2
-                super.writeCells()
-            }
-        }
-    }
-
     internal var inactiveColorRandom: Bool {
         get { self._inactiveColorRandom }
         set {
@@ -85,17 +99,30 @@ public final class LifeCellGridView: CellGridView
         }
     }
 
+    internal var inactiveColorRandomColorMode: ColourMode {
+        get { self._inactiveColorRandomColorMode }
+        set {
+            if (newValue != self._inactiveColorRandomColorMode) {
+                self._inactiveColorRandomColorMode = newValue
+                self._inactiveColorRandomNumber += 2
+                self._generationNumber += 2
+                super.writeCells()
+            }
+        }
+    }
+
     internal var inactiveColorRandomColor: () -> Colour {
         //
         // This returns a function that returns a random (inactive) color based on the current
         // color mode (color, grayscale, monochrome), inactive color, and inactive color filter.
         //
-        return {
-                Colour.random(mode: self._inactiveColorRandomColorMode,
-                              tint: self._inactiveColor,
-                              tintBy: nil,
-                              filter: self._inactiveColorRandomColorFilter)
+        let inactiveColorRandomColorFunction: () -> Colour = {
+            Colour.random(mode: self._inactiveColorRandomColorMode,
+                          tint: self._inactiveColor,
+                          tintBy: nil,
+                          filter: self._inactiveColorRandomColorFilter)
         }
+        return inactiveColorRandomColorFunction
     }
 
     internal var inactiveColorRandomNumber: Int {

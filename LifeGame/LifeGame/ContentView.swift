@@ -75,10 +75,14 @@ struct ContentView: View
                                                      cellPadding: self.settings.cellPadding,
                                                      cellSizeFit: self.settings.cellSizeFit,
                                                      cellShape: self.settings.cellShape,
-                                                     cellForeground: self.settings.inactiveColor,
+                                                     cellColor: self.settings.inactiveColor,
                                                      gridColumns: self.settings.gridColumns,
                                                      gridRows: self.settings.gridRows,
-                                                     gridCenter: self.settings.gridCenter,
+                                                     centerCells: self.settings.centerCells,
+                                                     restrictShift: self.settings.restrictShift,
+                                                     unscaledZoom: self.settings.unscaledZoom,
+                                                     cellAntialiasFade: self.settings.cellAntialiasFade,
+                                                     cellRoundedRadius: self.settings.cellRoundedRadius,
                                                      onChangeImage: self.updateImage,
                                                      onChangeCellSize: self.onChangeCellSize)
                         self.rotateImage()
@@ -104,7 +108,11 @@ struct ContentView: View
                                                         cellSize: self.settings.cellSize,
                                                         cellPadding: self.settings.cellPadding,
                                                         cellShape: self.settings.cellShape,
-                                                        adjustShift: true,
+                                                        restrictShift: self.settings.restrictShift,
+                                                        unscaledZoom: self.settings.unscaledZoom,
+                                                        cellAntialiasFade: self.settings.cellAntialiasFade,
+                                                        cellRoundedRadius: self.settings.cellRoundedRadius,
+                                                        adjustShiftOnResizeCells: true,
                                                         refreshCells: true)
                             self.updateImage()
                         }
@@ -173,8 +181,13 @@ struct ContentView: View
     }
 
     private func onChangeSettings() {
-        let configuration: CellGridView.Configuration = CellGridView.Configuration().with(cellSize: 123)
-        let cellSizeChanged: Bool = (self.settings.cellSize != self.cellGridView.cellSize)
+        let configuration: CellGridView.Configuration =
+            CellGridView.Configuration(self.cellGridView)
+                .with(viewBackground: self.settings.viewBackground)
+                .with(viewTransparency: self.settings.viewTransparency)
+                .with(viewScaling: self.settings.viewScaling)
+                .with(cellSize: self.settings.cellSize)
+                .with(cellPadding: self.settings.cellPadding)
         self.cellGridView.configure(viewWidth: self.cellGridView.viewWidth,
                                     viewHeight: self.cellGridView.viewHeight,
                                     viewBackground: self.settings.viewBackground,
@@ -183,11 +196,18 @@ struct ContentView: View
                                     cellSize: self.settings.cellSize,
                                     cellPadding: self.settings.cellPadding,
                                     cellShape: self.settings.cellShape,
-                                    adjustShift: true,
+                                    gridColumns: 10,
+                                    gridRows: 20,
+                                    restrictShift: self.settings.restrictShift,
+                                    unscaledZoom: self.settings.unscaledZoom,
+                                    cellAntialiasFade: self.settings.cellAntialiasFade,
+                                    cellRoundedRadius: self.settings.cellRoundedRadius,
+                                    automationInterval: self.settings.automationInterval,
+                                    adjustShiftOnResizeCells: true,
                                     refreshCells: true)
         self.cellGridView.activeColor = self.settings.activeColor
         self.cellGridView.inactiveColor = self.settings.inactiveColor
-        self.cellGridView.automationInterval = self.settings.automationInterval
+        // self.cellGridView.automationInterval = self.settings.automationInterval
         self.cellGridView.inactiveColorRandom = self.settings.inactiveColorRandom
         self.cellGridView.inactiveColorRandomColorMode = self.settings.inactiveColorRandomColorMode
         self.cellGridView.inactiveColorRandomDynamic = self.settings.inactiveColorRandomDynamic
