@@ -6,6 +6,7 @@ import Utils
 class Settings: ObservableObject
 {
     // CellGridView base class specific properties.
+    // See CellGridView.Defaults for the full set of parameters available. 
 
     @Published var viewBackground: Colour     = Colour.darkGray
     @Published var viewTransparency: UInt8    = Colour.OPAQUE
@@ -42,4 +43,10 @@ class Settings: ObservableObject
     @Published var swipeThreshold: Int = 100
     @Published var soundEnabled: Bool  = false
     @Published var hapticEnabled: Bool = false
+
+    // This just allows this Settings object to be the single place where we define the default parameters
+    // for this app, which are easily accessible elsewhere, without having to define a separate Defaults class;
+    // note that we still instantiate this class normally when passing to ContentView; it would otherwise be odd.
+    //
+    public static let defaults: Settings = Settings()
 }
