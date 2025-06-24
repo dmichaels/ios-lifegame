@@ -1,5 +1,3 @@
-// import Utils
-
 // FILE: ios-cellgridview/CellGridView.swift
 //
 public class CellGridView
