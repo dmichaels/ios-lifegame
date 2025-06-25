@@ -57,8 +57,8 @@ public class CellGridView
 
     open var config: CellGridView.Config {
         //
-        // TODO: Should  I do the CellGridView.Config.init thing right here directly instead?
-        // Question is who properly should know how exactly to create aCellGridView.Config instance?
+        // TODO: Should I do the CellGridView.Config.init thing right here directly instead?
+        // Question is who properly should know how exactly to create CellGridView.Config instance?
         //
         CellGridView.Config(self)
     }
@@ -73,7 +73,6 @@ public class CellGridView
         self.viewScaling      = config.viewScaling
         self.cellSize         = config.cellSize
         self.cellPadding      = config.cellPadding
-        print("CellGridView.configure")
     }
 }
 
@@ -105,13 +104,35 @@ extension LifeCellGridView
         public var inactiveColor: Int
 
         public init(_ cellGridView: LifeCellGridView? = nil) {
+
+            // Life Game specific properties.
+
             self.activeColor     = cellGridView?.activeColor    ?? Settings.Defaults.activeColor
             self.inactiveColor   = cellGridView?.inactiveColor  ?? Settings.Defaults.inactiveColor
+
+            // CellGridView base class specific properties.
+
             super.init(cellGridView)
+
             super.viewBackground = cellGridView?.viewBackground ?? Settings.Defaults.viewBackground
             super.viewScaling    = cellGridView?.viewScaling    ?? Settings.Defaults.viewScaling
             super.cellSize       = cellGridView?.cellSize       ?? Settings.Defaults.cellSize
             super.cellPadding    = cellGridView?.cellPadding    ?? Settings.Defaults.cellPadding
+        }
+
+        internal init(_ cellGridView: LifeCellGridView, _ settings: Settings) {
+
+            // Life Game specific properties.
+
+            self.activeColor                  = settings.activeColor
+            self.inactiveColor                = settings.inactiveColor
+
+            // CellGridView base class specific properties.
+
+            super.init(cellGridView)
+
+            super.viewBackground     = settings.viewBackground
+            super.viewScaling        = settings.viewScaling
         }
     }
 }
@@ -132,8 +153,8 @@ public class LifeCellGridView: CellGridView {
 
     public override var config: LifeCellGridView.Config {
         //
-        // TODO: Should  I do the CellGridView.Config.init thing right here directly instead?
-        // Question is who properly should know how exactly to create aCellGridView.Config instance?
+        // TODO: Should I do the CellGridView.Config.init thing right here directly instead?
+        // Question is who properly should know how exactly to create CellGridView.Config instance?
         //
         LifeCellGridView.Config(self)
     }
@@ -145,7 +166,6 @@ public class LifeCellGridView: CellGridView {
     public override func configure(_ config: CellGridView.Config) {
         if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
             super.configure(config)
-            print("LifeCellGridView.configure")
         }
     }
 }
@@ -163,12 +183,17 @@ extension Settings
     //
     public func fromConfig(_ config: LifeCellGridView.Config)
     {
+        // Life Game specific properties.
+
+        self.activeColor    = config.activeColor
+        self.inactiveColor  = config.inactiveColor
+
+        // CellGridView base class specific properties.
+
         self.viewBackground = config.viewBackground
         self.viewScaling    = config.viewScaling
         self.cellSize       = config.cellSize
         self.cellPadding    = config.cellPadding
-        self.activeColor    = config.activeColor
-        self.inactiveColor  = config.inactiveColor
     }
 
     // Creates and returns a LifeCellGridView.Config (derived from CellGridView.Config) object,
@@ -182,15 +207,7 @@ extension Settings
     //
     internal func toConfig(_ cellGridView: LifeCellGridView) -> LifeCellGridView.Config
     {
-        // let config: LifeCellGridView.Config = cellGridView.config
-        let config: LifeCellGridView.Config = LifeCellGridView.Config(cellGridView)
-        config.viewBackground = self.viewBackground
-        config.viewScaling    = self.viewScaling
-        config.cellSize       = self.cellSize
-        config.cellPadding    = self.cellPadding
-        config.activeColor    = self.activeColor
-        config.inactiveColor  = self.inactiveColor
-        return config
+        return LifeCellGridView.Config(cellGridView, self)
     }
 }
 

@@ -21,6 +21,8 @@ extension LifeCellGridView
 
         public init(_ cellGridView: LifeCellGridView? = nil) {
 
+            // Life Game specific properties.
+
             self.activeColor                    = cellGridView?.activeColor                    ?? Settings.Defaults.activeColor
             self.inactiveColor                  = cellGridView?.inactiveColor                  ?? Settings.Defaults.inactiveColor
             self.inactiveColorRandom            = cellGridView?.inactiveColorRandom            ?? Settings.Defaults.inactiveColorRandom
@@ -31,6 +33,8 @@ extension LifeCellGridView
             self.swipeThreshold                 = cellGridView?.swipeThreshold                 ?? Settings.Defaults.swipeThreshold
             self.soundEnabled                   = cellGridView?.soundEnabled                   ?? Settings.Defaults.soundEnabled
             self.hapticEnabled                  = cellGridView?.hapticEnabled                  ?? Settings.Defaults.hapticEnabled
+
+            // CellGridView base class specific properties.
 
             super.init(cellGridView)
 
@@ -66,25 +70,25 @@ extension LifeCellGridView
             self.soundEnabled                 = settings.soundEnabled
             self.hapticEnabled                = settings.hapticEnabled
 
-            super.init(cellGridView)
-
             // CellGridView base class specific properties.
 
-            self.viewBackground     = settings.viewBackground
-            self.viewScaling        = settings.viewScaling
-            self.viewTransparency   = settings.viewTransparency
-            self.cellSize           = settings.cellSize
-            self.cellPadding        = settings.cellPadding
-            self.cellShape          = settings.cellShape
-            self.gridColumns        = settings.gridColumns
-            self.gridRows           = settings.gridRows
-            self.restrictShift      = settings.restrictShift
-            self.unscaledZoom       = settings.unscaledZoom
-            self.cellAntialiasFade  = settings.cellAntialiasFade
-            self.cellRoundedRadius  = settings.cellRoundedRadius
-            self.selectMode         = settings.selectMode
-            self.automationMode     = settings.automationMode
-            self.automationInterval = settings.automationInterval
+            super.init(cellGridView)
+
+            super.viewBackground     = settings.viewBackground
+            super.viewScaling        = settings.viewScaling
+            super.viewTransparency   = settings.viewTransparency
+            super.cellSize           = settings.cellSize
+            super.cellPadding        = settings.cellPadding
+            super.cellShape          = settings.cellShape
+            super.gridColumns        = settings.gridColumns
+            super.gridRows           = settings.gridRows
+            super.restrictShift      = settings.restrictShift
+            super.unscaledZoom       = settings.unscaledZoom
+            super.cellAntialiasFade  = settings.cellAntialiasFade
+            super.cellRoundedRadius  = settings.cellRoundedRadius
+            super.selectMode         = settings.selectMode
+            super.automationMode     = settings.automationMode
+            super.automationInterval = settings.automationInterval
         }
     }
 }

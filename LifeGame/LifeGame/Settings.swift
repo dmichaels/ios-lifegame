@@ -64,7 +64,7 @@ class Settings: ObservableObject
     public func fromConfig(_ config: LifeCellGridView.Config)
     {
         // CellGridView base class specific properties.
-        //
+
         self.viewBackground     = config.viewBackground
         self.viewTransparency   = config.viewTransparency
         self.viewScaling        = config.viewScaling
@@ -82,7 +82,7 @@ class Settings: ObservableObject
         self.automationInterval = config.automationInterval
 
         // Life Game specific properties.
-        //
+
         self.activeColor                  = config.activeColor
         self.inactiveColor                = config.inactiveColor
         self.inactiveColorRandom          = config.inactiveColorRandom
@@ -107,46 +107,6 @@ class Settings: ObservableObject
     //
     internal func toConfig(_ cellGridView: LifeCellGridView) -> LifeCellGridView.Config
     {
-        // TODO: Hmmm
-        //
         return LifeCellGridView.Config(cellGridView, self)
-
-/* TODO: Hmmm ...
-
-        let config: LifeCellGridView.Config = cellGridView.config
-
-        // CellGridView base class specific properties.
-        //
-        config.viewBackground     = self.viewBackground
-        config.viewScaling        = self.viewScaling
-        config.viewTransparency   = self.viewTransparency
-        config.cellSize           = self.cellSize
-        config.cellPadding        = self.cellPadding
-        config.cellShape          = self.cellShape
-        config.gridColumns        = self.gridColumns
-        config.gridRows           = self.gridRows
-        config.restrictShift      = self.restrictShift
-        config.unscaledZoom       = self.unscaledZoom
-        config.cellAntialiasFade  = self.cellAntialiasFade
-        config.cellRoundedRadius  = self.cellRoundedRadius
-        config.selectMode         = self.selectMode
-        config.automationMode     = self.automationMode
-        config.automationInterval = self.automationInterval
-
-        // Life Game specific properties.
-        //
-        config.activeColor                  = self.activeColor
-        config.inactiveColor                = self.inactiveColor
-        config.inactiveColorRandom          = self.inactiveColorRandom
-        config.inactiveColorRandomDynamic   = self.inactiveColorRandomDynamic
-        config.inactiveColorRandomColorMode = self.inactiveColorRandomColorMode
-        config.dragThreshold                = self.dragThreshold
-        config.swipeThreshold               = self.swipeThreshold
-        config.soundEnabled                 = self.soundEnabled
-        config.hapticEnabled                = self.hapticEnabled
-
-        return config
-... */
-
     }
 }
