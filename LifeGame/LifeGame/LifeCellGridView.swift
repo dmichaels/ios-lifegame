@@ -42,16 +42,9 @@ public final class LifeCellGridView: CellGridView
         super.init(config)
     }
 
-    public override var config: LifeCellGridView.Config {
-        LifeCellGridView.Config(self)
-    }
-
-    public override func initialize(_ config: CellGridView.Config,
-                                    _ screen: Screen, fit: Bool = false, center: Bool = false)
+    internal func initialize(_ settings: Settings, _ screen: Screen, fit: Bool = false, center: Bool = false)
     {
-        if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
-            super.initialize(config, screen, fit: fit, center: center)
-        }
+        super.initialize(settings.toConfig(self), screen, fit: fit, center: center)
     }
 
     public override func configure(_ config: CellGridView.Config)
@@ -59,6 +52,10 @@ public final class LifeCellGridView: CellGridView
         if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
             super.configure(config)
         }
+    }
+
+    public override var config: LifeCellGridView.Config {
+        LifeCellGridView.Config(self)
     }
 
     public override func createCell<T: Cell>(x: Int, y: Int, color: Colour) -> T? {
