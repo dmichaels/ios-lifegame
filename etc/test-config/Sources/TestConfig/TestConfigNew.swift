@@ -41,24 +41,18 @@ extension CellGridView
 //
 public class CellGridView
 {
-    private var _viewBackground: Int
-    private var _viewTransparency: UInt8
-    private var _viewScaling: Bool
-    private var _cellSize: Int
-    private var _cellPadding: Int
-
-    public var   viewBackground: Int     { self._viewBackground }
-    public var   viewTransparency: UInt8 { self._viewTransparency }
-    public var   viewScaling: Bool       { self._viewScaling }
-    public var   cellSize: Int           { self._cellSize }
-    public var   cellPadding: Int        { self._cellPadding }
+    public private(set) var viewBackground: Int
+    public private(set) var viewTransparency: UInt8
+    public private(set) var viewScaling: Bool
+    public private(set) var cellSize: Int
+    public private(set) var cellPadding: Int
 
     public init(_ config: CellGridView.Config? = nil) {
-        self._viewBackground   = config?.viewBackground   ?? CellGridView.Defaults.viewBackground
-        self._viewTransparency = config?.viewTransparency ?? CellGridView.Defaults.viewTransparency
-        self._viewScaling      = config?.viewScaling      ?? CellGridView.Defaults.viewScaling
-        self._cellSize         = config?.cellSize         ?? CellGridView.Defaults.cellSize
-        self._cellPadding      = config?.cellPadding      ?? CellGridView.Defaults.cellPadding
+        self.viewBackground   = config?.viewBackground   ?? CellGridView.Defaults.viewBackground
+        self.viewTransparency = config?.viewTransparency ?? CellGridView.Defaults.viewTransparency
+        self.viewScaling      = config?.viewScaling      ?? CellGridView.Defaults.viewScaling
+        self.cellSize         = config?.cellSize         ?? CellGridView.Defaults.cellSize
+        self.cellPadding      = config?.cellPadding      ?? CellGridView.Defaults.cellPadding
     }
 
     open var config: CellGridView.Config {
@@ -70,11 +64,11 @@ public class CellGridView
     }
 
     open func configure(_ config: CellGridView.Config) {
-        self._viewBackground   = config.viewBackground
-        self._viewTransparency = config.viewTransparency
-        self._viewScaling      = config.viewScaling
-        self._cellSize         = config.cellSize
-        self._cellPadding      = config.cellPadding
+        self.viewBackground   = config.viewBackground
+        self.viewTransparency = config.viewTransparency
+        self.viewScaling      = config.viewScaling
+        self.cellSize         = config.cellSize
+        self.cellPadding      = config.cellPadding
         print("CellGridView.configure")
     }
 }
@@ -101,16 +95,13 @@ class Settings
 //
 public class LifeCellGridView: CellGridView {
 
-    private var _activeColor: Int
-    private var _inactiveColor: Int
-
-    internal var activeColor: Int   { self._activeColor }
-    internal var inactiveColor: Int { self._inactiveColor }
+    public private(set) var activeColor: Int
+    public private(set) var inactiveColor: Int
 
     public override init(_ config: CellGridView.Config? = nil) {
         let config: LifeCellGridView.Config? = config as? LifeCellGridView.Config
-        self._activeColor   = config?.activeColor   ?? Settings.Defaults.activeColor
-        self._inactiveColor = config?.inactiveColor ?? Settings.Defaults.inactiveColor
+        self.activeColor   = config?.activeColor   ?? Settings.Defaults.activeColor
+        self.inactiveColor = config?.inactiveColor ?? Settings.Defaults.inactiveColor
         super.init(config)
     }
 
@@ -140,13 +131,13 @@ extension LifeCellGridView
         public var inactiveColor: Int
 
         public init(_ cellGridView: LifeCellGridView? = nil) {
-            self.activeColor   = cellGridView?.activeColor   ?? Settings.Defaults.activeColor
-            self.inactiveColor = cellGridView?.inactiveColor ?? Settings.Defaults.inactiveColor
+            self.activeColor     = cellGridView?.activeColor    ?? Settings.Defaults.activeColor
+            self.inactiveColor   = cellGridView?.inactiveColor  ?? Settings.Defaults.inactiveColor
             super.init(cellGridView)
-            self.viewBackground = cellGridView?.viewBackground ?? Settings.Defaults.viewBackground
-            self.viewScaling    = cellGridView?.viewScaling    ?? Settings.Defaults.viewScaling
-            self.cellSize       = cellGridView?.cellSize       ?? Settings.Defaults.cellSize
-            self.cellPadding    = cellGridView?.cellPadding    ?? Settings.Defaults.cellPadding
+            super.viewBackground = cellGridView?.viewBackground ?? Settings.Defaults.viewBackground
+            super.viewScaling    = cellGridView?.viewScaling    ?? Settings.Defaults.viewScaling
+            super.cellSize       = cellGridView?.cellSize       ?? Settings.Defaults.cellSize
+            super.cellPadding    = cellGridView?.cellPadding    ?? Settings.Defaults.cellPadding
         }
     }
 }

@@ -5,40 +5,41 @@ import Utils
 
 public final class LifeCellGridView: CellGridView
 {
+    /*
     private var _activeColor: Colour = Colour.black
     private var _inactiveColor: Colour = Colour.white
     private var _inactiveColorRandom: Bool = false
     private var _inactiveColorRandomDynamic: Bool = false
     private var _inactiveColorRandomColorMode: ColourMode = ColourMode.color
-    private var _inactiveColorRandomColorFilter: ColourFilter? = nil
-    private var _inactiveColorRandomNumber: Int = 0
-    private var _generationNumber: Int = 0
-    private var _liveCells: Set<CellLocation> = []
+    */
 
-    public override var config: CellGridView.Config
-    {
-        let config: CellGridView.Config = super.config
-        return config
-    }
+    public   internal(set) var activeColor: Colour
+    public   internal(set) var inactiveColor: Colour
+    public   private(set)  var inactiveColorRandom: Bool
+    public   private(set)  var inactiveColorRandomDynamic: Bool
+    public   private(set)  var inactiveColorRandomColorMode: ColourMode
+    public   private(set)  var inactiveColorRandomColorFilter: ColourFilter?
+    public   private(set)  var dragThreshold: Int
+    public   private(set)  var swipeThreshold: Int
+    public   private(set)  var soundEnabled: Bool
+    public   private(set)  var hapticEnabled: Bool
+    internal private(set)  var generationNumber: Int = 0
+    internal private(set)  var inactiveColorRandomNumber: Int = 0
+    private                var liveCells: Set<CellLocation> = []
 
-    public override func initialize(_ config: CellGridView.Config)
-    {
-        if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
-            //
-            // TODO
-            //
-            super.initialize(config)
-        }
-    }
-
-    public override func configure(_ config: CellGridView.Config)
-    {
-        if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
-            //
-            // TODO
-            //
-            super.configure(config)
-        }
+    public override init(_ config: CellGridView.Config? = nil) {
+        let config: LifeCellGridView.Config? = config as? LifeCellGridView.Config
+        self.activeColor                    = config?.activeColor                    ?? Settings.Defaults.activeColor
+        self.inactiveColor                  = config?.inactiveColor                  ?? Settings.Defaults.inactiveColor
+        self.inactiveColorRandom            = config?.inactiveColorRandom            ?? Settings.Defaults.inactiveColorRandom
+        self.inactiveColorRandomDynamic     = config?.inactiveColorRandomDynamic     ?? Settings.Defaults.inactiveColorRandomDynamic
+        self.inactiveColorRandomColorMode   = config?.inactiveColorRandomColorMode   ?? Settings.Defaults.inactiveColorRandomColorMode
+        self.inactiveColorRandomColorFilter = config?.inactiveColorRandomColorFilter ?? Settings.Defaults.inactiveColorRandomColorFilter
+        self.dragThreshold                  = config?.dragThreshold                  ?? Settings.Defaults.dragThreshold
+        self.swipeThreshold                 = config?.swipeThreshold                 ?? Settings.Defaults.swipeThreshold
+        self.soundEnabled                   = config?.soundEnabled                   ?? Settings.Defaults.soundEnabled
+        self.hapticEnabled                  = config?.hapticEnabled                  ?? Settings.Defaults.hapticEnabled
+        super.init(config)
     }
 
     public override func createCell<T: Cell>(x: Int, y: Int, color: Colour) -> T? {
@@ -53,12 +54,26 @@ public final class LifeCellGridView: CellGridView
         self.onChangeImage()
     }
 
+    internal func noteCellActiveColorChanged() {
+        for cellLocation in self.liveCells {
+            if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
+                cell.write()
+            }
+        }
+    }
+
+    internal func noteCellInactiveColorChanged() {
+        self.inactiveColorRandomNumber += 2 // todo/hack
+        self.generationNumber += 2 // todo/hack
+        super.writeCells()
+    }
+/*
     internal var activeColor: Colour {
         get { self._activeColor }
         set {
             if (newValue != self._activeColor) {
                 self._activeColor = newValue
-                for cellLocation in self._liveCells {
+                for cellLocation in self.liveCells {
                     if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
                         cell.write()
                     }
@@ -72,8 +87,8 @@ public final class LifeCellGridView: CellGridView
         set {
             if (newValue != self._inactiveColor) {
                 self._inactiveColor = newValue
-                self._inactiveColorRandomNumber += 2
-                self._generationNumber += 2
+                self.inactiveColorRandomNumber += 2
+                self.generationNumber += 2
                 super.writeCells()
             }
         }
@@ -104,12 +119,13 @@ public final class LifeCellGridView: CellGridView
         set {
             if (newValue != self._inactiveColorRandomColorMode) {
                 self._inactiveColorRandomColorMode = newValue
-                self._inactiveColorRandomNumber += 2
-                self._generationNumber += 2
+                self.inactiveColorRandomNumber += 2
+                self.generationNumber += 2
                 super.writeCells()
             }
         }
     }
+    */
 
     internal var inactiveColorRandomColor: () -> Colour {
         //
@@ -117,32 +133,24 @@ public final class LifeCellGridView: CellGridView
         // color mode (color, grayscale, monochrome), inactive color, and inactive color filter.
         //
         let inactiveColorRandomColorFunction: () -> Colour = {
-            Colour.random(mode: self._inactiveColorRandomColorMode,
-                          tint: self._inactiveColor,
+            Colour.random(mode: self.inactiveColorRandomColorMode,
+                          tint: self.inactiveColor,
                           tintBy: nil,
-                          filter: self._inactiveColorRandomColorFilter)
+                          filter: self.inactiveColorRandomColorFilter)
         }
         return inactiveColorRandomColorFunction
     }
 
-    internal var inactiveColorRandomNumber: Int {
-        self._inactiveColorRandomNumber
-    }
-
     internal func noteCellActivated(_ cell: LifeCell) {
-        self._liveCells.insert(cell.location)
+        self.liveCells.insert(cell.location)
     }
 
     internal func noteCellDeactivated(_ cell: LifeCell) {
-        self._liveCells.remove(cell.location)
-    }
-
-    internal var generationNumber: Int {
-        self._generationNumber
+        self.liveCells.remove(cell.location)
     }
 
     internal func erase() {
-        for cellLocation in self._liveCells {
+        for cellLocation in self.liveCells {
             if let cell: LifeCell = super.gridCell(cellLocation) {
                 cell.deactivate()
             }
@@ -152,14 +160,14 @@ public final class LifeCellGridView: CellGridView
 
     private func nextGeneration()
     {
-        self._generationNumber += 1
-        print("GN: \(self._generationNumber)")
+        self.generationNumber += 1
+        print("GN: \(self.generationNumber)")
 
         var neighborCount: [CellLocation: Int] = [:]
 
         // Count neighbors for all live cells and their neighbors.
 
-        for cellLocation in self._liveCells {
+        for cellLocation in self.liveCells {
             for dy in -1...1 {
                 for dx in -1...1 {
                     if dx == 0 && dy == 0 { continue }
@@ -176,7 +184,7 @@ public final class LifeCellGridView: CellGridView
         // Determine which cells live in the next generation.
 
         for (cellLocation, count) in neighborCount {
-            let isAlive = self._liveCells.contains(cellLocation)
+            let isAlive = self.liveCells.contains(cellLocation)
             if (isAlive) {
                 //
                 // Survival rules.
@@ -197,18 +205,18 @@ public final class LifeCellGridView: CellGridView
         // Update the underlying grid and cell colors;
         // deactivate cells that die; activate new live cells.
 
-        for oldLocation in self._liveCells.subtracting(newLiveCells) {
+        for oldLocation in self.liveCells.subtracting(newLiveCells) {
             if let cell: LifeCell = self.gridCell(oldLocation.x, oldLocation.y) {
                 cell.deactivate(nonotify: true)
             }
         }
 
-        for newLocation in newLiveCells.subtracting(self._liveCells) {
+        for newLocation in newLiveCells.subtracting(self.liveCells) {
             if let cell: LifeCell = self.gridCell(newLocation.x, newLocation.y) {
                 cell.activate(nonotify: true)
             }
         }
 
-        self._liveCells = newLiveCells
+        self.liveCells = newLiveCells
     }
 }

@@ -205,12 +205,15 @@ struct ContentView: View
                                     automationInterval: self.settings.automationInterval,
                                     adjustShiftOnResizeCells: true,
                                     refreshCells: true)
+        // TODO
         self.cellGridView.activeColor = self.settings.activeColor
+        self.cellGridView.noteCellActiveColorChanged()
         self.cellGridView.inactiveColor = self.settings.inactiveColor
+        self.cellGridView.noteCellInactiveColorChanged()
         // self.cellGridView.automationInterval = self.settings.automationInterval
-        self.cellGridView.inactiveColorRandom = self.settings.inactiveColorRandom
-        self.cellGridView.inactiveColorRandomColorMode = self.settings.inactiveColorRandomColorMode
-        self.cellGridView.inactiveColorRandomDynamic = self.settings.inactiveColorRandomDynamic
+        // todo/xyzzy self.cellGridView.inactiveColorRandom = self.settings.inactiveColorRandom
+        // todo/xyzzy self.cellGridView.inactiveColorRandomColorMode = self.settings.inactiveColorRandomColorMode
+        // todo/xyzzy self.cellGridView.inactiveColorRandomDynamic = self.settings.inactiveColorRandomDynamic
         self.updateImage()
     }
 

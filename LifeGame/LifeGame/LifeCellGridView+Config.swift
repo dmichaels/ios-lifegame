@@ -7,113 +7,51 @@ extension LifeCellGridView
 {
     public class Config: CellGridView.Config
     {
-        private var _activeColor: Colour                           = Colour.black
-        private var _inactiveColor: Colour                         = Colour.white
-        private var _inactiveColorRandom: Bool                     = false
-        private var _inactiveColorRandomDynamic: Bool              = false
-        private var _inactiveColorRandomColorMode: ColourMode      = ColourMode.color
-        private var _inactiveColorRandomColorFilter: ColourFilter? = nil
+        public var activeColor: Colour
+        public var inactiveColor: Colour
+        public var inactiveColorRandom: Bool
+        public var inactiveColorRandomDynamic: Bool
+        public var inactiveColorRandomColorMode: ColourMode
+        public var inactiveColorRandomColorFilter: ColourFilter?
 
-        private var _dragThreshold: Int  = 3
-        private var _swipeThreshold: Int = 100
-        private var _soundEnabled: Bool  = false
-        private var _hapticEnabled: Bool = false
+        public var dragThreshold: Int  = 3
+        public var swipeThreshold: Int = 100
+        public var soundEnabled: Bool  = false
+        public var hapticEnabled: Bool = false
 
-        internal init(_ cellGridView: LifeCellGridView)
-        {
+        public init(_ cellGridView: LifeCellGridView? = nil) {
+
+            self.activeColor                    = cellGridView?.activeColor                    ?? Settings.Defaults.activeColor
+            self.inactiveColor                  = cellGridView?.inactiveColor                  ?? Settings.Defaults.inactiveColor
+            self.inactiveColorRandom            = cellGridView?.inactiveColorRandom            ?? Settings.Defaults.inactiveColorRandom
+            self.inactiveColorRandomDynamic     = cellGridView?.inactiveColorRandomDynamic     ?? Settings.Defaults.inactiveColorRandomDynamic
+            self.inactiveColorRandomColorMode   = cellGridView?.inactiveColorRandomColorMode   ?? Settings.Defaults.inactiveColorRandomColorMode
+            self.inactiveColorRandomColorFilter = cellGridView?.inactiveColorRandomColorFilter ?? Settings.Defaults.inactiveColorRandomColorFilter
+            self.dragThreshold                  = cellGridView?.dragThreshold                  ?? Settings.Defaults.dragThreshold
+            self.swipeThreshold                 = cellGridView?.swipeThreshold                 ?? Settings.Defaults.swipeThreshold
+            self.soundEnabled                   = cellGridView?.soundEnabled                   ?? Settings.Defaults.soundEnabled
+            self.hapticEnabled                   = cellGridView?.hapticEnabled                 ?? Settings.Defaults.hapticEnabled
+
             super.init(cellGridView)
-            self._activeColor = cellGridView.activeColor
-            self._inactiveColor = cellGridView.inactiveColor
-            self._inactiveColorRandom = cellGridView.inactiveColorRandom
-            self._inactiveColorRandomDynamic = cellGridView.inactiveColorRandomDynamic
-            self._inactiveColorRandomColorMode = cellGridView.inactiveColorRandomColorMode
-            // self._dragThreshold = Settings.dragThreshold
-        }
 
-        /*
-        public override func with(viewBackground value: Colour) -> Config {
-            return super.with(viewBackground: value)
-            // var copy = self ; copy.viewBackground = value; return copy
-        }
-        */
-
-        public func with(activeColor value: Colour) -> Config {
-            var copy = self ; copy._activeColor = value; return copy
-        }
-
-        public func with(inactiveColor value: Colour) -> Config {
-            var copy = self ; copy._inactiveColor = value; return copy
+            super.viewBackground     = cellGridView?.viewBackground     ?? Settings.Defaults.viewBackground
+            super.viewScaling        = cellGridView?.viewScaling        ?? Settings.Defaults.viewScaling
+            super.cellSize           = cellGridView?.cellSize           ?? Settings.Defaults.cellSize
+            super.cellPadding        = cellGridView?.cellPadding        ?? Settings.Defaults.cellPadding
+            super.cellShape          = cellGridView?.cellShape          ?? Settings.Defaults.cellShape
+            super.gridColumns        = cellGridView?.gridColumns        ?? Settings.Defaults.gridColumns
+            super.gridRows           = cellGridView?.gridRows           ?? Settings.Defaults.gridRows
+            super.restrictShift      = cellGridView?.restrictShift      ?? Settings.Defaults.restrictShift
+            super.unscaledZoom       = cellGridView?.unscaledZoom       ?? Settings.Defaults.unscaledZoom
+            super.cellAntialiasFade  = cellGridView?.cellAntialiasFade  ?? Settings.Defaults.cellAntialiasFade
+            super.cellRoundedRadius  = cellGridView?.cellRoundedRadius  ?? Settings.Defaults.cellRoundedRadius
+            super.selectMode         = cellGridView?.selectMode         ?? Settings.Defaults.selectMode
+            super.automationMode     = cellGridView?.automationMode     ?? Settings.Defaults.automationMode
+            super.automationInterval = cellGridView?.automationInterval ?? Settings.Defaults.automationInterval
         }
     }
 }
 
 extension Settings
 {
-    // Sets up this Settings object from the given LifeCellGridView.
-    // This is called when we are instantiating the SettingsView.
-    // For example in ContentView we will have something like this:
-    //
-    //     func gotoSettingsView() {
-    //         self.settings.setupFrom(self.cellGridView)
-    //         self.showSettingsView = true
-    //     }
-    //
-    internal func setupFrom(_ cellGridView: LifeCellGridView)
-    {
-        let config: CellGridView.Config = cellGridView.config
-        self.viewBackground     = config.viewBackground
-        self.viewTransparency   = config.viewTransparency
-        self.viewScaling        = config.viewScaling
-        self.cellSize           = config.cellSize
-        self.cellPadding        = config.cellPadding
-        self.cellShape          = config.cellShape
-        self.gridColumns        = config.gridColumns
-        self.gridRows           = config.gridRows
-        self.restrictShift      = config.restrictShift
-        self.unscaledZoom       = config.unscaledZoom
-        self.cellAntialiasFade  = config.cellAntialiasFade
-        self.cellRoundedRadius  = config.cellRoundedRadius
-        self.selectMode         = config.selectMode
-        self.automationMode     = config.automationMode
-        self.automationInterval = config.automationInterval
-    }
-
-    // Creates and returns a LifeCellGridView.Config object, which
-    // is derived from CellGridView.Config, from this Settings object.
-    // This is called when we return from the SettingsView.
-    // For example in ContentView we will have something like this:
-    //
-    //     func onSettingsChange() {
-    //         let config: LifeCellGridView.Config = self.settings.toConfig(self.cellGridView)
-    //         self.cellGridView.configure(config)
-    //     }
-    //
-    internal func toConfig() -> LifeCellGridView.Config?
-    {
-        return nil
-    }
-
-    internal func toConfig(_ cellGridView: LifeCellGridView) -> LifeCellGridView.Config
-    {
-        // return LifeCellGridView.Config(cellGridView)
-        return
-            LifeCellGridView.Config(cellGridView)
-            /*
-                .with(viewBackground:     self.viewBackground)
-                .with(viewTransparency:   self.viewTransparency)
-                .with(viewScaling:        self.viewScaling)
-                .with(cellSize:           self.cellSize)
-                .with(cellPadding:        self.cellPadding)
-                .with(cellShape:          self.cellShape)
-                .with(gridColumns:        self.gridColumns)
-                .with(gridRows:           self.gridRows)
-                .with(restrictShift:      self.restrictShift)
-                .with(unscaledZoom:       self.unscaledZoom)
-                .with(cellAntialiasFade:  self.cellAntialiasFade)
-                .with(cellRoundedRadius:  self.cellRoundedRadius)
-                .with(selectMode:         self.selectMode)
-                .with(automationMode:     self.automationMode)
-                .with(automationInterval: self.automationInterval)
-                */
-    }
 }
