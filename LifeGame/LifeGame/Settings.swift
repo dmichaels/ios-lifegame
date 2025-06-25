@@ -88,6 +88,7 @@ class Settings: ObservableObject
         self.inactiveColorRandom          = config.inactiveColorRandom
         self.inactiveColorRandomDynamic   = config.inactiveColorRandomDynamic
         self.inactiveColorRandomColorMode = config.inactiveColorRandomColorMode
+        self.inactiveColorRandomColorFilter = config.inactiveColorRandomColorFilter
         self.dragThreshold                = config.dragThreshold
         self.swipeThreshold               = config.swipeThreshold
         self.soundEnabled                 = config.soundEnabled
