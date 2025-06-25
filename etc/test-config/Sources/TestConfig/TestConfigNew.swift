@@ -27,6 +27,9 @@ extension CellGridView
         public var cellSize: Int
         public var cellPadding: Int
 
+        // Creates this instance of CellGridView.Config with the properties from the given
+        // CellGridView, or with the default values from CellGridView.Defaults is nil is given.
+        //
         public init(_ cellGridView: CellGridView? = nil) {
             self.viewBackground   = cellGridView?.viewBackground   ?? CellGridView.Defaults.viewBackground
             self.viewTransparency = cellGridView?.viewTransparency ?? CellGridView.Defaults.viewTransparency
@@ -48,11 +51,13 @@ public class CellGridView
     public private(set) var cellPadding: Int
 
     public init(_ config: CellGridView.Config? = nil) {
-        self.viewBackground   = config?.viewBackground   ?? CellGridView.Defaults.viewBackground
-        self.viewTransparency = config?.viewTransparency ?? CellGridView.Defaults.viewTransparency
-        self.viewScaling      = config?.viewScaling      ?? CellGridView.Defaults.viewScaling
-        self.cellSize         = config?.cellSize         ?? CellGridView.Defaults.cellSize
-        self.cellPadding      = config?.cellPadding      ?? CellGridView.Defaults.cellPadding
+        if config != nil { print("CellGridView.init(config)") } else { print("CellGridView.init()") }
+        let config: CellGridView.Config = config ?? CellGridView.Config()
+        self.viewBackground   = config.viewBackground
+        self.viewTransparency = config.viewTransparency
+        self.viewScaling      = config.viewScaling
+        self.cellSize         = config.cellSize
+        self.cellPadding      = config.cellPadding
     }
 
     open var config: CellGridView.Config {
@@ -103,6 +108,13 @@ extension LifeCellGridView
         public var activeColor: Int
         public var inactiveColor: Int
 
+        // Creates this instance of LifeCellGridView.Config with the properties from the given
+        // LifeCellGridView, or with the default values from Settings.Defaults is nil is given.
+        //
+        // Note that this constructor does in fact effectively hide the base
+        // class constructor which takes a CellGridView, which is what we want;
+        // i.e. only allow creation of LifeCellGridView.Config with a LifeCellGridView.
+        //
         public init(_ cellGridView: LifeCellGridView? = nil) {
 
             // Life Game specific properties.
@@ -144,10 +156,14 @@ public class LifeCellGridView: CellGridView {
     public private(set) var activeColor: Int
     public private(set) var inactiveColor: Int
 
-    public override init(_ config: CellGridView.Config? = nil) {
-        let config: LifeCellGridView.Config? = config as? LifeCellGridView.Config
-        self.activeColor   = config?.activeColor   ?? Settings.Defaults.activeColor
-        self.inactiveColor = config?.inactiveColor ?? Settings.Defaults.inactiveColor
+    // Note that this constructor does in fact effectively hide the base
+    // class constructor which takes a CellGridView.Config, which is what we want;
+    // i.e. only allow creation of LifeCellGridView with a LifeCellGridView.Config.
+    //
+    public init(_ config: LifeCellGridView.Config? = nil) {
+        let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
+        self.activeColor   = config.activeColor
+        self.inactiveColor = config.inactiveColor
         super.init(config)
     }
 
@@ -238,3 +254,6 @@ let lifeConfig: LifeCellGridView.Config = LifeCellGridView.Config(lifeCellGridVi
 lifeCellGridView.configure(lifeConfig)
 print(lifeConfig.cellSize)
 print(lifeConfig.activeColor)
+let _ = LifeCellGridView(LifeCellGridView.Config())
+
+// let _ = LifeCellGridView.Config(cellGridView)
