@@ -42,6 +42,10 @@ public final class LifeCellGridView: CellGridView
         super.init(config)
     }
 
+    public override var config: LifeCellGridView.Config {
+        LifeCellGridView.Config(self)
+    }
+
     public override func createCell<T: Cell>(x: Int, y: Int, color: Colour) -> T? {
         return LifeCell(cellGridView: self, x: x, y: y) as? T
     }

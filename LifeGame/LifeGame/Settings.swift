@@ -13,13 +13,13 @@ class Settings: ObservableObject
     @Published var viewScaling: Bool          = true
 
     @Published var cellSize: Int              = 18
-    @Published var cellSizeFit: Bool          = false
+    @Published var cellSizeFit: Bool          = false // xyzzy
     @Published var cellPadding: Int           = 1
     @Published var cellShape: CellShape       = CellShape.rounded
 
     @Published var gridColumns: Int           = 50 // 500
     @Published var gridRows: Int              = 75 // 750
-    @Published var centerCells: Bool          = false
+    @Published var centerCells: Bool          = false // xyzzy
 
     @Published var restrictShift: Bool        = true
     @Published var unscaledZoom: Bool         = false
@@ -49,4 +49,104 @@ class Settings: ObservableObject
     // note that we still instantiate this class normally when passing to ContentView; it would otherwise be odd.
     //
     public static let Defaults: Settings = Settings()
+
+    // Sets up this Settings object from the given LifeCellGridView.Config.
+    // This is called when we are instantiating/showing the SettingsView.
+    // For example in ContentView we will have something like this:
+    //
+    //     @EnvironmentObject var cellGridView: LifeCellGridView
+    //     @EnvironmentObject var settings: Settings
+    //     func gotoSettingsView() {
+    //         self.settings.fromConfig(self.cellGridView.config)
+    //         self.showSettingsView = true
+    //     }
+    //
+    public func fromConfig(_ config: LifeCellGridView.Config)
+    {
+        // CellGridView base class specific properties.
+        //
+        self.viewBackground     = config.viewBackground
+        self.viewTransparency   = config.viewTransparency
+        self.viewScaling        = config.viewScaling
+        self.cellSize           = config.cellSize
+        self.cellPadding        = config.cellPadding
+        self.cellShape          = config.cellShape
+        self.gridColumns        = config.gridColumns
+        self.gridRows           = config.gridRows
+        self.restrictShift      = config.restrictShift
+        self.unscaledZoom       = config.unscaledZoom
+        self.cellAntialiasFade  = config.cellAntialiasFade
+        self.cellRoundedRadius  = config.cellRoundedRadius
+        self.selectMode         = config.selectMode
+        self.automationMode     = config.automationMode
+        self.automationInterval = config.automationInterval
+
+        // Life Game specific properties.
+        //
+        self.activeColor                  = config.activeColor
+        self.inactiveColor                = config.inactiveColor
+        self.inactiveColorRandom          = config.inactiveColorRandom
+        self.inactiveColorRandomDynamic   = config.inactiveColorRandomDynamic
+        self.inactiveColorRandomColorMode = config.inactiveColorRandomColorMode
+        self.dragThreshold                = config.dragThreshold
+        self.swipeThreshold               = config.swipeThreshold
+        self.soundEnabled                 = config.soundEnabled
+        self.hapticEnabled                = config.hapticEnabled
+    }
+
+    // Creates and returns a LifeCellGridView.Config (derived from CellGridView.Config) object,
+    // from this Settings object. This is called when we return from the SettingsView.
+    // For example in ContentView we will have something like this:
+    //
+    //     @EnvironmentObject var cellGridView: LifeCellGridView
+    //     @EnvironmentObject var settings: Settings
+    //     func onSettingsChange() {
+    //         let config: LifeCellGridView.Config = self.settings.toConfig(self.cellGridView)
+    //         self.cellGridView.configure(config)
+    //     }
+    //
+    internal func toConfig(_ cellGridView: LifeCellGridView) -> LifeCellGridView.Config
+    {
+        // TODO: Hmmm
+        //
+        return LifeCellGridView.Config(cellGridView, self)
+
+/* TODO: Hmmm ...
+
+        let config: LifeCellGridView.Config = cellGridView.config
+
+        // CellGridView base class specific properties.
+        //
+        config.viewBackground     = self.viewBackground
+        config.viewScaling        = self.viewScaling
+        config.viewTransparency   = self.viewTransparency
+        config.cellSize           = self.cellSize
+        config.cellPadding        = self.cellPadding
+        config.cellShape          = self.cellShape
+        config.gridColumns        = self.gridColumns
+        config.gridRows           = self.gridRows
+        config.restrictShift      = self.restrictShift
+        config.unscaledZoom       = self.unscaledZoom
+        config.cellAntialiasFade  = self.cellAntialiasFade
+        config.cellRoundedRadius  = self.cellRoundedRadius
+        config.selectMode         = self.selectMode
+        config.automationMode     = self.automationMode
+        config.automationInterval = self.automationInterval
+
+        // Life Game specific properties.
+        //
+        config.activeColor                  = self.activeColor
+        config.inactiveColor                = self.inactiveColor
+        config.inactiveColorRandom          = self.inactiveColorRandom
+        config.inactiveColorRandomDynamic   = self.inactiveColorRandomDynamic
+        config.inactiveColorRandomColorMode = self.inactiveColorRandomColorMode
+        config.dragThreshold                = self.dragThreshold
+        config.swipeThreshold               = self.swipeThreshold
+        config.soundEnabled                 = self.soundEnabled
+        config.hapticEnabled                = self.hapticEnabled
+
+        return config
+... */
+
+    }
 }

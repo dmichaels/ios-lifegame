@@ -56,6 +56,10 @@ public class CellGridView
     }
 
     open var config: CellGridView.Config {
+        //
+        // TODO: Should  I do the CellGridView.Config.init thing right here directly instead?
+        // Question is who properly should know how exactly to create aCellGridView.Config instance?
+        //
         CellGridView.Config(self)
     }
 
@@ -91,36 +95,6 @@ class Settings
     public static let Defaults: Settings = Settings()
 }
 
-// FILE: ios-lifegame/LifeCellGridView.swift
-//
-public class LifeCellGridView: CellGridView {
-
-    public private(set) var activeColor: Int
-    public private(set) var inactiveColor: Int
-
-    public override init(_ config: CellGridView.Config? = nil) {
-        let config: LifeCellGridView.Config? = config as? LifeCellGridView.Config
-        self.activeColor   = config?.activeColor   ?? Settings.Defaults.activeColor
-        self.inactiveColor = config?.inactiveColor ?? Settings.Defaults.inactiveColor
-        super.init(config)
-    }
-
-    public override var config: LifeCellGridView.Config {
-        LifeCellGridView.Config(self)
-    }
-
-    public override func initialize(_ config: CellGridView.Config, fit: Bool = false, center: Bool = false) {
-        self.configure(config)
-    }
-
-    public override func configure(_ config: CellGridView.Config) {
-        if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
-            super.configure(config)
-            print("LifeCellGridView.configure")
-        }
-    }
-}
-
 // FILE: ios-lifegame/LifeCellGridView+Config.swift
 //
 extension LifeCellGridView
@@ -138,6 +112,40 @@ extension LifeCellGridView
             super.viewScaling    = cellGridView?.viewScaling    ?? Settings.Defaults.viewScaling
             super.cellSize       = cellGridView?.cellSize       ?? Settings.Defaults.cellSize
             super.cellPadding    = cellGridView?.cellPadding    ?? Settings.Defaults.cellPadding
+        }
+    }
+}
+
+// FILE: ios-lifegame/LifeCellGridView.swift
+//
+public class LifeCellGridView: CellGridView {
+
+    public private(set) var activeColor: Int
+    public private(set) var inactiveColor: Int
+
+    public override init(_ config: CellGridView.Config? = nil) {
+        let config: LifeCellGridView.Config? = config as? LifeCellGridView.Config
+        self.activeColor   = config?.activeColor   ?? Settings.Defaults.activeColor
+        self.inactiveColor = config?.inactiveColor ?? Settings.Defaults.inactiveColor
+        super.init(config)
+    }
+
+    public override var config: LifeCellGridView.Config {
+        //
+        // TODO: Should  I do the CellGridView.Config.init thing right here directly instead?
+        // Question is who properly should know how exactly to create aCellGridView.Config instance?
+        //
+        LifeCellGridView.Config(self)
+    }
+
+    public override func initialize(_ config: CellGridView.Config, fit: Bool = false, center: Bool = false) {
+        self.configure(config)
+    }
+
+    public override func configure(_ config: CellGridView.Config) {
+        if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
+            super.configure(config)
+            print("LifeCellGridView.configure")
         }
     }
 }
@@ -174,6 +182,7 @@ extension Settings
     //
     internal func toConfig(_ cellGridView: LifeCellGridView) -> LifeCellGridView.Config
     {
+        // let config: LifeCellGridView.Config = cellGridView.config
         let config: LifeCellGridView.Config = LifeCellGridView.Config(cellGridView)
         config.viewBackground = self.viewBackground
         config.viewScaling    = self.viewScaling

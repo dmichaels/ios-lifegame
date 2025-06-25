@@ -30,7 +30,7 @@ extension LifeCellGridView
             self.dragThreshold                  = cellGridView?.dragThreshold                  ?? Settings.Defaults.dragThreshold
             self.swipeThreshold                 = cellGridView?.swipeThreshold                 ?? Settings.Defaults.swipeThreshold
             self.soundEnabled                   = cellGridView?.soundEnabled                   ?? Settings.Defaults.soundEnabled
-            self.hapticEnabled                   = cellGridView?.hapticEnabled                 ?? Settings.Defaults.hapticEnabled
+            self.hapticEnabled                  = cellGridView?.hapticEnabled                  ?? Settings.Defaults.hapticEnabled
 
             super.init(cellGridView)
 
@@ -48,6 +48,43 @@ extension LifeCellGridView
             super.selectMode         = cellGridView?.selectMode         ?? Settings.Defaults.selectMode
             super.automationMode     = cellGridView?.automationMode     ?? Settings.Defaults.automationMode
             super.automationInterval = cellGridView?.automationInterval ?? Settings.Defaults.automationInterval
+        }
+
+        // TODO: Hmmmm
+        //
+        internal init(_ cellGridView: LifeCellGridView, _ settings: Settings) {
+
+            // Life Game specific properties.
+
+            self.activeColor                  = settings.activeColor
+            self.inactiveColor                = settings.inactiveColor
+            self.inactiveColorRandom          = settings.inactiveColorRandom
+            self.inactiveColorRandomDynamic   = settings.inactiveColorRandomDynamic
+            self.inactiveColorRandomColorMode = settings.inactiveColorRandomColorMode
+            self.dragThreshold                = settings.dragThreshold
+            self.swipeThreshold               = settings.swipeThreshold
+            self.soundEnabled                 = settings.soundEnabled
+            self.hapticEnabled                = settings.hapticEnabled
+
+            super.init(cellGridView)
+
+            // CellGridView base class specific properties.
+
+            self.viewBackground     = settings.viewBackground
+            self.viewScaling        = settings.viewScaling
+            self.viewTransparency   = settings.viewTransparency
+            self.cellSize           = settings.cellSize
+            self.cellPadding        = settings.cellPadding
+            self.cellShape          = settings.cellShape
+            self.gridColumns        = settings.gridColumns
+            self.gridRows           = settings.gridRows
+            self.restrictShift      = settings.restrictShift
+            self.unscaledZoom       = settings.unscaledZoom
+            self.cellAntialiasFade  = settings.cellAntialiasFade
+            self.cellRoundedRadius  = settings.cellRoundedRadius
+            self.selectMode         = settings.selectMode
+            self.automationMode     = settings.automationMode
+            self.automationInterval = settings.automationInterval
         }
     }
 }
