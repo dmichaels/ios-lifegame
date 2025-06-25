@@ -196,8 +196,8 @@ struct ContentView: View
                                     cellSize: self.settings.cellSize,
                                     cellPadding: self.settings.cellPadding,
                                     cellShape: self.settings.cellShape,
-                                    gridColumns: 10,
-                                    gridRows: 20,
+                                    gridColumns: 10, // xyzzy/todo/debug
+                                    gridRows: 20, // xyzzy/todo/debug
                                     restrictShift: self.settings.restrictShift,
                                     unscaledZoom: self.settings.unscaledZoom,
                                     cellAntialiasFade: self.settings.cellAntialiasFade,
@@ -211,9 +211,12 @@ struct ContentView: View
         self.cellGridView.inactiveColor = self.settings.inactiveColor
         self.cellGridView.noteCellInactiveColorChanged()
         // self.cellGridView.automationInterval = self.settings.automationInterval
-        // todo/xyzzy self.cellGridView.inactiveColorRandom = self.settings.inactiveColorRandom
-        // todo/xyzzy self.cellGridView.inactiveColorRandomColorMode = self.settings.inactiveColorRandomColorMode
-        // todo/xyzzy self.cellGridView.inactiveColorRandomDynamic = self.settings.inactiveColorRandomDynamic
+        self.cellGridView.inactiveColorRandom = self.settings.inactiveColorRandom
+        self.cellGridView.noteCellInactiveColorRandomChanged()
+        self.cellGridView.inactiveColorRandomColorMode = self.settings.inactiveColorRandomColorMode
+        self.cellGridView.noteCellInactiveColorRandomColorModeChanged()
+        self.cellGridView.inactiveColorRandomDynamic = self.settings.inactiveColorRandomDynamic
+        self.cellGridView.noteCellInactiveColorRandomDynamicChanged()
         self.updateImage()
     }
 

@@ -5,19 +5,11 @@ import Utils
 
 public final class LifeCellGridView: CellGridView
 {
-    /*
-    private var _activeColor: Colour = Colour.black
-    private var _inactiveColor: Colour = Colour.white
-    private var _inactiveColorRandom: Bool = false
-    private var _inactiveColorRandomDynamic: Bool = false
-    private var _inactiveColorRandomColorMode: ColourMode = ColourMode.color
-    */
-
-    public   internal(set) var activeColor: Colour
-    public   internal(set) var inactiveColor: Colour
-    public   private(set)  var inactiveColorRandom: Bool
-    public   private(set)  var inactiveColorRandomDynamic: Bool
-    public   private(set)  var inactiveColorRandomColorMode: ColourMode
+    public   internal(set) var activeColor: Colour // xyzzy/internal
+    public   internal(set) var inactiveColor: Colour // xyzzy/internal
+    public   internal(set)  var inactiveColorRandom: Bool // xyzzy/internal
+    public   internal(set)  var inactiveColorRandomDynamic: Bool // xyzzy/internal
+    public   internal(set)  var inactiveColorRandomColorMode: ColourMode // xyzzy/internal
     public   private(set)  var inactiveColorRandomColorFilter: ColourFilter?
     public   private(set)  var dragThreshold: Int
     public   private(set)  var swipeThreshold: Int
@@ -81,6 +73,20 @@ public final class LifeCellGridView: CellGridView
     internal func noteCellInactiveColorChanged() {
         self.inactiveColorRandomNumber += 2 // todo/hack
         self.generationNumber += 2 // todo/hack
+        super.writeCells()
+    }
+
+    internal func noteCellInactiveColorRandomChanged() {
+        super.writeCells()
+    }
+
+    internal func noteCellInactiveColorRandomDynamicChanged() {
+        super.writeCells()
+    }
+
+    internal func noteCellInactiveColorRandomColorModeChanged() {
+        self.inactiveColorRandomNumber += 2
+        self.generationNumber += 2
         super.writeCells()
     }
 /*
