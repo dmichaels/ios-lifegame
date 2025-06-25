@@ -52,10 +52,10 @@ public final class LifeCellGridView: CellGridView
                          center: center)
     }
 
-    public override func configure(_ config: CellGridView.Config)
+    public override func configure(_ config: CellGridView.Config, viewWidth: Int, viewHeight: Int)
     {
         if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
-            super.configure(config)
+            super.configure(config, viewWidth: viewWidth, viewHeight: viewHeight)
         }
     }
 
