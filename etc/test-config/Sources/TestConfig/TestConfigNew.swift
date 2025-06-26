@@ -133,7 +133,7 @@ extension LifeCellGridView
         }
 
         // TODO
-        // See "Hmmm" comment below.
+        // See "Hmmm" comment below. Don't think I want/need this.
         //
         internal init(_ cellGridView: LifeCellGridView, _ settings: Settings) {
 
@@ -221,7 +221,7 @@ extension Settings
     }
 
     // Creates and returns a new LifeCellGridView.Config (derived from CellGridView.Config)
-    // object, with properties initializes from this Settings object. Intended to be called,
+    // object, with properties initialized from this Settings object. Intended to be called,
     // for example, on return from SettingsView in ContentView, something like this:
     //
     //     @EnvironmentObject var cellGridView: LifeCellGridView
@@ -234,13 +234,36 @@ extension Settings
     internal func toConfig(_ cellGridView: LifeCellGridView) -> LifeCellGridView.Config
     {
         // TODO
+        //
         // Hmmm. But we initially initialized this Settings object to pass into SettingsView,
         // using the above fromConfig function, with the Config for our LifeCellGridView,
         // so it should already have been set up with the properties from that, so should
         // reallly only have to copy the properties from this Settings object into a (new)
         // LifeCellGridView.Config object.
         //
-        return LifeCellGridView.Config(cellGridView, self)
+        // EXCEPT the problem with the new (uncommented) code below is that when we create
+        // LifeCellGridView.Config it (its constructore) goes to the trouble of initializing
+        // it will (ultimately, since passing a nil LifeCellGridView object) assign default
+        // values to its properties, which I guess is fine, but not merely wasteful but more,
+        // confusing (at least for me) to reason about (i.e. later when I forget about this).
+        //
+        // return LifeCellGridView.Config(cellGridView, self)
+
+        let config: LifeCellGridView.Config = LifeCellGridView.Config()
+
+        // Life Game specific properties.
+
+        config.activeColor    = self.activeColor
+        config.inactiveColor  = self.inactiveColor
+
+        // CellGridView base class specific properties.
+
+        config.viewBackground = self.viewBackground
+        config.viewScaling    = self.viewScaling
+        config.cellSize       = self.cellSize
+        config.cellPadding    = self.cellPadding
+
+        return config
     }
 }
 
