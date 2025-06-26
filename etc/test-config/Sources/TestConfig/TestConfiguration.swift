@@ -235,6 +235,8 @@ public class LifeCellGridView: CellGridView {
 
     public override func configure(_ config: CellGridView.Config) {
         if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
+            self.activeColor = config.activeColor
+            self.inactiveColor = config.inactiveColor
             super.configure(config)
         }
     }
@@ -318,6 +320,7 @@ extension ContentView
     func simulateSettingsViewChanges() {
         self.settings.viewBackground = 990
         self.settings.viewScaling = false
+        self.settings.activeColor = 991
     }
 
     func test() {
