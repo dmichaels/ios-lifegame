@@ -51,7 +51,6 @@ public class CellGridView
     public private(set) var cellPadding: Int
 
     public init(_ config: CellGridView.Config? = nil) {
-        if config != nil { print("CellGridView.init(config)") } else { print("CellGridView.init()") }
         let config: CellGridView.Config = config ?? CellGridView.Config()
         self.viewBackground   = config.viewBackground
         self.viewTransparency = config.viewTransparency
@@ -101,137 +100,6 @@ class Settings
 
 // FILE: ios-lifegame/LifeCellGridView+Config.swift
 //
-extension LifeCellGridView
-{
-    public class Config: CellGridView.Config {
-
-        public var activeColor: Int
-        public var inactiveColor: Int
-
-        // Initializes this instance of LifeCellGridView.Config with the properties from the given
-        // LifeCellGridView, or with the default values from Settings.Defaults is nil is given.
-        //
-        // Note that this constructor does in fact effectively hide the base
-        // class constructor which takes a CellGridView, which is what we want;
-        // i.e. only allow creation of LifeCellGridView.Config with a LifeCellGridView.
-        //
-/*
-        internal init(_ cellGridView: LifeCellGridView? = nil) {
-
-            // Life Game specific properties.
-
-            self.activeColor     = cellGridView?.activeColor    ?? Settings.Defaults.activeColor
-            self.inactiveColor   = cellGridView?.inactiveColor  ?? Settings.Defaults.inactiveColor
-
-            // CellGridView base class specific properties.
-
-            super.init(cellGridView)
-
-            super.viewBackground = cellGridView?.viewBackground ?? Settings.Defaults.viewBackground
-            super.viewScaling    = cellGridView?.viewScaling    ?? Settings.Defaults.viewScaling
-            super.cellSize       = cellGridView?.cellSize       ?? Settings.Defaults.cellSize
-            super.cellPadding    = cellGridView?.cellPadding    ?? Settings.Defaults.cellPadding
-        }
-*/
-        // Initializes this instance of LifeCellGridView.Config with the properties from the given
-        // LifeCellGridView, or if this is nil, then with the properties from the given Settings,
-        // or if that is nil, then from the default values in Settings.Defaults.
-        //
-        // Note that this constructor does in fact effectively hide the base
-        // class constructor which takes a CellGridView, which is what we want;
-        // i.e. only allow creation of LifeCellGridView.Config with a LifeCellGridView.
-        //
-        // Note that the case of calling this with a Settings object
-        //
-        internal init(_ cellGridView: LifeCellGridView? = nil, _ settings: Settings? = nil) {
-
-            // Shorter names/aliases; to easier set/check what is being initialized here.
-
-            let v: LifeCellGridView? = cellGridView
-            let s: Settings?         = settings
-            let d: Settings          = Settings.Defaults
-
-            // Life Game specific properties.
-
-            self.activeColor     = s?.activeColor    ?? v?.activeColor   ?? d.activeColor
-            self.inactiveColor   = s?.inactiveColor  ?? v?.inactiveColor ?? d.inactiveColor
-
-            // CellGridView base class specific properties.
-
-            super.init(v)
-
-            super.viewBackground = s?.viewBackground ?? v?.viewBackground ?? d.viewBackground
-            super.viewScaling    = s?.viewScaling    ?? v?.viewScaling    ?? d.viewScaling
-            super.cellSize       = s?.cellSize       ?? v?.cellSize       ?? d.cellSize
-            super.cellPadding    = s?.cellPadding    ?? v?.cellPadding    ?? d.cellPadding
-        }
-
-        // Initializes this instance of LifeCellGridView.Config with the properties from the given
-        // LifeCellGridView and (then) from the given Settings. This is called from the toConfig
-        // method of LifeCellGridView.Config. We do not just initialize from Settings directly
-        // because then how would be intitialize its (CellGridView) base class properties, and
-        // in particular those base class properties which we are not interested in manipulating
-        // here in LifeGame; so we use the (above) constructor to initialize from the given
-        // LifeCellGridView and then overwrite properties from the given Settings.
-        //
-/*
-        internal convenience init(_ cellGridView: LifeCellGridView, _ settings: Settings) {
-
-            self.init(cellGridView)
-
-            // Life Game specific properties.
-
-            self.activeColor     = settings.activeColor
-            self.inactiveColor   = settings.inactiveColor
-
-            // CellGridView base class specific properties.
-
-            super.viewBackground = settings.viewBackground
-            super.viewScaling    = settings.viewScaling
-        }
-*/
-    }
-}
-
-// FILE: ios-lifegame/LifeCellGridView.swift
-//
-public class LifeCellGridView: CellGridView {
-
-    public private(set) var activeColor: Int
-    public private(set) var inactiveColor: Int
-
-    // Note that this constructor does in fact effectively hide the base
-    // class constructor which takes a CellGridView.Config, which is what we want;
-    // i.e. only allow creation of LifeCellGridView with a LifeCellGridView.Config.
-    //
-    public init(_ config: LifeCellGridView.Config? = nil) {
-        let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
-        self.activeColor   = config.activeColor
-        self.inactiveColor = config.inactiveColor
-        super.init(config)
-    }
-
-    public override var config: LifeCellGridView.Config {
-        //
-        // TODO
-        // Should I do the CellGridView.Config.init thing right here directly instead?
-        // Question is who properly should know how exactly to create CellGridView.Config instance?
-        // Currently I think the way it is here is fine (2025-06-25 23:22).
-        //
-        LifeCellGridView.Config(self)
-    }
-
-    public override func initialize(_ config: CellGridView.Config, fit: Bool = false, center: Bool = false) {
-        self.configure(config)
-    }
-
-    public override func configure(_ config: CellGridView.Config) {
-        if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
-            super.configure(config)
-        }
-    }
-}
-
 extension Settings
 {
     // Sets up this Settings object from the given LifeCellGridView.Config.
@@ -292,6 +160,86 @@ extension Settings
     }
 }
 
+// FILE: ios-lifegame/LifeCellGridView+Config.swift
+//
+extension LifeCellGridView
+{
+    public class Config: CellGridView.Config {
+
+        public var activeColor: Int
+        public var inactiveColor: Int
+
+        // Initializes this instance of LifeCellGridView.Config with the properties from the given
+        // Settings, or if this is nil, then with the properties from the given LifeCellGridView,
+        // or if that is nil, then from the default values in Settings.Defaults.
+        //
+        // Note that this constructor does in fact effectively hide the base
+        // class constructor which takes a CellGridView, which is what we want;
+        // i.e. only allow creation of LifeCellGridView.Config with a LifeCellGridView.
+        //
+        // Note that calling this with a Settings object is from the toConfig method of
+        // LifeCellGridView.Config. We do not just initialize from Settings directly there
+        // because we need to initialize its CellGridView base class properties, particularly
+        // those base properties which we are not interested in here.
+        //
+        internal init(_ cellGridView: LifeCellGridView? = nil, _ settings: Settings? = nil) {
+
+            // Shorter names/aliases; to easier see/check what is being initialized here.
+
+            let v: LifeCellGridView? = cellGridView
+            let s: Settings?         = settings
+            let d: Settings          = Settings.Defaults
+
+            // Life Game specific properties.
+
+            self.activeColor     = s?.activeColor    ?? v?.activeColor   ?? d.activeColor
+            self.inactiveColor   = s?.inactiveColor  ?? v?.inactiveColor ?? d.inactiveColor
+
+            // CellGridView base class specific properties.
+
+            super.init(v)
+
+            super.viewBackground = s?.viewBackground ?? v?.viewBackground ?? d.viewBackground
+            super.viewScaling    = s?.viewScaling    ?? v?.viewScaling    ?? d.viewScaling
+            super.cellSize       = s?.cellSize       ?? v?.cellSize       ?? d.cellSize
+            super.cellPadding    = s?.cellPadding    ?? v?.cellPadding    ?? d.cellPadding
+        }
+    }
+}
+
+// FILE: ios-lifegame/LifeCellGridView.swift
+//
+public class LifeCellGridView: CellGridView {
+
+    public private(set) var activeColor: Int
+    public private(set) var inactiveColor: Int
+
+    // Note that this constructor does in fact effectively hide the base
+    // class constructor which takes a CellGridView.Config, which is what we want;
+    // i.e. only allow creation of LifeCellGridView with a LifeCellGridView.Config.
+    //
+    public init(_ config: LifeCellGridView.Config? = nil) {
+        let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
+        self.activeColor   = config.activeColor
+        self.inactiveColor = config.inactiveColor
+        super.init(config)
+    }
+
+    public override var config: LifeCellGridView.Config {
+        LifeCellGridView.Config(self)
+    }
+
+    public override func initialize(_ config: CellGridView.Config, fit: Bool = false, center: Bool = false) {
+        self.configure(config)
+    }
+
+    public override func configure(_ config: CellGridView.Config) {
+        if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
+            super.configure(config)
+        }
+    }
+}
+
 // FILE: ios-lifegame/ContentView.swift
 //
 public class ContentView
@@ -306,22 +254,101 @@ public class ContentView
         self.showSettingsView = true
     }
 
-    internal func onSettingsViewChange() {
+    internal func onSettingsChange() {
         let config: LifeCellGridView.Config = self.settings.toConfig(self.cellGridView)
         self.cellGridView.configure(config)
         self.showSettingsView = true
     }
 }
 
-// TESTing ...
+// Testing ..
 //
-let cellGridView: CellGridView = CellGridView()
-let lifeCellGridView: LifeCellGridView = LifeCellGridView()
-let config: CellGridView.Config = CellGridView.Config(cellGridView)
-let lifeConfig: LifeCellGridView.Config = LifeCellGridView.Config(lifeCellGridView)
-lifeCellGridView.configure(lifeConfig)
-print(lifeConfig.cellSize)
-print(lifeConfig.activeColor)
-let _ = LifeCellGridView(LifeCellGridView.Config())
+extension ContentView
+{
+    func printSettingsDefaults() {
+        print()
+        print("Settings.Defaults.viewBackground: \(Settings.Defaults.viewBackground)")
+        print("Settings.Defaults.viewScaling: \(Settings.Defaults.viewScaling)")
+        print("Settings.Defaults.cellSize: \(Settings.Defaults.cellSize)")
+        print("Settings.Defaults.cellPadding: \(Settings.Defaults.cellPadding)")
+        print("Settings.Defaults.activeColor: \(Settings.Defaults.activeColor)")
+        print("Settings.Defaults.inactiveColor: \(Settings.Defaults.inactiveColor)")
+    }
 
-// let _ = LifeCellGridView.Config(cellGridView)
+    func printSettings() {
+        print()
+        print("settings.viewBackground: \(self.settings.viewBackground)")
+        print("settings.viewScaling: \(self.settings.viewScaling)")
+        print("settings.cellSize: \(self.settings.cellSize)")
+        print("settings.cellPadding: \(self.settings.cellPadding)")
+        print("settings.activeColor: \(self.settings.activeColor)")
+        print("settings.inactiveColor: \(self.settings.inactiveColor)")
+    }
+
+    func printCellGridViewProperties() {
+        print()
+        print("cellGridView.viewBackground: \(self.cellGridView.viewBackground)")
+        print("cellGridView.viewScaling: \(self.cellGridView.viewScaling)")
+        print("cellGridView.cellSize: \(self.cellGridView.cellSize)")
+        print("cellGridView.cellPadding: \(self.cellGridView.cellPadding)")
+        print("cellGridView.activeColor: \(self.cellGridView.activeColor)")
+        print("cellGridView.inactiveColor: \(self.cellGridView.inactiveColor)")
+    }
+
+    func printCellGridViewConfig() {
+        print()
+        print("cellGridView.config.viewBackground: \(self.cellGridView.config.viewBackground)")
+        print("cellGridView.config.viewScaling: \(self.cellGridView.config.viewScaling)")
+        print("cellGridView.config.cellSize: \(self.cellGridView.config.cellSize)")
+        print("cellGridView.config.cellPadding: \(self.cellGridView.config.cellPadding)")
+        print("cellGridView.config.activeColor: \(self.cellGridView.config.activeColor)")
+        print("cellGridView.config.inactiveColor: \(self.cellGridView.config.inactiveColor)")
+    }
+
+    func printSettingsToConfig() {
+        print()
+        print("settings.toConfig(cellGridView).viewBackground: \(self.settings.toConfig(cellGridView).viewBackground)")
+        print("settings.toConfig(cellGridView).viewScaling: \(self.settings.toConfig(cellGridView).viewScaling)")
+        print("settings.toConfig(cellGridView).cellSize: \(self.settings.toConfig(cellGridView).cellSize)")
+        print("settings.toConfig(cellGridView).cellPadding: \(self.settings.toConfig(cellGridView).cellPadding)")
+        print("settings.toConfig(cellGridView).activeColor: \(self.settings.toConfig(cellGridView).activeColor)")
+        print("settings.toConfig(cellGridView).inactiveColor: \(self.settings.toConfig(cellGridView).inactiveColor)")
+    }
+
+    func simulateSettingsViewChanges() {
+        self.settings.viewBackground = 990
+        self.settings.viewScaling = false
+    }
+
+    func test() {
+
+        print("\nINITIAL:")
+
+        self.printSettingsDefaults()
+        self.printSettings()
+        self.printCellGridViewProperties()
+        self.printCellGridViewConfig()
+        self.printSettingsToConfig()
+
+        self.gotoSettingsView()
+        self.simulateSettingsViewChanges()
+        self.onSettingsChange()
+
+        print("\nAFTER SIMULATE SETTINGS VIEW CHANGES:")
+
+        self.printSettings()
+        self.printCellGridViewProperties()
+        self.printCellGridViewConfig()
+        self.printSettingsToConfig()
+
+        /*
+        print()
+        self.cellGridView.configure(config)
+        print(config.cellSize)
+        print(config.activeColor)
+        */
+    }
+}
+
+let contentView: ContentView = ContentView()
+contentView.test()
