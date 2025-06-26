@@ -132,48 +132,6 @@ extension LifeCellGridView
             super.cellPadding    = cellGridView?.cellPadding    ?? Settings.Defaults.cellPadding
         }
 
-        // TODO
-        // See "Hmmm" comment below on Settings.toConfig.
-        // Think we want/need this rather than one below this.
-        //
-/*
-        internal init(_ settings: Settings) {
-
-            // Life Game specific properties.
-
-            self.activeColor     = settings.activeColor
-            self.inactiveColor   = settings.inactiveColor
-
-            // CellGridView base class specific properties.
-
-            super.init()
-
-            super.viewBackground = settings.viewBackground
-            super.viewScaling    = settings.viewScaling
-        }
-*/
-
-        // TODO
-        // See "Hmmm" comment below on Settings.toConfig.
-        // Don't think we want/need this.
-        //
-/*
-        internal init(_ cellGridView: LifeCellGridView, _ settings: Settings) {
-
-            // Life Game specific properties.
-
-            self.activeColor     = settings.activeColor
-            self.inactiveColor   = settings.inactiveColor
-
-            // CellGridView base class specific properties.
-
-            super.init(cellGridView)
-
-            super.viewBackground = settings.viewBackground
-            super.viewScaling    = settings.viewScaling
-        }
-*/
-
         internal convenience init(_ cellGridView: LifeCellGridView, _ settings: Settings) {
 
             self.init(cellGridView)
@@ -287,24 +245,6 @@ extension Settings
         // confusing (at least for me) to reason about (i.e. later when I forget).
         //
         return LifeCellGridView.Config(cellGridView, self)
-
-/*
-        let config: LifeCellGridView.Config = LifeCellGridView.Config()
-
-        // Life Game specific properties.
-
-        config.activeColor    = self.activeColor
-        config.inactiveColor  = self.inactiveColor
-
-        // CellGridView base class specific properties.
-
-        config.viewBackground = self.viewBackground
-        config.viewScaling    = self.viewScaling
-        config.cellSize       = self.cellSize
-        config.cellPadding    = self.cellPadding
-
-        return config
-*/
     }
 }
 
