@@ -93,12 +93,12 @@ struct SettingsView: View
                 }.disabled(!settings.inactiveColorRandom)
                 HStack {
                     IconLabel("Inactive Color Mode", "paintpalette")
-                    Picker("", selection: $settings.inactiveColorRandomColorMode) {
+                    Picker("", selection: $settings.inactiveColorRandomPalette) {
                         ForEach(ColourMode.allCases) { mode in
                             Text(mode.rawValue).lineLimit(1).tag(mode)
                         }
-                    }.pickerStyle(.menu).onChange(of: settings.inactiveColorRandomColorMode) { newValue in
-                        settings.inactiveColorRandomColorMode = newValue
+                    }.pickerStyle(.menu).onChange(of: settings.inactiveColorRandomPalette) { newValue in
+                        settings.inactiveColorRandomPalette = newValue
                     }
                 }.disabled(!settings.inactiveColorRandom)
                 HStack {

@@ -11,8 +11,8 @@ extension LifeCellGridView
         public var inactiveColor: Colour
         public var inactiveColorRandom: Bool
         public var inactiveColorRandomDynamic: Bool
-        public var inactiveColorRandomColorMode: ColourMode
-        public var inactiveColorRandomColorFilter: ColourFilter?
+        public var inactiveColorRandomPalette: ColourMode
+        public var inactiveColorRandomFilter: ColourFilter?
 
         public var dragThreshold: Int  = 3
         public var swipeThreshold: Int = 100
@@ -30,16 +30,16 @@ extension LifeCellGridView
 
             // Life Game specific properties.
 
-            self.activeColor                    = cellGridView?.activeColor                    ?? Settings.Defaults.activeColor
-            self.inactiveColor                  = cellGridView?.inactiveColor                  ?? Settings.Defaults.inactiveColor
-            self.inactiveColorRandom            = cellGridView?.inactiveColorRandom            ?? Settings.Defaults.inactiveColorRandom
-            self.inactiveColorRandomDynamic     = cellGridView?.inactiveColorRandomDynamic     ?? Settings.Defaults.inactiveColorRandomDynamic
-            self.inactiveColorRandomColorMode   = cellGridView?.inactiveColorRandomColorMode   ?? Settings.Defaults.inactiveColorRandomColorMode
-            self.inactiveColorRandomColorFilter = cellGridView?.inactiveColorRandomColorFilter ?? Settings.Defaults.inactiveColorRandomColorFilter
-            self.dragThreshold                  = cellGridView?.dragThreshold                  ?? Settings.Defaults.dragThreshold
-            self.swipeThreshold                 = cellGridView?.swipeThreshold                 ?? Settings.Defaults.swipeThreshold
-            self.soundEnabled                   = cellGridView?.soundEnabled                   ?? Settings.Defaults.soundEnabled
-            self.hapticEnabled                  = cellGridView?.hapticEnabled                  ?? Settings.Defaults.hapticEnabled
+            self.activeColor                = cellGridView?.activeColor                ?? Settings.Defaults.activeColor
+            self.inactiveColor              = cellGridView?.inactiveColor              ?? Settings.Defaults.inactiveColor
+            self.inactiveColorRandom        = cellGridView?.inactiveColorRandom        ?? Settings.Defaults.inactiveColorRandom
+            self.inactiveColorRandomDynamic = cellGridView?.inactiveColorRandomDynamic ?? Settings.Defaults.inactiveColorRandomDynamic
+            self.inactiveColorRandomPalette = cellGridView?.inactiveColorRandomPalette ?? Settings.Defaults.inactiveColorRandomPalette
+            self.inactiveColorRandomFilter  = cellGridView?.inactiveColorRandomFilter  ?? Settings.Defaults.inactiveColorRandomFilter
+            self.dragThreshold              = cellGridView?.dragThreshold              ?? Settings.Defaults.dragThreshold
+            self.swipeThreshold             = cellGridView?.swipeThreshold             ?? Settings.Defaults.swipeThreshold
+            self.soundEnabled               = cellGridView?.soundEnabled               ?? Settings.Defaults.soundEnabled
+            self.hapticEnabled              = cellGridView?.hapticEnabled              ?? Settings.Defaults.hapticEnabled
 
             // CellGridView base class specific properties.
 
@@ -67,15 +67,15 @@ extension LifeCellGridView
 
             // Life Game specific properties.
 
-            self.activeColor                  = settings.activeColor
-            self.inactiveColor                = settings.inactiveColor
-            self.inactiveColorRandom          = settings.inactiveColorRandom
-            self.inactiveColorRandomDynamic   = settings.inactiveColorRandomDynamic
-            self.inactiveColorRandomColorMode = settings.inactiveColorRandomColorMode
-            self.dragThreshold                = settings.dragThreshold
-            self.swipeThreshold               = settings.swipeThreshold
-            self.soundEnabled                 = settings.soundEnabled
-            self.hapticEnabled                = settings.hapticEnabled
+            self.activeColor                = settings.activeColor
+            self.inactiveColor              = settings.inactiveColor
+            self.inactiveColorRandom        = settings.inactiveColorRandom
+            self.inactiveColorRandomDynamic = settings.inactiveColorRandomDynamic
+            self.inactiveColorRandomPalette = settings.inactiveColorRandomPalette
+            self.dragThreshold              = settings.dragThreshold
+            self.swipeThreshold             = settings.swipeThreshold
+            self.soundEnabled               = settings.soundEnabled
+            self.hapticEnabled              = settings.hapticEnabled
 
             // CellGridView base class specific properties.
 
@@ -98,8 +98,4 @@ extension LifeCellGridView
             super.automationInterval = settings.automationInterval
         }
     }
-}
-
-extension Settings
-{
 }

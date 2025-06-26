@@ -213,8 +213,8 @@ struct ContentView: View
         // self.cellGridView.automationInterval = self.settings.automationInterval
         self.cellGridView.inactiveColorRandom = self.settings.inactiveColorRandom
         self.cellGridView.noteCellInactiveColorRandomChanged()
-        self.cellGridView.inactiveColorRandomColorMode = self.settings.inactiveColorRandomColorMode
-        self.cellGridView.noteCellInactiveColorRandomColorModeChanged()
+        self.cellGridView.inactiveColorRandomPalette = self.settings.inactiveColorRandomPalette
+        self.cellGridView.noteCellInactiveColorRandomPaletteChanged()
         self.cellGridView.inactiveColorRandomDynamic = self.settings.inactiveColorRandomDynamic
         self.cellGridView.noteCellInactiveColorRandomDynamicChanged()
         self.updateImage()

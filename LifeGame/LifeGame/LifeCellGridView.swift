@@ -9,8 +9,8 @@ public final class LifeCellGridView: CellGridView
     public   internal(set) var inactiveColor: Colour // xyzzy/internal
     public   internal(set)  var inactiveColorRandom: Bool // xyzzy/internal
     public   internal(set)  var inactiveColorRandomDynamic: Bool // xyzzy/internal
-    public   internal(set)  var inactiveColorRandomColorMode: ColourMode // xyzzy/internal
-    public   private(set)  var inactiveColorRandomColorFilter: ColourFilter?
+    public   internal(set)  var inactiveColorRandomPalette: ColourMode // xyzzy/internal
+    public   private(set)  var inactiveColorRandomFilter: ColourFilter?
     public   private(set)  var dragThreshold: Int
     public   private(set)  var swipeThreshold: Int
     public   private(set)  var soundEnabled: Bool
@@ -21,16 +21,16 @@ public final class LifeCellGridView: CellGridView
 
     public override init(_ config: CellGridView.Config? = nil) {
         let config: LifeCellGridView.Config? = config as? LifeCellGridView.Config
-        self.activeColor                    = config?.activeColor                    ?? Settings.Defaults.activeColor
-        self.inactiveColor                  = config?.inactiveColor                  ?? Settings.Defaults.inactiveColor
-        self.inactiveColorRandom            = config?.inactiveColorRandom            ?? Settings.Defaults.inactiveColorRandom
-        self.inactiveColorRandomDynamic     = config?.inactiveColorRandomDynamic     ?? Settings.Defaults.inactiveColorRandomDynamic
-        self.inactiveColorRandomColorMode   = config?.inactiveColorRandomColorMode   ?? Settings.Defaults.inactiveColorRandomColorMode
-        self.inactiveColorRandomColorFilter = config?.inactiveColorRandomColorFilter ?? Settings.Defaults.inactiveColorRandomColorFilter
-        self.dragThreshold                  = config?.dragThreshold                  ?? Settings.Defaults.dragThreshold
-        self.swipeThreshold                 = config?.swipeThreshold                 ?? Settings.Defaults.swipeThreshold
-        self.soundEnabled                   = config?.soundEnabled                   ?? Settings.Defaults.soundEnabled
-        self.hapticEnabled                  = config?.hapticEnabled                  ?? Settings.Defaults.hapticEnabled
+        self.activeColor                = config?.activeColor                ?? Settings.Defaults.activeColor
+        self.inactiveColor              = config?.inactiveColor              ?? Settings.Defaults.inactiveColor
+        self.inactiveColorRandom        = config?.inactiveColorRandom        ?? Settings.Defaults.inactiveColorRandom
+        self.inactiveColorRandomDynamic = config?.inactiveColorRandomDynamic ?? Settings.Defaults.inactiveColorRandomDynamic
+        self.inactiveColorRandomPalette = config?.inactiveColorRandomPalette ?? Settings.Defaults.inactiveColorRandomPalette
+        self.inactiveColorRandomFilter  = config?.inactiveColorRandomFilter  ?? Settings.Defaults.inactiveColorRandomFilter
+        self.dragThreshold              = config?.dragThreshold              ?? Settings.Defaults.dragThreshold
+        self.swipeThreshold             = config?.swipeThreshold             ?? Settings.Defaults.swipeThreshold
+        self.soundEnabled               = config?.soundEnabled               ?? Settings.Defaults.soundEnabled
+        self.hapticEnabled              = config?.hapticEnabled              ?? Settings.Defaults.hapticEnabled
         super.init(config)
     }
 
@@ -97,7 +97,7 @@ public final class LifeCellGridView: CellGridView
         super.writeCells()
     }
 
-    internal func noteCellInactiveColorRandomColorModeChanged() {
+    internal func noteCellInactiveColorRandomPaletteChanged() {
         self.inactiveColorRandomNumber += 2
         self.generationNumber += 2
         super.writeCells()
@@ -149,11 +149,11 @@ public final class LifeCellGridView: CellGridView
         }
     }
 
-    internal var inactiveColorRandomColorMode: ColourMode {
-        get { self._inactiveColorRandomColorMode }
+    internal var inactiveColorRandomPalette: ColourMode {
+        get { self._inactiveColorRandomPalette }
         set {
-            if (newValue != self._inactiveColorRandomColorMode) {
-                self._inactiveColorRandomColorMode = newValue
+            if (newValue != self._inactiveColorRandomPalette) {
+                self._inactiveColorRandomPalette = newValue
                 self.inactiveColorRandomNumber += 2
                 self.generationNumber += 2
                 super.writeCells()
@@ -168,10 +168,10 @@ public final class LifeCellGridView: CellGridView
         // color mode (color, grayscale, monochrome), inactive color, and inactive color filter.
         //
         let inactiveColorRandomColorFunction: () -> Colour = {
-            Colour.random(mode: self.inactiveColorRandomColorMode,
+            Colour.random(mode: self.inactiveColorRandomPalette,
                           tint: self.inactiveColor,
                           tintBy: nil,
-                          filter: self.inactiveColorRandomColorFilter)
+                          filter: self.inactiveColorRandomFilter)
         }
         return inactiveColorRandomColorFunction
     }

@@ -32,12 +32,12 @@ class Settings: ObservableObject
 
     // Life Game specific properties.
 
-    @Published var activeColor: Colour                           = Colour.black
-    @Published var inactiveColor: Colour                         = Colour.white
-    @Published var inactiveColorRandom: Bool                     = false
-    @Published var inactiveColorRandomDynamic: Bool              = false
-    @Published var inactiveColorRandomColorMode: ColourMode      = ColourMode.color
-    @Published var inactiveColorRandomColorFilter: ColourFilter? = nil
+    @Published var activeColor: Colour                      = Colour.black
+    @Published var inactiveColor: Colour                    = Colour.white
+    @Published var inactiveColorRandom: Bool                = false
+    @Published var inactiveColorRandomDynamic: Bool         = false
+    @Published var inactiveColorRandomPalette: ColourMode   = ColourMode.color
+    @Published var inactiveColorRandomFilter: ColourFilter? = nil
 
     @Published var dragThreshold: Int  = 3
     @Published var swipeThreshold: Int = 100
@@ -83,16 +83,16 @@ class Settings: ObservableObject
 
         // Life Game specific properties.
 
-        self.activeColor                    = config.activeColor
-        self.inactiveColor                  = config.inactiveColor
-        self.inactiveColorRandom            = config.inactiveColorRandom
-        self.inactiveColorRandomDynamic     = config.inactiveColorRandomDynamic
-        self.inactiveColorRandomColorMode   = config.inactiveColorRandomColorMode
-        self.inactiveColorRandomColorFilter = config.inactiveColorRandomColorFilter
-        self.dragThreshold                  = config.dragThreshold
-        self.swipeThreshold                 = config.swipeThreshold
-        self.soundEnabled                   = config.soundEnabled
-        self.hapticEnabled                  = config.hapticEnabled
+        self.activeColor                = config.activeColor
+        self.inactiveColor              = config.inactiveColor
+        self.inactiveColorRandom        = config.inactiveColorRandom
+        self.inactiveColorRandomDynamic = config.inactiveColorRandomDynamic
+        self.inactiveColorRandomPalette = config.inactiveColorRandomPalette
+        self.inactiveColorRandomFilter  = config.inactiveColorRandomFilter
+        self.dragThreshold              = config.dragThreshold
+        self.swipeThreshold             = config.swipeThreshold
+        self.soundEnabled               = config.soundEnabled
+        self.hapticEnabled              = config.hapticEnabled
     }
 
     // Creates and returns a new LifeCellGridView.Config (derived from CellGridView.Config)
