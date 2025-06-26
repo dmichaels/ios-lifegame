@@ -60,10 +60,6 @@ public class CellGridView
     }
 
     open var config: CellGridView.Config {
-        //
-        // TODO: Should I do the CellGridView.Config.init thing right here directly instead?
-        // Question is who properly should know how exactly to create CellGridView.Config instance?
-        //
         CellGridView.Config(self)
     }
 
@@ -170,17 +166,17 @@ extension LifeCellGridView
         public var inactiveColor: Int
 
         // Initializes this instance of LifeCellGridView.Config with the properties from the given
-        // Settings, or if this is nil, then with the properties from the given LifeCellGridView,
-        // or if that is nil, then from the default values in Settings.Defaults.
+        // Settings; or if this is nil then with the properties from the given LifeCellGridView;
+        // or if that is nil then from the default values in Settings.Defaults.
         //
         // Note that this constructor does in fact effectively hide the base
         // class constructor which takes a CellGridView, which is what we want;
         // i.e. only allow creation of LifeCellGridView.Config with a LifeCellGridView.
         //
-        // Note that calling this with a Settings object is from the toConfig method of
-        // LifeCellGridView.Config. We do not just initialize from Settings directly there
-        // because we need to initialize its CellGridView base class properties, particularly
-        // those base properties which we are not interested in here.
+        // Note that the call to this with a Settings object (and non-nil LifeCellGridView object)
+        // is done from the toConfig method of LifeCellGridView.Config. We do not just initialize
+        // from Settings directly there because we need to initialize its CellGridView base class
+        // properties, particularly those base properties which we are not interested in here.
         //
         internal init(_ cellGridView: LifeCellGridView? = nil, _ settings: Settings? = nil) {
 
@@ -230,7 +226,20 @@ public class LifeCellGridView: CellGridView {
     }
 
     public override func initialize(_ config: CellGridView.Config, fit: Bool = false, center: Bool = false) {
+
+        if (fit) {
+            //
+            // Do stuff specific to cell fitting; though aybe actually do this in configure.
+            //
+        }
+
         self.configure(config)
+
+        if (center) {
+            //
+            // Do stuff specific to centering the cells.
+            //
+        }
     }
 
     public override func configure(_ config: CellGridView.Config) {
