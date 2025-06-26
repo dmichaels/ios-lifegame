@@ -115,7 +115,8 @@ extension LifeCellGridView
         // class constructor which takes a CellGridView, which is what we want;
         // i.e. only allow creation of LifeCellGridView.Config with a LifeCellGridView.
         //
-        public init(_ cellGridView: LifeCellGridView? = nil) {
+/*
+        internal init(_ cellGridView: LifeCellGridView? = nil) {
 
             // Life Game specific properties.
 
@@ -131,7 +132,49 @@ extension LifeCellGridView
             super.cellSize       = cellGridView?.cellSize       ?? Settings.Defaults.cellSize
             super.cellPadding    = cellGridView?.cellPadding    ?? Settings.Defaults.cellPadding
         }
+*/
+        // Initializes this instance of LifeCellGridView.Config with the properties from the given
+        // LifeCellGridView, or if this is nil, then with the properties from the given Settings,
+        // or if that is nil, then from the default values in Settings.Defaults.
+        //
+        // Note that this constructor does in fact effectively hide the base
+        // class constructor which takes a CellGridView, which is what we want;
+        // i.e. only allow creation of LifeCellGridView.Config with a LifeCellGridView.
+        //
+        // Note that the case of calling this with a Settings object
+        //
+        internal init(_ cellGridView: LifeCellGridView? = nil, _ settings: Settings? = nil) {
 
+            // Shorter names/aliases; to easier set/check what is being initialized here.
+
+            let v: LifeCellGridView? = cellGridView
+            let s: Settings?         = settings
+            let d: Settings          = Settings.Defaults
+
+            // Life Game specific properties.
+
+            self.activeColor     = s?.activeColor    ?? v?.activeColor   ?? d.activeColor
+            self.inactiveColor   = s?.inactiveColor  ?? v?.inactiveColor ?? d.inactiveColor
+
+            // CellGridView base class specific properties.
+
+            super.init(v)
+
+            super.viewBackground = s?.viewBackground ?? v?.viewBackground ?? d.viewBackground
+            super.viewScaling    = s?.viewScaling    ?? v?.viewScaling    ?? d.viewScaling
+            super.cellSize       = s?.cellSize       ?? v?.cellSize       ?? d.cellSize
+            super.cellPadding    = s?.cellPadding    ?? v?.cellPadding    ?? d.cellPadding
+        }
+
+        // Initializes this instance of LifeCellGridView.Config with the properties from the given
+        // LifeCellGridView and (then) from the given Settings. This is called from the toConfig
+        // method of LifeCellGridView.Config. We do not just initialize from Settings directly
+        // because then how would be intitialize its (CellGridView) base class properties, and
+        // in particular those base class properties which we are not interested in manipulating
+        // here in LifeGame; so we use the (above) constructor to initialize from the given
+        // LifeCellGridView and then overwrite properties from the given Settings.
+        //
+/*
         internal convenience init(_ cellGridView: LifeCellGridView, _ settings: Settings) {
 
             self.init(cellGridView)
@@ -146,6 +189,7 @@ extension LifeCellGridView
             super.viewBackground = settings.viewBackground
             super.viewScaling    = settings.viewScaling
         }
+*/
     }
 }
 
@@ -233,7 +277,7 @@ extension Settings
         // TODO
         //
         // Hmmm. But we initially initialized this Settings object to pass into SettingsView,
-        // using the above fromConfig function, with the Config for our LifeCellGridView,
+        // using the above fromConfig method, with the Config for our LifeCellGridView,
         // so it should already have been set up with the properties from that, so should
         // reallly only have to copy the properties from this Settings object into a (new)
         // LifeCellGridView.Config object.
