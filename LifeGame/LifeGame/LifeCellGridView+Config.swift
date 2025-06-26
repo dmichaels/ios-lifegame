@@ -19,6 +19,13 @@ extension LifeCellGridView
         public var soundEnabled: Bool  = false
         public var hapticEnabled: Bool = false
 
+        // Initializes this instance of LifeCellGridView.Config with the properties from the given
+        // LifeCellGridView, or with the default values from Settings.Defaults is nil is given.
+        //
+        // Note that this constructor does in fact effectively hide the base
+        // class constructor which takes a CellGridView, which is what we want;
+        // i.e. only allow creation of LifeCellGridView.Config with a LifeCellGridView.
+        //
         public init(_ cellGridView: LifeCellGridView? = nil) {
 
             // Life Game specific properties.

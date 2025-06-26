@@ -51,8 +51,8 @@ class Settings: ObservableObject
     public static let Defaults: Settings = Settings()
 
     // Sets up this Settings object from the given LifeCellGridView.Config.
-    // This is called when we are instantiating/showing the SettingsView.
-    // For example in ContentView we will have something like this:
+    // Intended to be called, for example, before showing SettingsView
+    // from ContentView, something like this:
     //
     //     @EnvironmentObject var cellGridView: LifeCellGridView
     //     @EnvironmentObject var settings: Settings
@@ -83,21 +83,21 @@ class Settings: ObservableObject
 
         // Life Game specific properties.
 
-        self.activeColor                  = config.activeColor
-        self.inactiveColor                = config.inactiveColor
-        self.inactiveColorRandom          = config.inactiveColorRandom
-        self.inactiveColorRandomDynamic   = config.inactiveColorRandomDynamic
-        self.inactiveColorRandomColorMode = config.inactiveColorRandomColorMode
+        self.activeColor                    = config.activeColor
+        self.inactiveColor                  = config.inactiveColor
+        self.inactiveColorRandom            = config.inactiveColorRandom
+        self.inactiveColorRandomDynamic     = config.inactiveColorRandomDynamic
+        self.inactiveColorRandomColorMode   = config.inactiveColorRandomColorMode
         self.inactiveColorRandomColorFilter = config.inactiveColorRandomColorFilter
-        self.dragThreshold                = config.dragThreshold
-        self.swipeThreshold               = config.swipeThreshold
-        self.soundEnabled                 = config.soundEnabled
-        self.hapticEnabled                = config.hapticEnabled
+        self.dragThreshold                  = config.dragThreshold
+        self.swipeThreshold                 = config.swipeThreshold
+        self.soundEnabled                   = config.soundEnabled
+        self.hapticEnabled                  = config.hapticEnabled
     }
 
-    // Creates and returns a LifeCellGridView.Config (derived from CellGridView.Config) object,
-    // from this Settings object. This is called when we return from the SettingsView.
-    // For example in ContentView we will have something like this:
+    // Creates and returns a new LifeCellGridView.Config (derived from CellGridView.Config)
+    // object, with properties initializes from this Settings object. Intended to be called,
+    // for example, on return from SettingsView in ContentView, something like this:
     //
     //     @EnvironmentObject var cellGridView: LifeCellGridView
     //     @EnvironmentObject var settings: Settings

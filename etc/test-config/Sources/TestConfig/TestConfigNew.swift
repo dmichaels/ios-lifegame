@@ -27,7 +27,7 @@ extension CellGridView
         public var cellSize: Int
         public var cellPadding: Int
 
-        // Creates this instance of CellGridView.Config with the properties from the given
+        // Initializes this instance of CellGridView.Config with the properties from the given
         // CellGridView, or with the default values from CellGridView.Defaults is nil is given.
         //
         public init(_ cellGridView: CellGridView? = nil) {
@@ -108,7 +108,7 @@ extension LifeCellGridView
         public var activeColor: Int
         public var inactiveColor: Int
 
-        // Creates this instance of LifeCellGridView.Config with the properties from the given
+        // Initializes this instance of LifeCellGridView.Config with the properties from the given
         // LifeCellGridView, or with the default values from Settings.Defaults is nil is given.
         //
         // Note that this constructor does in fact effectively hide the base
@@ -132,6 +132,9 @@ extension LifeCellGridView
             super.cellPadding    = cellGridView?.cellPadding    ?? Settings.Defaults.cellPadding
         }
 
+        // TODO
+        // See "Hmmm" comment below.
+        //
         internal init(_ cellGridView: LifeCellGridView, _ settings: Settings) {
 
             // Life Game specific properties.
@@ -169,8 +172,10 @@ public class LifeCellGridView: CellGridView {
 
     public override var config: LifeCellGridView.Config {
         //
-        // TODO: Should I do the CellGridView.Config.init thing right here directly instead?
+        // TODO
+        // Should I do the CellGridView.Config.init thing right here directly instead?
         // Question is who properly should know how exactly to create CellGridView.Config instance?
+        // Currently I think the way it is here is fine (2025-06-25 23:22).
         //
         LifeCellGridView.Config(self)
     }
@@ -189,11 +194,14 @@ public class LifeCellGridView: CellGridView {
 extension Settings
 {
     // Sets up this Settings object from the given LifeCellGridView.Config.
-    // This is called when we are instantiating/showing the SettingsView.
-    // For example in ContentView we will have something like this:
+    // Intended to be called, for example, before showing SettingsView
+    // from ContentView, something like this:
     //
+    //     @EnvironmentObject var cellGridView: LifeCellGridView
+    //     @EnvironmentObject var settings: Settings
     //     func gotoSettingsView() {
-    //         self.settings.fromConfig(self.cellGridView.config)
+    //         let config: LifeCellGridView.Config = self.cellGridView.config
+    //         self.settings.fromConfig(config)
     //         self.showSettingsView = true
     //     }
     //
@@ -212,10 +220,12 @@ extension Settings
         self.cellPadding    = config.cellPadding
     }
 
-    // Creates and returns a LifeCellGridView.Config (derived from CellGridView.Config) object,
-    // from this Settings object. This is called when we return from the SettingsView.
-    // For example in ContentView we will have something like this:
+    // Creates and returns a new LifeCellGridView.Config (derived from CellGridView.Config)
+    // object, with properties initializes from this Settings object. Intended to be called,
+    // for example, on return from SettingsView in ContentView, something like this:
     //
+    //     @EnvironmentObject var cellGridView: LifeCellGridView
+    //     @EnvironmentObject var settings: Settings
     //     func onSettingsChange() {
     //         let config: LifeCellGridView.Config = self.settings.toConfig(self.cellGridView)
     //         self.cellGridView.configure(config)
@@ -223,6 +233,13 @@ extension Settings
     //
     internal func toConfig(_ cellGridView: LifeCellGridView) -> LifeCellGridView.Config
     {
+        // TODO
+        // Hmmm. But we initially initialized this Settings object to pass into SettingsView,
+        // using the above fromConfig function, with the Config for our LifeCellGridView,
+        // so it should already have been set up with the properties from that, so should
+        // reallly only have to copy the properties from this Settings object into a (new)
+        // LifeCellGridView.Config object.
+        //
         return LifeCellGridView.Config(cellGridView, self)
     }
 }
@@ -231,17 +248,20 @@ extension Settings
 //
 public class ContentView
 {
-    private var settings: Settings = Settings()
-    private var cellGridView: LifeCellGridView = LifeCellGridView()
+    /* @EnvironmentObject */ private var settings: Settings = Settings()
+    /* @EnvironmentObject */ private var cellGridView: LifeCellGridView = LifeCellGridView()
+    /* @State */             private var showSettingsView = false
 
-    internal func showSettingsView() {
+    internal func gotoSettingsView() {
         let config: LifeCellGridView.Config = self.cellGridView.config
         self.settings.fromConfig(config)
+        self.showSettingsView = true
     }
 
     internal func onSettingsViewChange() {
         let config: LifeCellGridView.Config = self.settings.toConfig(self.cellGridView)
         self.cellGridView.configure(config)
+        self.showSettingsView = true
     }
 }
 
