@@ -21,16 +21,30 @@ extension CellGridView
 {
     public class Config {
 
-        public var viewBackground: Int
-        public var viewTransparency: UInt8
-        public var viewScaling: Bool
-        public var cellSize: Int
-        public var cellPadding: Int
+        public private(set) var viewBackground: Int
+        public private(set) var viewTransparency: UInt8
+        public private(set) var viewScaling: Bool
+        public private(set) var cellSize: Int
+        public private(set) var cellPadding: Int
+
+        public init(viewBackground: Int?     = nil,
+                    viewTransparency: UInt8? = nil,
+                    viewScaling: Bool?       = nil,
+                    cellSize: Int?           = nil,
+                    cellPadding: Int?        = nil)
+        {
+            self.viewBackground   = viewBackground   ?? CellGridView.Defaults.viewBackground
+            self.viewTransparency = viewTransparency ?? CellGridView.Defaults.viewTransparency
+            self.viewScaling      = viewScaling      ?? CellGridView.Defaults.viewScaling
+            self.cellSize         = cellSize         ?? CellGridView.Defaults.cellSize
+            self.cellPadding      = cellPadding      ?? CellGridView.Defaults.cellPadding
+        }
 
         // Initializes this instance of CellGridView.Config with the properties from the given
         // CellGridView, or with the default values from CellGridView.Defaults is nil is given.
         //
-        public init(_ cellGridView: CellGridView? = nil) {
+        public init(_ cellGridView: CellGridView? = nil)
+        {
             self.viewBackground   = cellGridView?.viewBackground   ?? CellGridView.Defaults.viewBackground
             self.viewTransparency = cellGridView?.viewTransparency ?? CellGridView.Defaults.viewTransparency
             self.viewScaling      = cellGridView?.viewScaling      ?? CellGridView.Defaults.viewScaling
@@ -195,8 +209,8 @@ extension LifeCellGridView
         // from Settings directly there because we need to initialize its CellGridView base class
         // properties, particularly those base properties which we are not interested in here.
         //
-        internal init(_ cellGridView: LifeCellGridView? = nil, _ settings: Settings? = nil) {
-
+        internal init(_ cellGridView: LifeCellGridView? = nil, _ settings: Settings? = nil)
+        {
             // Shorter names/aliases; to easier see/check what is being initialized here.
 
             let v: LifeCellGridView? = cellGridView
@@ -210,12 +224,11 @@ extension LifeCellGridView
 
             // CellGridView base class specific properties.
 
-            super.init(v)
+            super.init(viewBackground: s?.viewBackground ?? v?.viewBackground ?? d.viewBackground,
+                       viewScaling:    s?.viewScaling    ?? v?.viewScaling    ?? d.viewScaling,
+                       cellSize:       s?.cellSize       ?? v?.cellSize       ?? d.cellSize,
+                       cellPadding:    s?.cellPadding    ?? v?.cellPadding    ?? d.cellPadding)
 
-            super.viewBackground = s?.viewBackground ?? v?.viewBackground ?? d.viewBackground
-            super.viewScaling    = s?.viewScaling    ?? v?.viewScaling    ?? d.viewScaling
-            super.cellSize       = s?.cellSize       ?? v?.cellSize       ?? d.cellSize
-            super.cellPadding    = s?.cellPadding    ?? v?.cellPadding    ?? d.cellPadding
         }
     }
 }

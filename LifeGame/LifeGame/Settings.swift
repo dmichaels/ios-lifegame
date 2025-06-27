@@ -5,32 +5,31 @@ import Utils
 
 class Settings: ObservableObject
 {
-    // CellGridView base class specific properties.
-    // See CellGridView.Defaults for the full set of parameters available. 
+    // CellGridView base class specific properties we are interested in controlling; see CellGridView.Defaults for all.
 
-    @Published var viewBackground: Colour     = Colour.darkGray
-    @Published var viewTransparency: UInt8    = Colour.OPAQUE
-    @Published var viewScaling: Bool          = true
+    @Published var viewBackground: Colour                   = Colour.darkGray
+    @Published var viewTransparency: UInt8                  = Colour.OPAQUE
+    @Published var viewScaling: Bool                        = true
 
-    @Published var cellSize: Int              = 18
-    @Published var cellSizeFit: Bool          = false // xyzzy
-    @Published var cellPadding: Int           = 1
-    @Published var cellShape: CellShape       = CellShape.rounded
+    @Published var cellSize: Int                            = 18
+    @Published var cellSizeFit: Bool                        = false // xyzzy
+    @Published var cellPadding: Int                         = 1
+    @Published var cellShape: CellShape                     = CellShape.rounded
 
-    @Published var gridColumns: Int           = 50 // 500
-    @Published var gridRows: Int              = 75 // 750
-    @Published var centerCells: Bool          = false // xyzzy
+    @Published var gridColumns: Int                         = 50 // 500
+    @Published var gridRows: Int                            = 75 // 750
+    @Published var centerCells: Bool                        = false // xyzzy
 
-    @Published var restrictShift: Bool        = true
-    @Published var unscaledZoom: Bool         = false
-    @Published var cellAntialiasFade: Float   = CellGridView.Defaults.cellAntialiasFade
-    @Published var cellRoundedRadius: Float   = CellGridView.Defaults.cellRoundedRadius
+    @Published var restrictShift: Bool                      = true
+    @Published var unscaledZoom: Bool                       = false
+    @Published var cellAntialiasFade: Float                 = CellGridView.Defaults.cellAntialiasFade
+    @Published var cellRoundedRadius: Float                 = CellGridView.Defaults.cellRoundedRadius
 
-    @Published var selectMode: Bool           = true
-    @Published var automationMode: Bool       = true
-    @Published var automationInterval: Double = 0.5
+    @Published var selectMode: Bool                         = true
+    @Published var automationMode: Bool                     = true
+    @Published var automationInterval: Double               = 0.5
 
-    // Life Game specific properties.
+    // LifeCellGridView specific properties.
 
     @Published var activeColor: Colour                      = Colour.black
     @Published var inactiveColor: Colour                    = Colour.white
@@ -81,7 +80,7 @@ class Settings: ObservableObject
         self.automationMode     = config.automationMode
         self.automationInterval = config.automationInterval
 
-        // Life Game specific properties.
+        // LifeCellGridView specific properties.
 
         self.activeColor                = config.activeColor
         self.inactiveColor              = config.inactiveColor

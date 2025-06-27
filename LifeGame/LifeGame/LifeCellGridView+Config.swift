@@ -40,7 +40,7 @@ extension LifeCellGridView
             let s: Settings?         = settings
             let d: Settings          = Settings.Defaults
 
-            // Life Game specific properties.
+            // LifeCellGridView specific properties.
 
             self.activeColor                = s?.activeColor                ?? v?.activeColor                ?? d.activeColor
             self.inactiveColor              = s?.inactiveColor              ?? v?.inactiveColor              ?? d.inactiveColor
@@ -55,23 +55,21 @@ extension LifeCellGridView
 
             // CellGridView base class specific properties.
 
-            super.init(cellGridView)
-
-            super.viewBackground     = s?.viewBackground     ?? v?.viewBackground     ?? d.viewBackground
-            super.viewTransparency   = s?.viewTransparency   ?? v?.viewTransparency   ?? d.viewTransparency
-            super.viewScaling        = s?.viewScaling        ?? v?.viewScaling        ?? d.viewScaling
-            super.cellSize           = s?.cellSize           ?? v?.cellSize           ?? d.cellSize
-            super.cellPadding        = s?.cellPadding        ?? v?.cellPadding        ?? d.cellPadding
-            super.cellShape          = s?.cellShape          ?? v?.cellShape          ?? d.cellShape
-            super.gridColumns        = s?.gridColumns        ?? v?.gridColumns        ?? d.gridColumns
-            super.gridRows           = s?.gridRows           ?? v?.gridRows           ?? d.gridRows
-            super.restrictShift      = s?.restrictShift      ?? v?.restrictShift      ?? d.restrictShift
-            super.unscaledZoom       = s?.unscaledZoom       ?? v?.unscaledZoom       ?? d.unscaledZoom
-            super.cellAntialiasFade  = s?.cellAntialiasFade  ?? v?.cellAntialiasFade  ?? d.cellAntialiasFade
-            super.cellRoundedRadius  = s?.cellRoundedRadius  ?? v?.cellRoundedRadius  ?? d.cellRoundedRadius
-            super.selectMode         = s?.selectMode         ?? v?.selectMode         ?? d.selectMode
-            super.automationMode     = s?.automationMode     ?? v?.automationMode     ?? d.automationMode
-            super.automationInterval = s?.automationInterval ?? v?.automationInterval ?? d.automationInterval
+            super.init(viewBackground:     s?.viewBackground     ?? v?.viewBackground     ?? d.viewBackground,
+                       viewTransparency:   s?.viewTransparency   ?? v?.viewTransparency   ?? d.viewTransparency,
+                       viewScaling:        s?.viewScaling        ?? v?.viewScaling        ?? d.viewScaling,
+                       cellSize:           s?.cellSize           ?? v?.cellSize           ?? d.cellSize,
+                       cellPadding:        s?.cellPadding        ?? v?.cellPadding        ?? d.cellPadding,
+                       cellShape:          s?.cellShape          ?? v?.cellShape          ?? d.cellShape,
+                       gridColumns:        s?.gridColumns        ?? v?.gridColumns        ?? d.gridColumns,
+                       gridRows:           s?.gridRows           ?? v?.gridRows           ?? d.gridRows,
+                       cellAntialiasFade:  s?.cellAntialiasFade  ?? v?.cellAntialiasFade  ?? d.cellAntialiasFade,
+                       cellRoundedRadius:  s?.cellRoundedRadius  ?? v?.cellRoundedRadius  ?? d.cellRoundedRadius,
+                       restrictShift:      s?.restrictShift      ?? v?.restrictShift      ?? d.restrictShift,
+                       unscaledZoom:       s?.unscaledZoom       ?? v?.unscaledZoom       ?? d.unscaledZoom,
+                       selectMode:         s?.selectMode         ?? v?.selectMode         ?? d.selectMode,
+                       automationMode:     s?.automationMode     ?? v?.automationMode     ?? d.automationMode,
+                       automationInterval: s?.automationInterval ?? v?.automationInterval ?? d.automationInterval)
         }
     }
 }
