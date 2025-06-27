@@ -179,8 +179,8 @@ extension LifeCellGridView
 {
     public class Config: CellGridView.Config {
 
-        public var activeColor: Int
-        public var inactiveColor: Int
+        public private(set) var activeColor: Int
+        public private(set) var inactiveColor: Int
 
         // Initializes this instance of LifeCellGridView.Config with the properties from the given
         // Settings; or if this is nil then with the properties from the given LifeCellGridView;
