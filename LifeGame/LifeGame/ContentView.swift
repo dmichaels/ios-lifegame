@@ -112,7 +112,7 @@ struct ContentView: View
                                                         unscaledZoom: self.settings.unscaledZoom,
                                                         cellAntialiasFade: self.settings.cellAntialiasFade,
                                                         cellRoundedRadius: self.settings.cellRoundedRadius,
-                                                        adjustShiftOnResizeCells: true,
+                                                        adjustShift: true,
                                                         refreshCells: true)
                             self.updateImage()
                         }
@@ -196,7 +196,7 @@ struct ContentView: View
                                     cellAntialiasFade: self.settings.cellAntialiasFade,
                                     cellRoundedRadius: self.settings.cellRoundedRadius,
                                     automationInterval: self.settings.automationInterval,
-                                    adjustShiftOnResizeCells: true,
+                                    adjustShift: true,
                                     refreshCells: true)
         // TODO
         self.cellGridView.activeColor = self.settings.activeColor
