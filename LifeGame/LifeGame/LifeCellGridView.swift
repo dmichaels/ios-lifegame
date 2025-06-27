@@ -39,7 +39,8 @@ public final class LifeCellGridView: CellGridView
                                                    viewHeight: Int,
                                                    onChangeImage: (() -> Void)? = nil,
                                                    onChangeCellSize: ((Int) -> Void)? = nil,
-                                                   fit: Bool = false,
+                                                   // fit: Bool = false,
+                                                   fit: CellGridView.PreferredFit = CellGridView.PreferredFit.none,
                                                    center: Bool = false)
     {
         super.initialize(settings.toConfig(self),
