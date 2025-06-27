@@ -51,6 +51,19 @@ extension CellGridView
             self.cellSize         = cellGridView?.cellSize         ?? CellGridView.Defaults.cellSize
             self.cellPadding      = cellGridView?.cellPadding      ?? CellGridView.Defaults.cellPadding
         }
+
+        public func update(viewBackground: Int?        = nil,
+                           viewTransparency: UInt8?    = nil,
+                           viewScaling: Bool?          = nil,
+                           cellSize: Int?              = nil,
+                           cellPadding: Int?           = nil) -> CellGridView.Config
+        {
+            return CellGridView.Config(viewBackground:     viewBackground     ?? self.viewBackground,
+                                       viewTransparency:   viewTransparency   ?? self.viewTransparency,
+                                       viewScaling:        viewScaling        ?? self.viewScaling,
+                                       cellSize:           cellSize           ?? self.cellSize,
+                                       cellPadding:        cellPadding        ?? self.cellPadding)
+        }
     }
 }
 
