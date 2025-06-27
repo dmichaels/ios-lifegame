@@ -20,82 +20,58 @@ extension LifeCellGridView
         public var hapticEnabled: Bool = false
 
         // Initializes this instance of LifeCellGridView.Config with the properties from the given
-        // LifeCellGridView, or with the default values from Settings.Defaults is nil is given.
+        // Settings; or if this is nil then with the properties from the given LifeCellGridView;
+        // or if that is nil then from the default values in Settings.Defaults.
         //
         // Note that this constructor does in fact effectively hide the base
         // class constructor which takes a CellGridView, which is what we want;
         // i.e. only allow creation of LifeCellGridView.Config with a LifeCellGridView.
         //
-        public init(_ cellGridView: LifeCellGridView? = nil) {
-
-            // Life Game specific properties.
-
-            self.activeColor                = cellGridView?.activeColor                ?? Settings.Defaults.activeColor
-            self.inactiveColor              = cellGridView?.inactiveColor              ?? Settings.Defaults.inactiveColor
-            self.inactiveColorRandom        = cellGridView?.inactiveColorRandom        ?? Settings.Defaults.inactiveColorRandom
-            self.inactiveColorRandomDynamic = cellGridView?.inactiveColorRandomDynamic ?? Settings.Defaults.inactiveColorRandomDynamic
-            self.inactiveColorRandomPalette = cellGridView?.inactiveColorRandomPalette ?? Settings.Defaults.inactiveColorRandomPalette
-            self.inactiveColorRandomFilter  = cellGridView?.inactiveColorRandomFilter  ?? Settings.Defaults.inactiveColorRandomFilter
-            self.dragThreshold              = cellGridView?.dragThreshold              ?? Settings.Defaults.dragThreshold
-            self.swipeThreshold             = cellGridView?.swipeThreshold             ?? Settings.Defaults.swipeThreshold
-            self.soundEnabled               = cellGridView?.soundEnabled               ?? Settings.Defaults.soundEnabled
-            self.hapticEnabled              = cellGridView?.hapticEnabled              ?? Settings.Defaults.hapticEnabled
-
-            // CellGridView base class specific properties.
-
-            super.init(cellGridView)
-
-            super.viewBackground     = cellGridView?.viewBackground     ?? Settings.Defaults.viewBackground
-            super.viewScaling        = cellGridView?.viewScaling        ?? Settings.Defaults.viewScaling
-            super.cellSize           = cellGridView?.cellSize           ?? Settings.Defaults.cellSize
-            super.cellPadding        = cellGridView?.cellPadding        ?? Settings.Defaults.cellPadding
-            super.cellShape          = cellGridView?.cellShape          ?? Settings.Defaults.cellShape
-            super.gridColumns        = cellGridView?.gridColumns        ?? Settings.Defaults.gridColumns
-            super.gridRows           = cellGridView?.gridRows           ?? Settings.Defaults.gridRows
-            super.restrictShift      = cellGridView?.restrictShift      ?? Settings.Defaults.restrictShift
-            super.unscaledZoom       = cellGridView?.unscaledZoom       ?? Settings.Defaults.unscaledZoom
-            super.cellAntialiasFade  = cellGridView?.cellAntialiasFade  ?? Settings.Defaults.cellAntialiasFade
-            super.cellRoundedRadius  = cellGridView?.cellRoundedRadius  ?? Settings.Defaults.cellRoundedRadius
-            super.selectMode         = cellGridView?.selectMode         ?? Settings.Defaults.selectMode
-            super.automationMode     = cellGridView?.automationMode     ?? Settings.Defaults.automationMode
-            super.automationInterval = cellGridView?.automationInterval ?? Settings.Defaults.automationInterval
-        }
-
-        // TODO: Hmmmm
+        // Note that the call to this with a Settings object (and non-nil LifeCellGridView object)
+        // is done from the toConfig method of LifeCellGridView.Config. We do not just initialize
+        // from Settings directly there because we need to initialize its CellGridView base class
+        // properties, particularly those base properties which we are not interested in here.
         //
-        internal init(_ cellGridView: LifeCellGridView, _ settings: Settings) {
+        internal init(_ cellGridView: LifeCellGridView? = nil, _ settings: Settings? = nil) {
+
+            // Shorter names/aliases; to easier see/check what is being initialized here.
+
+            let v: LifeCellGridView? = cellGridView
+            let s: Settings?         = settings
+            let d: Settings          = Settings.Defaults
 
             // Life Game specific properties.
 
-            self.activeColor                = settings.activeColor
-            self.inactiveColor              = settings.inactiveColor
-            self.inactiveColorRandom        = settings.inactiveColorRandom
-            self.inactiveColorRandomDynamic = settings.inactiveColorRandomDynamic
-            self.inactiveColorRandomPalette = settings.inactiveColorRandomPalette
-            self.dragThreshold              = settings.dragThreshold
-            self.swipeThreshold             = settings.swipeThreshold
-            self.soundEnabled               = settings.soundEnabled
-            self.hapticEnabled              = settings.hapticEnabled
+            self.activeColor                = s?.activeColor                ?? v?.activeColor                ?? d.activeColor
+            self.inactiveColor              = s?.inactiveColor              ?? v?.inactiveColor              ?? d.inactiveColor
+            self.inactiveColorRandom        = s?.inactiveColorRandom        ?? v?.inactiveColorRandom        ?? d.inactiveColorRandom
+            self.inactiveColorRandomDynamic = s?.inactiveColorRandomDynamic ?? v?.inactiveColorRandomDynamic ?? d.inactiveColorRandomDynamic
+            self.inactiveColorRandomPalette = s?.inactiveColorRandomPalette ?? v?.inactiveColorRandomPalette ?? d.inactiveColorRandomPalette
+            self.inactiveColorRandomFilter  = s?.inactiveColorRandomFilter  ?? v?.inactiveColorRandomFilter  ?? d.inactiveColorRandomFilter
+            self.dragThreshold              = s?.dragThreshold              ?? v?.dragThreshold              ?? d.dragThreshold
+            self.swipeThreshold             = s?.swipeThreshold             ?? v?.swipeThreshold             ?? d.swipeThreshold
+            self.soundEnabled               = s?.soundEnabled               ?? v?.soundEnabled               ?? d.soundEnabled
+            self.hapticEnabled              = s?.hapticEnabled              ?? v?.hapticEnabled              ?? d.hapticEnabled
 
             // CellGridView base class specific properties.
 
             super.init(cellGridView)
 
-            super.viewBackground     = settings.viewBackground
-            super.viewScaling        = settings.viewScaling
-            super.viewTransparency   = settings.viewTransparency
-            super.cellSize           = settings.cellSize
-            super.cellPadding        = settings.cellPadding
-            super.cellShape          = settings.cellShape
-            super.gridColumns        = settings.gridColumns
-            super.gridRows           = settings.gridRows
-            super.restrictShift      = settings.restrictShift
-            super.unscaledZoom       = settings.unscaledZoom
-            super.cellAntialiasFade  = settings.cellAntialiasFade
-            super.cellRoundedRadius  = settings.cellRoundedRadius
-            super.selectMode         = settings.selectMode
-            super.automationMode     = settings.automationMode
-            super.automationInterval = settings.automationInterval
+            super.viewBackground     = s?.viewBackground     ?? v?.viewBackground     ?? d.viewBackground
+            super.viewTransparency   = s?.viewTransparency   ?? v?.viewTransparency   ?? d.viewTransparency
+            super.viewScaling        = s?.viewScaling        ?? v?.viewScaling        ?? d.viewScaling
+            super.cellSize           = s?.cellSize           ?? v?.cellSize           ?? d.cellSize
+            super.cellPadding        = s?.cellPadding        ?? v?.cellPadding        ?? d.cellPadding
+            super.cellShape          = s?.cellShape          ?? v?.cellShape          ?? d.cellShape
+            super.gridColumns        = s?.gridColumns        ?? v?.gridColumns        ?? d.gridColumns
+            super.gridRows           = s?.gridRows           ?? v?.gridRows           ?? d.gridRows
+            super.restrictShift      = s?.restrictShift      ?? v?.restrictShift      ?? d.restrictShift
+            super.unscaledZoom       = s?.unscaledZoom       ?? v?.unscaledZoom       ?? d.unscaledZoom
+            super.cellAntialiasFade  = s?.cellAntialiasFade  ?? v?.cellAntialiasFade  ?? d.cellAntialiasFade
+            super.cellRoundedRadius  = s?.cellRoundedRadius  ?? v?.cellRoundedRadius  ?? d.cellRoundedRadius
+            super.selectMode         = s?.selectMode         ?? v?.selectMode         ?? d.selectMode
+            super.automationMode     = s?.automationMode     ?? v?.automationMode     ?? d.automationMode
+            super.automationInterval = s?.automationInterval ?? v?.automationInterval ?? d.automationInterval
         }
     }
 }

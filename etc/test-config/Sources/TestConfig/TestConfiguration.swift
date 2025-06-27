@@ -64,7 +64,20 @@ public class CellGridView
     }
 
     open func initialize(_ config: CellGridView.Config, fit: Bool = false, center: Bool = false) {
+
+        if (fit) {
+            //
+            // Do stuff specific to cell fitting; though aybe actually do this in configure.
+            //
+        }
+
         self.configure(config)
+
+        if (center) {
+            //
+            // Do stuff specific to centering the cells.
+            //
+        }
     }
 
     open func configure(_ config: CellGridView.Config) {
@@ -91,6 +104,10 @@ class Settings
     public var activeColor: Int    = 0x06
     public var inactiveColor: Int  = 0x07
 
+    // This just allows this Settings object to be the single place where we define the default parameters
+    // for this app, which are easily accessible elsewhere, without having to define a separate Defaults class;
+    // note that we still instantiate this class normally when passing to ContentView; it would otherwise be odd.
+    //
     public static let Defaults: Settings = Settings()
 }
 
@@ -226,20 +243,7 @@ public class LifeCellGridView: CellGridView {
     }
 
     public override func initialize(_ config: CellGridView.Config, fit: Bool = false, center: Bool = false) {
-
-        if (fit) {
-            //
-            // Do stuff specific to cell fitting; though aybe actually do this in configure.
-            //
-        }
-
-        self.configure(config)
-
-        if (center) {
-            //
-            // Do stuff specific to centering the cells.
-            //
-        }
+        super.initialize(config, fit: fit, center: center)
     }
 
     public override func configure(_ config: CellGridView.Config) {

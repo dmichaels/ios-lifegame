@@ -181,13 +181,6 @@ struct ContentView: View
     }
 
     private func onChangeSettings() {
-        let configuration: CellGridView.Configuration =
-            CellGridView.Configuration(self.cellGridView)
-                .with(viewBackground: self.settings.viewBackground)
-                .with(viewTransparency: self.settings.viewTransparency)
-                .with(viewScaling: self.settings.viewScaling)
-                .with(cellSize: self.settings.cellSize)
-                .with(cellPadding: self.settings.cellPadding)
         self.cellGridView.configure(viewWidth: self.cellGridView.viewWidth,
                                     viewHeight: self.cellGridView.viewHeight,
                                     viewBackground: self.settings.viewBackground,

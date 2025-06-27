@@ -19,18 +19,18 @@ public final class LifeCellGridView: CellGridView
     internal private(set)  var inactiveColorRandomNumber: Int = 0
     private                var liveCells: Set<CellLocation> = []
 
-    public override init(_ config: CellGridView.Config? = nil) {
-        let config: LifeCellGridView.Config? = config as? LifeCellGridView.Config
-        self.activeColor                = config?.activeColor                ?? Settings.Defaults.activeColor
-        self.inactiveColor              = config?.inactiveColor              ?? Settings.Defaults.inactiveColor
-        self.inactiveColorRandom        = config?.inactiveColorRandom        ?? Settings.Defaults.inactiveColorRandom
-        self.inactiveColorRandomDynamic = config?.inactiveColorRandomDynamic ?? Settings.Defaults.inactiveColorRandomDynamic
-        self.inactiveColorRandomPalette = config?.inactiveColorRandomPalette ?? Settings.Defaults.inactiveColorRandomPalette
-        self.inactiveColorRandomFilter  = config?.inactiveColorRandomFilter  ?? Settings.Defaults.inactiveColorRandomFilter
-        self.dragThreshold              = config?.dragThreshold              ?? Settings.Defaults.dragThreshold
-        self.swipeThreshold             = config?.swipeThreshold             ?? Settings.Defaults.swipeThreshold
-        self.soundEnabled               = config?.soundEnabled               ?? Settings.Defaults.soundEnabled
-        self.hapticEnabled              = config?.hapticEnabled              ?? Settings.Defaults.hapticEnabled
+    public init(_ config: LifeCellGridView.Config? = nil) {
+        let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
+        self.activeColor                = config.activeColor
+        self.inactiveColor              = config.inactiveColor
+        self.inactiveColorRandom        = config.inactiveColorRandom
+        self.inactiveColorRandomDynamic = config.inactiveColorRandomDynamic
+        self.inactiveColorRandomPalette = config.inactiveColorRandomPalette
+        self.inactiveColorRandomFilter  = config.inactiveColorRandomFilter
+        self.dragThreshold              = config.dragThreshold
+        self.swipeThreshold             = config.swipeThreshold
+        self.soundEnabled               = config.soundEnabled
+        self.hapticEnabled              = config.hapticEnabled
         super.init(config)
     }
 
