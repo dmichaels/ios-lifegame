@@ -12,7 +12,6 @@ class Settings: ObservableObject
     @Published var viewScaling: Bool                        = true
 
     @Published var cellSize: Int                            = 18
-    @Published var cellSizeFit: Bool                        = false // xyzzy
     @Published var cellPadding: Int                         = 1
     @Published var cellShape: CellShape                     = CellShape.rounded
 
