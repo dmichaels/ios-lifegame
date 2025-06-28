@@ -6,9 +6,8 @@ struct ContentView: View
 {
     @EnvironmentObject var cellGridView: LifeCellGridView
     @EnvironmentObject var settings: Settings
-
     @StateObject var orientation = OrientationObserver()
-
+    //
     // This ignoreSafeArea is settable (e.g. in SettingsView); we currently always ignore the safe area;
     // have not been able to get the geometry working in general when NOT ignoring the safe area;
     // the image gets incorrectly shifted (up) on orientation change et cetera; todo someday.
@@ -19,6 +18,9 @@ struct ContentView: View
     @State private var imageAngle: Angle = Angle.zero
     @State private var showSettingsView = false
     @State private var showControlBar = false
+
+    private static let viewWidthGuess: Int = Int(UIScreen.main.bounds.width)
+    private static let viewHeightGuess: Int = Int(UIScreen.main.bounds.height)
 
     var body: some View {
         NavigationView {
@@ -65,7 +67,7 @@ struct ContentView: View
                     if (!self.cellGridView.initialized) {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         let landscape = self.orientation.landscape
-                        if (false) {
+                        if (true) {
                             // todo/xyzzy NEW NEW NEW
                             self.cellGridView.initialize(self.settings,
                                                          screen: screen,
@@ -76,6 +78,7 @@ struct ContentView: View
                                                          preferredFit: CellGridView.PreferredFit.none,
                                                          center: false)
                         }
+                        /*
                         self.cellGridView.initialize(screen: screen,
                                                      viewWidth: landscape ? screen.height : screen.width,
                                                      viewHeight: landscape ? screen.width : screen.height,
@@ -96,11 +99,17 @@ struct ContentView: View
                                                      cellRoundedRadius: self.settings.cellRoundedRadius,
                                                      onChangeImage: self.updateImage,
                                                      onChangeCellSize: self.onChangeCellSize)
+                        */
                         self.rotateImage()
                         if (self.cellGridView.automationMode) {
                             self.cellGridView.automationStart()
                         }
                     }
+                    /*
+                     * ACTUALLY ...
+                     * Forget why we even needed this; maybe for turning on/off ignoreSafeArea ...
+                     * which does not currently (nor ever we think) work ....
+                     *
                     else {
                         //
                         // TODO
@@ -110,24 +119,28 @@ struct ContentView: View
                         if ((screen.width != self.cellGridView.screen.width) ||
                             (screen.height != self.cellGridView.screen.height)) {
                             let landscape = self.orientation.landscape
-                            self.cellGridView.configure(screen: screen,
+                            self.cellGridView.configure(self.cellGridView.config,
                                                         viewWidth: landscape ? screen.height : screen.width,
-                                                        viewHeight: landscape ? screen.width : screen.height,
-                                                        viewBackground: self.settings.viewBackground,
-                                                        viewTransparency: self.settings.viewTransparency,
-                                                        viewScaling: self.settings.viewScaling,
-                                                        cellSize: self.settings.cellSize,
-                                                        cellPadding: self.settings.cellPadding,
-                                                        cellShape: self.settings.cellShape,
-                                                        restrictShift: self.settings.restrictShift,
-                                                        unscaledZoom: self.settings.unscaledZoom,
-                                                        cellAntialiasFade: self.settings.cellAntialiasFade,
-                                                        cellRoundedRadius: self.settings.cellRoundedRadius,
-                                                        adjustShift: true,
-                                                        refreshCells: true)
+                                                        viewHeight: landscape ? screen.width : screen.height)
+                            // self.cellGridView.configure(screen: screen,
+                            //                             viewWidth: landscape ? screen.height : screen.width,
+                            //                             viewHeight: landscape ? screen.width : screen.height,
+                            //                             viewBackground: self.settings.viewBackground,
+                            //                             viewTransparency: self.settings.viewTransparency,
+                            //                             viewScaling: self.settings.viewScaling,
+                            //                             cellSize: self.settings.cellSize,
+                            //                             cellPadding: self.settings.cellPadding,
+                            //                             cellShape: self.settings.cellShape,
+                            //                             restrictShift: self.settings.restrictShift,
+                            //                             unscaledZoom: self.settings.unscaledZoom,
+                            //                             cellAntialiasFade: self.settings.cellAntialiasFade,
+                            //                             cellRoundedRadius: self.settings.cellRoundedRadius,
+                            //                             adjustShift: true,
+                            //                             refreshCells: true)
                             self.updateImage()
                         }
                     }
+                    ... */
                 }
                 .navigationTitle("Home")
                 .navigationBarHidden(true)
@@ -193,6 +206,8 @@ struct ContentView: View
     }
 
     private func onChangeSettings() {
+        self.cellGridView.configure(self.settings)
+        /*
         self.cellGridView.configure(viewWidth: self.cellGridView.viewWidth,
                                     viewHeight: self.cellGridView.viewHeight,
                                     viewBackground: self.settings.viewBackground,
@@ -222,6 +237,7 @@ struct ContentView: View
         self.cellGridView.noteCellInactiveColorRandomPaletteChanged()
         self.cellGridView.inactiveColorRandomDynamic = self.settings.inactiveColorRandomDynamic
         self.cellGridView.noteCellInactiveColorRandomDynamicChanged()
+        */
         self.updateImage()
     }
 

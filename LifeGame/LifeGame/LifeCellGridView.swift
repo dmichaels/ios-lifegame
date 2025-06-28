@@ -52,12 +52,28 @@ public final class LifeCellGridView: CellGridView
                          center: center)
     }
 
+    internal func configure(_ settings: Settings) {
+        self.activeColor = settings.activeColor
+        self.inactiveColor = settings.inactiveColor
+        self.inactiveColorRandom = settings.inactiveColorRandom
+        self.inactiveColorRandomDynamic = settings.inactiveColorRandomDynamic
+        self.inactiveColorRandomPalette = settings.inactiveColorRandomPalette
+        self.inactiveColorRandomFilter = settings.inactiveColorRandomFilter
+        super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
+    }
+
+    internal func configure(_ config: LifeCellGridView.Config) {
+        super.configure(config, viewWidth: self.viewWidth, viewHeight: self.viewHeight)
+    }
+
+    /*
     public override func configure(_ config: CellGridView.Config, viewWidth: Int, viewHeight: Int)
     {
         if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
             super.configure(config, viewWidth: viewWidth, viewHeight: viewHeight)
         }
     }
+    */
 
     public override var config: LifeCellGridView.Config {
         LifeCellGridView.Config(self)
