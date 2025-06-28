@@ -1,3 +1,5 @@
+public typealias Colour = Int
+
 // ---------------------------------------------------------------------------------------------------------------------
 // ios-cellgridview
 // ---------------------------------------------------------------------------------------------------------------------
@@ -7,7 +9,7 @@
 extension CellGridView
 {
     public class Defaults {
-        public static let viewBackground: Int     = 123
+        public static let viewBackground: Colour  = 123
         public static let viewTransparency: UInt8 = 255
         public static let viewScaling: Bool       = true
         public static let cellSize: Int           = 43
@@ -21,23 +23,24 @@ extension CellGridView
 {
     public class Config {
 
-        public private(set) var viewBackground: Int
+        public private(set) var viewBackground: Colour
         public private(set) var viewTransparency: UInt8
         public private(set) var viewScaling: Bool
         public private(set) var cellSize: Int
         public private(set) var cellPadding: Int
 
-        public init(viewBackground: Int?     = nil,
-                    viewTransparency: UInt8? = nil,
-                    viewScaling: Bool?       = nil,
-                    cellSize: Int?           = nil,
-                    cellPadding: Int?        = nil)
+        public init(config: CellGridView.Config? = nil,
+                    viewBackground: Colour?      = nil,
+                    viewTransparency: UInt8?     = nil,
+                    viewScaling: Bool?           = nil,
+                    cellSize: Int?               = nil,
+                    cellPadding: Int?            = nil)
         {
-            self.viewBackground   = viewBackground   ?? CellGridView.Defaults.viewBackground
-            self.viewTransparency = viewTransparency ?? CellGridView.Defaults.viewTransparency
-            self.viewScaling      = viewScaling      ?? CellGridView.Defaults.viewScaling
-            self.cellSize         = cellSize         ?? CellGridView.Defaults.cellSize
-            self.cellPadding      = cellPadding      ?? CellGridView.Defaults.cellPadding
+            self.viewBackground   = viewBackground   ?? config?.viewBackground   ?? Defaults.viewBackground
+            self.viewTransparency = viewTransparency ?? config?.viewTransparency ?? Defaults.viewTransparency
+            self.viewScaling      = viewScaling      ?? config?.viewScaling      ?? Defaults.viewScaling
+            self.cellSize         = cellSize         ?? config?.cellSize         ?? Defaults.cellSize
+            self.cellPadding      = cellPadding      ?? config?.cellPadding      ?? Defaults.cellPadding
         }
 
         // Initializes this instance of CellGridView.Config with the properties from the given
@@ -45,18 +48,18 @@ extension CellGridView
         //
         public init(_ cellGridView: CellGridView? = nil)
         {
-            self.viewBackground   = cellGridView?.viewBackground   ?? CellGridView.Defaults.viewBackground
-            self.viewTransparency = cellGridView?.viewTransparency ?? CellGridView.Defaults.viewTransparency
-            self.viewScaling      = cellGridView?.viewScaling      ?? CellGridView.Defaults.viewScaling
-            self.cellSize         = cellGridView?.cellSize         ?? CellGridView.Defaults.cellSize
-            self.cellPadding      = cellGridView?.cellPadding      ?? CellGridView.Defaults.cellPadding
+            self.viewBackground   = cellGridView?.viewBackground   ?? Defaults.viewBackground
+            self.viewTransparency = cellGridView?.viewTransparency ?? Defaults.viewTransparency
+            self.viewScaling      = cellGridView?.viewScaling      ?? Defaults.viewScaling
+            self.cellSize         = cellGridView?.cellSize         ?? Defaults.cellSize
+            self.cellPadding      = cellGridView?.cellPadding      ?? Defaults.cellPadding
         }
 
-        public func update(viewBackground: Int?        = nil,
-                           viewTransparency: UInt8?    = nil,
-                           viewScaling: Bool?          = nil,
-                           cellSize: Int?              = nil,
-                           cellPadding: Int?           = nil) -> CellGridView.Config
+        public func update(viewBackground: Colour?  = nil,
+                           viewTransparency: UInt8? = nil,
+                           viewScaling: Bool?       = nil,
+                           cellSize: Int?           = nil,
+                           cellPadding: Int?        = nil) -> CellGridView.Config
         {
             return CellGridView.Config(viewBackground:     viewBackground     ?? self.viewBackground,
                                        viewTransparency:   viewTransparency   ?? self.viewTransparency,
@@ -71,7 +74,7 @@ extension CellGridView
 //
 public class CellGridView
 {
-    public private(set) var viewBackground: Int
+    public private(set) var viewBackground: Colour
     public private(set) var viewTransparency: UInt8
     public private(set) var viewScaling: Bool
     public private(set) var cellSize: Int
@@ -124,12 +127,12 @@ public class CellGridView
 //
 class Settings
 {
-    public var viewBackground: Int = CellGridView.Defaults.viewBackground
-    public var viewScaling: Bool   = CellGridView.Defaults.viewScaling
-    public var cellSize: Int       = 25
-    public var cellPadding: Int    = 1
-    public var activeColor: Int    = 0x06
-    public var inactiveColor: Int  = 0x07
+    public var viewBackground: Colour = CellGridView.Defaults.viewBackground
+    public var viewScaling: Bool      = CellGridView.Defaults.viewScaling
+    public var cellSize: Int          = 25
+    public var cellPadding: Int       = 1
+    public var activeColor: Colour    = 0x06
+    public var inactiveColor: Colour  = 0x07
 
     // This just allows this Settings object to be the single place where we define the default parameters
     // for this app, which are easily accessible elsewhere, without having to define a separate Defaults class;
@@ -206,8 +209,8 @@ extension LifeCellGridView
 {
     public class Config: CellGridView.Config {
 
-        public private(set) var activeColor: Int
-        public private(set) var inactiveColor: Int
+        public private(set) var activeColor: Colour
+        public private(set) var inactiveColor: Colour
 
         // Initializes this instance of LifeCellGridView.Config with the properties from the given
         // Settings; or if this is nil then with the properties from the given LifeCellGridView;
@@ -250,8 +253,8 @@ extension LifeCellGridView
 //
 public class LifeCellGridView: CellGridView {
 
-    public private(set) var activeColor: Int
-    public private(set) var inactiveColor: Int
+    public private(set) var activeColor: Colour
+    public private(set) var inactiveColor: Colour
 
     // Note that this constructor does in fact effectively hide the base
     // class constructor which takes a CellGridView.Config, which is what we want;

@@ -65,6 +65,17 @@ struct ContentView: View
                     if (!self.cellGridView.initialized) {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         let landscape = self.orientation.landscape
+                        if (false) {
+                            // todo/xyzzy NEW NEW NEW
+                            self.cellGridView.initialize(self.settings,
+                                                         screen: screen,
+                                                         viewWidth: landscape ? screen.height : screen.width,
+                                                         viewHeight: landscape ? screen.width : screen.height,
+                                                         onChangeImage: self.updateImage,
+                                                         onChangeCellSize: self.onChangeCellSize,
+                                                         preferredFit: CellGridView.PreferredFit.none,
+                                                         center: false)
+                        }
                         self.cellGridView.initialize(screen: screen,
                                                      viewWidth: landscape ? screen.height : screen.width,
                                                      viewHeight: landscape ? screen.width : screen.height,
