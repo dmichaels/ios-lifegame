@@ -184,6 +184,7 @@ struct ContentView: View
     }
 
     private func onChangeCellSize(cellSize: Int) {
+        // TODO/xyzzy will eventually get rid of this as we will get config directly from CellGridView.
         self.settings.cellSize = cellSize
     }
 
