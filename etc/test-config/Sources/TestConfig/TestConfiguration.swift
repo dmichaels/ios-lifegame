@@ -310,6 +310,11 @@ extension ContentView
 {
     func printSettingsDefaults() {
         print()
+        print("CellGridView.Defaults.viewBackground: \(CellGridView.Defaults.viewBackground)")
+        print("CellGridView.Defaults.viewTransparency: \(CellGridView.Defaults.viewTransparency)")
+        print("CellGridView.Defaults.viewScaling: \(CellGridView.Defaults.viewScaling)")
+        print("CellGridView.Defaults.cellSize: \(CellGridView.Defaults.cellSize)")
+        print("CellGridView.Defaults.cellPadding: \(CellGridView.Defaults.cellPadding)")
         print("Settings.Defaults.viewBackground: \(Settings.Defaults.viewBackground)")
         print("Settings.Defaults.viewScaling: \(Settings.Defaults.viewScaling)")
         print("Settings.Defaults.cellSize: \(Settings.Defaults.cellSize)")
@@ -380,6 +385,7 @@ extension ContentView
 
         print("\nAFTER SIMULATE SETTINGS VIEW CHANGES:")
 
+        self.printSettingsDefaults()
         self.printSettings()
         self.printCellGridViewProperties()
         self.printCellGridViewConfig()
