@@ -244,7 +244,6 @@ extension LifeCellGridView
                        viewScaling:    s?.viewScaling    ?? v?.viewScaling    ?? d.viewScaling,
                        cellSize:       s?.cellSize       ?? v?.cellSize       ?? d.cellSize,
                        cellPadding:    s?.cellPadding    ?? v?.cellPadding    ?? d.cellPadding)
-
         }
     }
 }
