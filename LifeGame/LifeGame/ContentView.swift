@@ -19,9 +19,6 @@ struct ContentView: View
     @State private var showSettingsView = false
     @State private var showControlBar = false
 
-    private static let viewWidthGuess: Int = Int(UIScreen.main.bounds.width)
-    private static let viewHeightGuess: Int = Int(UIScreen.main.bounds.height)
-
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
@@ -67,7 +64,6 @@ struct ContentView: View
                     if (!self.cellGridView.initialized) {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         let landscape = self.orientation.landscape
-                        // NEW NEW NEW
                         self.cellGridView.initialize(self.settings,
                                                      screen: screen,
                                                      viewWidth: landscape ? screen.height : screen.width,
@@ -75,29 +71,6 @@ struct ContentView: View
                                                      onChangeImage: self.updateImage,
                                                      preferredFit: CellGridView.PreferredFit.none,
                                                      center: false)
-                        // NEW NEW NEW
-                        /*
-                        self.cellGridView.initialize(screen: screen,
-                                                     viewWidth: landscape ? screen.height : screen.width,
-                                                     viewHeight: landscape ? screen.width : screen.height,
-                                                     viewBackground: self.settings.viewBackground,
-                                                     viewTransparency: self.settings.viewTransparency,
-                                                     viewScaling: self.settings.viewScaling,
-                                                     cellSize: self.settings.cellSize,
-                                                     cellPadding: self.settings.cellPadding,
-                                                     cellShape: self.settings.cellShape,
-                                                     cellColor: self.settings.inactiveColor,
-                                                     gridColumns: self.settings.gridColumns,
-                                                     gridRows: self.settings.gridRows,
-                                                     preferredFit: false,
-                                                     centerCells: self.settings.centerCells,
-                                                     restrictShift: self.settings.restrictShift,
-                                                     unscaledZoom: self.settings.unscaledZoom,
-                                                     cellAntialiasFade: self.settings.cellAntialiasFade,
-                                                     cellRoundedRadius: self.settings.cellRoundedRadius,
-                                                     onChangeImage: self.updateImage,
-                                                     onChangeCellSize: self.onChangeCellSize)
-                        */
                         self.rotateImage()
                         if (self.cellGridView.automationMode) {
                             self.cellGridView.automationStart()
@@ -127,25 +100,8 @@ struct ContentView: View
                             self.cellGridView.configure(self.cellGridView.config,
                                                         viewWidth: landscape ? screen.height : screen.width,
                                                         viewHeight: landscape ? screen.width : screen.height)
-                            // self.cellGridView.configure(screen: screen,
-                            //                             viewWidth: landscape ? screen.height : screen.width,
-                            //                             viewHeight: landscape ? screen.width : screen.height,
-                            //                             viewBackground: self.settings.viewBackground,
-                            //                             viewTransparency: self.settings.viewTransparency,
-                            //                             viewScaling: self.settings.viewScaling,
-                            //                             cellSize: self.settings.cellSize,
-                            //                             cellPadding: self.settings.cellPadding,
-                            //                             cellShape: self.settings.cellShape,
-                            //                             restrictShift: self.settings.restrictShift,
-                            //                             unscaledZoom: self.settings.unscaledZoom,
-                            //                             cellAntialiasFade: self.settings.cellAntialiasFade,
-                            //                             cellRoundedRadius: self.settings.cellRoundedRadius,
-                            //                             adjustShift: true,
-                            //                             refreshCells: true)
-                            self.updateImage()
                         }
-                    }
-                    ... */
+                    } ... */
                 }
                 .navigationTitle("Home")
                 .navigationBarHidden(true)
