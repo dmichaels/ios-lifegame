@@ -109,6 +109,17 @@ struct SettingsView: View
                         }
                 }
             }
+            Section(header: Text("ADVANCED").padding(.leading, -12).padding(.top, -20)) {
+                HStack {
+                    IconLabel("Pixel Scaling", "scale.3d")
+                    Toggle("", isOn: $settings.viewScaling).labelsHidden()
+                        .onChange(of: settings.viewScaling) { value in
+                            if (!value) {
+                                settings.viewScaling = false
+                            }
+                        }
+                }
+            }
         }
         .offset(y: -30)
         .navigationTitle("Settings")
