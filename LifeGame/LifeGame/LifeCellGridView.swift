@@ -38,7 +38,6 @@ public final class LifeCellGridView: CellGridView
                                                    viewWidth: Int,
                                                    viewHeight: Int,
                                                    onChangeImage: (() -> Void)? = nil,
-                                                   onChangeCellSize: ((Int) -> Void)? = nil,
                                                    preferredFit: CellGridView.PreferredFit = CellGridView.PreferredFit.none,
                                                    center: Bool = false)
     {
@@ -47,7 +46,6 @@ public final class LifeCellGridView: CellGridView
                          viewWidth: viewWidth,
                          viewHeight: viewHeight,
                          onChangeImage: onChangeImage,
-                         onChangeCellSize: onChangeCellSize,
                          preferredFit: preferredFit,
                          center: center)
     }
@@ -59,6 +57,8 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomDynamic = settings.inactiveColorRandomDynamic
         self.inactiveColorRandomPalette = settings.inactiveColorRandomPalette
         self.inactiveColorRandomFilter = settings.inactiveColorRandomFilter
+        self.inactiveColorRandomNumber += 2 // todo/hack
+        self.generationNumber += 2 // todo/hack
         super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
     }
 
@@ -212,7 +212,6 @@ public final class LifeCellGridView: CellGridView
     private func nextGeneration()
     {
         self.generationNumber += 1
-        print("GN: \(self.generationNumber)")
 
         var neighborCount: [CellLocation: Int] = [:]
 

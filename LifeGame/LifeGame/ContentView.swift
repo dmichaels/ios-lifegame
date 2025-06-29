@@ -67,17 +67,15 @@ struct ContentView: View
                     if (!self.cellGridView.initialized) {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         let landscape = self.orientation.landscape
-                        if (true) {
-                            // todo/xyzzy NEW NEW NEW
-                            self.cellGridView.initialize(self.settings,
-                                                         screen: screen,
-                                                         viewWidth: landscape ? screen.height : screen.width,
-                                                         viewHeight: landscape ? screen.width : screen.height,
-                                                         onChangeImage: self.updateImage,
-                                                         onChangeCellSize: self.onChangeCellSize,
-                                                         preferredFit: CellGridView.PreferredFit.none,
-                                                         center: false)
-                        }
+                        // NEW NEW NEW
+                        self.cellGridView.initialize(self.settings,
+                                                     screen: screen,
+                                                     viewWidth: landscape ? screen.height : screen.width,
+                                                     viewHeight: landscape ? screen.width : screen.height,
+                                                     onChangeImage: self.updateImage,
+                                                     preferredFit: CellGridView.PreferredFit.none,
+                                                     center: false)
+                        // NEW NEW NEW
                         /*
                         self.cellGridView.initialize(screen: screen,
                                                      viewWidth: landscape ? screen.height : screen.width,
@@ -196,11 +194,6 @@ struct ContentView: View
         self.image = self.cellGridView.image
     }
 
-    private func onChangeCellSize(cellSize: Int) {
-        // TODO/xyzzy will eventually get rid of this as we will get config directly from CellGridView.
-        self.settings.cellSize = cellSize
-    }
-
     private func onChangeOrientation(_ current: UIDeviceOrientation, _ previous: UIDeviceOrientation) {
         self.rotateImage()
     }
@@ -242,6 +235,7 @@ struct ContentView: View
     }
 
     private func showSettings() {
+        self.settings.fromConfig(self.cellGridView)
         self.showSettingsView = true
     }
 

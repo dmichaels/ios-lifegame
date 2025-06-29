@@ -93,6 +93,11 @@ class Settings: ObservableObject
         self.hapticEnabled              = config.hapticEnabled
     }
 
+    public func fromConfig(_ cellGridView: LifeCellGridView)
+    {
+        self.fromConfig(cellGridView.config)
+    }
+
     // Creates and returns a new LifeCellGridView.Config (derived from CellGridView.Config)
     // object, with properties initializes from this Settings object. Intended to be called,
     // for example, on return from SettingsView in ContentView, something like this:
