@@ -25,10 +25,8 @@ public final class LifeCell: Cell {
                 return self.cellGridView.activeColor
             }
             else if (self.cellGridView.inactiveColorRandomDynamic) {
-                // if (self._inactiveColorRandomDynamicNumber != self.cellGridView.generationNumber) {
                 if (self._inactiveColorRandomDynamicNumber != self.cellGridView.inactiveColorRandomDynamicNumber) {
                     super.color = self.cellGridView.inactiveColorRandomColor()
-                    // self._inactiveColorRandomDynamicNumber = self.cellGridView.generationNumber
                     self._inactiveColorRandomDynamicNumber = self.cellGridView.inactiveColorRandomDynamicNumber
                 }
                 return super.color
