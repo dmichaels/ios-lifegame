@@ -30,7 +30,7 @@ class Settings: ObservableObject
     // CellGridView base class properties used only used in CellGridView.initialize.
 
     @Published var preferredFit: CellGridView.PreferredFit  = CellGridView.PreferredFit.none
-    @Published var centerCells: Bool                        = false
+    @Published var centerCells: Bool                        = true
 
     // LifeCellGridView specific properties.
 

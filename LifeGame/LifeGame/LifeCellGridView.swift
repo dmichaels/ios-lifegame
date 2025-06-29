@@ -35,12 +35,13 @@ public final class LifeCellGridView: CellGridView
         super.init(config)
     }
 
-    internal func initialize(_ settings: Settings, screen: Screen,
-                                                   viewWidth: Int,
-                                                   viewHeight: Int,
-                                                   onChangeImage: (() -> Void)? = nil,
-                                                   preferredFit: CellGridView.PreferredFit = CellGridView.PreferredFit.none,
-                                                   center: Bool = false)
+    internal func initialize(_ settings: Settings,
+                               screen: Screen,
+                               viewWidth: Int,
+                               viewHeight: Int,
+                               onChangeImage: (() -> Void)? = nil,
+                               preferredFit: CellGridView.PreferredFit = LifeCellGridView.Defaults.preferredFit,
+                               center: Bool = LifeCellGridView.Defaults.centerCells)
     {
         super.initialize(settings.toConfig(self),
                          screen: screen,
