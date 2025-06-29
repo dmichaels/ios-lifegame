@@ -103,6 +103,13 @@ struct ContentView: View
                             self.cellGridView.automationStart()
                         }
                     }
+                    else {
+                        let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
+                        if ((screen.width != self.cellGridView.screen.width) ||
+                            (screen.height != self.cellGridView.screen.height)) {
+                            print("XYZZY:")
+                        }
+                    }
                     /*
                      * ACTUALLY ...
                      * Forget why we even needed this; maybe for turning on/off ignoreSafeArea ...
@@ -200,38 +207,6 @@ struct ContentView: View
 
     private func onChangeSettings() {
         self.cellGridView.configure(self.settings)
-        /*
-        self.cellGridView.configure(viewWidth: self.cellGridView.viewWidth,
-                                    viewHeight: self.cellGridView.viewHeight,
-                                    viewBackground: self.settings.viewBackground,
-                                    viewTransparency: self.settings.viewTransparency,
-                                    viewScaling: self.settings.viewScaling,
-                                    cellSize: self.settings.cellSize,
-                                    cellPadding: self.settings.cellPadding,
-                                    cellShape: self.settings.cellShape,
-                                    gridColumns: 10, // xyzzy/todo/debug
-                                    gridRows: 20, // xyzzy/todo/debug
-                                    restrictShift: self.settings.restrictShift,
-                                    unscaledZoom: self.settings.unscaledZoom,
-                                    cellAntialiasFade: self.settings.cellAntialiasFade,
-                                    cellRoundedRadius: self.settings.cellRoundedRadius,
-                                    automationInterval: self.settings.automationInterval,
-                                    adjustShift: true,
-                                    refreshCells: true)
-        // TODO
-        self.cellGridView.activeColor = self.settings.activeColor
-        self.cellGridView.noteCellActiveColorChanged()
-        self.cellGridView.inactiveColor = self.settings.inactiveColor
-        self.cellGridView.noteCellInactiveColorChanged()
-        // self.cellGridView.automationInterval = self.settings.automationInterval
-        self.cellGridView.inactiveColorRandom = self.settings.inactiveColorRandom
-        self.cellGridView.noteCellInactiveColorRandomChanged()
-        self.cellGridView.inactiveColorRandomPalette = self.settings.inactiveColorRandomPalette
-        self.cellGridView.noteCellInactiveColorRandomPaletteChanged()
-        self.cellGridView.inactiveColorRandomDynamic = self.settings.inactiveColorRandomDynamic
-        self.cellGridView.noteCellInactiveColorRandomDynamicChanged()
-        */
-        // self.updateImage()
     }
 
     private func showSettings() {

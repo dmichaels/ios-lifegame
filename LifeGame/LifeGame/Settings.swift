@@ -17,7 +17,6 @@ class Settings: ObservableObject
 
     @Published var gridColumns: Int                         = 50 // 500
     @Published var gridRows: Int                            = 75 // 750
-    @Published var centerCells: Bool                        = false // xyzzy
 
     @Published var restrictShift: Bool                      = true
     @Published var unscaledZoom: Bool                       = false
@@ -27,6 +26,11 @@ class Settings: ObservableObject
     @Published var selectMode: Bool                         = true
     @Published var automationMode: Bool                     = true
     @Published var automationInterval: Double               = 0.5
+
+    // CellGridView base class properties used only used in CellGridView.initialize.
+
+    @Published var preferredFit: Bool                       = false
+    @Published var centerCells: Bool                        = false
 
     // LifeCellGridView specific properties.
 
