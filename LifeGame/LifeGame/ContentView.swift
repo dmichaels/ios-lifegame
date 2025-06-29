@@ -231,7 +231,7 @@ struct ContentView: View
         self.cellGridView.inactiveColorRandomDynamic = self.settings.inactiveColorRandomDynamic
         self.cellGridView.noteCellInactiveColorRandomDynamicChanged()
         */
-        self.updateImage()
+        // self.updateImage()
     }
 
     private func showSettings() {
