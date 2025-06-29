@@ -69,7 +69,7 @@ struct ContentView: View
                                                      viewWidth: landscape ? screen.height : screen.width,
                                                      viewHeight: landscape ? screen.width : screen.height,
                                                      onChangeImage: self.updateImage,
-                                                     preferredFit: CellGridView.PreferredFit.none,
+                                                     preferredFit: self.settings.preferredFit,
                                                      center: false)
                         self.rotateImage()
                         if (self.cellGridView.automationMode) {
@@ -122,7 +122,7 @@ struct ContentView: View
                             )
                             .transition(.move(edge: .bottom).combined(with: .opacity))
                             .padding(.bottom, 24)
-                            .zIndex(2)
+                            // .zIndex(2)
                         }
                     },
                     alignment: .bottom
@@ -171,9 +171,7 @@ struct ContentView: View
     }
 
     private func toggleShowControls() {
-        withAnimation {
-            self.showControlBar.toggle()
-        }
+        withAnimation { self.showControlBar.toggle() }
     }
 }
 
