@@ -39,17 +39,17 @@ public final class LifeCellGridView: CellGridView
                                screen: Screen,
                                viewWidth: Int,
                                viewHeight: Int,
-                               onChangeImage: (() -> Void)? = nil,
                                preferredFit: CellGridView.PreferredFit = LifeCellGridView.Defaults.preferredFit,
-                               center: Bool = LifeCellGridView.Defaults.centerCells)
+                               center: Bool = LifeCellGridView.Defaults.centerCells,
+                               onChangeImage: (() -> Void)? = nil)
     {
         super.initialize(settings.toConfig(self),
                          screen: screen,
                          viewWidth: viewWidth,
                          viewHeight: viewHeight,
-                         onChangeImage: onChangeImage,
                          preferredFit: preferredFit,
-                         center: center)
+                         center: center,
+                         onChangeImage: onChangeImage)
     }
 
     internal func configure(_ settings: Settings) {
@@ -61,21 +61,15 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomFilter = settings.inactiveColorRandomFilter
         self.inactiveColorRandomNumber += 1 // todo/hack
         self.inactiveColorRandomDynamicNumber += 1 // todo/hack
-        super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
+        super.configure(settings.toConfig(self),
+                        viewWidth: self.viewWidth,
+                        viewHeight: self.viewHeight,
+                        preferredFit: settings.preferredFit)
     }
 
     internal func configure(_ config: LifeCellGridView.Config) {
         super.configure(config, viewWidth: self.viewWidth, viewHeight: self.viewHeight)
     }
-
-    /*
-    public override func configure(_ config: CellGridView.Config, viewWidth: Int, viewHeight: Int)
-    {
-        if let config: LifeCellGridView.Config = config as? LifeCellGridView.Config {
-            super.configure(config, viewWidth: viewWidth, viewHeight: viewHeight)
-        }
-    }
-    */
 
     public override var config: LifeCellGridView.Config {
         LifeCellGridView.Config(self)

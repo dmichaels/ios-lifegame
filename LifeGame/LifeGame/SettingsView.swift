@@ -9,7 +9,7 @@ struct SettingsView: View
 {
     @EnvironmentObject var cellGridView: LifeCellGridView
     @EnvironmentObject var settings: Settings
-
+    @State private var preferredFit: Bool = false
     let iconWidth: CGFloat = 32
 
     var body: some View {
@@ -46,6 +46,15 @@ struct SettingsView: View
                             settings.cellSize = minimumCellSize
                         }
                     }
+                }
+                HStack {
+                    IconLabel("Cell Fit", "square.grid.3x3.square")
+                    Toggle("", isOn: $preferredFit).labelsHidden()
+                        .onChange(of: preferredFit) { value in
+                            settings.preferredFit = value
+                                                    ? CellGridView.PreferredFit.cell
+                                                    : CellGridView.PreferredFit.none
+                        }
                 }
                 HStack {
                     IconLabel("Automation Speed", "waveform")
