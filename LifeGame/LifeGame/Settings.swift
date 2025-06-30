@@ -18,7 +18,7 @@ class Settings: ObservableObject
     @Published var gridColumns: Int                         = 50 // 500
     @Published var gridRows: Int                            = 75 // 750
 
-    @Published var restrictShift: Bool                      = false
+    @Published var restrictShift: Bool                      = true
     @Published var unscaledZoom: Bool                       = false
     @Published var cellAntialiasFade: Float                 = CellGridView.Defaults.cellAntialiasFade
     @Published var cellRoundedRadius: Float                 = CellGridView.Defaults.cellRoundedRadius
