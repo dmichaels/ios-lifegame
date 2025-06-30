@@ -9,7 +9,7 @@ struct SettingsView: View
 {
     @EnvironmentObject var cellGridView: LifeCellGridView
     @EnvironmentObject var settings: Settings
-    @State private var preferredFit: Bool = false
+    @State private var fit: Bool = false
     let iconWidth: CGFloat = 32
 
     var body: some View {
@@ -49,12 +49,12 @@ struct SettingsView: View
                 }
                 HStack {
                     IconLabel("Cell Fit", "square.grid.3x3.square")
-                    Toggle("", isOn: $preferredFit).labelsHidden()
-                        .onChange(of: preferredFit) { value in
-                            settings.preferredFit = value
-                                                    ? CellGridView.PreferredFit.cell
-                                                    : CellGridView.PreferredFit.disable
+                    Picker("", selection: $settings.fit) {
+                        ForEach(FitOptions, id: \.value) { option in
+                            Text(option.label)
+                                .tag(option.value)
                         }
+                    }.pickerStyle(.menu)
                 }
                 HStack {
                     IconLabel("Automation Speed", "waveform.path" /* "waveform" */ )
@@ -178,4 +178,11 @@ let AutomationIntervalOptions: [(label: String, value: Double)] = [
     ("Fastest", 0.1),
     ("Wow", 0.02),
     ("Max", 0.0)
+]
+
+let FitOptions: [(label: String, value: CellGridView.Fit)] = [
+    ("None", CellGridView.Fit.disabled),
+    ("View Only", CellGridView.Fit.view),
+    ("Cell/View", CellGridView.Fit.enabled),
+    ("Fixed", CellGridView.Fit.fixed)
 ]

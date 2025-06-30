@@ -7,30 +7,30 @@ class Settings: ObservableObject
 {
     // CellGridView base class specific properties we are interested in controlling; see CellGridView.Defaults for all.
 
-    @Published var viewBackground: Colour                   = Colour.darkGray
-    @Published var viewTransparency: UInt8                  = Colour.OPAQUE
-    @Published var viewScaling: Bool                        = true
+    @Published var viewBackground: Colour     = Colour.darkGray
+    @Published var viewTransparency: UInt8    = Colour.OPAQUE
+    @Published var viewScaling: Bool          = true
 
-    @Published var cellSize: Int                            = 18
-    @Published var cellPadding: Int                         = 1
-    @Published var cellShape: CellShape                     = CellShape.rounded
+    @Published var cellSize: Int              = 23
+    @Published var cellPadding: Int           = 1
+    @Published var cellShape: CellShape       = CellShape.rounded
 
-    @Published var gridColumns: Int                         = 50 // 500
-    @Published var gridRows: Int                            = 75 // 750
+    @Published var gridColumns: Int           = 50 // 500
+    @Published var gridRows: Int              = 75 // 750
 
-    @Published var cellAntialiasFade: Float                 = CellGridView.Defaults.cellAntialiasFade
-    @Published var cellRoundedRadius: Float                 = CellGridView.Defaults.cellRoundedRadius
-    @Published var restrictShift: Bool                      = false
-    @Published var unscaledZoom: Bool                       = false
+    @Published var cellAntialiasFade: Float   = CellGridView.Defaults.cellAntialiasFade
+    @Published var cellRoundedRadius: Float   = CellGridView.Defaults.cellRoundedRadius
+    @Published var restrictShift: Bool        = false
+    @Published var unscaledZoom: Bool         = false
 
-    @Published var selectMode: Bool                         = true
-    @Published var automationMode: Bool                     = true
-    @Published var automationInterval: Double               = 0.5
+    @Published var selectMode: Bool           = true
+    @Published var automationMode: Bool       = true
+    @Published var automationInterval: Double = 0.5
 
     // CellGridView base class properties used only used in CellGridView.initialize.
 
-    @Published var preferredFit: CellGridView.PreferredFit  = CellGridView.PreferredFit.disable
-    @Published var centerCells: Bool                        = true
+    @Published var fit: CellGridView.Fit      = CellGridView.Fit.disabled
+    @Published var centerCells: Bool          = true
 
     // LifeCellGridView specific properties.
 
@@ -82,6 +82,13 @@ class Settings: ObservableObject
         self.selectMode         = config.selectMode
         self.automationMode     = config.automationMode
         self.automationInterval = config.automationInterval
+
+        // CellGridView base class specific properties which are not really persistent;
+        // these are in their initial/default (noop) state when going to SettingsView,
+        // and if set there they are passed as explicit arguments to CellGridView.configure.
+        //
+        self.fit                = CellGridView.Fit.disabled
+        self.centerCells        = false
 
         // LifeCellGridView specific properties.
 

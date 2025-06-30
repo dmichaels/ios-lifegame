@@ -68,7 +68,7 @@ struct ContentView: View
                                                      screen: screen,
                                                      viewWidth: landscape ? screen.height : screen.width,
                                                      viewHeight: landscape ? screen.width : screen.height,
-                                                     preferredFit: self.settings.preferredFit,
+                                                     fit: self.settings.fit,
                                                      center: self.settings.centerCells,
                                                      onChangeImage: self.updateImage)
                         self.rotateImage()
