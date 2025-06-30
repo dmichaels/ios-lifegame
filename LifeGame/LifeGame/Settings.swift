@@ -86,6 +86,7 @@ class Settings: ObservableObject
         // CellGridView base class specific properties which are not really persistent;
         // these are in their initial/default (noop) state when going to SettingsView,
         // and if set there they are passed as explicit arguments to CellGridView.configure.
+        // TODO: Except ... if the value is CellGridView.Fit.fixed.
         //
         self.fit                = CellGridView.Fit.disabled
         self.centerCells        = false
