@@ -18,10 +18,10 @@ class Settings: ObservableObject
     @Published var gridColumns: Int                         = 50 // 500
     @Published var gridRows: Int                            = 75 // 750
 
-    @Published var restrictShift: Bool                      = true
-    @Published var unscaledZoom: Bool                       = false
     @Published var cellAntialiasFade: Float                 = CellGridView.Defaults.cellAntialiasFade
     @Published var cellRoundedRadius: Float                 = CellGridView.Defaults.cellRoundedRadius
+    @Published var restrictShift: Bool                      = true
+    @Published var unscaledZoom: Bool                       = false
 
     @Published var selectMode: Bool                         = true
     @Published var automationMode: Bool                     = true
@@ -75,10 +75,10 @@ class Settings: ObservableObject
         self.cellShape          = config.cellShape
         self.gridColumns        = config.gridColumns
         self.gridRows           = config.gridRows
-        self.restrictShift      = config.restrictShift
-        self.unscaledZoom       = config.unscaledZoom
         self.cellAntialiasFade  = config.cellAntialiasFade
         self.cellRoundedRadius  = config.cellRoundedRadius
+        self.restrictShift      = config.restrictShift
+        self.unscaledZoom       = config.unscaledZoom
         self.selectMode         = config.selectMode
         self.automationMode     = config.automationMode
         self.automationInterval = config.automationInterval
