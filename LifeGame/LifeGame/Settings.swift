@@ -18,7 +18,7 @@ class Settings: ObservableObject
     @Published var gridColumns: Int                         = 50 // 500
     @Published var gridRows: Int                            = 75 // 750
 
-    @Published var restrictShift: Bool                      = true
+    @Published var restrictShift: Bool                      = false
     @Published var unscaledZoom: Bool                       = false
     @Published var cellAntialiasFade: Float                 = CellGridView.Defaults.cellAntialiasFade
     @Published var cellRoundedRadius: Float                 = CellGridView.Defaults.cellRoundedRadius
@@ -29,8 +29,8 @@ class Settings: ObservableObject
 
     // CellGridView base class properties used only used in CellGridView.initialize.
 
-    @Published var preferredFit: CellGridView.PreferredFit  = CellGridView.PreferredFit.none
-    @Published var centerCells: Bool                        = false
+    @Published var preferredFit: CellGridView.PreferredFit  = CellGridView.PreferredFit.cell
+    @Published var centerCells: Bool                        = true
 
     // LifeCellGridView specific properties.
 
