@@ -34,7 +34,7 @@ struct SettingsView: View
                         .padding(.top, -8).padding(.bottom, -2)
                 }
                 HStack {
-                    IconLabel("Cell Padding", "magnifyingglass")
+                    IconLabel("Cell Padding", "squareshape.dotted.squareshape" /* "arrow.up.left.and.arrow.down.right.square" */ )
                     Picker("", selection: $settings.cellPadding) {
                         ForEach(cellGridView.minimumCellPadding...cellGridView.maximumCellPadding, id: \.self) { value in
                             Text("\(value)").tag(value)
@@ -53,11 +53,11 @@ struct SettingsView: View
                         .onChange(of: preferredFit) { value in
                             settings.preferredFit = value
                                                     ? CellGridView.PreferredFit.cell
-                                                    : CellGridView.PreferredFit.none
+                                                    : CellGridView.PreferredFit.disable
                         }
                 }
                 HStack {
-                    IconLabel("Automation Speed", "waveform")
+                    IconLabel("Automation Speed", "waveform.path" /* "waveform" */ )
                     if (settings.automationInterval < 0.5) {
                         Image(systemName: "hare").font(.system(size: 14)).padding(.leading, -6)
                     }
@@ -101,7 +101,7 @@ struct SettingsView: View
                     Toggle("", isOn: $settings.inactiveColorRandomDynamic).labelsHidden()
                 }.disabled(!settings.inactiveColorRandom)
                 HStack {
-                    IconLabel("Inactive Color Mode", "paintpalette")
+                    IconLabel("Inactive Color Palette", "paintpalette")
                     Picker("", selection: $settings.inactiveColorRandomPalette) {
                         ForEach(ColourMode.allCases) { mode in
                             Text(mode.rawValue).lineLimit(1).tag(mode)
