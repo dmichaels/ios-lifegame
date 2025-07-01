@@ -63,6 +63,7 @@ extension LifeCellGridView
                        cellShape:          s?.cellShape          ?? v?.cellShape          ?? d.cellShape,
                        gridColumns:        s?.gridColumns        ?? v?.gridColumns        ?? d.gridColumns,
                        gridRows:           s?.gridRows           ?? v?.gridRows           ?? d.gridRows,
+                       fit:                s?.fit                ?? v?.fit                ?? d.fit,
                        cellAntialiasFade:  s?.cellAntialiasFade  ?? v?.cellAntialiasFade  ?? d.cellAntialiasFade,
                        cellRoundedRadius:  s?.cellRoundedRadius  ?? v?.cellRoundedRadius  ?? d.cellRoundedRadius,
                        restrictShift:      s?.restrictShift      ?? v?.restrictShift      ?? d.restrictShift,

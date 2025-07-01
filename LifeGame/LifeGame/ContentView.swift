@@ -68,7 +68,7 @@ struct ContentView: View
                                                      screen: screen,
                                                      viewWidth: landscape ? screen.height : screen.width,
                                                      viewHeight: landscape ? screen.width : screen.height,
-                                                     fit: self.settings.fit,
+                                                     // fit: self.settings.fit,
                                                      center: self.settings.centerCells,
                                                      onChangeImage: self.updateImage)
                         self.rotateImage()
@@ -105,7 +105,8 @@ struct ContentView: View
                 }
                 .navigationTitle("Home")
                 .navigationBarHidden(true)
-                .background(self.cellGridView.viewBackground.color) // Color.yellow
+                // .background(self.cellGridView.viewBackground.color) // Color.yellow
+                .background(Color.yellow)
                 .statusBar(hidden: true)
                 .coordinateSpace(name: "zstack")
                 .overlay(
@@ -122,7 +123,7 @@ struct ContentView: View
                             )
                             .transition(.move(edge: .bottom).combined(with: .opacity))
                             .padding(.bottom, 24)
-                            // .zIndex(2)
+                            .zIndex(2)
                         }
                     },
                     alignment: .bottom

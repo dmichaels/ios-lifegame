@@ -39,7 +39,7 @@ public final class LifeCellGridView: CellGridView
                                screen: Screen,
                                viewWidth: Int,
                                viewHeight: Int,
-                               fit: CellGridView.Fit = LifeCellGridView.Defaults.fit,
+                               // fit: CellGridView.Fit = LifeCellGridView.Defaults.fit,
                                center: Bool = LifeCellGridView.Defaults.centerCells,
                                onChangeImage: (() -> Void)? = nil)
     {
@@ -47,7 +47,7 @@ public final class LifeCellGridView: CellGridView
                          screen: screen,
                          viewWidth: viewWidth,
                          viewHeight: viewHeight,
-                         fit: fit,
+                         // fit: fit,
                          center: center,
                          onChangeImage: onChangeImage)
     }
@@ -62,7 +62,9 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomNumber += 1 // todo/hack
         self.inactiveColorRandomDynamicNumber += 1 // todo/hack
         super.configure(settings.toConfig(self),
-                        viewWidth: self.viewWidth, viewHeight: self.viewHeight, fit: settings.fit, center: settings.centerCells)
+                        viewWidth: self.viewWidth, viewHeight: self.viewHeight,
+                        // fit: settings.fit,
+                        center: settings.centerCells)
     }
 
     internal func configure(_ config: LifeCellGridView.Config) {

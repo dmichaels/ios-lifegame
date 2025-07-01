@@ -9,8 +9,7 @@ struct SettingsView: View
 {
     @EnvironmentObject var cellGridView: LifeCellGridView
     @EnvironmentObject var settings: Settings
-    @State private var fit: Bool = false
-    let iconWidth: CGFloat = 32
+    @State var cellSizeDisplay: Int? = nil
 
     var body: some View {
         Form {
@@ -26,12 +25,19 @@ struct SettingsView: View
                 VStack {
                     HStack {
                         IconLabel("Cell Size", "magnifyingglass")
-                        Text("\(settings.cellSize)").foregroundColor(.secondary)
+                        Text("\(cellSizeDisplay ?? settings.cellSize)").foregroundColor(.secondary)
                     }.padding(.bottom, 4)
                     Slider(
                         value: Binding(get: { Double(settings.cellSize) }, set: { settings.cellSize = Int($0.rounded()) }),
                                        in: Double(cellGridView.minimumCellSize(cellPadding: settings.cellPadding))...Double(cellGridView.maximumCellSize), step: 1)
                         .padding(.top, -8).padding(.bottom, -2)
+                        .onChange(of: settings.cellSize) { value in
+                            cellSizeDisplay = (
+                                settings.fit != CellGridView.Fit.disabled
+                                ? cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
+                                : nil
+                            )
+                        }
                 }
                 HStack {
                     IconLabel("Cell Padding", "squareshape.dotted.squareshape" /* "arrow.up.left.and.arrow.down.right.square" */ )
@@ -48,13 +54,21 @@ struct SettingsView: View
                     }
                 }
                 HStack {
-                    IconLabel("Cell Fit", "square.grid.3x3.square")
+                    IconLabel("Cell Grid", "square.grid.3x3.square")
+                    Text(" (\(settings.gridRows)x\(settings.gridColumns))").foregroundColor(.secondary) // TODO: left shift
                     Picker("", selection: $settings.fit) {
                         ForEach(FitOptions, id: \.value) { option in
                             Text(option.label)
                                 .tag(option.value)
                         }
                     }.pickerStyle(.menu)
+                        .onChange(of: settings.fit) { value in
+                            cellSizeDisplay = (
+                                settings.fit != CellGridView.Fit.disabled
+                                ? cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
+                                : nil
+                            )
+                        }
                 }
                 HStack {
                     IconLabel("Automation Speed", "waveform.path" /* "waveform" */ )

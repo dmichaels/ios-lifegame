@@ -17,10 +17,11 @@ class Settings: ObservableObject
 
     @Published var gridColumns: Int           = 50 // 500
     @Published var gridRows: Int              = 75 // 750
+    @Published var fit: CellGridView.Fit      = CellGridView.Fit.disabled
 
     @Published var cellAntialiasFade: Float   = CellGridView.Defaults.cellAntialiasFade
     @Published var cellRoundedRadius: Float   = CellGridView.Defaults.cellRoundedRadius
-    @Published var restrictShift: Bool        = false
+    @Published var restrictShift: Bool        = true
     @Published var unscaledZoom: Bool         = false
 
     @Published var selectMode: Bool           = true
@@ -29,7 +30,6 @@ class Settings: ObservableObject
 
     // CellGridView base class properties used only used in CellGridView.initialize.
 
-    @Published var fit: CellGridView.Fit      = CellGridView.Fit.disabled
     @Published var centerCells: Bool          = true
 
     // LifeCellGridView specific properties.
@@ -75,6 +75,7 @@ class Settings: ObservableObject
         self.cellShape          = config.cellShape
         self.gridColumns        = config.gridColumns
         self.gridRows           = config.gridRows
+        self.fit                = config.fit
         self.cellAntialiasFade  = config.cellAntialiasFade
         self.cellRoundedRadius  = config.cellRoundedRadius
         self.restrictShift      = config.restrictShift
@@ -87,9 +88,9 @@ class Settings: ObservableObject
         // these are in their initial/default (noop) state when going to SettingsView,
         // and if set there they are passed as explicit arguments to CellGridView.configure.
         // TODO: Except ... if the value is CellGridView.Fit.fixed.
-        //
-        self.fit                = CellGridView.Fit.disabled
-        self.centerCells        = false
+        //       self.fit = CellGridView.Fit.disabled
+
+        self.centerCells = false
 
         // LifeCellGridView specific properties.
 
