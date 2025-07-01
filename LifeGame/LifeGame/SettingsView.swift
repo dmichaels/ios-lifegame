@@ -37,6 +37,11 @@ struct SettingsView: View
                                 ? cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
                                 : nil
                             )
+                            if (settings.fit != CellGridView.Fit.disabled) {
+                                let preferred = cellGridView.preferredSize(settings.cellSize, fit: settings.fit)
+                                cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
+                                print("CGF: \(value) \(settings.cellSize) \(settings.fit) -> \(preferred.fit) \(preferred.cellSize) \(preferred.viewWidth)x\(preferred.viewHeight)")
+                            }
                         }
                 }
                 HStack {
@@ -54,7 +59,7 @@ struct SettingsView: View
                     }
                 }
                 HStack {
-                    IconLabel("Cell Grid", "square.grid.3x3.square")
+                    IconLabel("Cell Grid Fit", "square.grid.3x3.square")
                     Text(" (\(settings.gridRows)x\(settings.gridColumns))").foregroundColor(.secondary) // TODO: left shift
                     Picker("", selection: $settings.fit) {
                         ForEach(FitOptions, id: \.value) { option in
@@ -68,6 +73,11 @@ struct SettingsView: View
                                 ? cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
                                 : nil
                             )
+                            if (settings.fit != CellGridView.Fit.disabled) {
+                                let preferred = cellGridView.preferredSize(settings.cellSize, fit: settings.fit)
+                                cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
+                                print("cgf: \(value) \(settings.cellSize) \(settings.fit) -> \(preferred.fit) \(preferred.cellSize) \(preferred.viewWidth)x\(preferred.viewHeight)")
+                            }
                         }
                 }
                 HStack {
