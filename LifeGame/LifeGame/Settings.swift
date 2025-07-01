@@ -18,6 +18,7 @@ class Settings: ObservableObject
     @Published var gridColumns: Int           = 50 // 500
     @Published var gridRows: Int              = 75 // 750
     @Published var fit: CellGridView.Fit      = CellGridView.Fit.disabled
+    @Published var center: Bool               = false
 
     @Published var cellAntialiasFade: Float   = CellGridView.Defaults.cellAntialiasFade
     @Published var cellRoundedRadius: Float   = CellGridView.Defaults.cellRoundedRadius
@@ -27,10 +28,6 @@ class Settings: ObservableObject
     @Published var selectMode: Bool           = true
     @Published var automationMode: Bool       = true
     @Published var automationInterval: Double = 0.5
-
-    // CellGridView base class properties used only used in CellGridView.initialize.
-
-    @Published var centerCells: Bool          = true
 
     // LifeCellGridView specific properties.
 
@@ -76,6 +73,11 @@ class Settings: ObservableObject
         self.gridColumns        = config.gridColumns
         self.gridRows           = config.gridRows
         self.fit                = config.fit
+        //
+        // This center property we treat as not really persistent; we always
+        // use its initial/default (noop/false) state when going to SettingsView.
+        //
+        self.center             = false
         self.cellAntialiasFade  = config.cellAntialiasFade
         self.cellRoundedRadius  = config.cellRoundedRadius
         self.restrictShift      = config.restrictShift
@@ -83,14 +85,6 @@ class Settings: ObservableObject
         self.selectMode         = config.selectMode
         self.automationMode     = config.automationMode
         self.automationInterval = config.automationInterval
-
-        // CellGridView base class specific properties which are not really persistent;
-        // these are in their initial/default (noop) state when going to SettingsView,
-        // and if set there they are passed as explicit arguments to CellGridView.configure.
-        // TODO: Except ... if the value is CellGridView.Fit.fixed.
-        //       self.fit = CellGridView.Fit.disabled
-
-        self.centerCells = false
 
         // LifeCellGridView specific properties.
 

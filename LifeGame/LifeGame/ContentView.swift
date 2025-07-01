@@ -69,7 +69,7 @@ struct ContentView: View
                                                      viewWidth: landscape ? screen.height : screen.width,
                                                      viewHeight: landscape ? screen.width : screen.height,
                                                      // fit: self.settings.fit,
-                                                     center: self.settings.centerCells,
+                                                     // center: self.settings.centerCells,
                                                      onChangeImage: self.updateImage)
                         self.rotateImage()
                         if (self.cellGridView.automationMode) {

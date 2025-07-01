@@ -205,8 +205,7 @@ let AutomationIntervalOptions: [(label: String, value: Double)] = [
 ]
 
 let FitOptions: [(label: String, value: CellGridView.Fit)] = [
-    ("None", CellGridView.Fit.disabled),
-    ("View Only", CellGridView.Fit.view),
-    ("Cell/View", CellGridView.Fit.enabled),
+    ("Default", CellGridView.Fit.disabled),
+    ("Even", CellGridView.Fit.enabled),
     ("Fixed", CellGridView.Fit.fixed)
 ]
