@@ -21,6 +21,9 @@ struct SettingsView: View
                             Text(value.rawValue).lineLimit(1).truncationMode(.tail).tag(value)
                         }
                     }.pickerStyle(.menu).disabled((settings.cellSize - settings.cellPadding) < 3)
+                    .onChange(of: settings.cellShape) { value in
+                        settings.viewScaling = !cellGridView.cellShapeRequiresNoScaling(value)
+                    }
                 }
                 VStack {
                     HStack {
@@ -45,7 +48,7 @@ struct SettingsView: View
                         }
                 }
                 HStack {
-                    IconLabel("Cell Padding", "squareshape.dotted.squareshape" /* "arrow.up.left.and.arrow.down.right.square" */ )
+                    IconLabel("Cell Padding", "squareshape.dotted.squareshape")
                     Picker("", selection: $settings.cellPadding) {
                         ForEach(cellGridView.minimumCellPadding...cellGridView.maximumCellPadding, id: \.self) { value in
                             Text("\(value)").tag(value)
@@ -60,7 +63,11 @@ struct SettingsView: View
                 }
                 HStack {
                     IconLabel("Cell Grid Fit", "square.grid.3x3.square")
-                    Text(" (\(settings.gridRows)x\(settings.gridColumns))").foregroundColor(.secondary) // TODO: left shift
+                    Text(" (\(settings.gridRows)x\(settings.gridColumns))")
+                        .foregroundColor(.secondary)
+                        .font(.footnote)
+                        .padding(.leading, -30)
+                        .padding(.top, 1)
                     Picker("", selection: $settings.fit) {
                         ForEach(FitOptions, id: \.value) { option in
                             Text(option.label)
@@ -81,11 +88,11 @@ struct SettingsView: View
                         }
                 }
                 HStack {
-                    IconLabel("Cell Grid Center", "inset.filled.center.rectangle")
+                    IconLabel("Cell Grid Center", "align.horizontal.center")
                     Toggle("", isOn: $settings.center).labelsHidden()
                 }
                 HStack {
-                    IconLabel("Automation Speed", "waveform.path" /* "waveform" */ )
+                    IconLabel("Automation Speed", "waveform.path")
                     if (settings.automationInterval < 0.5) {
                         Image(systemName: "hare").font(.system(size: 14)).padding(.leading, -6)
                     }
@@ -116,7 +123,7 @@ struct SettingsView: View
                         }
                 }
                 HStack {
-                    IconLabel("Inactive Random", "circle.grid.cross.right.filled" /* "square.grid.3x3.middleright.filled" */ /* "number" */ )
+                    IconLabel("Inactive Random", "circle.grid.cross.right.filled")
                     Toggle("", isOn: $settings.inactiveColorRandom).labelsHidden()
                         .onChange(of: settings.inactiveColorRandom) { value in
                             if (!value) {
@@ -125,7 +132,7 @@ struct SettingsView: View
                         }
                 }
                 HStack {
-                    IconLabel("Inactive Dynamic", "sparkles" /* "circle.grid.cross" */ )
+                    IconLabel("Inactive Dynamic", "sparkles")
                     Toggle("", isOn: $settings.inactiveColorRandomDynamic).labelsHidden()
                 }.disabled(!settings.inactiveColorRandom)
                 HStack {
@@ -155,6 +162,7 @@ struct SettingsView: View
                                 settings.viewScaling = false
                             }
                         }
+                        .disabled(cellGridView.cellShapeRequiresNoScaling(settings.cellShape))
                 }
             }
         }
