@@ -81,6 +81,10 @@ struct SettingsView: View
                         }
                 }
                 HStack {
+                    IconLabel("Cell Grid Center", "inset.filled.center.rectangle")
+                    Toggle("", isOn: $settings.center).labelsHidden()
+                }
+                HStack {
                     IconLabel("Automation Speed", "waveform.path" /* "waveform" */ )
                     if (settings.automationInterval < 0.5) {
                         Image(systemName: "hare").font(.system(size: 14)).padding(.leading, -6)
