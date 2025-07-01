@@ -43,7 +43,6 @@ struct SettingsView: View
                             if (settings.fit != CellGridView.Fit.disabled) {
                                 let preferred = cellGridView.preferredSize(settings.cellSize, fit: settings.fit)
                                 cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
-                                print("CGF: \(value) \(settings.cellSize) \(settings.fit) -> \(preferred.fit) \(preferred.cellSize) \(preferred.viewWidth)x\(preferred.viewHeight)")
                             }
                         }
                 }
@@ -83,7 +82,6 @@ struct SettingsView: View
                             if (settings.fit != CellGridView.Fit.disabled) {
                                 let preferred = cellGridView.preferredSize(settings.cellSize, fit: settings.fit)
                                 cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
-                                print("cgf: \(value) \(settings.cellSize) \(settings.fit) -> \(preferred.fit) \(preferred.cellSize) \(preferred.viewWidth)x\(preferred.viewHeight)")
                             }
                         }
                 }
