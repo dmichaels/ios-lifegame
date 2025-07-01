@@ -57,10 +57,9 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomDynamic = settings.inactiveColorRandomDynamic
         self.inactiveColorRandomPalette = settings.inactiveColorRandomPalette
         self.inactiveColorRandomFilter = settings.inactiveColorRandomFilter
-        self.inactiveColorRandomNumber += 1 // todo/hack
-        self.inactiveColorRandomDynamicNumber += 1 // todo/hack
+        self.inactiveColorRandomNumber += 2
+        self.inactiveColorRandomDynamicNumber += 2
         super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
-                        // center: settings.centerCells)
     }
 
     internal func configure(_ config: LifeCellGridView.Config) {

@@ -10,7 +10,7 @@ public final class LifeCell: Cell {
 
     init(cellGridView: LifeCellGridView, x: Int, y: Int, active: Bool = false) {
         self._active = active
-        self._inactiveColorRandomDynamicNumber = cellGridView.generationNumber + 1
+        self._inactiveColorRandomDynamicNumber = cellGridView.inactiveColorRandomDynamicNumber + 1
         self._inactiveColorRandomNumber = cellGridView.inactiveColorRandomNumber + 1
         super.init(cellGridView: cellGridView, x: x, y: y, color: cellGridView.inactiveColor)
     }
