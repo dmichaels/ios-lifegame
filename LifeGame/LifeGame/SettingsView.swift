@@ -164,6 +164,10 @@ struct SettingsView: View
                         }
                         .disabled(cellGridView.cellShapeRequiresNoScaling(settings.cellShape))
                 }
+                HStack {
+                    IconLabel("Restrict Shift", "arrow.up.left.arrow.down.right.square")
+                    Toggle("", isOn: $settings.restrictShift).labelsHidden()
+                }
             }
         }
         .offset(y: -30)

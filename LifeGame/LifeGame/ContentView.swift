@@ -78,7 +78,6 @@ struct ContentView: View
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         if ((screen.width != self.cellGridView.screen.width) ||
                             (screen.height != self.cellGridView.screen.height)) {
-                            print("XYZZY:")
                         }
                     }
                     /*
