@@ -164,6 +164,7 @@ struct ContentView: View
 
     private func onChangeSettings() {
         self.cellGridView.configure(self.settings)
+        self.updateImage()
     }
 
     private func showSettings() {
