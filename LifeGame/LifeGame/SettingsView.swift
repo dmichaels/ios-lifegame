@@ -65,7 +65,7 @@ struct SettingsView: View
                     Text(" (\(settings.gridRows)x\(settings.gridColumns))")
                         .foregroundColor(.secondary)
                         .font(.footnote)
-                        .padding(.leading, -30)
+                        .padding(.leading, -8)
                         .padding(.top, 1)
                     Picker("", selection: $settings.fit) {
                         ForEach(FitOptions, id: \.value) { option in
@@ -91,12 +91,14 @@ struct SettingsView: View
                 }
                 HStack {
                     IconLabel("Automation Speed", "waveform.path")
-                    if (settings.automationInterval < 0.5) {
-                        Image(systemName: "hare").font(.system(size: 14)).padding(.leading, -6)
-                    }
-                    else if (settings.automationInterval > 0.5) {
-                        Image(systemName: "tortoise" ).font(.system(size: 14)).padding(.leading, -6)
-                    }
+                    //
+                    // if (settings.automationInterval < 0.5) {
+                    //     Image(systemName: "hare").font(.system(size: 14)).padding(.leading, -6)
+                    // }
+                    // else if (settings.automationInterval > 0.5) {
+                    //     Image(systemName: "tortoise" ).font(.system(size: 14)).padding(.leading, -6)
+                    // }
+                    //
                     Picker("", selection: $settings.automationInterval) {
                         ForEach(AutomationIntervalOptions, id: \.value) { option in
                             Text(option.label)
@@ -134,7 +136,7 @@ struct SettingsView: View
                     Toggle("", isOn: $settings.inactiveColorRandomDynamic).labelsHidden()
                 }.disabled(!settings.inactiveColorRandom)
                 HStack {
-                    IconLabel("Inactive Color Palette", "paintpalette")
+                    IconLabel("Inactive Palette", "paintpalette")
                     Picker("", selection: $settings.inactiveColorRandomPalette) {
                         ForEach(ColourMode.allCases) { mode in
                             Text(mode.rawValue).lineLimit(1).tag(mode)
