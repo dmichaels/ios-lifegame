@@ -39,14 +39,12 @@ public final class LifeCellGridView: CellGridView
                                screen: Screen,
                                viewWidth: Int,
                                viewHeight: Int,
-                               // center: Bool = LifeCellGridView.Defaults.centerCells,
                                onChangeImage: (() -> Void)? = nil)
     {
         super.initialize(settings.toConfig(self),
                          screen: screen,
                          viewWidth: viewWidth,
                          viewHeight: viewHeight,
-                         // center: center,
                          onChangeImage: onChangeImage)
     }
 
@@ -70,8 +68,12 @@ public final class LifeCellGridView: CellGridView
         LifeCellGridView.Config(self)
     }
 
-    public override func createCell<T: Cell>(x: Int, y: Int, color: Colour) -> T? {
-        return LifeCell(cellGridView: self, x: x, y: y) as? T
+    public override func createCell<T: Cell>(x: Int, y: Int, color ignore: Colour) -> T? {
+        let cell: LifeCell = LifeCell(cellGridView: self, x: x, y: y) // as? T
+        if (self.liveCells.contains(cell.location)) {
+            cell.activate(nowrite: true, nonotify: true)
+        }
+        return cell as? T
     }
 
     public override func automationStep() {
