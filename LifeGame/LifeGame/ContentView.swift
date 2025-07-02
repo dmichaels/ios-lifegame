@@ -16,8 +16,9 @@ struct ContentView: View
     @State private var viewRectangle: CGRect = CGRect.zero
     @State private var image: CGImage? = nil
     @State private var imageAngle: Angle = Angle.zero
-    @State private var showSettingsView = false
-    @State private var showControlBar = false
+    @State private var showSettingsView: Bool = false
+    @State private var showControlBar: Bool = false
+    @State private var screenBackground: Colour? = nil
 
     var body: some View {
         NavigationView {
@@ -103,7 +104,8 @@ struct ContentView: View
                 .navigationTitle("Home")
                 .navigationBarHidden(true)
                 // .background(self.cellGridView.viewBackground.color) // Color.yellow
-                .background(Color.yellow)
+                // .background(Color.yellow)
+                .background(self.screenBackground?.color ?? self.cellGridView.viewBackground.color)
                 .statusBar(hidden: true)
                 .coordinateSpace(name: "zstack")
                 .overlay(
