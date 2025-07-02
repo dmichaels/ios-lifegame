@@ -38,7 +38,7 @@ class Settings: ObservableObject
     @Published var inactiveColorRandomPalette: ColourMode   = ColourMode.color
     @Published var inactiveColorRandomFilter: ColourFilter? = nil
 
-    @Published var dragThreshold: Int                       = 3
+    @Published var dragThreshold: Int                       = 2
     @Published var swipeThreshold: Int                      = 100
     @Published var soundEnabled: Bool                       = false
     @Published var hapticEnabled: Bool                      = false

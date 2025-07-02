@@ -38,8 +38,8 @@ struct ContentView: View
                             .frame(width: geometry.size.width, height: geometry.size.height)
                             .rotationEffect(self.imageAngle)
                             .onSmartGesture(
-                                dragThreshold: self.settings.dragThreshold,
-                                swipeThreshold: self.settings.swipeThreshold,
+                                dragThreshold: self.cellGridView.dragThreshold,
+                                swipeThreshold: self.cellGridView.swipeThreshold,
                                 normalizePoint: self.normalizePoint,
                                 orientation: self.orientation,
                                 onDrag:      { value in self.cellGridView.onDrag(value) },
@@ -68,8 +68,6 @@ struct ContentView: View
                                                      screen: screen,
                                                      viewWidth: landscape ? screen.height : screen.width,
                                                      viewHeight: landscape ? screen.width : screen.height,
-                                                     // fit: self.settings.fit,
-                                                     // center: self.settings.centerCells,
                                                      onChangeImage: self.updateImage)
                         self.rotateImage()
                         if (self.cellGridView.automationMode) {
