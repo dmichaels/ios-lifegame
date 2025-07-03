@@ -103,8 +103,6 @@ struct ContentView: View
                 }
                 .navigationTitle("Home")
                 .navigationBarHidden(true)
-                // .background(self.cellGridView.viewBackground.color) // Color.yellow
-                // .background(Color.yellow)
                 .background(self.screenBackground?.color ?? self.cellGridView.viewBackground.color)
                 .statusBar(hidden: true)
                 .coordinateSpace(name: "zstack")
