@@ -11,7 +11,7 @@ extension LifeCellGridView
         public var inactiveColor: Colour
         public var inactiveColorRandom: Bool
         public var inactiveColorRandomDynamic: Bool
-        public var inactiveColorRandomPalette: ColourMode
+        public var inactiveColorRandomPalette: ColourPalette
         public var inactiveColorRandomFilter: ColourFilter?
 
         public var dragThreshold: Int  = 3

@@ -9,7 +9,7 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var inactiveColor: Colour
     internal private(set) var inactiveColorRandom: Bool
     internal private(set) var inactiveColorRandomDynamic: Bool
-    internal private(set) var inactiveColorRandomPalette: ColourMode
+    internal private(set) var inactiveColorRandomPalette: ColourPalette
     internal private(set) var inactiveColorRandomFilter: ColourFilter?
     internal private(set) var dragThreshold: Int
     internal private(set) var swipeThreshold: Int

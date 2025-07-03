@@ -139,7 +139,7 @@ struct SettingsView: View
                 HStack {
                     IconLabel("Inactive Palette", "paintpalette")
                     Picker("", selection: $settings.inactiveColorRandomPalette) {
-                        ForEach(ColourMode.allCases) { mode in
+                        ForEach(ColourPalette.allCases) { mode in
                             Text(mode.rawValue).lineLimit(1).tag(mode)
                         }
                     }.pickerStyle(.menu).onChange(of: settings.inactiveColorRandomPalette) { newValue in

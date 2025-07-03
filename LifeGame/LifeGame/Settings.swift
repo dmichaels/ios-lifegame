@@ -31,17 +31,17 @@ class Settings: ObservableObject
 
     // LifeCellGridView specific properties.
 
-    @Published var activeColor: Colour                      = Colour.black
-    @Published var inactiveColor: Colour                    = Colour.white
-    @Published var inactiveColorRandom: Bool                = false
-    @Published var inactiveColorRandomDynamic: Bool         = false
-    @Published var inactiveColorRandomPalette: ColourMode   = ColourMode.color
-    @Published var inactiveColorRandomFilter: ColourFilter? = nil
+    @Published var activeColor: Colour                       = Colour.black
+    @Published var inactiveColor: Colour                     = Colour.white
+    @Published var inactiveColorRandom: Bool                 = false
+    @Published var inactiveColorRandomDynamic: Bool          = false
+    @Published var inactiveColorRandomPalette: ColourPalette = ColourPalette.color
+    @Published var inactiveColorRandomFilter: ColourFilter?  = nil
 
-    @Published var dragThreshold: Int                       = 2
-    @Published var swipeThreshold: Int                      = 100
-    @Published var soundEnabled: Bool                       = false
-    @Published var hapticEnabled: Bool                      = false
+    @Published var dragThreshold: Int                        = 2
+    @Published var swipeThreshold: Int                       = 100
+    @Published var soundEnabled: Bool                        = false
+    @Published var hapticEnabled: Bool                       = false
 
     // This just allows this Settings object to be the single place where we define the default parameters
     // for this app, which are easily accessible elsewhere, without having to define a separate Defaults class;
