@@ -16,10 +16,10 @@ class Settings: ObservableObject
     @Published var cellShape: CellShape       = CellShape.rounded
     @Published var cellShading: Bool          = false
 
-    @Published var gridColumns: Int           = 50 // 500
-    @Published var gridRows: Int              = 75 // 750
-    @Published var fit: CellGridView.Fit      = CellGridView.Fit.disabled
-    @Published var center: Bool               = false
+    @Published var gridColumns: Int           = 100
+    @Published var gridRows: Int              = 200
+    @Published var fit: CellGridView.Fit      = CellGridView.Fit.enabled
+    @Published var center: Bool               = true
 
     @Published var cellAntialiasFade: Float   = CellGridView.Defaults.cellAntialiasFade
     @Published var cellRoundedRadius: Float   = CellGridView.Defaults.cellRoundedRadius
