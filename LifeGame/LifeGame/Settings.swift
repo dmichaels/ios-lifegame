@@ -17,7 +17,7 @@ class Settings: ObservableObject
     @Published var cellShading: Bool          = false
 
     @Published var gridColumns: Int           = 100
-    @Published var gridRows: Int              = 200
+    @Published var gridRows: Int              = 250
     @Published var fit: CellGridView.Fit      = CellGridView.Fit.enabled
     @Published var center: Bool               = true
 
@@ -28,7 +28,7 @@ class Settings: ObservableObject
 
     @Published var selectMode: Bool           = true
     @Published var automationMode: Bool       = true
-    @Published var automationInterval: Double = 0.5
+    @Published var automationInterval: Double = CellGridView.Defaults.automationInterval
 
     // LifeCellGridView specific properties.
 
