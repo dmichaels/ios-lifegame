@@ -61,6 +61,7 @@ extension LifeCellGridView
                        cellSize:           s?.cellSize           ?? v?.cellSize           ?? d.cellSize,
                        cellPadding:        s?.cellPadding        ?? v?.cellPadding        ?? d.cellPadding,
                        cellShape:          s?.cellShape          ?? v?.cellShape          ?? d.cellShape,
+                       cellShading:        s?.cellShading        ?? v?.cellShading        ?? d.cellShading,
                        gridColumns:        s?.gridColumns        ?? v?.gridColumns        ?? d.gridColumns,
                        gridRows:           s?.gridRows           ?? v?.gridRows           ?? d.gridRows,
                        fit:                s?.fit                ?? v?.fit                ?? d.fit,

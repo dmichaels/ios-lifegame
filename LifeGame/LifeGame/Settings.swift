@@ -14,6 +14,7 @@ class Settings: ObservableObject
     @Published var cellSize: Int              = 23
     @Published var cellPadding: Int           = 1
     @Published var cellShape: CellShape       = CellShape.rounded
+    @Published var cellShading: Bool          = false
 
     @Published var gridColumns: Int           = 50 // 500
     @Published var gridRows: Int              = 75 // 750
@@ -70,6 +71,7 @@ class Settings: ObservableObject
         self.cellSize           = config.cellSize
         self.cellPadding        = config.cellPadding
         self.cellShape          = config.cellShape
+        self.cellShading        = config.cellShading
         self.gridColumns        = config.gridColumns
         self.gridRows           = config.gridRows
         self.fit                = config.fit

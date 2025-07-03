@@ -62,50 +62,8 @@ struct SettingsView: View
                     }
                 }
                 HStack {
-                    IconLabel("Cell Grid Fit", "square.grid.3x3.square")
-                    Text(" (\(settings.gridRows)x\(settings.gridColumns))")
-                        .foregroundColor(.secondary)
-                        .font(.footnote)
-                        .padding(.leading, -8)
-                        .padding(.top, 1)
-                    Picker("", selection: $settings.fit) {
-                        ForEach(FitOptions, id: \.value) { option in
-                            Text(option.label)
-                                .tag(option.value)
-                        }
-                    }.pickerStyle(.menu)
-                        .onChange(of: settings.fit) { value in
-                            cellSizeDisplay = (
-                                settings.fit != CellGridView.Fit.disabled
-                                ? cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
-                                : nil
-                            )
-                            if (settings.fit != CellGridView.Fit.disabled) {
-                                let preferred = cellGridView.preferredSize(settings.cellSize, fit: settings.fit)
-                                cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
-                            }
-                        }
-                }
-                HStack {
-                    IconLabel("Cell Grid Center", "align.horizontal.center")
-                    Toggle("", isOn: $settings.center).labelsHidden()
-                }
-                HStack {
-                    IconLabel("Automation Speed", "waveform.path")
-                    //
-                    // if (settings.automationInterval < 0.5) {
-                    //     Image(systemName: "hare").font(.system(size: 14)).padding(.leading, -6)
-                    // }
-                    // else if (settings.automationInterval > 0.5) {
-                    //     Image(systemName: "tortoise" ).font(.system(size: 14)).padding(.leading, -6)
-                    // }
-                    //
-                    Picker("", selection: $settings.automationInterval) {
-                        ForEach(AutomationIntervalOptions, id: \.value) { option in
-                            Text(option.label)
-                                .tag(option.value)
-                        }
-                    }.pickerStyle(.menu)
+                    IconLabel("Cell Shading", "square.filled.on.square")
+                    Toggle("", isOn: $settings.cellShading).labelsHidden()
                 }
             }
             Section(header: Text("COLORS").padding(.leading, -12).padding(.top, -20)) {
@@ -152,6 +110,56 @@ struct SettingsView: View
                         .onChange(of: settings.viewBackgroundInternal) { newValue in
                            settings.viewBackgroundInternal = newValue
                         }
+                }
+            }
+            Section(header: Text("GRID").padding(.leading, -12).padding(.top, -20)) {
+                HStack {
+                    IconLabel("Grid Fit", "square.grid.3x3.square")
+                    Text(" (\(settings.gridRows)x\(settings.gridColumns))")
+                        .foregroundColor(.secondary)
+                        .font(.footnote)
+                        .padding(.leading, -8)
+                        .padding(.top, 1)
+                    Picker("", selection: $settings.fit) {
+                        ForEach(FitOptions, id: \.value) { option in
+                            Text(option.label)
+                                .tag(option.value)
+                        }
+                    }.pickerStyle(.menu)
+                        .onChange(of: settings.fit) { value in
+                            cellSizeDisplay = (
+                                settings.fit != CellGridView.Fit.disabled
+                                ? cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
+                                : nil
+                            )
+                            if (settings.fit != CellGridView.Fit.disabled) {
+                                let preferred = cellGridView.preferredSize(settings.cellSize, fit: settings.fit)
+                                cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
+                            }
+                        }
+                }
+                HStack {
+                    IconLabel("Grid Center", "align.horizontal.center")
+                    Toggle("", isOn: $settings.center).labelsHidden()
+                }
+            }
+            Section(header: Text("AUTOMATION").padding(.leading, -12).padding(.top, -20)) {
+                HStack {
+                    IconLabel("Speed", "waveform.path")
+                    //
+                    // if (settings.automationInterval < 0.5) {
+                    //     Image(systemName: "hare").font(.system(size: 14)).padding(.leading, -6)
+                    // }
+                    // else if (settings.automationInterval > 0.5) {
+                    //     Image(systemName: "tortoise" ).font(.system(size: 14)).padding(.leading, -6)
+                    // }
+                    //
+                    Picker("", selection: $settings.automationInterval) {
+                        ForEach(AutomationIntervalOptions, id: \.value) { option in
+                            Text(option.label)
+                                .tag(option.value)
+                        }
+                    }.pickerStyle(.menu)
                 }
             }
             Section(header: Text("ADVANCED").padding(.leading, -12).padding(.top, -20)) {
