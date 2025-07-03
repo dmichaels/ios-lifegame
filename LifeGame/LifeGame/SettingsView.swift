@@ -32,7 +32,7 @@ struct SettingsView: View
                     }.padding(.bottom, 4)
                     Slider(
                         value: Binding(get: { Double(settings.cellSize) }, set: { settings.cellSize = Int($0.rounded()) }),
-                                       in: Double(cellGridView.minimumCellSize(cellPadding: settings.cellPadding))...Double(cellGridView.maximumCellSize), step: 1)
+                                       in: cellSizeRange(), step: 1)
                         .padding(.top, -8).padding(.bottom, -2)
                         .onChange(of: settings.cellSize) { value in
                             cellSizeDisplay = (
@@ -54,7 +54,8 @@ struct SettingsView: View
                         }
                     }.pickerStyle(.menu)
                     .onChange(of: settings.cellPadding) { value in
-                        let minimumCellSize: Int = cellGridView.minimumCellSize(cellPadding: settings.cellPadding)
+                        let minimumCellSize: Int = cellGridView.minimumCellSize(cellPadding: settings.cellPadding,
+                                                                                cellShape: settings.cellShape)
                         if (settings.cellSize < minimumCellSize) {
                             settings.cellSize = minimumCellSize
                         }
@@ -173,6 +174,12 @@ struct SettingsView: View
         .offset(y: -30)
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    func cellSizeRange() -> ClosedRange<Double> {
+        let min: Double = Double(cellGridView.minimumCellSize(cellPadding: settings.cellPadding,
+                                                              cellShape: settings.cellShape))
+        return min...Double(cellGridView.maximumCellSize)
     }
 }
 
