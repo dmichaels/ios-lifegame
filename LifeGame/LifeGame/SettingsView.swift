@@ -198,6 +198,10 @@ struct SettingsView: View
                     IconLabel("Restrict Shift", "arrow.up.left.arrow.down.right.square")
                     Toggle("", isOn: $settings.restrictShift).labelsHidden()
                 }
+                HStack {
+                    IconLabel("Unscaled Zoom", "arrow.up.left.arrow.down.right.square")
+                    Toggle("", isOn: $settings.unscaledZoom)
+                }
             }
         }
         .offset(y: -30)
