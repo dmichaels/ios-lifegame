@@ -29,6 +29,7 @@ class Settings: ObservableObject
     @Published var selectMode: Bool           = true
     @Published var automationMode: Bool       = true
     @Published var automationInterval: Double = CellGridView.Defaults.automationInterval
+    @Published var variantHighLife: Bool      = false
 
     // LifeCellGridView specific properties.
 
@@ -87,6 +88,7 @@ class Settings: ObservableObject
         self.selectMode         = config.selectMode
         self.automationMode     = config.automationMode
         self.automationInterval = config.automationInterval
+        self.variantHighLife    = config.variantHighLife
 
         // LifeCellGridView specific properties.
 

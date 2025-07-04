@@ -18,6 +18,11 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var generationNumber: Int = 0
     internal private(set) var inactiveColorRandomNumber: Int = 0
     internal private(set) var inactiveColorRandomDynamicNumber: Int = 0
+    //
+    // In the HighLife variant of Conway's Life, an inactive cell
+    // also becomes active if it has exactly six active neighbors.
+    //
+    internal private(set) var variantHighLife: Bool
     private               var liveCells: Set<CellLocation> = []
 
     public init(_ config: LifeCellGridView.Config? = nil) {
@@ -28,6 +33,7 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomDynamic = config.inactiveColorRandomDynamic
         self.inactiveColorRandomPalette = config.inactiveColorRandomPalette
         self.inactiveColorRandomFilter  = config.inactiveColorRandomFilter
+        self.variantHighLife            = config.variantHighLife
         self.dragThreshold              = config.dragThreshold
         self.swipeThreshold             = config.swipeThreshold
         self.soundEnabled               = config.soundEnabled
@@ -55,6 +61,7 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomDynamic = settings.inactiveColorRandomDynamic
         self.inactiveColorRandomPalette = settings.inactiveColorRandomPalette
         self.inactiveColorRandomFilter = settings.inactiveColorRandomFilter
+        self.variantHighLife = settings.variantHighLife
         self.inactiveColorRandomNumber += 2
         self.inactiveColorRandomDynamicNumber += 2
         super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
@@ -120,18 +127,22 @@ public final class LifeCellGridView: CellGridView
         self.generationNumber += 1
         self.inactiveColorRandomDynamicNumber += 1
 
-        var neighborCount: [CellLocation: Int] = [:]
+        var neighbors: [CellLocation: Int] = [:]
 
         // Count neighbors for all live cells and their neighbors.
 
         for cellLocation in self.liveCells {
             for dy in -1...1 {
                 for dx in -1...1 {
-                    if dx == 0 && dy == 0 { continue }
-                    let neighborX = (cellLocation.x + dx + self.gridColumns) % self.gridColumns
-                    let neighborY = (cellLocation.y + dy + self.gridRows) % self.gridRows
-                    let neighborLocation = CellLocation(neighborX, neighborY)
-                    neighborCount[neighborLocation, default: 0] += 1
+                    if ((dx == 0) && (dy == 0)) { continue }
+                    // let neighborX = (cellLocation.x + dx + self.gridColumns) % self.gridColumns
+                    // let neighborY = (cellLocation.y + dy + self.gridRows) % self.gridRows
+                    // let neighborLocation = CellLocation(neighborX, neighborY)
+                    let neighborLocation = CellLocation(
+                        (cellLocation.x + dx + self.gridColumns) % self.gridColumns,
+                        (cellLocation.y + dy + self.gridRows)    % self.gridRows
+                    )
+                    neighbors[neighborLocation, default: 0] += 1
                 }
             }
         }
@@ -140,13 +151,16 @@ public final class LifeCellGridView: CellGridView
 
         // Determine which cells live in the next generation.
 
-        for (cellLocation, count) in neighborCount {
+        for (cellLocation, count) in neighbors {
             let isAlive = self.liveCells.contains(cellLocation)
             if (isAlive) {
                 //
                 // Survival rules.
                 //
                 if ((count == 2) || (count == 3)) {
+                    newLiveCells.insert(cellLocation)
+                }
+                else if (self.variantHighLife && (count == 6)) {
                     newLiveCells.insert(cellLocation)
                 }
             } else {

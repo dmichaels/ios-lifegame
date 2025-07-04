@@ -13,6 +13,7 @@ extension LifeCellGridView
         public var inactiveColorRandomDynamic: Bool
         public var inactiveColorRandomPalette: ColourPalette
         public var inactiveColorRandomFilter: ColourFilter?
+        public var variantHighLife: Bool
 
         public var dragThreshold: Int  = 3
         public var swipeThreshold: Int = 100
@@ -48,6 +49,7 @@ extension LifeCellGridView
             self.inactiveColorRandomDynamic = s?.inactiveColorRandomDynamic ?? v?.inactiveColorRandomDynamic ?? d.inactiveColorRandomDynamic
             self.inactiveColorRandomPalette = s?.inactiveColorRandomPalette ?? v?.inactiveColorRandomPalette ?? d.inactiveColorRandomPalette
             self.inactiveColorRandomFilter  = s?.inactiveColorRandomFilter  ?? v?.inactiveColorRandomFilter  ?? d.inactiveColorRandomFilter
+            self.variantHighLife            = s?.variantHighLife            ?? v?.variantHighLife            ?? d.variantHighLife
             self.dragThreshold              = s?.dragThreshold              ?? v?.dragThreshold              ?? d.dragThreshold
             self.swipeThreshold             = s?.swipeThreshold             ?? v?.swipeThreshold             ?? d.swipeThreshold
             self.soundEnabled               = s?.soundEnabled               ?? v?.soundEnabled               ?? d.soundEnabled

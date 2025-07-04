@@ -164,7 +164,11 @@ struct SettingsView: View
                         .disabled(settings.fit == CellGridView.Fit.fixed)
                 }
             }
-            Section(header: Text("AUTOMATION").padding(.leading, -12).padding(.top, -20)) {
+            Section(header: Text("GAME OF LIFE").padding(.leading, -12).padding(.top, -20)) {
+                HStack {
+                    IconLabel("HighLife Variant", "lifepreserver")
+                    Toggle("", isOn: $settings.variantHighLife).labelsHidden()
+                }
                 HStack {
                     IconLabel("Speed", "waveform.path")
                     //
