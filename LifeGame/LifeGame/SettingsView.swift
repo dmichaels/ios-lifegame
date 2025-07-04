@@ -114,6 +114,24 @@ struct SettingsView: View
             }
             Section(header: Text("GRID").padding(.leading, -12).padding(.top, -20)) {
                 HStack {
+                    IconLabel("Grid Fixed", "square.grid.3x3.square")
+                    Toggle("", isOn: Binding<Bool>(
+                        get: { settings.fit == CellGridView.Fit.fixed },
+                        // set: { value in settings.fit = value ? CellGridView.Fit.fixed : CellGridView.Fit.disabled }
+                        set: { value in
+                            if (value) {
+                                settings.fit = CellGridView.Fit.fixed
+                            }
+                            else {
+                                settings.fit = CellGridView.Fit.disabled
+                                settings.gridColumns = Settings.Defaults.gridColumns
+                                settings.gridRows = Settings.Defaults.gridRows
+                            }
+                        }
+                ))
+                }
+                /*
+                HStack {
                     IconLabel("Grid Fit", "square.grid.3x3.square")
                     Text(" (\(settings.gridRows)x\(settings.gridColumns))")
                         .foregroundColor(.secondary)
@@ -138,6 +156,7 @@ struct SettingsView: View
                             }
                         }
                 }
+                */
                 HStack {
                     IconLabel("Grid Center", "align.horizontal.center")
                     Toggle("", isOn: $settings.center).labelsHidden()

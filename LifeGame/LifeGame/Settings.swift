@@ -8,7 +8,7 @@ class Settings: ObservableObject
     // CellGridView base class specific properties we are interested in controlling; see CellGridView.Defaults for all.
 
     @Published var viewBackground: Colour     = Colour.darkGray
-    @Published var viewTransparency: UInt8    = Colour.OPAQUE
+    @Published var viewTransparency: UInt8    = Colour.TRANSPARENT
     @Published var viewScaling: Bool          = true
 
     @Published var cellSize: Int              = 23
