@@ -159,7 +159,9 @@ struct SettingsView: View
                 */
                 HStack {
                     IconLabel("Grid Center", "align.horizontal.center")
+                        .disabled(settings.fit == CellGridView.Fit.fixed)
                     Toggle("", isOn: $settings.center).labelsHidden()
+                        .disabled(settings.fit == CellGridView.Fit.fixed)
                 }
             }
             Section(header: Text("AUTOMATION").padding(.leading, -12).padding(.top, -20)) {
