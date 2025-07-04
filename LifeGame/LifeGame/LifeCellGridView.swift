@@ -23,6 +23,7 @@ public final class LifeCellGridView: CellGridView
     // also becomes active if it has exactly six active neighbors.
     //
     internal private(set) var variantHighLife: Bool
+    internal private(set) var variantOverpopulate: Bool
     private               var liveCells: Set<CellLocation> = []
 
     public init(_ config: LifeCellGridView.Config? = nil) {
@@ -34,6 +35,7 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomPalette = config.inactiveColorRandomPalette
         self.inactiveColorRandomFilter  = config.inactiveColorRandomFilter
         self.variantHighLife            = config.variantHighLife
+        self.variantOverpopulate        = config.variantOverpopulate
         self.dragThreshold              = config.dragThreshold
         self.swipeThreshold             = config.swipeThreshold
         self.soundEnabled               = config.soundEnabled
@@ -62,6 +64,7 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomPalette = settings.inactiveColorRandomPalette
         self.inactiveColorRandomFilter = settings.inactiveColorRandomFilter
         self.variantHighLife = settings.variantHighLife
+        self.variantOverpopulate = settings.variantOverpopulate
         self.inactiveColorRandomNumber += 2
         self.inactiveColorRandomDynamicNumber += 2
         super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
@@ -161,6 +164,9 @@ public final class LifeCellGridView: CellGridView
                     newLiveCells.insert(cellLocation)
                 }
                 else if (self.variantHighLife && (count == 6)) {
+                    newLiveCells.insert(cellLocation)
+                }
+                else if (self.variantOverpopulate && (count > 3)) {
                     newLiveCells.insert(cellLocation)
                 }
             } else {

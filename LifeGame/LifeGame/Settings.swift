@@ -30,6 +30,7 @@ class Settings: ObservableObject
     @Published var automationMode: Bool       = true
     @Published var automationInterval: Double = CellGridView.Defaults.automationInterval
     @Published var variantHighLife: Bool      = false
+    @Published var variantOverpopulate: Bool  = false
 
     // LifeCellGridView specific properties.
 
@@ -80,15 +81,16 @@ class Settings: ObservableObject
         // This center property we treat as not really persistent; we always
         // use its initial/default (noop/false) state when going to SettingsView.
         //
-        self.center             = false
-        self.cellAntialiasFade  = config.cellAntialiasFade
-        self.cellRoundedRadius  = config.cellRoundedRadius
-        self.restrictShift      = config.restrictShift
-        self.unscaledZoom       = config.unscaledZoom
-        self.selectMode         = config.selectMode
-        self.automationMode     = config.automationMode
-        self.automationInterval = config.automationInterval
-        self.variantHighLife    = config.variantHighLife
+        self.center              = false
+        self.cellAntialiasFade   = config.cellAntialiasFade
+        self.cellRoundedRadius   = config.cellRoundedRadius
+        self.restrictShift       = config.restrictShift
+        self.unscaledZoom        = config.unscaledZoom
+        self.selectMode          = config.selectMode
+        self.automationMode      = config.automationMode
+        self.automationInterval  = config.automationInterval
+        self.variantHighLife     = config.variantHighLife
+        self.variantOverpopulate = config.variantOverpopulate
 
         // LifeCellGridView specific properties.
 

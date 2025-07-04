@@ -167,7 +167,11 @@ struct SettingsView: View
             Section(header: Text("GAME OF LIFE").padding(.leading, -12).padding(.top, -20)) {
                 HStack {
                     IconLabel("HighLife Variant", "lifepreserver")
-                    Toggle("", isOn: $settings.variantHighLife).labelsHidden()
+                    Toggle("", isOn: $settings.variantHighLife)
+                }
+                HStack {
+                    IconLabel("Overpopulate Variant", "gauge.with.dots.needle.bottom.100percent")
+                    Toggle("", isOn: $settings.variantOverpopulate)
                 }
                 HStack {
                     IconLabel("Speed", "waveform.path")
