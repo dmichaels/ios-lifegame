@@ -19,6 +19,7 @@ struct ContentView: View
     @State private var showSettingsView: Bool = false
     @State private var showControlBar: Bool = false
     @State private var screenBackground: Colour? = nil
+    @State private var automationModeSuspended: Bool = false
 
     var body: some View {
         NavigationView {
@@ -162,10 +163,18 @@ struct ContentView: View
     private func onChangeSettings() {
         self.cellGridView.configure(self.settings)
         self.updateImage()
+        if (self.automationModeSuspended) {
+            self.automationModeSuspended = false
+            self.cellGridView.automationStart()
+        }
     }
 
     private func showSettings() {
         self.settings.fromConfig(self.cellGridView)
+        if (self.cellGridView.automationMode) {
+            self.automationModeSuspended = true
+            self.cellGridView.automationStop()
+        }
         self.showSettingsView = true
     }
 
