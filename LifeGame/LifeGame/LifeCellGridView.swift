@@ -169,9 +169,11 @@ public final class LifeCellGridView: CellGridView
                 else if (self.variantOverpopulate && (count > 3)) {
                     newLiveCells.insert(cellLocation)
                 }
-            } else {
+            }
+            else {
                 //
                 // Birth rule.
+                // Death rules are default as we a populating a new set of live cells.
                 //
                 if (count == 3) {
                     newLiveCells.insert(cellLocation)
