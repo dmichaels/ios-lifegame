@@ -19,13 +19,15 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var inactiveColorRandomNumber: Int = 0
     internal private(set) var inactiveColorRandomDynamicNumber: Int = 0
     //
-    // In the HighLife variant of Conway's Life, an inactive cell
-    // also becomes active if it has exactly six active neighbors.
+    // In the HighLife variant of Conway's Life, an inactive cell also becomes
+    // active if it has exactly six active neighbors, in addition to the normal
+    // rule of being actived if it has exactly three active neighbors.
     //
     internal private(set) var variantHighLife: Bool
     //
-    // In the Overpoplate variant of Conway's Life, an inactive cell
-    // TODO ...
+    // In the Overpoplate variant of Conway's Life, an active cell which would
+    // otherwise be deactivated due to overpopulation, i.e. because it had more
+    // than three active neighbors, is allowed to survive (i.e. remains active).
     //
     internal private(set) var variantOverpopulate: Bool
     private               var liveCells: Set<CellLocation> = []
@@ -164,9 +166,6 @@ public final class LifeCellGridView: CellGridView
                 if ((count == 2) || (count == 3)) {
                     newLiveCells.insert(cellLocation)
                 }
-                else if (self.variantHighLife && (count == 6)) {
-                    newLiveCells.insert(cellLocation)
-                }
                 else if (self.variantOverpopulate && (count > 3)) {
                     newLiveCells.insert(cellLocation)
                 }
@@ -174,9 +173,12 @@ public final class LifeCellGridView: CellGridView
             else {
                 //
                 // Birth rule.
-                // Death rules fall out as we a populating a new set of live cells.
+                // Death rule falls out as we a populating a new set of live cells.
                 //
                 if (count == 3) {
+                    newLiveCells.insert(cellLocation)
+                }
+                else if (self.variantHighLife && (count == 6)) {
                     newLiveCells.insert(cellLocation)
                 }
             }
