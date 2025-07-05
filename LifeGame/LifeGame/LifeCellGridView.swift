@@ -23,6 +23,10 @@ public final class LifeCellGridView: CellGridView
     // also becomes active if it has exactly six active neighbors.
     //
     internal private(set) var variantHighLife: Bool
+    //
+    // In the Overpoplate variant of Conway's Life, an inactive cell
+    // TODO ...
+    //
     internal private(set) var variantOverpopulate: Bool
     private               var liveCells: Set<CellLocation> = []
 
@@ -138,9 +142,6 @@ public final class LifeCellGridView: CellGridView
             for dy in -1...1 {
                 for dx in -1...1 {
                     if ((dx == 0) && (dy == 0)) { continue }
-                    // let neighborX = (cellLocation.x + dx + self.gridColumns) % self.gridColumns
-                    // let neighborY = (cellLocation.y + dy + self.gridRows) % self.gridRows
-                    // let neighborLocation = CellLocation(neighborX, neighborY)
                     let neighborLocation = CellLocation(
                         (cellLocation.x + dx + self.gridColumns) % self.gridColumns,
                         (cellLocation.y + dy + self.gridRows)    % self.gridRows
@@ -173,7 +174,7 @@ public final class LifeCellGridView: CellGridView
             else {
                 //
                 // Birth rule.
-                // Death rules are default as we a populating a new set of live cells.
+                // Death rules fall out as we a populating a new set of live cells.
                 //
                 if (count == 3) {
                     newLiveCells.insert(cellLocation)
