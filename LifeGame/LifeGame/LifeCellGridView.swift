@@ -173,7 +173,7 @@ public final class LifeCellGridView: CellGridView
             let isAlive = self.activeCells.contains(cellLocation)
             if (isAlive) {
                 //
-                // Survival rules.
+                // Survival rules; i.e. cells that were active and are to remain active.
                 //
                 if ((count == 2) || (count == 3)) {
                     newLiveCells.insert(cellLocation)
@@ -184,8 +184,8 @@ public final class LifeCellGridView: CellGridView
             }
             else {
                 //
-                // Birth rule.
-                // Death rule falls out as we a populating a new set of live cells.
+                // Birth rule; i.e. cells that were inactive but are to become active.
+                // Note that death rule falls out as we a populating a new set of live cells.
                 //
                 if (count == 3) {
                     newLiveCells.insert(cellLocation)
@@ -212,15 +212,23 @@ public final class LifeCellGridView: CellGridView
         // deactivate cells that die; activate new live cells.
 
         for oldLocation in self.activeCells.subtracting(newLiveCells) {
+            //
+            // This loops through the cells that WERE active
+            // but with this new generation are now INACTIVE.
+            //
             if let cell: LifeCell = self.gridCell(oldLocation.x, oldLocation.y) {
                 cell.deactivate(nowrite: true, nonotify: true)
                 self.recentInactiveCells.insert(oldLocation)
                 cell._inactiveGenerationNumber = self.generationNumber - 1
-                cell.write() // TODO
+                cell.write()
             }
         }
 
         for newLocation in newLiveCells.subtracting(self.activeCells) {
+            //
+            // This loops through the cells that WERE inactive
+            // but with this new generation are now ACTIVE.
+            //
             if let cell: LifeCell = self.gridCell(newLocation.x, newLocation.y) {
                 cell.activate(nonotify: true)
             }
