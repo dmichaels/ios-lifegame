@@ -24,11 +24,11 @@ struct ControlBar: View {
         HStack(spacing: 36) {
             ActionButton(self.automationModeToggleInternal, "play.fill",
                          actionToggled: self.automationModeInternal, iconToggled: "pause.fill")
-            ActionButton(self.automationStep, "figure.step.training")
+            ActionButton(self.automationStep, "arrow.forward.to.line.compact" /* "arrow.right.to.line.square" */ /* "figure.step.training" */ )
             ActionButton(self.erase, "eraser")
             ActionButton(self.selectModeToggle, "square.and.pencil",
                          actionToggled: self.selectMode, iconToggled: "arrow.up.and.down.and.arrow.left.and.right")
-            ActionButton(self.showSettings, "gearshape.fill")
+            ActionButton(self.showSettings, "gear" /* "gearshape.fill" */ )
         }
         //
         // The padding-vertical controls how far from the bottom the control is;

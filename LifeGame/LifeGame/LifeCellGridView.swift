@@ -145,7 +145,6 @@ public final class LifeCellGridView: CellGridView
 
     private func nextGeneration()
     {
-        print("NEXTGEN: \(self.generationNumber) -> \(self.generationNumber + 1)")
         self.generationNumber += 1
         self.inactiveColorRandomDynamicNumber += 1
 
@@ -214,7 +213,7 @@ public final class LifeCellGridView: CellGridView
 
         for oldLocation in self.activeCells.subtracting(newLiveCells) {
             if let cell: LifeCell = self.gridCell(oldLocation.x, oldLocation.y) {
-                cell.deactivate(nonotify: true)
+                cell.deactivate(nowrite: true, nonotify: true)
                 self.recentInactiveCells.insert(oldLocation)
                 cell._inactiveGenerationNumber = self.generationNumber - 1
                 cell.write() // TODO
@@ -228,11 +227,5 @@ public final class LifeCellGridView: CellGridView
         }
 
         self.activeCells = newLiveCells
-
-        for location in self.recentInactiveCells {
-            if let cell: LifeCell = self.gridCell(location.x, location.y) {
-                // print("RIC: \(location) \(cell._inactiveGenerationNumber) [\(self.generationNumber)]")
-            }
-        }
     }
 }

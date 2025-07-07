@@ -34,12 +34,14 @@ public final class LifeCell: Cell {
                 if let inactiveGenerationNumber = self._inactiveGenerationNumber {
                     let inactiveAge: Int = self.inactiveAge
                     if (inactiveAge <= self.cellGridView.recentInactiveCellsMax) {
-                        let lightenFactor: CGFloat = CGFloat(inactiveAge * 2) / 10.0
-                        return self.cellGridView.activeColor.lighten(by: lightenFactor)
+                        let tintFactor: CGFloat = CGFloat(inactiveAge * 2) / 10.0
+                        return self.cellGridView.activeColor.isDark
+                               ? self.cellGridView.activeColor.lighten(by: tintFactor)
+                               : self.cellGridView.activeColor.darken(by: tintFactor)
                     }
                 }
             }
-            else if (self.cellGridView.inactiveColorRandomDynamic) {
+            if (self.cellGridView.inactiveColorRandomDynamic) {
                 if (self._inactiveColorRandomDynamicNumber != self.cellGridView.inactiveColorRandomDynamicNumber) {
                     super.color = self.cellGridView.inactiveColorRandomColor()
                     self._inactiveColorRandomDynamicNumber = self.cellGridView.inactiveColorRandomDynamicNumber
