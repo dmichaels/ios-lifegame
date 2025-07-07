@@ -14,9 +14,10 @@ extension LifeCellGridView
         public var inactiveColorRandomPalette: ColourPalette
         public var inactiveColorRandomFilter: ColourFilter?
         public var variantHighLife: Bool
-        public var variantOverpopulate: Bool
+        public var variantOverPopulate: Bool
         public var variantInactiveFade: Bool
         public var variantInactiveFadeAgeMax: Int
+        public var selectModeFat: Bool
 
         public var dragThreshold: Int  = 3
         public var swipeThreshold: Int = 100
@@ -53,9 +54,10 @@ extension LifeCellGridView
             self.inactiveColorRandomPalette = s?.inactiveColorRandomPalette ?? v?.inactiveColorRandomPalette ?? d.inactiveColorRandomPalette
             self.inactiveColorRandomFilter  = s?.inactiveColorRandomFilter  ?? v?.inactiveColorRandomFilter  ?? d.inactiveColorRandomFilter
             self.variantHighLife            = s?.variantHighLife            ?? v?.variantHighLife            ?? d.variantHighLife
-            self.variantOverpopulate        = s?.variantOverpopulate        ?? v?.variantOverpopulate        ?? d.variantOverpopulate
+            self.variantOverPopulate        = s?.variantOverPopulate        ?? v?.variantOverPopulate        ?? d.variantOverPopulate
             self.variantInactiveFade        = s?.variantInactiveFade        ?? v?.variantInactiveFade        ?? d.variantInactiveFade
             self.variantInactiveFadeAgeMax  = s?.variantInactiveFadeAgeMax  ?? v?.variantInactiveFadeAgeMax  ?? d.variantInactiveFadeAgeMax
+            self.selectModeFat              = s?.selectModeFat              ?? v?.selectModeFat              ?? d.selectModeFat
             self.dragThreshold              = s?.dragThreshold              ?? v?.dragThreshold              ?? d.dragThreshold
             self.swipeThreshold             = s?.swipeThreshold             ?? v?.swipeThreshold             ?? d.swipeThreshold
             self.soundEnabled               = s?.soundEnabled               ?? v?.soundEnabled               ?? d.soundEnabled

@@ -166,7 +166,7 @@ struct SettingsView: View
             }
             Section(header: Text("GAME OF LIFE").padding(.leading, -12).padding(.top, -20)) {
                 HStack {
-                    IconLabel("Inactive Fade Variant", "eye.fill")
+                    IconLabel("InactiveFade Variant", "eye.fill")
                     Toggle("", isOn: $settings.variantInactiveFade)
                 }
                 HStack {
@@ -174,8 +174,12 @@ struct SettingsView: View
                     Toggle("", isOn: $settings.variantHighLife)
                 }
                 HStack {
-                    IconLabel("Overpopulate Variant", "gauge.with.dots.needle.bottom.100percent")
-                    Toggle("", isOn: $settings.variantOverpopulate)
+                    IconLabel("OverPopulate Variant", "gauge.with.dots.needle.bottom.100percent")
+                    Toggle("", isOn: $settings.variantOverPopulate)
+                }
+                HStack {
+                    IconLabel("Fat Select", "rectangle.and.pencil.and.ellipsis")
+                    Toggle("", isOn: $settings.selectModeFat)
                 }
                 HStack {
                     IconLabel("Speed", "waveform.path")

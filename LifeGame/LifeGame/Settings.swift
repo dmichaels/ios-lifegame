@@ -8,32 +8,28 @@ class Settings: ObservableObject
 {
     // CellGridView base class specific properties we are interested in controlling; see CellGridView.Defaults for all.
 
-    @Published var viewBackground: Colour        = Colour.darkGray
-    @Published var viewTransparency: UInt8       = Colour.TRANSPARENT
-    @Published var viewScaling: Bool             = true
+    @Published var viewBackground: Colour     = Colour.darkGray
+    @Published var viewTransparency: UInt8    = Colour.TRANSPARENT
+    @Published var viewScaling: Bool          = true
 
-    @Published var cellSize: Int                 = 23
-    @Published var cellPadding: Int              = 1
-    @Published var cellShape: CellShape          = CellShape.rounded
-    @Published var cellShading: Bool             = false
+    @Published var cellSize: Int              = 23
+    @Published var cellPadding: Int           = 1
+    @Published var cellShape: CellShape       = CellShape.rounded
+    @Published var cellShading: Bool          = false
 
-    @Published var gridColumns: Int              = 100
-    @Published var gridRows: Int                 = 250
-    @Published var fit: CellGridView.Fit         = CellGridView.Fit.enabled
-    @Published var center: Bool                  = true
+    @Published var gridColumns: Int           = 100
+    @Published var gridRows: Int              = 250
+    @Published var fit: CellGridView.Fit      = CellGridView.Fit.enabled
+    @Published var center: Bool               = true
 
-    @Published var cellAntialiasFade: Float      = CellGridView.Defaults.cellAntialiasFade
-    @Published var cellRoundedRadius: Float      = CellGridView.Defaults.cellRoundedRadius
-    @Published var restrictShift: Bool           = true
-    @Published var unscaledZoom: Bool            = false
+    @Published var cellAntialiasFade: Float   = CellGridView.Defaults.cellAntialiasFade
+    @Published var cellRoundedRadius: Float   = CellGridView.Defaults.cellRoundedRadius
+    @Published var restrictShift: Bool        = true
+    @Published var unscaledZoom: Bool         = false
    
-    @Published var selectMode: Bool               = true
-    @Published var automationMode: Bool           = true
-    @Published var automationInterval: Double     = CellGridView.Defaults.automationInterval
-    @Published var variantHighLife: Bool          = false
-    @Published var variantOverpopulate: Bool      = false
-    @Published var variantInactiveFade: Bool      = true
-    @Published var variantInactiveFadeAgeMax: Int = 5
+    @Published var selectMode: Bool           = true
+    @Published var automationMode: Bool       = true
+    @Published var automationInterval: Double = CellGridView.Defaults.automationInterval
 
     // LifeCellGridView specific properties.
 
@@ -44,10 +40,16 @@ class Settings: ObservableObject
     @Published var inactiveColorRandomPalette: ColourPalette = ColourPalette.color
     @Published var inactiveColorRandomFilter: ColourFilter?  = nil
 
-    @Published var dragThreshold: Int                        = 2
-    @Published var swipeThreshold: Int                       = 100
-    @Published var soundEnabled: Bool                        = false
-    @Published var hapticEnabled: Bool                       = false
+    @Published var variantHighLife: Bool          = false
+    @Published var variantOverPopulate: Bool      = false
+    @Published var variantInactiveFade: Bool      = false
+    @Published var variantInactiveFadeAgeMax: Int = 5
+    @Published var selectModeFat: Bool            = false
+
+    @Published var dragThreshold: Int  = 2
+    @Published var swipeThreshold: Int = 100
+    @Published var soundEnabled: Bool  = false
+    @Published var hapticEnabled: Bool = false
 
     // This just allows this Settings object to be the single place where we define the default parameters
     // for this app, which are easily accessible elsewhere, without having to define a separate Defaults class;
@@ -84,18 +86,19 @@ class Settings: ObservableObject
         // This center property we treat as not really persistent; we always
         // use its initial/default (noop/false) state when going to SettingsView.
         //
-        self.center              = false
-        self.cellAntialiasFade   = config.cellAntialiasFade
-        self.cellRoundedRadius   = config.cellRoundedRadius
-        self.restrictShift       = config.restrictShift
-        self.unscaledZoom        = config.unscaledZoom
-        self.selectMode          = config.selectMode
-        self.automationMode      = config.automationMode
-        self.automationInterval  = config.automationInterval
-        self.variantHighLife     = config.variantHighLife
-        self.variantOverpopulate = config.variantOverpopulate
-        self.variantInactiveFade = config.variantInactiveFade
+        self.center                    = false
+        self.cellAntialiasFade         = config.cellAntialiasFade
+        self.cellRoundedRadius         = config.cellRoundedRadius
+        self.restrictShift             = config.restrictShift
+        self.unscaledZoom              = config.unscaledZoom
+        self.selectMode                = config.selectMode
+        self.automationMode            = config.automationMode
+        self.automationInterval        = config.automationInterval
+        self.variantHighLife           = config.variantHighLife
+        self.variantOverPopulate       = config.variantOverPopulate
+        self.variantInactiveFade       = config.variantInactiveFade
         self.variantInactiveFadeAgeMax = config.variantInactiveFadeAgeMax
+        self.selectModeFat             = config.selectModeFat
 
         // LifeCellGridView specific properties.
 

@@ -65,6 +65,20 @@ public final class LifeCell: Cell {
     }
 
     public override func select(dragging: Bool = false) {
+        if (self.cellGridView.selectModeFat) { //xyzzy
+            if let aboveCell: LifeCell = self.cellGridView.gridCell(self.x, self.y - 1) {
+                dragging ? aboveCell.activate() : aboveCell.toggle()
+            }
+            if let belowCell: LifeCell = self.cellGridView.gridCell(self.x, self.y + 1) {
+                dragging ? belowCell.activate() : belowCell.toggle()
+            }
+            if let leftCell: LifeCell = self.cellGridView.gridCell(self.x - 1, self.y) {
+                dragging ? leftCell.activate() : leftCell.toggle()
+            }
+            if let rightCell: LifeCell = self.cellGridView.gridCell(self.x + 1, self.y) {
+                dragging ? rightCell.activate() : rightCell.toggle()
+            }
+        }
         dragging ? self.activate() : self.toggle()
     }
 

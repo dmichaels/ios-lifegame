@@ -30,15 +30,16 @@ public final class LifeCellGridView: CellGridView
     // otherwise be deactivated due to overpopulation, i.e. because it had more
     // than three active neighbors, is allowed to survive (i.e. remains active).
     //
-    internal private(set) var variantOverpopulate: Bool
+    internal private(set) var variantOverPopulate: Bool
     //
     // In the InactiveFade variant of Conway's Life, an inactive cell will
     // be colored in a faded fashion depending on its "age" as defined by
     // how long git has been inactive (up to variantInactiveFadeAgeMax).
     //
     internal private(set) var variantInactiveFade: Bool
-    internal private(set) var variantInactiveFadeAgeMax: Int = 5
+    internal private(set) var variantInactiveFadeAgeMax: Int
     private               var variantInactiveFadeCells: Set<CellLocation> = []
+    internal private(set) var selectModeFat: Bool
 
     public init(_ config: LifeCellGridView.Config? = nil) {
         let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
@@ -49,9 +50,10 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomPalette = config.inactiveColorRandomPalette
         self.inactiveColorRandomFilter  = config.inactiveColorRandomFilter
         self.variantHighLife            = config.variantHighLife
-        self.variantOverpopulate        = config.variantOverpopulate
+        self.variantOverPopulate        = config.variantOverPopulate
         self.variantInactiveFade        = config.variantInactiveFade
         self.variantInactiveFadeAgeMax  = config.variantInactiveFadeAgeMax
+        self.selectModeFat              = config.selectModeFat
         self.dragThreshold              = config.dragThreshold
         self.swipeThreshold             = config.swipeThreshold
         self.soundEnabled               = config.soundEnabled
@@ -80,9 +82,10 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomPalette = settings.inactiveColorRandomPalette
         self.inactiveColorRandomFilter = settings.inactiveColorRandomFilter
         self.variantHighLife = settings.variantHighLife
-        self.variantOverpopulate = settings.variantOverpopulate
+        self.variantOverPopulate = settings.variantOverPopulate
         self.variantInactiveFade = settings.variantInactiveFade
         self.variantInactiveFadeAgeMax = settings.variantInactiveFadeAgeMax
+        self.selectModeFat = settings.selectModeFat
         self.inactiveColorRandomNumber += 2
         self.inactiveColorRandomDynamicNumber += 2
         super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
@@ -185,7 +188,7 @@ public final class LifeCellGridView: CellGridView
                 if ((count == 2) || (count == 3)) {
                     newLiveCells.insert(cellLocation)
                 }
-                else if (self.variantOverpopulate && (count > 3)) {
+                else if (self.variantOverPopulate && (count > 3)) {
                     newLiveCells.insert(cellLocation)
                 }
             }
