@@ -148,7 +148,7 @@ struct ContentView: View
             }
         }
         .onAppear {
-            self.orientation.register(self.onChangeOrientation)
+            self.orientation.register(self.updateOrientation)
         }
         .onDisappear {
             self.orientation.deregister()
@@ -160,6 +160,10 @@ struct ContentView: View
         return self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)
     }
 
+    private func updateOrientation(_ current: UIDeviceOrientation, _ previous: UIDeviceOrientation) {
+        self.rotateImage()
+    }
+
     private func rotateImage() {
         self.imageAngle = self.orientation.rotationAngle()
     }
@@ -168,8 +172,13 @@ struct ContentView: View
         self.image = self.cellGridView.image
     }
 
-    private func onChangeOrientation(_ current: UIDeviceOrientation, _ previous: UIDeviceOrientation) {
-        self.rotateImage()
+    private func showSettings() {
+        if (self.cellGridView.automationMode) {
+            self.automationModeSuspended = true
+            self.cellGridView.automationStop()
+        }
+        self.settings.fromConfig(self.cellGridView)
+        self.showSettingsView = true
     }
 
     private func onChangeSettings() {
@@ -180,15 +189,6 @@ struct ContentView: View
             self.automationModeSuspended = false
             self.automationMode = true
         }
-    }
-
-    private func showSettings() {
-        if (self.cellGridView.automationMode) {
-            self.automationModeSuspended = true
-            self.cellGridView.automationStop()
-        }
-        self.settings.fromConfig(self.cellGridView)
-        self.showSettingsView = true
     }
 
     private func toggleShowControls() {

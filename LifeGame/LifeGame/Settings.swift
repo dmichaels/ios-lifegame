@@ -28,7 +28,7 @@ class Settings: ObservableObject
     @Published var unscaledZoom: Bool         = false
 
     @Published var selectMode: Bool           = true
-    @Published var automationMode: Bool       = true
+    @Published var automationMode: Bool       = false
     @Published var automationInterval: Double = CellGridView.Defaults.automationInterval
     @Published var variantHighLife: Bool      = false
     @Published var variantOverpopulate: Bool  = false
