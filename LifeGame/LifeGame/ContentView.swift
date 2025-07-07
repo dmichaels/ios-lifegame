@@ -72,7 +72,7 @@ struct ContentView: View
                 .onAppear {
                     if (!self.cellGridView.initialized) {
                         //
-                        // See comment at top about setting our local automationMode state variable.
+                        // See comment at top WRT setting our local automationMode state variable here.
                         //
                         self.automationMode = self.settings.automationMode
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
