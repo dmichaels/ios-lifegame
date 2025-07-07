@@ -31,6 +31,11 @@ public final class LifeCellGridView: CellGridView
     // than three active neighbors, is allowed to survive (i.e. remains active).
     //
     internal private(set) var variantOverpopulate: Bool
+    //
+    // In the InactiveFade variant of Conway's Life, an inactive cell will
+    // be colored in a faded fashion depending on its "age" as defined by
+    // how long git has been inactive (up to variantInactiveFadeAgeMax).
+    //
     internal private(set) var variantInactiveFade: Bool
     internal private(set) var variantInactiveFadeAgeMax: Int = 5
     private               var variantInactiveFadeCells: Set<CellLocation> = []
