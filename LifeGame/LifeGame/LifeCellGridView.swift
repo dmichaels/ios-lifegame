@@ -33,6 +33,7 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var variantInactiveFade: Bool
     private               var activeCells: Set<CellLocation> = []
     private               var recentInactiveCells: Set<CellLocation> = []
+    internal private(set) var recentInactiveCellsMax: Int = 4
 
     public init(_ config: LifeCellGridView.Config? = nil) {
         let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
@@ -199,7 +200,7 @@ public final class LifeCellGridView: CellGridView
         if (self.variantInactiveFade) {
             for cellLocation in self.recentInactiveCells {
                 if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
-                    if (cell.inactiveAge > 4) {
+                    if (cell.inactiveAge > self.recentInactiveCellsMax) {
                         cell._inactiveGenerationNumber = nil
                         self.recentInactiveCells.remove(cellLocation)
                     }

@@ -31,28 +31,12 @@ public final class LifeCell: Cell {
                 return self.cellGridView.activeColor
             }
             else if (self.cellGridView.variantInactiveFade) {
-                //
-                // TODO
-                //
-                var x = 1
                 if let inactiveGenerationNumber = self._inactiveGenerationNumber {
                     let inactiveAge: Int = self.inactiveAge
-                    if (inactiveAge <= 4) {
+                    if (inactiveAge <= self.cellGridView.recentInactiveCellsMax) {
                         let lightenFactor: CGFloat = CGFloat(inactiveAge * 2) / 10.0
-                        // print("COLOR: \(inactiveAge) \(lightenFactor)")
                         return self.cellGridView.activeColor.lighten(by: lightenFactor)
                     }
-                    /*
-                    if      (inactiveAge == 1) { return self.cellGridView.activeColor.lighten(by: 0.1) }
-                    else if (inactiveAge == 2) { return self.cellGridView.activeColor.lighten(by: 0.2) }
-                    else if (inactiveAge == 3) { return self.cellGridView.activeColor.lighten(by: 0.3) }
-                    else if (inactiveAge == 4) { return self.cellGridView.activeColor.lighten(by: 0.4) }
-                    else if (inactiveAge == 5) { return self.cellGridView.activeColor.lighten(by: 0.5) }
-                    else if (inactiveAge == 6) { return self.cellGridView.activeColor.lighten(by: 0.6) }
-                    else if (inactiveAge == 7) { return self.cellGridView.activeColor.lighten(by: 0.7) }
-                    else if (inactiveAge == 8) { return self.cellGridView.activeColor.lighten(by: 0.8) }
-                    else if (inactiveAge == 9) { return self.cellGridView.activeColor.lighten(by: 0.9) }
-                    */
                 }
             }
             else if (self.cellGridView.inactiveColorRandomDynamic) {
