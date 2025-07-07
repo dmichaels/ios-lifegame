@@ -166,6 +166,10 @@ struct SettingsView: View
             }
             Section(header: Text("GAME OF LIFE").padding(.leading, -12).padding(.top, -20)) {
                 HStack {
+                    IconLabel("Inactive Fade Variant", "eye.fill")
+                    Toggle("", isOn: $settings.variantInactiveFade)
+                }
+                HStack {
                     IconLabel("HighLife Variant", "lifepreserver")
                     Toggle("", isOn: $settings.variantHighLife)
                 }
