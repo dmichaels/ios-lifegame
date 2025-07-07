@@ -8,31 +8,32 @@ class Settings: ObservableObject
 {
     // CellGridView base class specific properties we are interested in controlling; see CellGridView.Defaults for all.
 
-    @Published var viewBackground: Colour     = Colour.darkGray
-    @Published var viewTransparency: UInt8    = Colour.TRANSPARENT
-    @Published var viewScaling: Bool          = true
+    @Published var viewBackground: Colour        = Colour.darkGray
+    @Published var viewTransparency: UInt8       = Colour.TRANSPARENT
+    @Published var viewScaling: Bool             = true
 
-    @Published var cellSize: Int              = 23
-    @Published var cellPadding: Int           = 1
-    @Published var cellShape: CellShape       = CellShape.rounded
-    @Published var cellShading: Bool          = false
+    @Published var cellSize: Int                 = 23
+    @Published var cellPadding: Int              = 1
+    @Published var cellShape: CellShape          = CellShape.rounded
+    @Published var cellShading: Bool             = false
 
-    @Published var gridColumns: Int           = 100
-    @Published var gridRows: Int              = 250
-    @Published var fit: CellGridView.Fit      = CellGridView.Fit.enabled
-    @Published var center: Bool               = true
+    @Published var gridColumns: Int              = 100
+    @Published var gridRows: Int                 = 250
+    @Published var fit: CellGridView.Fit         = CellGridView.Fit.enabled
+    @Published var center: Bool                  = true
 
-    @Published var cellAntialiasFade: Float   = CellGridView.Defaults.cellAntialiasFade
-    @Published var cellRoundedRadius: Float   = CellGridView.Defaults.cellRoundedRadius
-    @Published var restrictShift: Bool        = true
-    @Published var unscaledZoom: Bool         = false
-
-    @Published var selectMode: Bool           = true
-    @Published var automationMode: Bool       = true
-    @Published var automationInterval: Double = CellGridView.Defaults.automationInterval
-    @Published var variantHighLife: Bool      = false
-    @Published var variantOverpopulate: Bool  = false
-    @Published var variantInactiveFade: Bool  = true
+    @Published var cellAntialiasFade: Float      = CellGridView.Defaults.cellAntialiasFade
+    @Published var cellRoundedRadius: Float      = CellGridView.Defaults.cellRoundedRadius
+    @Published var restrictShift: Bool           = true
+    @Published var unscaledZoom: Bool            = false
+   
+    @Published var selectMode: Bool               = true
+    @Published var automationMode: Bool           = true
+    @Published var automationInterval: Double     = CellGridView.Defaults.automationInterval
+    @Published var variantHighLife: Bool          = false
+    @Published var variantOverpopulate: Bool      = false
+    @Published var variantInactiveFade: Bool      = true
+    @Published var variantInactiveFadeAgeMax: Int = 5
 
     // LifeCellGridView specific properties.
 
@@ -94,6 +95,7 @@ class Settings: ObservableObject
         self.variantHighLife     = config.variantHighLife
         self.variantOverpopulate = config.variantOverpopulate
         self.variantInactiveFade = config.variantInactiveFade
+        self.variantInactiveFadeAgeMax = config.variantInactiveFadeAgeMax
 
         // LifeCellGridView specific properties.
 

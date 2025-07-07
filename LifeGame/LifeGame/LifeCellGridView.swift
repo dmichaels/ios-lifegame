@@ -18,6 +18,7 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var generationNumber: Int = 0
     internal private(set) var inactiveColorRandomNumber: Int = 0
     internal private(set) var inactiveColorRandomDynamicNumber: Int = 0
+    private               var activeCells: Set<CellLocation> = []
     //
     // In the HighLife variant of Conway's Life, an inactive cell also becomes
     // active if it has exactly six active neighbors, in addition to the normal
@@ -31,9 +32,8 @@ public final class LifeCellGridView: CellGridView
     //
     internal private(set) var variantOverpopulate: Bool
     internal private(set) var variantInactiveFade: Bool
-    private               var activeCells: Set<CellLocation> = []
-    private               var recentInactiveCells: Set<CellLocation> = []
-    internal private(set) var recentInactiveCellsMax: Int = 4
+    internal private(set) var variantInactiveFadeAgeMax: Int = 5
+    private               var variantInactiveFadeCells: Set<CellLocation> = []
 
     public init(_ config: LifeCellGridView.Config? = nil) {
         let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
@@ -46,6 +46,7 @@ public final class LifeCellGridView: CellGridView
         self.variantHighLife            = config.variantHighLife
         self.variantOverpopulate        = config.variantOverpopulate
         self.variantInactiveFade        = config.variantInactiveFade
+        self.variantInactiveFadeAgeMax  = config.variantInactiveFadeAgeMax
         self.dragThreshold              = config.dragThreshold
         self.swipeThreshold             = config.swipeThreshold
         self.soundEnabled               = config.soundEnabled
@@ -76,6 +77,7 @@ public final class LifeCellGridView: CellGridView
         self.variantHighLife = settings.variantHighLife
         self.variantOverpopulate = settings.variantOverpopulate
         self.variantInactiveFade = settings.variantInactiveFade
+        self.variantInactiveFadeAgeMax = settings.variantInactiveFadeAgeMax
         self.inactiveColorRandomNumber += 2
         self.inactiveColorRandomDynamicNumber += 2
         super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
@@ -121,7 +123,7 @@ public final class LifeCellGridView: CellGridView
 
     internal func noteCellActivated(_ cell: LifeCell) {
         self.activeCells.insert(cell.location)
-        self.recentInactiveCells.remove(cell.location)
+        self.variantInactiveFadeCells.remove(cell.location)
     }
 
     internal func noteCellDeactivated(_ cell: LifeCell) {
@@ -134,7 +136,7 @@ public final class LifeCellGridView: CellGridView
                 cell.deactivate()
             }
         }
-        for cellLocation in self.recentInactiveCells {
+        for cellLocation in self.variantInactiveFadeCells {
             if let cell: LifeCell = super.gridCell(cellLocation) {
                 cell._inactiveGenerationNumber = nil
                 cell.write()
@@ -167,7 +169,7 @@ public final class LifeCellGridView: CellGridView
 
         var newLiveCells: Set<CellLocation> = []
 
-        // Determine which cells live in the next generation.
+        // Determine which cells live/die in the next generation.
 
         for (cellLocation, count) in neighbors {
             let isAlive = self.activeCells.contains(cellLocation)
@@ -197,19 +199,16 @@ public final class LifeCellGridView: CellGridView
         }
 
         if (self.variantInactiveFade) {
-            for cellLocation in self.recentInactiveCells {
+            for cellLocation in self.variantInactiveFadeCells {
                 if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
-                    if (cell.inactiveAge > self.recentInactiveCellsMax) {
+                    if (cell.inactiveAge > self.variantInactiveFadeAgeMax) {
                         cell._inactiveGenerationNumber = nil
-                        self.recentInactiveCells.remove(cellLocation)
+                        self.variantInactiveFadeCells.remove(cellLocation)
                     }
                     cell.write()
                 }
             }
         }
-
-        // Update the underlying grid and cell colors;
-        // deactivate cells that die; activate new live cells.
 
         for oldLocation in self.activeCells.subtracting(newLiveCells) {
             //
@@ -218,7 +217,7 @@ public final class LifeCellGridView: CellGridView
             //
             if let cell: LifeCell = self.gridCell(oldLocation.x, oldLocation.y) {
                 cell.deactivate(nowrite: true, nonotify: true)
-                self.recentInactiveCells.insert(oldLocation)
+                self.variantInactiveFadeCells.insert(oldLocation)
                 cell._inactiveGenerationNumber = self.generationNumber - 1
                 cell.write()
             }

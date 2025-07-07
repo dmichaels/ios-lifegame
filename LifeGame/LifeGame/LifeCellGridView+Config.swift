@@ -16,6 +16,7 @@ extension LifeCellGridView
         public var variantHighLife: Bool
         public var variantOverpopulate: Bool
         public var variantInactiveFade: Bool
+        public var variantInactiveFadeAgeMax: Int
 
         public var dragThreshold: Int  = 3
         public var swipeThreshold: Int = 100
@@ -54,6 +55,7 @@ extension LifeCellGridView
             self.variantHighLife            = s?.variantHighLife            ?? v?.variantHighLife            ?? d.variantHighLife
             self.variantOverpopulate        = s?.variantOverpopulate        ?? v?.variantOverpopulate        ?? d.variantOverpopulate
             self.variantInactiveFade        = s?.variantInactiveFade        ?? v?.variantInactiveFade        ?? d.variantInactiveFade
+            self.variantInactiveFadeAgeMax  = s?.variantInactiveFadeAgeMax  ?? v?.variantInactiveFadeAgeMax  ?? d.variantInactiveFadeAgeMax
             self.dragThreshold              = s?.dragThreshold              ?? v?.dragThreshold              ?? d.dragThreshold
             self.swipeThreshold             = s?.swipeThreshold             ?? v?.swipeThreshold             ?? d.swipeThreshold
             self.soundEnabled               = s?.soundEnabled               ?? v?.soundEnabled               ?? d.soundEnabled
