@@ -6,7 +6,7 @@ struct ContentView: View
 {
     @EnvironmentObject var cellGridView: LifeCellGridView
     @EnvironmentObject var settings: Settings
-    @StateObject var orientation = OrientationObserver()
+    @StateObject var orientation: OrientationObserver = OrientationObserver()
     //
     // This ignoreSafeArea is settable (e.g. in SettingsView); we currently always ignore the safe area;
     // have not been able to get the geometry working in general when NOT ignoring the safe area;
@@ -19,6 +19,13 @@ struct ContentView: View
     @State private var showSettingsView: Bool = false
     @State private var showControlBar: Bool = false
     @State private var screenBackground: Colour? = nil
+    //
+    // Cannot seem to get the use of settings.automationMode working for keeping the ControlBar run/pause
+    // button in sync with this property when we go to the SettingsView while this is true, i.e. where we
+    // pause the automation for the duration of the SettingsView (i.e. via automationModeSuspended); and
+    // also NOTE that we need to set/initialize this properly in the main onAppear event.
+    //
+    @State private var automationMode: Bool = false
     @State private var automationModeSuspended: Bool = false
 
     var body: some View {
@@ -64,6 +71,10 @@ struct ContentView: View
                 }
                 .onAppear {
                     if (!self.cellGridView.initialized) {
+                        //
+                        // See comment at top about setting our local automationMode state variable.
+                        //
+                        self.automationMode = self.settings.automationMode
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         let landscape = self.orientation.landscape
                         self.cellGridView.initialize(self.settings,
@@ -72,6 +83,7 @@ struct ContentView: View
                                                      viewHeight: landscape ? screen.width : screen.height,
                                                      onChangeImage: self.updateImage)
                         self.rotateImage()
+                        self.updateImage()
                         if (self.cellGridView.automationMode) {
                             self.cellGridView.automationStart()
                         }
@@ -113,9 +125,9 @@ struct ContentView: View
                             ControlBar(
                                 selectMode: { self.cellGridView.selectMode },
                                 selectModeToggle: self.cellGridView.selectModeToggle,
-                                automationMode: { self.cellGridView.automationMode },
-                                automationStep: self.cellGridView.automationStep,
+                                automationMode: $automationMode,
                                 automationModeToggle: self.cellGridView.automationModeToggle,
+                                automationStep: self.cellGridView.automationStep,
                                 showSettings: self.showSettings,
                                 erase: self.cellGridView.erase
                             )
@@ -164,17 +176,18 @@ struct ContentView: View
         self.cellGridView.configure(self.settings)
         self.updateImage()
         if (self.automationModeSuspended) {
-            self.automationModeSuspended = false
             self.cellGridView.automationStart()
+            self.automationModeSuspended = false
+            self.automationMode = true
         }
     }
 
     private func showSettings() {
-        self.settings.fromConfig(self.cellGridView)
         if (self.cellGridView.automationMode) {
             self.automationModeSuspended = true
             self.cellGridView.automationStop()
         }
+        self.settings.fromConfig(self.cellGridView)
         self.showSettingsView = true
     }
 

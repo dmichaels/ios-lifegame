@@ -3,6 +3,7 @@ import SwiftUI
 import CellGridView
 import Utils
 
+
 class Settings: ObservableObject
 {
     // CellGridView base class specific properties we are interested in controlling; see CellGridView.Defaults for all.
@@ -31,6 +32,7 @@ class Settings: ObservableObject
     @Published var automationInterval: Double = CellGridView.Defaults.automationInterval
     @Published var variantHighLife: Bool      = false
     @Published var variantOverpopulate: Bool  = false
+    @Published var variantInactiveFade: Bool  = true
 
     // LifeCellGridView specific properties.
 
@@ -91,6 +93,7 @@ class Settings: ObservableObject
         self.automationInterval  = config.automationInterval
         self.variantHighLife     = config.variantHighLife
         self.variantOverpopulate = config.variantOverpopulate
+        self.variantInactiveFade = config.variantInactiveFade
 
         // LifeCellGridView specific properties.
 

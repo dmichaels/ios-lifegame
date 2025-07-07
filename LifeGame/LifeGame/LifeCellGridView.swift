@@ -30,7 +30,9 @@ public final class LifeCellGridView: CellGridView
     // than three active neighbors, is allowed to survive (i.e. remains active).
     //
     internal private(set) var variantOverpopulate: Bool
-    private               var liveCells: Set<CellLocation> = []
+    internal private(set) var variantInactiveFade: Bool
+    private               var activeCells: Set<CellLocation> = []
+    private               var recentInactiveCells: Set<CellLocation> = []
 
     public init(_ config: LifeCellGridView.Config? = nil) {
         let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
@@ -42,6 +44,7 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomFilter  = config.inactiveColorRandomFilter
         self.variantHighLife            = config.variantHighLife
         self.variantOverpopulate        = config.variantOverpopulate
+        self.variantInactiveFade        = config.variantInactiveFade
         self.dragThreshold              = config.dragThreshold
         self.swipeThreshold             = config.swipeThreshold
         self.soundEnabled               = config.soundEnabled
@@ -71,6 +74,7 @@ public final class LifeCellGridView: CellGridView
         self.inactiveColorRandomFilter = settings.inactiveColorRandomFilter
         self.variantHighLife = settings.variantHighLife
         self.variantOverpopulate = settings.variantOverpopulate
+        self.variantInactiveFade = settings.variantInactiveFade
         self.inactiveColorRandomNumber += 2
         self.inactiveColorRandomDynamicNumber += 2
         super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
@@ -86,7 +90,7 @@ public final class LifeCellGridView: CellGridView
 
     public override func createCell<T: Cell>(x: Int, y: Int, color ignore: Colour) -> T? {
         let cell: LifeCell = LifeCell(cellGridView: self, x: x, y: y) // as? T
-        if (self.liveCells.contains(cell.location)) {
+        if (self.activeCells.contains(cell.location)) {
             cell.activate(nowrite: true, nonotify: true)
         }
         return cell as? T
@@ -115,17 +119,24 @@ public final class LifeCellGridView: CellGridView
     }
 
     internal func noteCellActivated(_ cell: LifeCell) {
-        self.liveCells.insert(cell.location)
+        self.activeCells.insert(cell.location)
+        self.recentInactiveCells.remove(cell.location)
     }
 
     internal func noteCellDeactivated(_ cell: LifeCell) {
-        self.liveCells.remove(cell.location)
+        self.activeCells.remove(cell.location)
     }
 
     internal func erase() {
-        for cellLocation in self.liveCells {
+        for cellLocation in self.activeCells {
             if let cell: LifeCell = super.gridCell(cellLocation) {
                 cell.deactivate()
+            }
+        }
+        for cellLocation in self.recentInactiveCells {
+            if let cell: LifeCell = super.gridCell(cellLocation) {
+                cell._inactiveGenerationNumber = nil
+                cell.write()
             }
         }
         self.onChangeImage()
@@ -133,6 +144,7 @@ public final class LifeCellGridView: CellGridView
 
     private func nextGeneration()
     {
+        print("NEXTGEN: \(self.generationNumber) -> \(self.generationNumber + 1)")
         self.generationNumber += 1
         self.inactiveColorRandomDynamicNumber += 1
 
@@ -140,7 +152,7 @@ public final class LifeCellGridView: CellGridView
 
         // Count neighbors for all live cells and their neighbors.
 
-        for cellLocation in self.liveCells {
+        for cellLocation in self.activeCells {
             for dy in -1...1 {
                 for dx in -1...1 {
                     if ((dx == 0) && (dy == 0)) { continue }
@@ -158,7 +170,7 @@ public final class LifeCellGridView: CellGridView
         // Determine which cells live in the next generation.
 
         for (cellLocation, count) in neighbors {
-            let isAlive = self.liveCells.contains(cellLocation)
+            let isAlive = self.activeCells.contains(cellLocation)
             if (isAlive) {
                 //
                 // Survival rules.
@@ -184,21 +196,42 @@ public final class LifeCellGridView: CellGridView
             }
         }
 
-        // Update the underlying grid and cell colors;
-        // deactivate cells that die; activate new live cells.
-
-        for oldLocation in self.liveCells.subtracting(newLiveCells) {
-            if let cell: LifeCell = self.gridCell(oldLocation.x, oldLocation.y) {
-                cell.deactivate(nonotify: true)
+        if (self.variantInactiveFade) {
+            for cellLocation in self.recentInactiveCells {
+                if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
+                    if (cell.inactiveAge > 4) {
+                        cell._inactiveGenerationNumber = nil
+                        self.recentInactiveCells.remove(cellLocation)
+                    }
+                    cell.write()
+                }
             }
         }
 
-        for newLocation in newLiveCells.subtracting(self.liveCells) {
+        // Update the underlying grid and cell colors;
+        // deactivate cells that die; activate new live cells.
+
+        for oldLocation in self.activeCells.subtracting(newLiveCells) {
+            if let cell: LifeCell = self.gridCell(oldLocation.x, oldLocation.y) {
+                cell.deactivate(nonotify: true)
+                self.recentInactiveCells.insert(oldLocation)
+                cell._inactiveGenerationNumber = self.generationNumber - 1
+                cell.write() // TODO
+            }
+        }
+
+        for newLocation in newLiveCells.subtracting(self.activeCells) {
             if let cell: LifeCell = self.gridCell(newLocation.x, newLocation.y) {
                 cell.activate(nonotify: true)
             }
         }
 
-        self.liveCells = newLiveCells
+        self.activeCells = newLiveCells
+
+        for location in self.recentInactiveCells {
+            if let cell: LifeCell = self.gridCell(location.x, location.y) {
+                // print("RIC: \(location) \(cell._inactiveGenerationNumber) [\(self.generationNumber)]")
+            }
+        }
     }
 }
