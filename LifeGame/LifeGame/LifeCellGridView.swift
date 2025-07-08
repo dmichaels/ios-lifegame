@@ -163,6 +163,10 @@ public final class LifeCellGridView: CellGridView
         // Count neighbors for all live cells and their neighbors.
 
         for cellLocation in self.activeCells {
+            //
+            // This loops through the cells that are currently active, collecting
+            // the neighbors of each, and the neighbor counts of each/all of these.
+            //
             for dy in -1...1 {
                 for dx in -1...1 {
                     if ((dx == 0) && (dy == 0)) { continue }
@@ -175,9 +179,9 @@ public final class LifeCellGridView: CellGridView
             }
         }
 
-        var newLiveCells: Set<CellLocation> = []
+        var newActiveCells: Set<CellLocation> = []
 
-        // Determine which cells live/die in the next generation.
+        // Determine which cells survive, die, or are born in the next generation.
 
         for (cellLocation, count) in neighbors {
             let isAlive = self.activeCells.contains(cellLocation)
@@ -186,22 +190,22 @@ public final class LifeCellGridView: CellGridView
                 // Survival rules; i.e. cells that were active and are to remain active.
                 //
                 if ((count == 2) || (count == 3)) {
-                    newLiveCells.insert(cellLocation)
+                    newActiveCells.insert(cellLocation)
                 }
                 else if (self.variantOverPopulate && (count > 3)) {
-                    newLiveCells.insert(cellLocation)
+                    newActiveCells.insert(cellLocation)
                 }
             }
             else {
                 //
-                // Birth rule; i.e. cells that were inactive but are to become active.
-                // Note that death rule falls out as we a populating a new set of live cells.
+                // Birth rule; i.e. cells that were inactive but are to become active;
+                // note that death rule falls out as we a populating a new set of live cells.
                 //
                 if (count == 3) {
-                    newLiveCells.insert(cellLocation)
+                    newActiveCells.insert(cellLocation)
                 }
                 else if (self.variantHighLife && (count == 6)) {
-                    newLiveCells.insert(cellLocation)
+                    newActiveCells.insert(cellLocation)
                 }
             }
         }
@@ -222,7 +226,7 @@ public final class LifeCellGridView: CellGridView
             }
         }
 
-        for oldLocation in self.activeCells.subtracting(newLiveCells) {
+        for oldLocation in self.activeCells.subtracting(newActiveCells) {
             //
             // This loops through the cells that WERE active
             // but with this new generation are now INACTIVE.
@@ -235,7 +239,7 @@ public final class LifeCellGridView: CellGridView
             }
         }
 
-        for newLocation in newLiveCells.subtracting(self.activeCells) {
+        for newLocation in newActiveCells.subtracting(self.activeCells) {
             //
             // This loops through the cells that WERE inactive
             // but with this new generation are now ACTIVE.
@@ -245,6 +249,6 @@ public final class LifeCellGridView: CellGridView
             }
         }
 
-        self.activeCells = newLiveCells
+        self.activeCells = newActiveCells
     }
 }
