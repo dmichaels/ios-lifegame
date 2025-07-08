@@ -19,6 +19,7 @@ struct ContentView: View
     @State private var showSettingsView: Bool = false
     @State private var showControlBar: Bool = false
     @State private var screenBackground: Colour? = nil
+    @State private var feedback: Feedback = Feedback()
     //
     // Cannot seem to get the use of settings.automationMode working for keeping the ControlBar run/pause
     // button in sync with this property when we go to the SettingsView while this is true, i.e. where we
@@ -53,7 +54,7 @@ struct ContentView: View
                                 orientation: self.orientation,
                                 onDrag:      { value in self.cellGridView.onDrag(value) },
                                 onDragEnd:   { value in self.cellGridView.onDragEnd(value) },
-                                onTap:       { value in self.cellGridView.onTap(value) },
+                                onTap:       { value in self.cellGridView.onTap(value) ; feedback.trigger() },
                                 onDoubleTap: { self.toggleShowControls() },
                                 onLongTap:   { _ in self.toggleShowControls() },
                                 onZoom:      { value in self.cellGridView.onZoom(value) },
@@ -87,6 +88,8 @@ struct ContentView: View
                         if (self.cellGridView.automationMode) {
                             self.cellGridView.automationStart()
                         }
+                        self.feedback.soundsEnabled = settings.soundsEnabled
+                        self.feedback.hapticsEnabled = settings.hapticsEnabled
                     }
                     else {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
@@ -189,6 +192,8 @@ struct ContentView: View
             self.automationModeSuspended = false
             self.automationMode = true
         }
+        self.feedback.soundsEnabled = settings.soundsEnabled
+        self.feedback.hapticsEnabled = settings.hapticsEnabled
     }
 
     private func toggleShowControls() {

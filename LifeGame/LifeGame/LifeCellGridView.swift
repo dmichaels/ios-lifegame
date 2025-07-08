@@ -13,8 +13,8 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var inactiveColorRandomFilter: ColourFilter?
     internal private(set) var dragThreshold: Int
     internal private(set) var swipeThreshold: Int
-    internal private(set) var soundEnabled: Bool
-    internal private(set) var hapticEnabled: Bool
+    internal private(set) var soundsEnabled: Bool
+    internal private(set) var hapticsEnabled: Bool
     internal private(set) var generationNumber: Int = 0
     internal private(set) var inactiveColorRandomNumber: Int = 0
     internal private(set) var inactiveColorRandomDynamicNumber: Int = 0
@@ -56,8 +56,8 @@ public final class LifeCellGridView: CellGridView
         self.selectModeFat              = config.selectModeFat
         self.dragThreshold              = config.dragThreshold
         self.swipeThreshold             = config.swipeThreshold
-        self.soundEnabled               = config.soundEnabled
-        self.hapticEnabled              = config.hapticEnabled
+        self.soundsEnabled              = config.soundsEnabled
+        self.hapticsEnabled             = config.hapticsEnabled
         super.init(config)
     }
 
@@ -86,6 +86,8 @@ public final class LifeCellGridView: CellGridView
         self.variantInactiveFade = settings.variantInactiveFade
         self.variantInactiveFadeAgeMax = settings.variantInactiveFadeAgeMax
         self.selectModeFat = settings.selectModeFat
+        self.soundsEnabled = settings.soundsEnabled
+        self.hapticsEnabled = settings.hapticsEnabled
         self.inactiveColorRandomNumber += 2
         self.inactiveColorRandomDynamicNumber += 2
         super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)

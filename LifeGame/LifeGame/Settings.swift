@@ -46,10 +46,10 @@ class Settings: ObservableObject
     @Published var variantInactiveFadeAgeMax: Int = 5
     @Published var selectModeFat: Bool            = false
 
-    @Published var dragThreshold: Int  = 2
-    @Published var swipeThreshold: Int = 100
-    @Published var soundEnabled: Bool  = false
-    @Published var hapticEnabled: Bool = false
+    @Published var dragThreshold: Int             = 2
+    @Published var swipeThreshold: Int            = 100
+    @Published var soundsEnabled: Bool            = false
+    @Published var hapticsEnabled: Bool           = true
 
     // This just allows this Settings object to be the single place where we define the default parameters
     // for this app, which are easily accessible elsewhere, without having to define a separate Defaults class;
@@ -110,8 +110,8 @@ class Settings: ObservableObject
         self.inactiveColorRandomFilter  = config.inactiveColorRandomFilter
         self.dragThreshold              = config.dragThreshold
         self.swipeThreshold             = config.swipeThreshold
-        self.soundEnabled               = config.soundEnabled
-        self.hapticEnabled              = config.hapticEnabled
+        self.soundsEnabled              = config.soundsEnabled
+        self.hapticsEnabled             = config.hapticsEnabled
     }
 
     public func fromConfig(_ cellGridView: LifeCellGridView)

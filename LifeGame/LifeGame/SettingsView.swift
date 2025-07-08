@@ -199,6 +199,16 @@ struct SettingsView: View
                     }.pickerStyle(.menu)
                 }
             }
+            Section(header: Text("MULTIMEDIA").padding(.leading, -12).padding(.top, -20)) {
+                HStack {
+                    IconLabel("Sounds", "speaker.wave.2")
+                    Toggle("", isOn: $settings.soundsEnabled)
+                }
+                HStack {
+                    IconLabel("Haptics", "water.waves")
+                    Toggle("", isOn: $settings.hapticsEnabled)
+                }
+            }
             Section(header: Text("ADVANCED").padding(.leading, -12).padding(.top, -20)) {
                 HStack {
                     IconLabel("Pixel Scaling", "scale.3d")
