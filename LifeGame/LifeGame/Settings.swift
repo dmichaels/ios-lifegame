@@ -120,7 +120,7 @@ class Settings: ObservableObject
     }
 
     // Creates and returns a new LifeCellGridView.Config (derived from CellGridView.Config)
-    // object, with properties initializes from this Settings object. Intended to be called,
+    // object, with properties initialized from this Settings object. Intended to be called,
     // for example, on return from SettingsView in ContentView, something like this:
     //
     //     @EnvironmentObject var cellGridView: LifeCellGridView

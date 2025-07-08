@@ -33,8 +33,8 @@ extension LifeCellGridView
         // i.e. only allow creation of LifeCellGridView.Config with a LifeCellGridView.
         //
         // Note that the call to this with a Settings object (and non-nil LifeCellGridView object)
-        // is done from the toConfig method of LifeCellGridView.Config. We do not just initialize
-        // from Settings directly there because we need to initialize its CellGridView base class
+        // is done from the Settings.toConfig method. We do not just initialize from Settings
+        // directly there because we need to initialize its CellGridView.Config base class
         // properties, particularly those base properties which we are not interested in here.
         //
         internal init(_ cellGridView: LifeCellGridView? = nil, _ settings: Settings? = nil) {
