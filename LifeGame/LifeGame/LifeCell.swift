@@ -65,7 +65,7 @@ public final class LifeCell: Cell {
     }
 
     public override func select(dragging: Bool = false) {
-        if (self.cellGridView.selectModeFat) { //xyzzy
+        if (self.cellGridView.selectModeFat) {
             if let aboveCell: LifeCell = self.cellGridView.gridCell(self.x, self.y - 1) {
                 dragging ? aboveCell.activate() : aboveCell.toggle()
             }
@@ -123,5 +123,20 @@ public final class LifeCell: Cell {
 
     public func toggle(nowrite: Bool = false) {
         self._active ? self.deactivate(nowrite: nowrite) : self.activate(nowrite: nowrite)
+    }
+
+    private func circleCells(center cx: Int, _ cy: Int, radius r: Int) -> [CellLocation] {
+        var cells: [CellLocation] = []
+        let rsquared: Int = r * r
+        for y in (cy - r)...(cy + r) {
+            for x in (cx - r)...(cx + r) {
+                let dx: Int = x - cx
+                let dy: Int = y - cy
+                if (((dx * dx) + (dy * dy)) <= rsquared) {
+                    cells.append(CellLocation(x, y))
+                }
+            }
+        }
+        return cells
     }
 }

@@ -34,7 +34,7 @@ public final class LifeCellGridView: CellGridView
     //
     // In the InactiveFade variant of Conway's Life, an inactive cell will
     // be colored in a faded fashion depending on its "age" as defined by
-    // how long git has been inactive (up to variantInactiveFadeAgeMax).
+    // how long it has been inactive (up to variantInactiveFadeAgeMax).
     //
     internal private(set) var variantInactiveFade: Bool
     internal private(set) var variantInactiveFadeAgeMax: Int
@@ -207,6 +207,10 @@ public final class LifeCellGridView: CellGridView
         }
 
         if (self.variantInactiveFade) {
+            //
+            // For the InactiveFade variant, inactive cell colors fade out depending on their age
+            // as defined by how long they have been inactive; see LifeCell.color for more details.
+            //
             for cellLocation in self.variantInactiveFadeCells {
                 if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
                     if (cell.inactiveAge > self.variantInactiveFadeAgeMax) {
