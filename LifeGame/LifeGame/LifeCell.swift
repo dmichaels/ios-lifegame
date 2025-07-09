@@ -27,6 +27,11 @@ public final class LifeCell: Cell {
 
     public override var color: Colour {
         get {
+            if (self.cellGridView.variantLatix) {
+                if (self._active) {
+                    return super.color
+                }
+            }
             if (self._active) {
                 return self.cellGridView.activeColor
             }
@@ -65,6 +70,19 @@ public final class LifeCell: Cell {
     }
 
     public override func select(dragging: Bool = false) {
+        if (self.cellGridView.variantLatix) {
+            if (!dragging) {
+                let circleCellLocations: [CellLocation] = LifeCellGridView.circleCells(center: self.x, self.y, radius: self.cellGridView.xyzzy, perimeter: true)
+                self.cellGridView.xyzzy += 1
+                for circleCellLocation in circleCellLocations {
+                    if let cell: LifeCell = self.cellGridView.gridCell(circleCellLocation.x, circleCellLocation.y) {
+                        cell.color = Colour.random(tint: Colour.red, tintBy: 0.5)
+                        cell.activate()
+                    }
+                }
+            }
+            return
+        }
         if (self.cellGridView.selectModeFat || self.cellGridView.selectModeExtraFat) {
             if let aboveCell: LifeCell = self.cellGridView.gridCell(self.x, self.y - 1) {
                 dragging ? aboveCell.activate() : aboveCell.toggle()

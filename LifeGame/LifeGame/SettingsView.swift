@@ -156,6 +156,10 @@ struct SettingsView: View
                     Toggle("", isOn: $settings.variantOverPopulate)
                 }
                 HStack {
+                    IconLabel("Latix Variant", "squareshape.split.3x3")
+                    Toggle("", isOn: $settings.variantLatix)
+                }
+                HStack {
                     IconLabel("Select Mode", "rectangle.and.pencil.and.ellipsis")
                     Picker("", selection: $selectMode) {
                         ForEach(SelectModeOptions, id: \.value) { option in Text(option.label) }
@@ -285,5 +289,6 @@ let FitOptions: [(label: String, value: CellGridView.Fit)] = [
 let SelectModeOptions: [(label: String, value: Int)] = [
     ("Default", 0),
     ("Fat", 1),
-    ("Very Fat", 2)
+    ("Very Fat", 2),
+    ("Circle (DEV)", 3)
 ]

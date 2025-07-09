@@ -44,6 +44,7 @@ class Settings: ObservableObject
     @Published var variantOverPopulate: Bool      = false
     @Published var variantInactiveFade: Bool      = false
     @Published var variantInactiveFadeAgeMax: Int = 5
+    @Published var variantLatix: Bool             = false
     @Published var selectModeFat: Bool            = false
     @Published var selectModeExtraFat: Bool       = false
 
@@ -99,6 +100,7 @@ class Settings: ObservableObject
         self.variantOverPopulate       = config.variantOverPopulate
         self.variantInactiveFade       = config.variantInactiveFade
         self.variantInactiveFadeAgeMax = config.variantInactiveFadeAgeMax
+        self.variantLatix              = config.variantLatix
         self.selectModeFat             = config.selectModeFat
         self.selectModeExtraFat        = config.selectModeExtraFat
 

@@ -5,6 +5,7 @@ import Utils
 
 public final class LifeCellGridView: CellGridView
 {
+    internal var xyzzy: Int = 1
     internal private(set) var activeColor: Colour
     internal private(set) var inactiveColor: Colour
     internal private(set) var inactiveColorRandom: Bool
@@ -39,6 +40,7 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var variantInactiveFade: Bool
     internal private(set) var variantInactiveFadeAgeMax: Int
     private               var variantInactiveFadeCells: Set<CellLocation> = []
+    internal private(set) var variantLatix: Bool
     internal private(set) var selectModeFat: Bool
     internal private(set) var selectModeExtraFat: Bool
 
@@ -54,6 +56,7 @@ public final class LifeCellGridView: CellGridView
         self.variantOverPopulate        = config.variantOverPopulate
         self.variantInactiveFade        = config.variantInactiveFade
         self.variantInactiveFadeAgeMax  = config.variantInactiveFadeAgeMax
+        self.variantLatix               = config.variantLatix
         self.selectModeFat              = config.selectModeFat
         self.selectModeExtraFat         = config.selectModeExtraFat
         self.dragThreshold              = config.dragThreshold
@@ -87,6 +90,7 @@ public final class LifeCellGridView: CellGridView
         self.variantOverPopulate = settings.variantOverPopulate
         self.variantInactiveFade = settings.variantInactiveFade
         self.variantInactiveFadeAgeMax = settings.variantInactiveFadeAgeMax
+        self.variantLatix = settings.variantLatix
         self.selectModeFat = settings.selectModeFat
         self.selectModeExtraFat = settings.selectModeExtraFat
         self.soundsEnabled = settings.soundsEnabled
@@ -257,7 +261,12 @@ public final class LifeCellGridView: CellGridView
         self.activeCells = newActiveCells
     }
 
-    internal static func circleCells(center cx: Int, _ cy: Int, radius r: Int) -> [CellLocation] {
+    private func nextGenerationLatix()
+    {
+        self.generationNumber += 1
+    }
+
+    internal static func circleCellsOld(center cx: Int, _ cy: Int, radius r: Int) -> [CellLocation] {
         guard r > 0 else { return [] }
         var cells: [CellLocation] = []
         let rsquared: Float = Float(r) * Float(r)
@@ -277,6 +286,128 @@ public final class LifeCellGridView: CellGridView
                 }
                 if (insideCount >= 3.0) {
                     cells.append(CellLocation(x, y))
+                }
+            }
+        }
+        return cells
+    }
+
+    internal static func circleCellsV1(center cx: Int, _ cy: Int, radius r: Int, perimeter: Bool = false) -> [CellLocation] {
+        guard !perimeter else { return self.circlePerimeterCellsV1(center: cx, cy, radius: r) }
+        guard r > 0 else { return [] }
+        var cells: [CellLocation] = []
+        let rsquared: Float = Float(r) * Float(r)
+        for y in (cy - r)...(cy + r) {
+            for x in (cx - r)...(cx + r) {
+                if (LifeCellGridView.circleMemberV1(x, y, cx, cy, rsquared)) {
+                    cells.append(CellLocation(x, y))
+                }
+            }
+        }
+        return cells
+    }
+
+    internal static func circlePerimeterCellsV1(center cx: Int, _ cy: Int, radius r: Int) -> [CellLocation] {
+        guard r > 0 else { return [] }
+        var cells: [CellLocation] = []
+        let rsquared: Float = Float(r) * Float(r)
+        for y in (cy - r)...(cy + r) {
+            for x in (cx - r)...(cx + r) {
+                if !LifeCellGridView.circleMemberV1(x, y, cx, cy, rsquared) {
+                    continue
+                }
+                let neighborOffsets = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+                var isEdge = false
+                for (dx, dy) in neighborOffsets {
+                    let nx = x + dx
+                    let ny = y + dy
+                    if !LifeCellGridView.circleMemberV1(nx, ny, cx, cy, rsquared) {
+                        isEdge = true
+                        break
+                    }
+                }
+                if (isEdge) {
+                    cells.append(CellLocation(x, y))
+                }
+            }
+        }
+        return cells
+    }
+
+    private static func circleMemberV1(_ x: Int, _ y: Int, _ cx: Int, _ cy: Int, _ rsquared: Float) -> Bool {
+        let points: [(Float, Float)] = [
+            (Float(x) + 0.5, Float(y) + 0.5), // center
+            (Float(x),       Float(y)),       // top-left
+            (Float(x) + 1.0, Float(y)),       // top-right
+            (Float(x),       Float(y) + 1.0), // bottom-left
+            (Float(x) + 1.0, Float(y) + 1.0)  // bottom-right
+        ]
+        let insideCount: Float = points.reduce(0) { count, point in
+            let dx: Float = point.0 - Float(cx)
+            let dy: Float = point.1 - Float(cy)
+            return ((dx * dx + dy * dy) <= rsquared) ? count + 1 : count
+        }
+        return insideCount >= 3.0
+    }
+
+    internal static func circleCells(center cx: Int, _ cy: Int, radius r: Int,
+                                     perimeter: Bool = false, threshold: Float = 1.0) -> [CellLocation] {
+        guard r > 0 else { return [] }
+        guard r > 1 else { return [CellLocation(cx, cy)] }
+        guard r > 2 else {
+            return [
+                CellLocation(cx, cy),
+                CellLocation(cx - 1, cy),
+                CellLocation(cx + 1, cy),
+                CellLocation(cx, cy - 1),
+                CellLocation(cx, cy + 1),
+            ]
+        }
+        let r: Int = r - 1
+        var cells: [CellLocation] = []
+        let rsq: Float = Float(r) * Float(r)
+        let cxf = Float(cx) + 0.5
+        let cyf = Float(cy) + 0.5
+        for y in (cy - r)...(cy + r) {
+            for x in (cx - r)...(cx + r) {
+                let points: [(Float, Float)] = [
+                    (Float(x) + 0.5, Float(y) + 0.5), // center
+                    (Float(x),       Float(y)),       // top-left
+                    (Float(x) + 1.0, Float(y)),       // top-right
+                    (Float(x),       Float(y) + 1.0), // bottom-left
+                    (Float(x) + 1.0, Float(y) + 1.0)  // bottom-right
+                ]
+                let insideCount: Float = points.reduce(0) { count, point in
+                    let dx: Float = point.0 - cxf
+                    let dy: Float = point.1 - cyf
+                    return ((dx * dx + dy * dy) <= rsq) ? count + 1 : count
+                }
+                if (insideCount >= 1.0 /*2.0*/ /*3.0*/ ) {
+                    if (!perimeter) {
+                        cells.append(CellLocation(x, y))
+                    } else {
+                        let neighborOffsets: [(Int,Int)] = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+                        for (dx, dy) in neighborOffsets {
+                            let nx: Int = x + dx
+                            let ny: Int = y + dy
+                            let neighborPoints: [(Float, Float)] = [
+                                (Float(nx) + 0.5, Float(ny) + 0.5),
+                                (Float(nx),       Float(ny)),
+                                (Float(nx) + 1.0, Float(ny)),
+                                (Float(nx),       Float(ny) + 1.0),
+                                (Float(nx) + 1.0, Float(ny) + 1.0)
+                            ]
+                            let neighborInside: Float = neighborPoints.reduce(0) { count, point in
+                                let dx: Float = point.0 - cxf
+                                let dy: Float = point.1 - cyf
+                                return ((dx * dx + dy * dy) <= rsq) ? count + 1 : count
+                            }
+                            if (neighborInside < 3.0) {
+                                cells.append(CellLocation(x, y))
+                                break
+                            }
+                        }
+                    }
                 }
             }
         }
