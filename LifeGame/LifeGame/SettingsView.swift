@@ -7,9 +7,10 @@ import Utils
 
 struct SettingsView: View
 {
-    @EnvironmentObject var cellGridView: LifeCellGridView
-    @EnvironmentObject var settings: Settings
-    @State var cellSizeDisplay: Int? = nil
+    @EnvironmentObject private var cellGridView: LifeCellGridView
+    @EnvironmentObject private var settings: Settings
+    @State private var cellSizeDisplay: Int? = nil
+    @State private var selectMode: Int = 0
 
     var body: some View {
         Form {
@@ -20,7 +21,8 @@ struct SettingsView: View
                         ForEach(CellShape.allCases) { value in
                             Text(value.rawValue).lineLimit(1).truncationMode(.tail).tag(value)
                         }
-                    }.pickerStyle(.menu).disabled((settings.cellSize - settings.cellPadding) < 3)
+                    }
+                    .pickerStyle(.menu).disabled((settings.cellSize - settings.cellPadding) < 3)
                     .onChange(of: settings.cellShape) { value in
                         settings.viewScaling = !cellGridView.cellShapeRequiresNoScaling(value)
                     }
@@ -52,7 +54,8 @@ struct SettingsView: View
                         ForEach(cellGridView.minimumCellPadding...cellGridView.maximumCellPadding, id: \.self) { value in
                             Text("\(value)").tag(value)
                         }
-                    }.pickerStyle(.menu)
+                    }
+                    .pickerStyle(.menu)
                     .onChange(of: settings.cellPadding) { value in
                         let minimumCellSize: Int = cellGridView.minimumCellSize(cellPadding: settings.cellPadding,
                                                                                 cellShape: settings.cellShape)
@@ -100,7 +103,9 @@ struct SettingsView: View
                         ForEach(ColourPalette.allCases) { mode in
                             Text(mode.rawValue).lineLimit(1).tag(mode)
                         }
-                    }.pickerStyle(.menu).onChange(of: settings.inactiveColorRandomPalette) { newValue in
+                    }
+                    .pickerStyle(.menu)
+                    .onChange(of: settings.inactiveColorRandomPalette) { newValue in
                         settings.inactiveColorRandomPalette = newValue
                     }
                 }.disabled(!settings.inactiveColorRandom)
@@ -128,35 +133,8 @@ struct SettingsView: View
                                 settings.gridRows = Settings.Defaults.gridRows
                             }
                         }
-                ))
+                    ))
                 }
-                /*
-                HStack {
-                    IconLabel("Grid Fit", "square.grid.3x3.square")
-                    Text(" (\(settings.gridRows)x\(settings.gridColumns))")
-                        .foregroundColor(.secondary)
-                        .font(.footnote)
-                        .padding(.leading, -8)
-                        .padding(.top, 1)
-                    Picker("", selection: $settings.fit) {
-                        ForEach(FitOptions, id: \.value) { option in
-                            Text(option.label)
-                                .tag(option.value)
-                        }
-                    }.pickerStyle(.menu)
-                        .onChange(of: settings.fit) { value in
-                            cellSizeDisplay = (
-                                settings.fit != CellGridView.Fit.disabled
-                                ? cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
-                                : nil
-                            )
-                            if (settings.fit != CellGridView.Fit.disabled) {
-                                let preferred = cellGridView.preferredSize(settings.cellSize, fit: settings.fit)
-                                cellGridView.preferredSize(settings.cellSize, fit: settings.fit).cellSize
-                            }
-                        }
-                }
-                */
                 HStack {
                     IconLabel("Grid Center", "align.horizontal.center")
                         .disabled(settings.fit == CellGridView.Fit.fixed)
@@ -178,32 +156,36 @@ struct SettingsView: View
                     Toggle("", isOn: $settings.variantOverPopulate)
                 }
                 HStack {
-                    IconLabel("Fat Select", "rectangle.and.pencil.and.ellipsis")
-                    Toggle("", isOn: $settings.selectModeFat)
-                }
-                HStack {
-                    //
-                    // TODO: Combine this and above into dropdown.
-                    //
-                    IconLabel("Extra Fat Select", "rectangle.and.pencil.and.ellipsis")
-                    Toggle("", isOn: $settings.selectModeExtraFat)
+                    IconLabel("Select Mode", "rectangle.and.pencil.and.ellipsis")
+                    Picker("", selection: $selectMode) {
+                        ForEach(SelectModeOptions, id: \.value) { option in Text(option.label) }
+                    }
+                    .pickerStyle(.menu)
+                    .onChange(of: selectMode) { value in
+                        switch value {
+                        case 1:  settings.selectModeFat = true
+                                 settings.selectModeExtraFat = false
+                        case 2:  settings.selectModeFat = false
+                                 settings.selectModeExtraFat = true
+                        default: settings.selectModeFat = false
+                                 settings.selectModeExtraFat = false
+                        }
+                    }
+                    .onAppear {
+                        if settings.selectModeExtraFat { self.selectMode = 2 }
+                        else if settings.selectModeFat { self.selectMode = 1 }
+                        else { self.selectMode = 0 }
+                    }
                 }
                 HStack {
                     IconLabel("Speed", "waveform.path")
-                    //
-                    // if (settings.automationInterval < 0.5) {
-                    //     Image(systemName: "hare").font(.system(size: 14)).padding(.leading, -6)
-                    // }
-                    // else if (settings.automationInterval > 0.5) {
-                    //     Image(systemName: "tortoise" ).font(.system(size: 14)).padding(.leading, -6)
-                    // }
-                    //
                     Picker("", selection: $settings.automationInterval) {
                         ForEach(AutomationIntervalOptions, id: \.value) { option in
                             Text(option.label)
                                 .tag(option.value)
                         }
-                    }.pickerStyle(.menu)
+                    }
+                    .pickerStyle(.menu)
                 }
             }
             Section(header: Text("MULTIMEDIA").padding(.leading, -12).padding(.top, -20)) {
@@ -297,4 +279,11 @@ let FitOptions: [(label: String, value: CellGridView.Fit)] = [
     ("Default", CellGridView.Fit.disabled),
     ("Even", CellGridView.Fit.enabled),
     ("Fixed", CellGridView.Fit.fixed)
+]
+
+
+let SelectModeOptions: [(label: String, value: Int)] = [
+    ("Default", 0),
+    ("Fat", 1),
+    ("Very Fat", 2)
 ]
