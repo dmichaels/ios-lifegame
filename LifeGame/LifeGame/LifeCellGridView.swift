@@ -230,8 +230,8 @@ public final class LifeCellGridView: CellGridView
 
         for oldLocation in self.activeCells.subtracting(newActiveCells) {
             //
-            // This loops through the cells that WERE active
-            // but with this new generation are now INACTIVE.
+            // This loops through the cells that WERE active but
+            // with this generation are now INACTIVE; i.e. death rule.
             //
             if let cell: LifeCell = self.gridCell(oldLocation.x, oldLocation.y) {
                 cell.deactivate(nowrite: true, nonotify: true)
@@ -243,8 +243,8 @@ public final class LifeCellGridView: CellGridView
 
         for newLocation in newActiveCells.subtracting(self.activeCells) {
             //
-            // This loops through the cells that WERE inactive
-            // but with this new generation are now ACTIVE.
+            // This loops through the cells that WERE inactive but
+            // with this generation are now ACTIVE; i.e. birth rule.
             //
             if let cell: LifeCell = self.gridCell(newLocation.x, newLocation.y) {
                 cell.activate(nonotify: true)
@@ -252,5 +252,31 @@ public final class LifeCellGridView: CellGridView
         }
 
         self.activeCells = newActiveCells
+    }
+
+    internal static func circleCells(center cx: Int, _ cy: Int, radius r: Int) -> [CellLocation] {
+        guard r > 0 else { return [] }
+        var cells: [CellLocation] = []
+        let rsquared: Float = Float(r) * Float(r)
+        for y in (cy - r)...(cy + r) {
+            for x in (cx - r)...(cx + r) {
+                let points: [(Float, Float)] = [
+                    (Float(x) + 0.5, Float(y) + 0.5), // center
+                    (Float(x),       Float(y)),       // top-left
+                    (Float(x) + 1.0, Float(y)),       // top-right
+                    (Float(x),       Float(y) + 1.0), // bottom-left
+                    (Float(x) + 1.0, Float(y) + 1.0)  // bottom-right
+                ]
+                let insideCount: Float = points.reduce(0) { count, point in
+                    let dx: Float = point.0 - Float(cx)
+                    let dy: Float = point.1 - Float(cy)
+                    return ((dx * dx + dy * dy) <= rsquared) ? count + 1 : count
+                }
+                if (insideCount >= 3.0) {
+                    cells.append(CellLocation(x, y))
+                }
+            }
+        }
+        return cells
     }
 }

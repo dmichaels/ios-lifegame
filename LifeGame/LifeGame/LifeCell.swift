@@ -124,19 +124,4 @@ public final class LifeCell: Cell {
     public func toggle(nowrite: Bool = false) {
         self._active ? self.deactivate(nowrite: nowrite) : self.activate(nowrite: nowrite)
     }
-
-    private func circleCells(center cx: Int, _ cy: Int, radius r: Int) -> [CellLocation] {
-        var cells: [CellLocation] = []
-        let rsquared: Int = r * r
-        for y in (cy - r)...(cy + r) {
-            for x in (cx - r)...(cx + r) {
-                let dx: Int = x - cx
-                let dy: Int = y - cy
-                if (((dx * dx) + (dy * dy)) <= rsquared) {
-                    cells.append(CellLocation(x, y))
-                }
-            }
-        }
-        return cells
-    }
 }
