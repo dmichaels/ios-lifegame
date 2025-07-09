@@ -34,11 +34,11 @@ public final class LifeCell: Cell {
                 if let inactiveGenerationNumber = self._inactiveGenerationNumber {
                     let inactiveAge: Int = self.inactiveAge
                     if (inactiveAge <= self.cellGridView.variantInactiveFadeAgeMax) {
-                        func calculateInactiveFadeFactor(_ age: Int) -> Double {
+                        func calculateInactiveFadeFactor(_ age: Int) -> Float {
                             guard self.cellGridView.variantInactiveFadeAgeMax > 0 else { return 0.0 }
-                            return min(Double(age) / Double(self.cellGridView.variantInactiveFadeAgeMax), 1.0)
+                            return min(Float(age) / Float(self.cellGridView.variantInactiveFadeAgeMax), 1.0)
                         }
-                        let inactiveFadeFactor: CGFloat = calculateInactiveFadeFactor(inactiveAge)
+                        let inactiveFadeFactor: Float = calculateInactiveFadeFactor(inactiveAge)
                         return self.cellGridView.activeColor.isDark
                                ? self.cellGridView.activeColor.lighten(by: inactiveFadeFactor)
                                : self.cellGridView.activeColor.darken(by: inactiveFadeFactor)
