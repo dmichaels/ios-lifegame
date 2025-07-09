@@ -45,6 +45,7 @@ class Settings: ObservableObject
     @Published var variantInactiveFade: Bool      = false
     @Published var variantInactiveFadeAgeMax: Int = 5
     @Published var selectModeFat: Bool            = false
+    @Published var selectModeExtraFat: Bool       = false
 
     @Published var dragThreshold: Int             = 2
     @Published var swipeThreshold: Int            = 100
@@ -99,6 +100,7 @@ class Settings: ObservableObject
         self.variantInactiveFade       = config.variantInactiveFade
         self.variantInactiveFadeAgeMax = config.variantInactiveFadeAgeMax
         self.selectModeFat             = config.selectModeFat
+        self.selectModeExtraFat        = config.selectModeExtraFat
 
         // LifeCellGridView specific properties.
 

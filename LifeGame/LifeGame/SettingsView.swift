@@ -182,6 +182,13 @@ struct SettingsView: View
                     Toggle("", isOn: $settings.selectModeFat)
                 }
                 HStack {
+                    //
+                    // TODO: Combine this and above into dropdown.
+                    //
+                    IconLabel("Extra Fat Select", "rectangle.and.pencil.and.ellipsis")
+                    Toggle("", isOn: $settings.selectModeExtraFat)
+                }
+                HStack {
                     IconLabel("Speed", "waveform.path")
                     //
                     // if (settings.automationInterval < 0.5) {

@@ -40,6 +40,7 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var variantInactiveFadeAgeMax: Int
     private               var variantInactiveFadeCells: Set<CellLocation> = []
     internal private(set) var selectModeFat: Bool
+    internal private(set) var selectModeExtraFat: Bool
 
     public init(_ config: LifeCellGridView.Config? = nil) {
         let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
@@ -54,6 +55,7 @@ public final class LifeCellGridView: CellGridView
         self.variantInactiveFade        = config.variantInactiveFade
         self.variantInactiveFadeAgeMax  = config.variantInactiveFadeAgeMax
         self.selectModeFat              = config.selectModeFat
+        self.selectModeExtraFat         = config.selectModeExtraFat
         self.dragThreshold              = config.dragThreshold
         self.swipeThreshold             = config.swipeThreshold
         self.soundsEnabled              = config.soundsEnabled
@@ -86,6 +88,7 @@ public final class LifeCellGridView: CellGridView
         self.variantInactiveFade = settings.variantInactiveFade
         self.variantInactiveFadeAgeMax = settings.variantInactiveFadeAgeMax
         self.selectModeFat = settings.selectModeFat
+        self.selectModeExtraFat = settings.selectModeExtraFat
         self.soundsEnabled = settings.soundsEnabled
         self.hapticsEnabled = settings.hapticsEnabled
         self.inactiveColorRandomNumber += 2
