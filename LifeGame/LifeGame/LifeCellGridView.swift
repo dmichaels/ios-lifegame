@@ -5,7 +5,6 @@ import Utils
 
 public final class LifeCellGridView: CellGridView
 {
-    internal var xyzzy: Int = 1
     internal private(set) var activeColor: Colour
     internal private(set) var inactiveColor: Colour
     internal private(set) var inactiveColorRandom: Bool
@@ -41,6 +40,9 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var variantInactiveFadeAgeMax: Int
     private               var variantInactiveFadeCells: Set<CellLocation> = []
     internal private(set) var variantLatix: Bool
+    internal              var latixCells: Set<CellLocation> = []
+    internal              var latixColors: [Colour] = [Colour.red, Colour.green, Colour.blue]
+    private               var latixColorIndex: Int = 0
     internal private(set) var selectModeFat: Bool
     internal private(set) var selectModeExtraFat: Bool
 
@@ -147,6 +149,16 @@ public final class LifeCellGridView: CellGridView
         self.activeCells.remove(cell.location)
     }
 
+    internal func noteCellLatix(_ cell: LifeCell) {
+        latixCells.insert(cell.location)
+    }
+
+    internal func nextColorLatix() -> Colour {
+        let color: Colour = self.latixColors[self.latixColorIndex]
+        self.latixColorIndex = self.latixColorIndex < self.latixColors.count - 1 ? self.latixColorIndex + 1 : 0
+        return color
+    }
+
     internal func erase() {
         for cellLocation in self.activeCells {
             if let cell: LifeCell = super.gridCell(cellLocation) {
@@ -164,6 +176,11 @@ public final class LifeCellGridView: CellGridView
 
     private func nextGeneration()
     {
+        if (self.variantLatix) {
+            self.nextGenerationLatix()
+            return
+        }
+
         self.generationNumber += 1
         self.inactiveColorRandomDynamicNumber += 1
 
@@ -264,10 +281,24 @@ public final class LifeCellGridView: CellGridView
     private func nextGenerationLatix()
     {
         self.generationNumber += 1
+        for cellLocation in self.latixCells {
+            if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
+                cell.latix()
+            }
+        }
     }
 
+    // Returns the list of cell locations for a circle centered a the given (cx,cy) cell location,
+    // and with the given cell radius (a radius of one means just the given cell). If the perimeter
+    // argument is true then only returns cell locations for the enclosing circle, otherwise returns
+    // the cell locations for the whole of the circle. Since the circle is obviously approximate,
+    // the threshold argument gives some control over how conservative we are; a higher number means
+    // more conservative, i.e. more strict in allowing cells to be considered part of the circle.
+    // N.B. This was mostly ChatGPT generated.
+    //
     internal static func circleCells(center cx: Int, _ cy: Int, radius r: Int,
-                                     perimeter: Bool = false, threshold: Float = 1.0) -> [CellLocation] {
+                                     perimeter: Bool = false, threshold: Float = 1.0) -> [CellLocation]
+    {
         guard r > 0 else { return [] }
         guard r > 1 else { return [CellLocation(cx, cy)] }
         guard r > 2 else {

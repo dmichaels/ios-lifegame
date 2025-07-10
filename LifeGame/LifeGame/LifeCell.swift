@@ -12,12 +12,17 @@ public final class LifeCell: Cell {
     // generation number at which this cell became inactive.
     //
     internal var _inactiveGenerationNumber: Int?
+    private  var _latixCellRadius: Int?
+    private  var _latixRadialCell: CellLocation?
+    private  var _latixColor: Colour?
 
     init(cellGridView: LifeCellGridView, x: Int, y: Int, active: Bool = false) {
         self._active = active
         self._inactiveColorRandomDynamicNumber = cellGridView.inactiveColorRandomDynamicNumber + 1
         self._inactiveColorRandomNumber = cellGridView.inactiveColorRandomNumber + 1
         self._inactiveGenerationNumber = nil
+        self._latixCellRadius = nil
+        self._latixRadialCell = nil
         super.init(cellGridView: cellGridView, x: x, y: y, color: cellGridView.inactiveColor)
     }
 
@@ -28,7 +33,7 @@ public final class LifeCell: Cell {
     public override var color: Colour {
         get {
             if (self.cellGridView.variantLatix) {
-                if (self._active) {
+                if ((self._latixCellRadius != nil) || (self._latixRadialCell != nil)) {
                     return super.color
                 }
             }
@@ -69,17 +74,35 @@ public final class LifeCell: Cell {
         set { super.color = newValue }
     }
 
+    internal func latix() {
+        if let latixCellRadius = self._latixCellRadius {
+            self._latixCellRadius = latixCellRadius + 1
+            let circleCellLocations: [CellLocation] = LifeCellGridView.circleCells(
+                center: self.x, self.y,
+                radius: self._latixCellRadius!,
+                perimeter: true
+            )
+            for circleCellLocation in circleCellLocations {
+                if let cell: LifeCell = self.cellGridView.gridCell(circleCellLocation.x, circleCellLocation.y) {
+                    cell.color = Colour.random(tint: self._latixColor, tintBy: 0.5)
+                    cell._latixRadialCell = self.location
+                    cell.write()
+                }
+            }
+        }
+        else {
+            self._latixColor = self.cellGridView.nextColorLatix()
+            self._latixCellRadius = 1
+            self.color = Colour.random(tint: Colour.red, tintBy: 0.5)
+            self.write()
+            self.cellGridView.noteCellLatix(self)
+        }
+    }
+
     public override func select(dragging: Bool = false) {
         if (self.cellGridView.variantLatix) {
             if (!dragging) {
-                let circleCellLocations: [CellLocation] = LifeCellGridView.circleCells(center: self.x, self.y, radius: self.cellGridView.xyzzy, perimeter: true)
-                self.cellGridView.xyzzy += 1
-                for circleCellLocation in circleCellLocations {
-                    if let cell: LifeCell = self.cellGridView.gridCell(circleCellLocation.x, circleCellLocation.y) {
-                        cell.color = Colour.random(tint: Colour.red, tintBy: 0.5)
-                        cell.activate()
-                    }
-                }
+                self.latix()
             }
             return
         }
