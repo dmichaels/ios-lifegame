@@ -19,7 +19,7 @@ struct SettingsView: View
                             Text(value.rawValue).lineLimit(1).truncationMode(.tail).tag(value)
                         }
                     }
-                    .pickerStyle(.menu).disabled((settings.cellSize - settings.cellPadding) < 3)
+                    .pickerStyle(.menu)
                     .onChange(of: settings.cellShape) { value in
                         settings.viewScaling = !cellGridView.cellShapeRequiresNoScaling(value)
                     }
