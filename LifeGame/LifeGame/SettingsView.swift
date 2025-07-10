@@ -1,7 +1,4 @@
 import SwiftUI
-import AudioToolbox
-import CoreHaptics
-import AVFoundation
 import CellGridView
 import Utils
 
@@ -122,7 +119,6 @@ struct SettingsView: View
                     IconLabel("Grid Fixed", "square.grid.3x3.square")
                     Toggle("", isOn: Binding<Bool>(
                         get: { settings.fit == CellGridView.Fit.fixed },
-                        // set: { value in settings.fit = value ? CellGridView.Fit.fixed : CellGridView.Fit.disabled }
                         set: { value in
                             if (value) {
                                 settings.fit = CellGridView.Fit.fixed
@@ -278,13 +274,6 @@ let AutomationIntervalOptions: [(label: String, value: Double)] = [
     ("Wow", 0.02),
     ("Max", 0.0)
 ]
-
-let FitOptions: [(label: String, value: CellGridView.Fit)] = [
-    ("Default", CellGridView.Fit.disabled),
-    ("Even", CellGridView.Fit.enabled),
-    ("Fixed", CellGridView.Fit.fixed)
-]
-
 
 let SelectModeOptions: [(label: String, value: Int)] = [
     ("Default", 0),

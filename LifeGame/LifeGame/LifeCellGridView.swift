@@ -41,7 +41,7 @@ public final class LifeCellGridView: CellGridView
     private               var variantInactiveFadeCells: Set<CellLocation> = []
     internal private(set) var variantLatix: Bool
     internal              var latixCells: Set<CellLocation> = []
-    internal              var latixColors: [Colour] = [Colour.red, Colour.green, Colour.blue]
+    internal              var latixColors: [Colour] = [Colour.red, Colour.green, Colour.blue, Colour.yellow, Colour.brown]
     private               var latixColorIndex: Int = 0
     internal private(set) var selectModeFat: Bool
     internal private(set) var selectModeExtraFat: Bool
@@ -332,6 +332,7 @@ public final class LifeCellGridView: CellGridView
                 if (insideCount >= 1.0 /*2.0*/ /*3.0*/ ) {
                     if (!perimeter) {
                         cells.append(CellLocation(x, y))
+                        if (cells.count > 100) { return cells }
                     } else {
                         let neighborOffsets: [(Int,Int)] = [(-1, 0), (1, 0), (0, -1), (0, 1)]
                         for (dx, dy) in neighborOffsets {
@@ -351,6 +352,7 @@ public final class LifeCellGridView: CellGridView
                             }
                             if (neighborInside < 3.0) {
                                 cells.append(CellLocation(x, y))
+                                if (cells.count > 100) { return cells }
                                 break
                             }
                         }
