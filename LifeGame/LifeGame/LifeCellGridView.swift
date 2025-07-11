@@ -288,43 +288,34 @@ public final class LifeCellGridView: CellGridView
         }
     }
 
-    // Returns the list of cell locations for a circle centered a the given (cx,cy) cell location,
-    // and with the given cell radius (a radius of one means just the given cell). If the perimeter
-    // argument is true then only returns cell locations for the enclosing circle, otherwise returns
-    // the cell locations for the whole of the circle. Since the circle is obviously approximate,
-    // the threshold argument gives some control over how conservative we are; a higher number means
-    // more conservative, i.e. more strict in allowing cells to be considered part of the circle.
-    // N.B. This was mostly ChatGPT generated.
+    // Returns the list of cell locations for a circle centered a the given (cx,cy) cell location, and with
+    // the given cell radius (a radius of one means just the given cell). If the filled argument is false
+    // then returns cell locations only for the perimeter of the enclosing circle, otherwise returns the
+    // cell locations for the whole of the circle. Since the circle is obviously approximate, the threshold
+    // argument gives some control over how conservative we are; a higher number means more conservative,
+    // i.e. more strict in allowing cells to be considered part of the circle.  N.B. Mostly ChatGPT generated.
     //
-    private static var circleCellsCache: [Int: [CellLocation]] = [:]
-    internal static func circleCells(center cx: Int, _ cy: Int, radius r: Int,
-                                     perimeter: Bool = false, threshold: Float = 1.0) -> [CellLocation]
+    internal static func circleCellLocations(center cx: Int, _ cy: Int, radius r: Int,
+                                             filled: Bool = false, threshold: Float = 1.0) -> [CellLocation]
     {
         guard r > 0 else { return [] }
         guard r > 1 else { return [CellLocation(cx, cy)] }
-        guard r > 2 else {
-            return [
-                CellLocation(cx, cy),
-                CellLocation(cx - 1, cy),
-                CellLocation(cx + 1, cy),
-                CellLocation(cx, cy - 1),
-                CellLocation(cx, cy + 1),
-            ]
-        }
+        guard r > 2 else { return [CellLocation(cx, cy), CellLocation(cx - 1, cy), CellLocation(cx + 1, cy),
+                                                         CellLocation(cx, cy - 1), CellLocation(cx, cy + 1)] }
 
-        let debugStart: Date = Date()
+        struct cache { static var locations: [Int: [CellLocation]] = [:] }
         let radius: Int = r - 1
-        if let cached = circleCellsCache[radius] {
-            print("CC: radius: \(radius) ncells: \(cached.count) time: \(Date().timeIntervalSince(debugStart)) hit: true")
+
+        if let cached = cache.locations[radius] {
             return cached.map { CellLocation($0.x + cx, $0.y + cy) }
         }
-        let result: [CellLocation]
+
         var cells: [CellLocation] = []
         let rsq: Float = Float(radius) * Float(radius)
-        let cxf = Float(0.5)
-        let cyf = Float(0.5)
-        for y in (-radius)...(radius) {
-            for x in (-radius)...(radius) {
+        let cxf: Float = Float(0.5)
+        let cyf: Float = Float(0.5)
+        for y in -radius...radius {
+            for x in -radius...radius {
                 let points: [(Float, Float)] = [
                     (Float(x) + 0.5, Float(y) + 0.5), // center
                     (Float(x),       Float(y)),       // top-left
@@ -338,7 +329,7 @@ public final class LifeCellGridView: CellGridView
                     return ((dx * dx + dy * dy) <= rsq) ? count + 1 : count
                 }
                 if (insideCount >= threshold) {
-                    if (!perimeter) {
+                    if (filled) {
                         cells.append(CellLocation(x, y))
                     } else {
                         let neighborOffsets: [(Int,Int)] = [(-1, 0), (1, 0), (0, -1), (0, 1)]
@@ -366,10 +357,8 @@ public final class LifeCellGridView: CellGridView
                 }
             }
         }
-        circleCellsCache[radius] = cells
-        result = cells
-        print("CC: radius: \(radius) ncells: \(result.count) time: \(Date().timeIntervalSince(debugStart)) hit: false")
-        return result.map { CellLocation($0.x + cx, $0.y + cy) }
+        cache.locations[radius] = cells
+        return cells.map { CellLocation($0.x + cx, $0.y + cy) }
     }
 
     internal func latixSelectCell(_ lifeCell: LifeCell) {
@@ -389,10 +378,9 @@ public final class LifeCellGridView: CellGridView
             return
         }
         cell.radius += 1
-        let perimeterCellLocations: [CellLocation] = LifeCellGridView.circleCells(
+        let perimeterCellLocations: [CellLocation] = LifeCellGridView.circleCellLocations(
             center: cell.x, cell.y,
-            radius: cell.radius,
-            perimeter: true
+            radius: cell.radius
         )
         for perimeterCellLocation in perimeterCellLocations {
             if let lifeCell: LifeCell = self.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
