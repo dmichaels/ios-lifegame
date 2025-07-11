@@ -64,7 +64,14 @@ public class LatixCell: Equatable {
         guard r > 2 else { return [CellLocation(cx, cy), CellLocation(cx - 1, cy), CellLocation(cx + 1, cy),
                                                          CellLocation(cx, cy - 1), CellLocation(cx, cy + 1)] }
 
-        struct cache { static var locations: [Int: [CellLocation]] = [:] }
+        struct cache {
+            private static var _locations: [Int: [CellLocation]] = [:]
+            private static let _locationsQueue = DispatchQueue(label: "circleCellLocations.queue")
+            public static var locations: [Int: [CellLocation]] {
+                get { cache._locationsQueue.sync { cache._locations } }
+                set { cache._locationsQueue.sync { cache._locations = newValue } }
+            }
+}
         let radius: Int = r - 1
 
         if let cached = cache.locations[radius] {
@@ -123,11 +130,14 @@ public class LatixCell: Equatable {
     }
 
     internal static func circleCellLocationsPreload(radius: Int = 500) {
+        // print("PRELOADING: \(radius)")
         DispatchQueue.global(qos: .background).async {
             for r in 3...radius {
                 _ = LatixCell.circleCellLocations(center: 0, 0, radius: r)
+                // print("PRELOAD: \(r)")
             }
         }
+        // print("PRELOADED: \(radius)")
     }
 
     private static func nextColor() -> Colour {

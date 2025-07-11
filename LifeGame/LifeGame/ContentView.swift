@@ -152,7 +152,6 @@ struct ContentView: View
         }
         .onAppear {
             self.orientation.register(self.updateOrientation)
-            LatixCell.circleCellLocationsPreload()
         }
         .onDisappear {
             self.orientation.deregister()
@@ -203,6 +202,7 @@ struct ContentView: View
 }
 
 struct ContentView_Previews: PreviewProvider {
+    init() { LatixCell.circleCellLocationsPreload() }
     static var previews: some View {
         ContentView()
             .environmentObject(LifeCellGridView())
