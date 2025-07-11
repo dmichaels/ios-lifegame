@@ -40,7 +40,7 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var variantInactiveFadeAgeMax: Int
     private               var variantInactiveFadeCells: Set<CellLocation> = []
     internal private(set) var variantLatix: Bool
-    internal              var latixCells: Set<CellLocation> = []
+    internal              var latixCells: [LatixCell] = []
     internal              var latixColors: [Colour] = [Colour.red, Colour.green, Colour.blue, Colour.yellow, Colour.brown]
     private               var latixColorIndex: Int = 0
     internal private(set) var selectModeFat: Bool
@@ -149,9 +149,11 @@ public final class LifeCellGridView: CellGridView
         self.activeCells.remove(cell.location)
     }
 
+    /*
     internal func noteCellLatix(_ cell: LifeCell) {
-        latixCells.insert(cell.location)
+        latixCells.append(cell.location)
     }
+    */
 
     internal func nextColorLatix() -> Colour {
         let color: Colour = self.latixColors[self.latixColorIndex]
@@ -281,10 +283,8 @@ public final class LifeCellGridView: CellGridView
     private func nextGenerationLatix()
     {
         self.generationNumber += 1
-        for cellLocation in self.latixCells {
-            if let cell: LifeCell = self.gridCell(cellLocation.x, cellLocation.y) {
-                cell.latix()
-            }
+        for latixCell in self.latixCells {
+            self.latixExpandCell(latixCell)
         }
     }
 
@@ -332,7 +332,6 @@ public final class LifeCellGridView: CellGridView
                 if (insideCount >= 1.0 /*2.0*/ /*3.0*/ ) {
                     if (!perimeter) {
                         cells.append(CellLocation(x, y))
-                        if (cells.count > 100) { return cells }
                     } else {
                         let neighborOffsets: [(Int,Int)] = [(-1, 0), (1, 0), (0, -1), (0, 1)]
                         for (dx, dy) in neighborOffsets {
@@ -352,7 +351,6 @@ public final class LifeCellGridView: CellGridView
                             }
                             if (neighborInside < 3.0) {
                                 cells.append(CellLocation(x, y))
-                                if (cells.count > 100) { return cells }
                                 break
                             }
                         }
@@ -362,4 +360,44 @@ public final class LifeCellGridView: CellGridView
         }
         return cells
     }
+
+    internal func latixSelectCell(_ lifeCell: LifeCell) {
+        let color: Colour = self.nextColorLatix()
+        let cell: LatixCell = LatixCell(lifeCell, color: color, radius: 1)
+        lifeCell.color = color
+        lifeCell.write()
+        latixCells.append(cell)
+    }
+
+    internal func latixExpandCell(_ cell: LatixCell) {
+        cell.radius += 1
+        let radialCellLocations: [CellLocation] = LifeCellGridView.circleCells(
+            center: cell.x, cell.y,
+            radius: cell.radius,
+            perimeter: true
+        )
+        for radialCellLocation in radialCellLocations {
+            if let lifeCell: LifeCell = self.gridCell(radialCellLocation.x, radialCellLocation.y) {
+                lifeCell.color = Colour.random(tint: cell.color, tintBy: 0.5)
+                lifeCell._latix = true
+                lifeCell.write()
+            }
+        }
+    }
+}
+
+internal class LatixCell {
+
+    public let cell: Cell
+    public let color: Colour
+    public var radius: Int
+
+    public init(_ cell: Cell, color: Colour, radius: Int = 1) {
+        self.cell = cell
+        self.color = color
+        self.radius = radius
+    }
+
+    public var x: Int { return cell.x }
+    public var y: Int { return cell.y }
 }
