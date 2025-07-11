@@ -385,7 +385,6 @@ public final class LifeCellGridView: CellGridView
         for perimeterCellLocation in perimeterCellLocations {
             if let lifeCell: LifeCell = self.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
                 lifeCell.color = Colour.random(tint: cell.color, tintBy: 0.5)
-                lifeCell._latix = true
                 lifeCell.write()
             }
         }
