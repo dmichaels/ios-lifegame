@@ -296,6 +296,7 @@ public final class LifeCellGridView: CellGridView
     // more conservative, i.e. more strict in allowing cells to be considered part of the circle.
     // N.B. This was mostly ChatGPT generated.
     //
+    private static var circleCellsCache: [Int: [CellLocation]] = [:]
     internal static func circleCells(center cx: Int, _ cy: Int, radius r: Int,
                                      perimeter: Bool = false, threshold: Float = 1.0) -> [CellLocation]
     {
@@ -310,13 +311,20 @@ public final class LifeCellGridView: CellGridView
                 CellLocation(cx, cy + 1),
             ]
         }
-        let r: Int = r - 1
+        var hit: Bool = false
+        let debugStart: Date = Date()
+        let radius: Int = r - 1
+        let result: [CellLocation]
+        if let cached = circleCellsCache[radius] {
+            hit = true
+            result = cached
+        } else {
         var cells: [CellLocation] = []
-        let rsq: Float = Float(r) * Float(r)
-        let cxf = Float(cx) + 0.5
-        let cyf = Float(cy) + 0.5
-        for y in (cy - r)...(cy + r) {
-            for x in (cx - r)...(cx + r) {
+        let rsq: Float = Float(radius) * Float(radius)
+        let cxf = Float(0.5)
+        let cyf = Float(0.5)
+        for y in (-radius)...(radius) {
+            for x in (-radius)...(radius) {
                 let points: [(Float, Float)] = [
                     (Float(x) + 0.5, Float(y) + 0.5), // center
                     (Float(x),       Float(y)),       // top-left
@@ -329,7 +337,7 @@ public final class LifeCellGridView: CellGridView
                     let dy: Float = point.1 - cyf
                     return ((dx * dx + dy * dy) <= rsq) ? count + 1 : count
                 }
-                if (insideCount >= 1.0 /*2.0*/ /*3.0*/ ) {
+                if (insideCount >= threshold) {
                     if (!perimeter) {
                         cells.append(CellLocation(x, y))
                     } else {
@@ -358,6 +366,77 @@ public final class LifeCellGridView: CellGridView
                 }
             }
         }
+            circleCellsCache[radius] = cells
+            result = cells
+        }
+        let mappedResult: [CellLocation] = result.map { CellLocation($0.x + cx, $0.y + cy) }
+        print("CC: radius: \(radius) ncells: \(mappedResult.count) time: \(Date().timeIntervalSince(debugStart)) hit: \(hit)")
+        return mappedResult
+    }
+    internal static func xcircleCells(center cx: Int, _ cy: Int, radius r: Int,
+                                     perimeter: Bool = false, threshold: Float = 1.0) -> [CellLocation]
+    {
+        guard r > 0 else { return [] }
+        guard r > 1 else { return [CellLocation(cx, cy)] }
+        guard r > 2 else {
+            return [
+                CellLocation(cx, cy),
+                CellLocation(cx - 1, cy),
+                CellLocation(cx + 1, cy),
+                CellLocation(cx, cy - 1),
+                CellLocation(cx, cy + 1),
+            ]
+        }
+        let debugStart: Date = Date()
+        let radius: Int = r - 1
+        var cells: [CellLocation] = []
+        let rsq: Float = Float(radius) * Float(radius)
+        let cxf = Float(cx) + 0.5
+        let cyf = Float(cy) + 0.5
+        for y in (cy - radius)...(cy + radius) {
+            for x in (cx - radius)...(cx + radius) {
+                let points: [(Float, Float)] = [
+                    (Float(x) + 0.5, Float(y) + 0.5), // center
+                    (Float(x),       Float(y)),       // top-left
+                    (Float(x) + 1.0, Float(y)),       // top-right
+                    (Float(x),       Float(y) + 1.0), // bottom-left
+                    (Float(x) + 1.0, Float(y) + 1.0)  // bottom-right
+                ]
+                let insideCount: Float = points.reduce(0) { count, point in
+                    let dx: Float = point.0 - cxf
+                    let dy: Float = point.1 - cyf
+                    return ((dx * dx + dy * dy) <= rsq) ? count + 1 : count
+                }
+                if (insideCount >= threshold) {
+                    if (!perimeter) {
+                        cells.append(CellLocation(x, y))
+                    } else {
+                        let neighborOffsets: [(Int,Int)] = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+                        for (dx, dy) in neighborOffsets {
+                            let nx: Int = x + dx
+                            let ny: Int = y + dy
+                            let neighborPoints: [(Float, Float)] = [
+                                (Float(nx) + 0.5, Float(ny) + 0.5),
+                                (Float(nx),       Float(ny)),
+                                (Float(nx) + 1.0, Float(ny)),
+                                (Float(nx),       Float(ny) + 1.0),
+                                (Float(nx) + 1.0, Float(ny) + 1.0)
+                            ]
+                            let neighborInside: Float = neighborPoints.reduce(0) { count, point in
+                                let dx: Float = point.0 - cxf
+                                let dy: Float = point.1 - cyf
+                                return ((dx * dx + dy * dy) <= rsq) ? count + 1 : count
+                            }
+                            if (neighborInside < 3.0) {
+                                cells.append(CellLocation(x, y))
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        print("CC: \(cells.count) \(Date().timeIntervalSince(debugStart))")
         return cells
     }
 
@@ -370,14 +449,21 @@ public final class LifeCellGridView: CellGridView
     }
 
     internal func latixExpandCell(_ cell: LatixCell) {
+        guard cell.radius <= cell.radiusMax else {
+            // latixCells.remove(cell)
+            if let index: Int = latixCells.firstIndex(where: { $0 === cell }) {
+                latixCells.remove(at: index)
+            }
+            return
+        }
         cell.radius += 1
-        let radialCellLocations: [CellLocation] = LifeCellGridView.circleCells(
+        let perimeterCellLocations: [CellLocation] = LifeCellGridView.circleCells(
             center: cell.x, cell.y,
             radius: cell.radius,
             perimeter: true
         )
-        for radialCellLocation in radialCellLocations {
-            if let lifeCell: LifeCell = self.gridCell(radialCellLocation.x, radialCellLocation.y) {
+        for perimeterCellLocation in perimeterCellLocations {
+            if let lifeCell: LifeCell = self.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
                 lifeCell.color = Colour.random(tint: cell.color, tintBy: 0.5)
                 lifeCell._latix = true
                 lifeCell.write()
@@ -386,18 +472,39 @@ public final class LifeCellGridView: CellGridView
     }
 }
 
-internal class LatixCell {
+internal class LatixCell: Equatable {
 
     public let cell: Cell
     public let color: Colour
     public var radius: Int
+    public var radiusMax: Int
 
-    public init(_ cell: Cell, color: Colour, radius: Int = 1) {
+    public init(_ cell: Cell, color: Colour, radius: Int) {
         self.cell = cell
         self.color = color
         self.radius = radius
+        self.radiusMax = LatixCell.maxDistanceToEdge(cell.x, cell.y, ncolumns: cell.cellGridView.gridColumns,
+                                                                     nrows: cell.cellGridView.gridRows)
     }
 
     public var x: Int { return cell.x }
     public var y: Int { return cell.y }
+
+    public static func maxDistanceToEdge(_ x: Int, _ y: Int, ncolumns: Int, nrows: Int) -> Int {
+        let corners = [
+            (0, 0),
+            (ncolumns - 1, 0),
+            (0, nrows - 1),
+            (ncolumns - 1, nrows - 1)
+        ]
+        return Int(ceil(corners.map { (cx, cy) in
+            let dx = Float(cx - x)
+            let dy = Float(cy - y)
+            return sqrt(dx * dx + dy * dy)
+        }.max() ?? 0.0))
+    }
+
+    static func == (lhs: LatixCell, rhs: LatixCell) -> Bool {
+        return lhs === rhs
+    }
 }

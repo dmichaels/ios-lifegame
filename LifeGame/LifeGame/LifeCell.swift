@@ -35,9 +35,9 @@ public final class LifeCell: Cell {
         get {
             if (self.cellGridView.variantLatix) {
                 // if ((self._latixCellRadius != nil) || (self._latixRadialCell != nil)) curly ...
-                if (self._latix) {
+                // if (self._latix) {
                     return super.color
-                }
+                // }
             }
             if (self._active) {
                 return self.cellGridView.activeColor
