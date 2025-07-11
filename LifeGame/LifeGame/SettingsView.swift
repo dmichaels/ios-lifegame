@@ -166,14 +166,12 @@ struct SettingsView: View
                             }
                         }
                 }
-                .hide(settings.gameMode != GameMode.life)
 
                 HStack {
                     IconLabel("Inactive Dynamic", "sparkles")
                     Toggle("", isOn: $settings.inactiveColorRandomDynamic).labelsHidden()
                 }
                 .disabled(!settings.inactiveColorRandom)
-                .hide(settings.gameMode != GameMode.life)
 
                 HStack {
                     IconLabel("Inactive Palette", "paintpalette")
@@ -322,6 +320,5 @@ let AutomationIntervalOptions: [(label: String, value: Double)] = [
 let SelectModeOptions: [(label: String, value: Int)] = [
     ("Default", 0),
     ("Fat", 1),
-    ("Very Fat", 2),
-    ("Circle (DEV)", 3)
+    ("Very Fat", 2)
 ]
