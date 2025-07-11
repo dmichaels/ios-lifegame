@@ -39,10 +39,8 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var variantInactiveFade: Bool
     internal private(set) var variantInactiveFadeAgeMax: Int
     private               var variantInactiveFadeCells: Set<CellLocation> = []
-    internal private(set) var variantLatix: Bool
+    internal private(set) var variantLatix: Bool = false
     internal              var latixCells: [LatixCell] = []
-    internal              var latixColors: [Colour] = [Colour.red, Colour.green, Colour.blue, Colour.yellow, Colour.brown]
-    private               var latixColorIndex: Int = 0
     internal private(set) var selectModeFat: Bool
     internal private(set) var selectModeExtraFat: Bool
 
@@ -149,18 +147,6 @@ public final class LifeCellGridView: CellGridView
         self.activeCells.remove(cell.location)
     }
 
-    /*
-    internal func noteCellLatix(_ cell: LifeCell) {
-        latixCells.append(cell.location)
-    }
-    */
-
-    internal func nextColorLatix() -> Colour {
-        let color: Colour = self.latixColors[self.latixColorIndex]
-        self.latixColorIndex = self.latixColorIndex < self.latixColors.count - 1 ? self.latixColorIndex + 1 : 0
-        return color
-    }
-
     internal func erase() {
         for cellLocation in self.activeCells {
             if let cell: LifeCell = super.gridCell(cellLocation) {
@@ -179,7 +165,7 @@ public final class LifeCellGridView: CellGridView
     private func nextGeneration()
     {
         if (self.variantLatix) {
-            self.nextGenerationLatix()
+            self.latixNextGeneration()
             return
         }
 
@@ -280,11 +266,66 @@ public final class LifeCellGridView: CellGridView
         self.activeCells = newActiveCells
     }
 
-    private func nextGenerationLatix()
+    private func latixNextGeneration()
     {
         self.generationNumber += 1
         for latixCell in self.latixCells {
-            self.latixExpandCell(latixCell)
+            latixCell.expand()
+        }
+    }
+
+    internal func latixCellSelect(_ lifeCell: LifeCell) {
+        latixCells.append(LatixCell.select(lifeCell))
+    }
+
+    internal func latixCellDeselect(_ cell: LatixCell) {
+        if let index: Int = self.latixCells.firstIndex(where: { $0 === cell }) {
+            self.latixCells.remove(at: index)
+        }
+    }
+}
+
+internal class LatixCell: Equatable {
+
+    public let cell: LifeCell
+    public let color: Colour
+    public var radius: Int
+    public var radiusMax: Int
+
+    public init(_ cell: LifeCell, color: Colour, radius: Int) {
+        self.cell = cell
+        self.color = color
+        self.radius = radius
+        self.radiusMax = LatixCell.edgeDistance(cell.x, cell.y, ncolumns: cell.cellGridView.gridColumns,
+                                                                nrows: cell.cellGridView.gridRows)
+    }
+
+    public var x: Int { return cell.x }
+    public var y: Int { return cell.y }
+
+    internal static func select(_ lifeCell: LifeCell) -> LatixCell {
+        let color: Colour = LatixCell.nextColor()
+        let cell: LatixCell = LatixCell(lifeCell, color: color, radius: 1)
+        lifeCell.color = color
+        lifeCell.write()
+        return cell
+    }
+
+    internal func expand() {
+        guard self.radius <= self.radiusMax else {
+            self.cell.cellGridView.latixCellDeselect(self)
+            return
+        }
+        self.radius += 1
+        let perimeterCellLocations: [CellLocation] = LatixCell.circleCellLocations(
+            center: self.x, self.y,
+            radius: self.radius
+        )
+        for perimeterCellLocation in perimeterCellLocations {
+            if let lifeCell: LifeCell = self.cell.cellGridView.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
+                lifeCell.color = Colour.random(tint: self.color, tintBy: 0.5)
+                lifeCell.write()
+            }
         }
     }
 
@@ -361,55 +402,17 @@ public final class LifeCellGridView: CellGridView
         return cells.map { CellLocation($0.x + cx, $0.y + cy) }
     }
 
-    internal func latixSelectCell(_ lifeCell: LifeCell) {
-        let color: Colour = self.nextColorLatix()
-        let cell: LatixCell = LatixCell(lifeCell, color: color, radius: 1)
-        lifeCell.color = color
-        lifeCell.write()
-        latixCells.append(cell)
-    }
-
-    internal func latixExpandCell(_ cell: LatixCell) {
-        guard cell.radius <= cell.radiusMax else {
-            // latixCells.remove(cell)
-            if let index: Int = latixCells.firstIndex(where: { $0 === cell }) {
-                latixCells.remove(at: index)
-            }
-            return
+    internal static func nextColor() -> Colour {
+        struct cache {
+            static var index: Int = 0
+            static var colors: [Colour] = [Colour.red, Colour.green, Colour.blue, Colour.yellow, Colour.brown]
         }
-        cell.radius += 1
-        let perimeterCellLocations: [CellLocation] = LifeCellGridView.circleCellLocations(
-            center: cell.x, cell.y,
-            radius: cell.radius
-        )
-        for perimeterCellLocation in perimeterCellLocations {
-            if let lifeCell: LifeCell = self.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
-                lifeCell.color = Colour.random(tint: cell.color, tintBy: 0.5)
-                lifeCell.write()
-            }
-        }
-    }
-}
-
-internal class LatixCell: Equatable {
-
-    public let cell: Cell
-    public let color: Colour
-    public var radius: Int
-    public var radiusMax: Int
-
-    public init(_ cell: Cell, color: Colour, radius: Int) {
-        self.cell = cell
-        self.color = color
-        self.radius = radius
-        self.radiusMax = LatixCell.maxDistanceToEdge(cell.x, cell.y, ncolumns: cell.cellGridView.gridColumns,
-                                                                     nrows: cell.cellGridView.gridRows)
+        let color: Colour = cache.colors[cache.index]
+        cache.index = cache.index < cache.colors.count - 1 ? cache.index + 1 : 0
+        return color
     }
 
-    public var x: Int { return cell.x }
-    public var y: Int { return cell.y }
-
-    public static func maxDistanceToEdge(_ x: Int, _ y: Int, ncolumns: Int, nrows: Int) -> Int {
+    private static func edgeDistance(_ x: Int, _ y: Int, ncolumns: Int, nrows: Int) -> Int {
         let corners = [
             (0, 0),
             (ncolumns - 1, 0),

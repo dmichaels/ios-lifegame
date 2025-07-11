@@ -70,7 +70,7 @@ public final class LifeCell: Cell {
     public override func select(dragging: Bool = false) {
         if (self.cellGridView.variantLatix) {
             if (!dragging) {
-                self.cellGridView.latixSelectCell(self)
+                self.cellGridView.latixCellSelect(self)
             }
             return
         }
