@@ -288,16 +288,18 @@ public final class LifeCellGridView: CellGridView
 internal class LatixCell: Equatable {
 
     public let cell: LifeCell
+    public let cellGridView: LifeCellGridView
     public let color: Colour
     public var radius: Int
     public var radiusMax: Int
 
     public init(_ cell: LifeCell, color: Colour, radius: Int) {
         self.cell = cell
+        self.cellGridView = cell.cellGridView
         self.color = color
         self.radius = radius
-        self.radiusMax = LatixCell.edgeDistance(cell.x, cell.y, ncolumns: cell.cellGridView.gridColumns,
-                                                                nrows: cell.cellGridView.gridRows)
+        self.radiusMax = LatixCell.edgeDistance(cell.x, cell.y, ncolumns: self.cellGridView.gridColumns,
+                                                                nrows: self.cellGridView.gridRows)
     }
 
     public var x: Int { return cell.x }
