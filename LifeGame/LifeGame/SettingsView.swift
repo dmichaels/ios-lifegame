@@ -12,6 +12,7 @@ struct SettingsView: View
     var body: some View {
         Form {
             Section {
+
                 HStack {
                     IconLabel("Cell Shape", "puzzlepiece.fill")
                     Picker("", selection: $settings.cellShape) {
@@ -24,6 +25,7 @@ struct SettingsView: View
                         settings.viewScaling = !cellGridView.cellShapeRequiresNoScaling(value)
                     }
                 }
+
                 VStack {
                     HStack {
                         IconLabel("Cell Size", "magnifyingglass")
@@ -45,6 +47,7 @@ struct SettingsView: View
                             }
                         }
                 }
+
                 HStack {
                     IconLabel("Cell Padding", "squareshape.dotted.squareshape")
                     Picker("", selection: $settings.cellPadding) {
@@ -61,100 +64,43 @@ struct SettingsView: View
                         }
                     }
                 }
+
                 HStack {
                     IconLabel("Cell Shading", "square.filled.on.square")
                     Toggle("", isOn: $settings.cellShading).labelsHidden()
                 }
             }
-            Section(header: Text("COLORS").padding(.leading, -12).padding(.top, -20)) {
+
+            Section(header: Text("GAME: " + (settings.gameMode == GameMode.life ? "CONWAY'S LIFE" : "LATIX")).padding(.leading, -12).padding(.top, -20).bold()) {
+
                 HStack {
-                    IconLabel("Active", "COLOR")
-                    ColorPicker("", selection: $settings.activeColorInternal)
-                        .onChange(of: settings.activeColorInternal) { newValue in
-                           settings.activeColorInternal = newValue
-                        }
-                }
-                HStack {
-                    IconLabel("Inactive", "COLOR")
-                    ColorPicker("", selection: $settings.inactiveColorInternal)
-                        .onChange(of: settings.inactiveColorInternal) { value in
-                           settings.inactiveColorInternal = value
-                        }
-                }
-                HStack {
-                    IconLabel("Inactive Random", "circle.grid.cross.right.filled")
-                    Toggle("", isOn: $settings.inactiveColorRandom).labelsHidden()
-                        .onChange(of: settings.inactiveColorRandom) { value in
-                            if (!value) {
-                                settings.inactiveColorRandomDynamic = false
-                            }
-                        }
-                }
-                HStack {
-                    IconLabel("Inactive Dynamic", "sparkles")
-                    Toggle("", isOn: $settings.inactiveColorRandomDynamic).labelsHidden()
-                }.disabled(!settings.inactiveColorRandom)
-                HStack {
-                    IconLabel("Inactive Palette", "paintpalette")
-                    Picker("", selection: $settings.inactiveColorRandomPalette) {
-                        ForEach(ColourPalette.allCases) { mode in
-                            Text(mode.rawValue).lineLimit(1).tag(mode)
+                    IconLabel("Game Mode", "gamecontroller")
+                    Picker("", selection: $settings.gameMode) {
+                        ForEach(GameMode.allCases) { value in
+                            Text(value.rawValue).lineLimit(1).truncationMode(.tail).tag(value)
                         }
                     }
                     .pickerStyle(.menu)
-                    .onChange(of: settings.inactiveColorRandomPalette) { newValue in
-                        settings.inactiveColorRandomPalette = newValue
-                    }
-                }.disabled(!settings.inactiveColorRandom)
-                HStack {
-                    IconLabel("Background", "COLOR")
-                    ColorPicker("", selection: $settings.viewBackgroundInternal)
-                        .onChange(of: settings.viewBackgroundInternal) { newValue in
-                           settings.viewBackgroundInternal = newValue
-                        }
                 }
-            }
-            Section(header: Text("GRID").padding(.leading, -12).padding(.top, -20)) {
-                HStack {
-                    IconLabel("Grid Fixed", "square.grid.3x3.square")
-                    Toggle("", isOn: Binding<Bool>(
-                        get: { settings.fit == CellGridView.Fit.fixed },
-                        set: { value in
-                            if (value) {
-                                settings.fit = CellGridView.Fit.fixed
-                            }
-                            else {
-                                settings.fit = CellGridView.Fit.disabled
-                                settings.gridColumns = Settings.Defaults.gridColumns
-                                settings.gridRows = Settings.Defaults.gridRows
-                            }
-                        }
-                    ))
-                }
-                HStack {
-                    IconLabel("Grid Center", "align.horizontal.center")
-                        .disabled(settings.fit == CellGridView.Fit.fixed)
-                    Toggle("", isOn: $settings.center).labelsHidden()
-                        .disabled(settings.fit == CellGridView.Fit.fixed)
-                }
-            }
-            Section(header: Text("GAME OF LIFE").padding(.leading, -12).padding(.top, -20)) {
+
                 HStack {
                     IconLabel("InactiveFade Variant", "eye.fill")
                     Toggle("", isOn: $settings.variantInactiveFade)
                 }
+                .hide(settings.gameMode != GameMode.life)
+
                 HStack {
                     IconLabel("HighLife Variant", "lifepreserver")
                     Toggle("", isOn: $settings.variantHighLife)
                 }
+                .hide(settings.gameMode != GameMode.life)
+
                 HStack {
                     IconLabel("OverPopulate Variant", "gauge.with.dots.needle.bottom.100percent")
                     Toggle("", isOn: $settings.variantOverPopulate)
                 }
-                HStack {
-                    IconLabel("Latix Variant", "squareshape.split.3x3")
-                    Toggle("", isOn: $settings.variantLatix)
-                }
+                .hide(settings.gameMode != GameMode.life)
+
                 HStack {
                     IconLabel("Select Mode", "rectangle.and.pencil.and.ellipsis")
                     Picker("", selection: $selectMode) {
@@ -177,6 +123,8 @@ struct SettingsView: View
                         else { self.selectMode = 0 }
                     }
                 }
+                .hide(settings.gameMode != GameMode.life)
+
                 HStack {
                     IconLabel("Speed", "waveform.path")
                     Picker("", selection: $settings.automationInterval) {
@@ -188,17 +136,111 @@ struct SettingsView: View
                     .pickerStyle(.menu)
                 }
             }
+
+            Section(header: Text("COLORS").padding(.leading, -12).padding(.top, -20)) {
+
+                HStack {
+                    IconLabel("Active", "COLOR")
+                    ColorPicker("", selection: $settings.activeColorInternal)
+                        .onChange(of: settings.activeColorInternal) { newValue in
+                           settings.activeColorInternal = newValue
+                        }
+                }
+                .hide(settings.gameMode != GameMode.life)
+
+                HStack {
+                    IconLabel("Inactive", "COLOR")
+                    ColorPicker("", selection: $settings.inactiveColorInternal)
+                        .onChange(of: settings.inactiveColorInternal) { value in
+                           settings.inactiveColorInternal = value
+                        }
+                }
+                .hide(settings.gameMode != GameMode.life)
+
+                HStack {
+                    IconLabel("Inactive Random", "circle.grid.cross.right.filled")
+                    Toggle("", isOn: $settings.inactiveColorRandom).labelsHidden()
+                        .onChange(of: settings.inactiveColorRandom) { value in
+                            if (!value) {
+                                settings.inactiveColorRandomDynamic = false
+                            }
+                        }
+                }
+                .hide(settings.gameMode != GameMode.life)
+
+                HStack {
+                    IconLabel("Inactive Dynamic", "sparkles")
+                    Toggle("", isOn: $settings.inactiveColorRandomDynamic).labelsHidden()
+                }
+                .disabled(!settings.inactiveColorRandom)
+                .hide(settings.gameMode != GameMode.life)
+
+                HStack {
+                    IconLabel("Inactive Palette", "paintpalette")
+                    Picker("", selection: $settings.inactiveColorRandomPalette) {
+                        ForEach(ColourPalette.allCases) { mode in
+                            Text(mode.rawValue).lineLimit(1).tag(mode)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .onChange(of: settings.inactiveColorRandomPalette) { newValue in
+                        settings.inactiveColorRandomPalette = newValue
+                    }
+                }
+                .disabled(!settings.inactiveColorRandom)
+                .hide(settings.gameMode != GameMode.life)
+
+                HStack {
+                    IconLabel("Background", "COLOR")
+                    ColorPicker("", selection: $settings.viewBackgroundInternal)
+                        .onChange(of: settings.viewBackgroundInternal) { newValue in
+                           settings.viewBackgroundInternal = newValue
+                        }
+                }
+            }
+
+            Section(header: Text("GRID").padding(.leading, -12).padding(.top, -20)) {
+
+                HStack {
+                    IconLabel("Grid Fixed", "square.grid.3x3.square")
+                    Toggle("", isOn: Binding<Bool>(
+                        get: { settings.fit == CellGridView.Fit.fixed },
+                        set: { value in
+                            if (value) {
+                                settings.fit = CellGridView.Fit.fixed
+                            }
+                            else {
+                                settings.fit = CellGridView.Fit.disabled
+                                settings.gridColumns = Settings.Defaults.gridColumns
+                                settings.gridRows = Settings.Defaults.gridRows
+                            }
+                        }
+                    ))
+                }
+
+                HStack {
+                    IconLabel("Grid Center", "align.horizontal.center")
+                        .disabled(settings.fit == CellGridView.Fit.fixed)
+                    Toggle("", isOn: $settings.center).labelsHidden()
+                        .disabled(settings.fit == CellGridView.Fit.fixed)
+                }
+            }
+
             Section(header: Text("MULTIMEDIA").padding(.leading, -12).padding(.top, -20)) {
+
                 HStack {
                     IconLabel("Sounds", "speaker.wave.2")
                     Toggle("", isOn: $settings.soundsEnabled)
                 }
+
                 HStack {
                     IconLabel("Haptics", "water.waves")
                     Toggle("", isOn: $settings.hapticsEnabled)
                 }
             }
+
             Section(header: Text("ADVANCED").padding(.leading, -12).padding(.top, -20)) {
+
                 HStack {
                     IconLabel("Pixel Scaling", "scale.3d")
                     Toggle("", isOn: $settings.viewScaling).labelsHidden()
@@ -209,10 +251,12 @@ struct SettingsView: View
                         }
                         .disabled(cellGridView.cellShapeRequiresNoScaling(settings.cellShape))
                 }
+
                 HStack {
                     IconLabel("Restrict Shift", "arrow.up.left.arrow.down.right.square")
                     Toggle("", isOn: $settings.restrictShift).labelsHidden()
                 }
+
                 HStack {
                     IconLabel("Unscaled Zoom", "arrow.up.left.arrow.down.right.square")
                     Toggle("", isOn: $settings.unscaledZoom)

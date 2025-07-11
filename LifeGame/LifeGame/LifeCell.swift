@@ -27,7 +27,7 @@ public final class LifeCell: Cell {
 
     public override var color: Colour {
         get {
-            if (self.cellGridView.variantLatix) {
+            if (self.cellGridView.gameMode == GameMode.latix) {
                 return super.color
             }
             if (self._active) {
@@ -68,7 +68,7 @@ public final class LifeCell: Cell {
     }
 
     public override func select(dragging: Bool = false) {
-        if (self.cellGridView.variantLatix) {
+        if (self.cellGridView.gameMode == GameMode.latix) {
             if (!dragging) {
                 self.cellGridView.latixCellSelect(self)
             }

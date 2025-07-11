@@ -5,6 +5,7 @@ import Utils
 
 public final class LifeCellGridView: CellGridView
 {
+    internal private(set) var gameMode: GameMode
     internal private(set) var activeColor: Colour
     internal private(set) var inactiveColor: Colour
     internal private(set) var inactiveColorRandom: Bool
@@ -39,13 +40,13 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var variantInactiveFade: Bool
     internal private(set) var variantInactiveFadeAgeMax: Int
     private               var variantInactiveFadeCells: Set<CellLocation> = []
-    internal private(set) var variantLatix: Bool = false
     internal              var latixCells: [LatixCell] = []
     internal private(set) var selectModeFat: Bool
     internal private(set) var selectModeExtraFat: Bool
 
     public init(_ config: LifeCellGridView.Config? = nil) {
         let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
+        self.gameMode                   = config.gameMode
         self.activeColor                = config.activeColor
         self.inactiveColor              = config.inactiveColor
         self.inactiveColorRandom        = config.inactiveColorRandom
@@ -56,7 +57,6 @@ public final class LifeCellGridView: CellGridView
         self.variantOverPopulate        = config.variantOverPopulate
         self.variantInactiveFade        = config.variantInactiveFade
         self.variantInactiveFadeAgeMax  = config.variantInactiveFadeAgeMax
-        self.variantLatix               = config.variantLatix
         self.selectModeFat              = config.selectModeFat
         self.selectModeExtraFat         = config.selectModeExtraFat
         self.dragThreshold              = config.dragThreshold
@@ -80,6 +80,7 @@ public final class LifeCellGridView: CellGridView
     }
 
     internal func configure(_ settings: Settings) {
+        self.gameMode = settings.gameMode
         self.activeColor = settings.activeColor
         self.inactiveColor = settings.inactiveColor
         self.inactiveColorRandom = settings.inactiveColorRandom
@@ -90,7 +91,6 @@ public final class LifeCellGridView: CellGridView
         self.variantOverPopulate = settings.variantOverPopulate
         self.variantInactiveFade = settings.variantInactiveFade
         self.variantInactiveFadeAgeMax = settings.variantInactiveFadeAgeMax
-        self.variantLatix = settings.variantLatix
         self.selectModeFat = settings.selectModeFat
         self.selectModeExtraFat = settings.selectModeExtraFat
         self.soundsEnabled = settings.soundsEnabled
@@ -164,7 +164,7 @@ public final class LifeCellGridView: CellGridView
 
     private func nextGeneration()
     {
-        if (self.variantLatix) {
+        if (self.gameMode == GameMode.latix) {
             self.latixNextGeneration()
             return
         }
