@@ -11,18 +11,15 @@ public class LatixCell: Equatable {
     private var _radius: Int
     private var _radiusMax: Int
 
-    public init(_ cell: LifeCell, color: Colour, radius: Int) {
+    private init(_ cell: LifeCell, color: Colour, radius: Int) {
         self._cellGridView = cell.cellGridView
-        self._color = color
         self._x = cell.x
         self._y = cell.y
+        self._color = color
         self._radius = radius
-        self._radiusMax = LatixCell.edgeDistance(cell.x, cell.y, ncolumns: self._cellGridView.gridColumns,
-                                                                 nrows: self._cellGridView.gridRows)
+        self._radiusMax = LatixCell.edgeDistance(self._x, self._y, ncolumns: self._cellGridView.gridColumns,
+                                                                   nrows: self._cellGridView.gridRows)
     }
-
-    public var x: Int { return self._x }
-    public var y: Int { return self._y }
 
     public static func select(_ lifeCell: LifeCell) -> LatixCell {
         let color: Colour = LatixCell.nextColor()
@@ -39,7 +36,7 @@ public class LatixCell: Equatable {
         }
         self._radius += 1
         let perimeterCellLocations: [CellLocation] = LatixCell.circleCellLocations(
-            center: self.x, self.y,
+            center: self._x, self._y,
             radius: self._radius
         )
         for perimeterCellLocation in perimeterCellLocations {
