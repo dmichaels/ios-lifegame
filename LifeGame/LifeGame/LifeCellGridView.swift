@@ -287,23 +287,25 @@ public final class LifeCellGridView: CellGridView
 
 internal class LatixCell: Equatable {
 
-    public let cell: LifeCell
-    public let cellGridView: LifeCellGridView
-    public let color: Colour
-    public var radius: Int
-    public var radiusMax: Int
+    private let _cellGridView: LifeCellGridView
+    private let _x: Int
+    private let _y: Int
+    private let _color: Colour
+    private var _radius: Int
+    private var _radiusMax: Int
 
-    public init(_ cell: LifeCell, color: Colour, radius: Int) {
-        self.cell = cell
-        self.cellGridView = cell.cellGridView
-        self.color = color
-        self.radius = radius
-        self.radiusMax = LatixCell.edgeDistance(cell.x, cell.y, ncolumns: self.cellGridView.gridColumns,
-                                                                nrows: self.cellGridView.gridRows)
+    internal init(_ cell: LifeCell, color: Colour, radius: Int) {
+        self._cellGridView = cell.cellGridView
+        self._color = color
+        self._x = cell.x
+        self._y = cell.y
+        self._radius = radius
+        self._radiusMax = LatixCell.edgeDistance(cell.x, cell.y, ncolumns: self._cellGridView.gridColumns,
+                                                                 nrows: self._cellGridView.gridRows)
     }
 
-    public var x: Int { return cell.x }
-    public var y: Int { return cell.y }
+    internal var x: Int { return self._x }
+    internal var y: Int { return self._y }
 
     internal static func select(_ lifeCell: LifeCell) -> LatixCell {
         let color: Colour = LatixCell.nextColor()
@@ -314,18 +316,18 @@ internal class LatixCell: Equatable {
     }
 
     internal func expand() {
-        guard self.radius <= self.radiusMax else {
-            self.cell.cellGridView.latixCellDeselect(self)
+        guard self._radius <= self._radiusMax else {
+            self._cellGridView.latixCellDeselect(self)
             return
         }
-        self.radius += 1
+        self._radius += 1
         let perimeterCellLocations: [CellLocation] = LatixCell.circleCellLocations(
             center: self.x, self.y,
-            radius: self.radius
+            radius: self._radius
         )
         for perimeterCellLocation in perimeterCellLocations {
-            if let lifeCell: LifeCell = self.cell.cellGridView.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
-                lifeCell.color = Colour.random(tint: self.color, tintBy: 0.5)
+            if let lifeCell: LifeCell = self._cellGridView.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
+                lifeCell.color = Colour.random(tint: self._color, tintBy: 0.5)
                 lifeCell.write()
             }
         }
@@ -338,8 +340,8 @@ internal class LatixCell: Equatable {
     // argument gives some control over how conservative we are; a higher number means more conservative,
     // i.e. more strict in allowing cells to be considered part of the circle.  N.B. Mostly ChatGPT generated.
     //
-    internal static func circleCellLocations(center cx: Int, _ cy: Int, radius r: Int,
-                                             filled: Bool = false, threshold: Float = 1.0) -> [CellLocation]
+    private static func circleCellLocations(center cx: Int, _ cy: Int, radius r: Int,
+                                            filled: Bool = false, threshold: Float = 1.0) -> [CellLocation]
     {
         guard r > 0 else { return [] }
         guard r > 1 else { return [CellLocation(cx, cy)] }
@@ -404,7 +406,7 @@ internal class LatixCell: Equatable {
         return cells.map { CellLocation($0.x + cx, $0.y + cy) }
     }
 
-    internal static func nextColor() -> Colour {
+    private static func nextColor() -> Colour {
         struct cache {
             static var index: Int = 0
             static var colors: [Colour] = [Colour.red, Colour.green, Colour.blue, Colour.yellow, Colour.brown]
