@@ -152,6 +152,7 @@ struct ContentView: View
         }
         .onAppear {
             self.orientation.register(self.updateOrientation)
+            LatixCell.circleCellLocationsPreload()
         }
         .onDisappear {
             self.orientation.deregister()
