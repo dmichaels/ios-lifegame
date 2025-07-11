@@ -2,7 +2,7 @@ import Foundation
 import CellGridView
 import Utils
 
-internal class LatixCell: Equatable {
+public class LatixCell: Equatable {
 
     private let _cellGridView: LifeCellGridView
     private let _x: Int
@@ -11,7 +11,7 @@ internal class LatixCell: Equatable {
     private var _radius: Int
     private var _radiusMax: Int
 
-    internal init(_ cell: LifeCell, color: Colour, radius: Int) {
+    public init(_ cell: LifeCell, color: Colour, radius: Int) {
         self._cellGridView = cell.cellGridView
         self._color = color
         self._x = cell.x
@@ -21,10 +21,10 @@ internal class LatixCell: Equatable {
                                                                  nrows: self._cellGridView.gridRows)
     }
 
-    internal var x: Int { return self._x }
-    internal var y: Int { return self._y }
+    public var x: Int { return self._x }
+    public var y: Int { return self._y }
 
-    internal static func select(_ lifeCell: LifeCell) -> LatixCell {
+    public static func select(_ lifeCell: LifeCell) -> LatixCell {
         let color: Colour = LatixCell.nextColor()
         let cell: LatixCell = LatixCell(lifeCell, color: color, radius: 1)
         lifeCell.color = color
@@ -32,7 +32,7 @@ internal class LatixCell: Equatable {
         return cell
     }
 
-    internal func expand() {
+    public func expand() {
         guard self._radius <= self._radiusMax else {
             self._cellGridView.latixCellDeselect(self)
             return
@@ -147,7 +147,7 @@ internal class LatixCell: Equatable {
         }.max() ?? 0.0))
     }
 
-    static func == (lhs: LatixCell, rhs: LatixCell) -> Bool {
+    public static func == (lhs: LatixCell, rhs: LatixCell) -> Bool {
         return lhs === rhs
     }
 }
