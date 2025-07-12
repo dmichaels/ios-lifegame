@@ -121,6 +121,7 @@ public class LatixCell: Equatable {
     internal static func circleCellLocationsPreload(radius: Int = 500) {
         DispatchQueue.global(qos: .background).async {
             for r in 3...radius {
+                let debugStart: Date = Date()
                 _ = LatixCell.circleCellLocations(center: 0, 0, radius: r)
             }
         }

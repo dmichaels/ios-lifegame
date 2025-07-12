@@ -166,12 +166,14 @@ struct SettingsView: View
                             }
                         }
                 }
+                .hide(settings.gameMode != GameMode.life)
 
                 HStack {
                     IconLabel("Inactive Dynamic", "sparkles")
                     Toggle("", isOn: $settings.inactiveColorRandomDynamic).labelsHidden()
                 }
                 .disabled(!settings.inactiveColorRandom)
+                .hide(settings.gameMode != GameMode.life)
 
                 HStack {
                     IconLabel("Inactive Palette", "paintpalette")
