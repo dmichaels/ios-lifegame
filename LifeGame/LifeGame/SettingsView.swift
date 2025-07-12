@@ -11,7 +11,7 @@ struct SettingsView: View
 
     var body: some View {
         Form {
-            Section {
+            SettingsSection {
 
                 HStack {
                     IconLabel("Cell Shape", "puzzlepiece.fill")
@@ -71,7 +71,7 @@ struct SettingsView: View
                 }
             }
 
-            Section(header: Text("GAME: " + (settings.gameMode == GameMode.life ? "CONWAY'S LIFE" : "LATIX")).padding(.leading, -12).padding(.top, -20).bold()) {
+            SettingsSection("GAME: " + (settings.gameMode == GameMode.life ? "CONWAY'S LIFE" : "LATIX")) {
 
                 HStack {
                     IconLabel("Game Mode", "gamecontroller")
@@ -137,7 +137,7 @@ struct SettingsView: View
                 }
             }
 
-            Section(header: Text("COLORS").padding(.leading, -12).padding(.top, -20)) {
+            SettingsSection("COLORS") {
 
                 HStack {
                     IconLabel("Active", "COLOR")
@@ -197,7 +197,7 @@ struct SettingsView: View
                 }
             }
 
-            Section(header: Text("GRID").padding(.leading, -12).padding(.top, -20)) {
+            SettingsSection("GRID") {
 
                 HStack {
                     IconLabel("Grid Fixed", "square.grid.3x3.square")
@@ -224,7 +224,7 @@ struct SettingsView: View
                 }
             }
 
-            Section(header: Text("MULTIMEDIA").padding(.leading, -12).padding(.top, -20)) {
+            SettingsSection("MULTIMEDIA") {
 
                 HStack {
                     IconLabel("Sounds", "speaker.wave.2")
@@ -237,8 +237,7 @@ struct SettingsView: View
                 }
             }
 
-            Section(header: HStack { Text("ADVANCED")
-                Image(systemName: "apple.logo").offset(y: -2) }.padding(.leading, -12).padding(.top, -20)) {
+            SettingsSection("ADVANCED", icon: "apple.logo") {
 
                 HStack {
                     IconLabel("Pixel Scaling", "scale.3d")
