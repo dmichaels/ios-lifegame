@@ -71,7 +71,7 @@ struct SettingsView: View
                 }
             }
 
-            SettingsSection("GAME: " + (settings.gameMode == GameMode.life ? "CONWAY'S LIFE" : "LATIX")) {
+            SettingsSection("GAME: " + (settings.gameMode == GameMode.life ? "CONWAY'S LIFE" : "CIRCLES")) {
 
                 HStack {
                     IconLabel("Game Mode", "gamecontroller")

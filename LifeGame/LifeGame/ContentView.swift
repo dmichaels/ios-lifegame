@@ -28,6 +28,8 @@ struct ContentView: View
     //
     @State private var automationMode: Bool = false
     @State private var automationModeSuspended: Bool = false
+    @State private var automationRandomModeInterval: Double = 0.5
+    @State private var automationRandomModeTimer: Timer? = nil
 
     var body: some View {
         NavigationView {
@@ -55,7 +57,7 @@ struct ContentView: View
                                 onDrag:      { value in self.cellGridView.onDrag(value) },
                                 onDragEnd:   { value in self.cellGridView.onDragEnd(value) },
                                 onTap:       { value in self.cellGridView.onTap(value) ; feedback.trigger() },
-                                onDoubleTap: { self.toggleShowControls() },
+                                onDoubleTap: { self.toggleRandomAutomation() /* self.toggleShowControls() */ },
                                 onLongTap:   { _ in self.toggleShowControls() },
                                 onZoom:      { value in self.cellGridView.onZoom(value) },
                                 onZoomEnd:   { value in self.cellGridView.onZoomEnd(value) },
@@ -198,6 +200,24 @@ struct ContentView: View
 
     private func toggleShowControls() {
         withAnimation { self.showControlBar.toggle() }
+    }
+
+    private func toggleRandomAutomation() {
+        if let automationRandomModeTimer = self.automationRandomModeTimer {
+            automationRandomModeTimer.invalidate()
+            self.automationRandomModeTimer = nil
+        }
+        else {
+            self.automationRandomModeTimer = Timer.scheduledTimer(withTimeInterval: self.automationRandomModeInterval, repeats: true) { _ in
+                let rx: Int = Int.random(in: 0...self.cellGridView.viewCellEndX)
+                let ry: Int = Int.random(in: 0...self.cellGridView.viewCellEndY)
+                print("R: \(self.cellGridView.viewCellEndX),\(self.cellGridView.viewCellEndY) \(rx),\(ry) ")
+                if let cell: LifeCell = self.cellGridView.gridCell(viewCellX: rx, viewCellY: ry) {
+                    cell.select()
+                    self.updateImage()
+                }
+            }
+        }
     }
 }
 
