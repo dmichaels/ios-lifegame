@@ -117,80 +117,6 @@ public class LatixCell: Equatable {
         return cells.map { CellLocation($0.x + cx, $0.y + cy) }
     }
 
-    private static func old_circleCellLocations(center cx: Int, _ cy: Int, radius r: Int,
-                                                filled: Bool = false, threshold: Float = 1.0) -> [CellLocation]
-    {
-        guard r > 0 else { return [] }
-        guard r > 1 else { return [CellLocation(cx, cy)] }
-        guard r > 2 else { return [CellLocation(cx, cy), CellLocation(cx - 1, cy), CellLocation(cx + 1, cy),
-                                                         CellLocation(cx, cy - 1), CellLocation(cx, cy + 1)] }
-
-        struct cache {
-            private static var _locations: [Int: [CellLocation]] = [:]
-            private static let _locationsQueue = DispatchQueue(label: "circleCellLocations.queue")
-            public static var locations: [Int: [CellLocation]] {
-                get { cache._locationsQueue.sync { cache._locations } }
-                set { cache._locationsQueue.sync { cache._locations = newValue } }
-            }
-        }
-
-        let radius: Int = r - 1
-
-        if let cached = cache.locations[radius] {
-            return cached.map { CellLocation($0.x + cx, $0.y + cy) }
-        }
-
-        var cells: [CellLocation] = []
-        let rsq: Float = Float(radius) * Float(radius)
-        let cxf: Float = Float(0.5)
-        let cyf: Float = Float(0.5)
-        for y in -radius...radius {
-            for x in -radius...radius {
-                let points: [(Float, Float)] = [
-                    (Float(x) + 0.5, Float(y) + 0.5), // center
-                    (Float(x),       Float(y)),       // top-left
-                    (Float(x) + 1.0, Float(y)),       // top-right
-                    (Float(x),       Float(y) + 1.0), // bottom-left
-                    (Float(x) + 1.0, Float(y) + 1.0)  // bottom-right
-                ]
-                let insideCount: Float = points.reduce(0) { count, point in
-                    let dx: Float = point.0 - cxf
-                    let dy: Float = point.1 - cyf
-                    return ((dx * dx + dy * dy) <= rsq) ? count + 1 : count
-                }
-                if (insideCount >= threshold) {
-                    if (filled) {
-                        cells.append(CellLocation(x, y))
-                    } else {
-                        let neighborOffsets: [(Int,Int)] = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-                        for (dx, dy) in neighborOffsets {
-                            let nx: Int = x + dx
-                            let ny: Int = y + dy
-                            let neighborPoints: [(Float, Float)] = [
-                                (Float(nx) + 0.5, Float(ny) + 0.5),
-                                (Float(nx),       Float(ny)),
-                                (Float(nx) + 1.0, Float(ny)),
-                                (Float(nx),       Float(ny) + 1.0),
-                                (Float(nx) + 1.0, Float(ny) + 1.0)
-                            ]
-                            let neighborInside: Float = neighborPoints.reduce(0) { count, point in
-                                let dx: Float = point.0 - cxf
-                                let dy: Float = point.1 - cyf
-                                return ((dx * dx + dy * dy) <= rsq) ? count + 1 : count
-                            }
-                            if (neighborInside < 3.0) {
-                                cells.append(CellLocation(x, y))
-                                break
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        cache.locations[radius] = cells
-        return cells.map { CellLocation($0.x + cx, $0.y + cy) }
-    }
-
     internal static func circleCellLocationsPreload(radius: Int = 500) {
         DispatchQueue.global(qos: .background).async {
             for r in 3...radius {
@@ -202,8 +128,8 @@ public class LatixCell: Equatable {
     private static func nextColor() -> Colour {
         struct cache {
             static var colors: [Colour] = [
-                Colour.red, Colour.green, Colour.blue,
-                Colour.yellow, Colour.purple, Colour.brown, Colour.gray
+                Colour.red, Colour.green, Colour.blue, Colour.yellow, Colour.purple,
+                Colour.cyan, Colour.orange, Colour.magenta
             ]
             static var index: Int = 0
         }
