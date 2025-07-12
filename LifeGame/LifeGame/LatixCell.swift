@@ -47,12 +47,10 @@ public class LatixCell: Equatable {
         }
     }
 
-    // Returns the list of cell locations for a circle centered a the given (cx,cy) cell location, and with
-    // the given cell radius (a radius of one means just the given cell). If the filled argument is false
-    // then returns cell locations only for the perimeter of the enclosing circle, otherwise returns the
-    // cell locations for the whole of the circle. Since the circle is obviously approximate, the threshold
-    // argument gives some control over how conservative we are; a higher number means more conservative,
-    // i.e. more strict in allowing cells to be considered part of the circle.  N.B. Mostly ChatGPT generated.
+    // Returns the list of cell locations for the perimeter of a circle centered a the given (cx,cy) cell location,
+    // and with the given cell radius (a radius of one means just the given cell). Since the circle is approximate,
+    // the threshold argument gives some control over how conservative we are; a higher number means more conservative,
+    // i.e. more strict in allowing cells to be considered part of the circle. N.B. This was mostly ChatGPT generated.
     //
     private static func circleCellLocations(center cx: Int, _ cy: Int, radius r: Int,
                                             threshold: Float = 1.0) -> [CellLocation]
@@ -103,9 +101,9 @@ public class LatixCell: Equatable {
                 if (inside >= threshold) {
                     var outsideNeighbor: Bool = false
                     for (nx, ny) in Cache.neighbors {
-                        let ndx: Float = (fx + nx + 0.5) - cxf
-                        let ndy: Float = (fy + ny + 0.5) - cyf
-                        if (ndx * ndx + ndy * ndy) > rsq {
+                        let dx: Float = (fx + nx + 0.5) - cxf
+                        let dy: Float = (fy + ny + 0.5) - cyf
+                        if (dx * dx + dy * dy) > rsq {
                             outsideNeighbor = true
                             break
                         }
