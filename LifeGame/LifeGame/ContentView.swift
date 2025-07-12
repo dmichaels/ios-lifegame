@@ -211,7 +211,6 @@ struct ContentView: View
             self.automationRandomModeTimer = Timer.scheduledTimer(withTimeInterval: self.automationRandomModeInterval, repeats: true) { _ in
                 let rx: Int = Int.random(in: 0...self.cellGridView.viewCellEndX)
                 let ry: Int = Int.random(in: 0...self.cellGridView.viewCellEndY)
-                print("R: \(self.cellGridView.viewCellEndX),\(self.cellGridView.viewCellEndY) \(rx),\(ry) ")
                 if let cell: LifeCell = self.cellGridView.gridCell(viewCellX: rx, viewCellY: ry) {
                     cell.select()
                     self.updateImage()
