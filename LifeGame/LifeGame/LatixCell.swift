@@ -128,19 +128,6 @@ public class LatixCell: Equatable {
         }
     }
 
-    private static func nextColor() -> Colour {
-        struct cache {
-            static var colors: [Colour] = [
-                Colour.red, Colour.green, Colour.blue, Colour.yellow, Colour.purple,
-                Colour.cyan, Colour.orange, Colour.magenta
-            ]
-            static var index: Int = 0
-        }
-        let color: Colour = cache.colors[cache.index]
-        cache.index = cache.index < cache.colors.count - 1 ? cache.index + 1 : 0
-        return color
-    }
-
     private static func edgeDistance(_ x: Int, _ y: Int, ncolumns: Int, nrows: Int) -> Int {
         let corners: [(Int, Int)] = [
             (0, 0),
@@ -153,6 +140,19 @@ public class LatixCell: Equatable {
             let fy: Float = Float(cy - y)
             return sqrt(fx * fx + fy * fy)
         }.max() ?? 0.0))
+    }
+
+    private static func nextColor() -> Colour {
+        struct cache {
+            static var colors: [Colour] = [
+                Colour.red, Colour.green, Colour.blue, Colour.yellow, Colour.purple,
+                Colour.cyan, Colour.orange, Colour.magenta
+            ]
+            static var index: Int = 0
+        }
+        let color: Colour = cache.colors[cache.index]
+        cache.index = cache.index < cache.colors.count - 1 ? cache.index + 1 : 0
+        return color
     }
 
     public static func == (lhs: LatixCell, rhs: LatixCell) -> Bool {
