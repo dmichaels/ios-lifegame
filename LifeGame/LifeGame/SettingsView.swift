@@ -237,7 +237,8 @@ struct SettingsView: View
                 }
             }
 
-            Section(header: Text("ADVANCED").padding(.leading, -12).padding(.top, -20)) {
+            Section(header: HStack { Text("ADVANCED")
+                Image(systemName: "apple.logo").offset(y: -2) }.padding(.leading, -12).padding(.top, -20)) {
 
                 HStack {
                     IconLabel("Pixel Scaling", "scale.3d")
@@ -256,7 +257,7 @@ struct SettingsView: View
                 }
 
                 HStack {
-                    IconLabel("Unscaled Zoom", "arrow.up.left.arrow.down.right.square")
+                    IconLabel("Unscaled Zoom", "minus.magnifyingglass")
                     Toggle("", isOn: $settings.unscaledZoom)
                 }
             }
@@ -270,22 +271,6 @@ struct SettingsView: View
         let min: Double = Double(cellGridView.minimumCellSize(cellPadding: settings.cellPadding,
                                                               cellShape: settings.cellShape))
         return min...Double(cellGridView.maximumCellSize)
-    }
-}
-
-struct DeveloperSettingsView: View {
-
-    @EnvironmentObject var settings: Settings
-
-    var body: some View {
-        Form {
-            Section(header: Text("CELLS").padding(.leading, -12)) {
-            }
-        }
-        .onAppear {
-        }
-        .navigationTitle("Advanced")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
