@@ -83,31 +83,29 @@ public class LatixCell: Equatable {
 
         for y in -radius...radius {
             for x in -radius...radius {
-                let samples: [(Float, Float)] = [
+                let points: [(Float, Float)] = [
                     (Float(x) + 0.5, Float(y) + 0.5),
                     (Float(x),       Float(y)),
                     (Float(x) + 1.0, Float(y)),
                     (Float(x),       Float(y) + 1.0),
                     (Float(x) + 1.0, Float(y) + 1.0)
                 ]
-                let insideCount: Float = samples.reduce(0) { count, point in
-                    let dx = point.0 - cxf
-                    let dy = point.1 - cyf
+                let inside: Float = points.reduce(0) { count, point in
+                    let dx: Float = point.0 - cxf
+                    let dy: Float = point.1 - cyf
                     return (dx * dx + dy * dy) <= rsq ? count + 1 : count
                 }
-                if insideCount >= threshold {
-                    var hasOutsideNeighbor = false
+                if (inside >= threshold) {
+                    var outsideNeighbor: Bool = false
                     for (dx, dy) in [(-1,0), (1,0), (0,-1), (0,1)] {
-                        let nx: Float = Float(x + dx) + 0.5
-                        let ny: Float = Float(y + dy) + 0.5
-                        let ndx: Float = nx - cxf
-                        let ndy: Float = ny - cyf
+                        let ndx: Float = (Float(x + dx) + 0.5) - cxf
+                        let ndy: Float = (Float(y + dy) + 0.5) - cyf
                         if (ndx * ndx + ndy * ndy) > rsq {
-                            hasOutsideNeighbor = true
+                            outsideNeighbor = true
                             break
                         }
                     }
-                    if hasOutsideNeighbor {
+                    if (outsideNeighbor) {
                         cells.append(CellLocation(x, y))
                     }
                 }
