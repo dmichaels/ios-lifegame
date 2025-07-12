@@ -64,10 +64,13 @@ public class LatixCell: Equatable {
         struct Cache {
             private static var _locations: [Int: [CellLocation]] = [:]
             private static let _queue = DispatchQueue(label: "circleCellLocations.queue")
-            static var locations: [Int: [CellLocation]] {
+            internal static var locations: [Int: [CellLocation]] {
                 get { _queue.sync { _locations } }
                 set { _queue.sync { _locations = newValue } }
             }
+            internal static let neighbors: [(Float, Float)] = [
+                (Float(-1), Float(0)), (Float(1), Float(0)), (Float(0), Float(-1)), (Float(0), Float(1))
+            ]
         }
 
         let radius: Int = r - 1
@@ -82,24 +85,26 @@ public class LatixCell: Equatable {
         var cells: [CellLocation] = []
 
         for y in -radius...radius {
+            let fy: Float = Float(y)
             for x in -radius...radius {
+                let fx: Float = Float(x)
                 let points: [(Float, Float)] = [
-                    (Float(x) + 0.5, Float(y) + 0.5),
-                    (Float(x),       Float(y)),
-                    (Float(x) + 1.0, Float(y)),
-                    (Float(x),       Float(y) + 1.0),
-                    (Float(x) + 1.0, Float(y) + 1.0)
+                    (fx + 0.5, fy + 0.5),
+                    (fx,       fy),
+                    (fx + 1.0, fy),
+                    (fx,       fy + 1.0),
+                    (fx + 1.0, fy + 1.0)
                 ]
                 let inside: Float = points.reduce(0) { count, point in
-                    let dx: Float = point.0 - cxf
-                    let dy: Float = point.1 - cyf
-                    return (dx * dx + dy * dy) <= rsq ? count + 1 : count
+                    let ix: Float = point.0 - cxf
+                    let iy: Float = point.1 - cyf
+                    return (ix * ix + iy * iy) <= rsq ? count + 1 : count
                 }
                 if (inside >= threshold) {
                     var outsideNeighbor: Bool = false
-                    for (dx, dy) in [(-1,0), (1,0), (0,-1), (0,1)] {
-                        let ndx: Float = (Float(x + dx) + 0.5) - cxf
-                        let ndy: Float = (Float(y + dy) + 0.5) - cyf
+                    for (nx, ny) in Cache.neighbors {
+                        let ndx: Float = (fx + nx + 0.5) - cxf
+                        let ndy: Float = (fy + ny + 0.5) - cyf
                         if (ndx * ndx + ndy * ndy) > rsq {
                             outsideNeighbor = true
                             break
@@ -137,16 +142,16 @@ public class LatixCell: Equatable {
     }
 
     private static func edgeDistance(_ x: Int, _ y: Int, ncolumns: Int, nrows: Int) -> Int {
-        let corners = [
+        let corners: [(Int, Int)] = [
             (0, 0),
             (ncolumns - 1, 0),
             (0, nrows - 1),
             (ncolumns - 1, nrows - 1)
         ]
         return Int(ceil(corners.map { (cx, cy) in
-            let dx = Float(cx - x)
-            let dy = Float(cy - y)
-            return sqrt(dx * dx + dy * dy)
+            let fx: Float = Float(cx - x)
+            let fy: Float = Float(cy - y)
+            return sqrt(fx * fx + fy * fy)
         }.max() ?? 0.0))
     }
 
