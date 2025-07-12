@@ -12,7 +12,6 @@ struct SettingsView: View
     var body: some View {
         Form {
             SettingsSection {
-
                 HStack {
                     IconLabel("Cell Shape", "puzzlepiece.fill")
                     Picker("", selection: $settings.cellShape) {
@@ -72,7 +71,6 @@ struct SettingsView: View
             }
 
             SettingsSection("GAME: " + (settings.gameMode == GameMode.life ? "CONWAY'S LIFE" : "CIRCLES")) {
-
                 HStack {
                     IconLabel("Game Mode", "gamecontroller")
                     Picker("", selection: $settings.gameMode) {
@@ -138,7 +136,6 @@ struct SettingsView: View
             }
 
             SettingsSection("COLORS") {
-
                 HStack {
                     IconLabel("Active", "COLOR")
                     ColorPicker("", selection: $settings.activeColorInternal)
@@ -200,7 +197,6 @@ struct SettingsView: View
             }
 
             SettingsSection("GRID") {
-
                 HStack {
                     IconLabel("Grid Fixed", "square.grid.3x3.square")
                     Toggle("", isOn: Binding<Bool>(
@@ -227,7 +223,6 @@ struct SettingsView: View
             }
 
             SettingsSection("MULTIMEDIA") {
-
                 HStack {
                     IconLabel("Sounds", "speaker.wave.2")
                     Toggle("", isOn: $settings.soundsEnabled)
@@ -240,7 +235,6 @@ struct SettingsView: View
             }
 
             SettingsSection("ADVANCED", icon: "apple.logo") {
-
                 HStack {
                     IconLabel("Pixel Scaling", "scale.3d")
                     Toggle("", isOn: $settings.viewScaling).labelsHidden()
