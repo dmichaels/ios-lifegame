@@ -55,7 +55,70 @@ public class LatixCell: Equatable {
     // i.e. more strict in allowing cells to be considered part of the circle.  N.B. Mostly ChatGPT generated.
     //
     private static func circleCellLocations(center cx: Int, _ cy: Int, radius r: Int,
-                                            filled: Bool = false, threshold: Float = 1.0) -> [CellLocation]
+                                            threshold: Float = 1.0) -> [CellLocation]
+    {
+        guard r > 0 else { return [] }
+        guard r > 1 else { return [CellLocation(cx, cy)] }
+        guard r > 2 else { return [CellLocation(cx, cy), CellLocation(cx - 1, cy), CellLocation(cx + 1, cy),
+                                                         CellLocation(cx, cy - 1), CellLocation(cx, cy + 1)] }
+        struct Cache {
+            private static var _locations: [Int: [CellLocation]] = [:]
+            private static let _queue = DispatchQueue(label: "circleCellLocations.queue")
+            static var locations: [Int: [CellLocation]] {
+                get { _queue.sync { _locations } }
+                set { _queue.sync { _locations = newValue } }
+            }
+        }
+
+        let radius = r - 1
+
+        if let cached = Cache.locations[radius] {
+            return cached.map { CellLocation($0.x + cx, $0.y + cy) }
+        }
+
+        let rsq: Float = Float(radius * radius)
+        let cxf: Float = 0.5
+        let cyf: Float = 0.5
+        var cells: [CellLocation] = []
+
+        for y in -radius...radius {
+            for x in -radius...radius {
+                let samples: [(Float, Float)] = [
+                    (Float(x) + 0.5, Float(y) + 0.5),
+                    (Float(x),       Float(y)),
+                    (Float(x) + 1.0, Float(y)),
+                    (Float(x),       Float(y) + 1.0),
+                    (Float(x) + 1.0, Float(y) + 1.0)
+                ]
+                let insideCount: Float = samples.reduce(0) { count, point in
+                    let dx = point.0 - cxf
+                    let dy = point.1 - cyf
+                    return (dx * dx + dy * dy) <= rsq ? count + 1 : count
+                }
+                if insideCount >= threshold {
+                    var hasOutsideNeighbor = false
+                    for (dx, dy) in [(-1,0), (1,0), (0,-1), (0,1)] {
+                        let nx: Float = Float(x + dx) + 0.5
+                        let ny: Float = Float(y + dy) + 0.5
+                        let ndx: Float = nx - cxf
+                        let ndy: Float = ny - cyf
+                        if (ndx * ndx + ndy * ndy) > rsq {
+                            hasOutsideNeighbor = true
+                            break
+                        }
+                    }
+                    if hasOutsideNeighbor {
+                        cells.append(CellLocation(x, y))
+                    }
+                }
+            }
+        }
+        Cache.locations[radius] = cells
+        return cells.map { CellLocation($0.x + cx, $0.y + cy) }
+    }
+
+    private static func old_circleCellLocations(center cx: Int, _ cy: Int, radius r: Int,
+                                                filled: Bool = false, threshold: Float = 1.0) -> [CellLocation]
     {
         guard r > 0 else { return [] }
         guard r > 1 else { return [CellLocation(cx, cy)] }
@@ -129,14 +192,11 @@ public class LatixCell: Equatable {
     }
 
     internal static func circleCellLocationsPreload(radius: Int = 500) {
-        // print("PRELOADING: \(radius)")
         DispatchQueue.global(qos: .background).async {
             for r in 3...radius {
                 _ = LatixCell.circleCellLocations(center: 0, 0, radius: r)
-                // print("PRELOAD: \(r)")
             }
         }
-        // print("PRELOADED: \(radius)")
     }
 
     private static func nextColor() -> Colour {
