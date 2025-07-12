@@ -41,7 +41,7 @@ public class LatixCell: Equatable {
         )
         for perimeterCellLocation in perimeterCellLocations {
             if let lifeCell: LifeCell = self._cellGridView.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
-                lifeCell.color = Colour.random(tint: self._color, tintBy: 0.7, lighten: 0.5)
+                lifeCell.color = Colour.random(tint: self._color, tintBy: 0.7, lighten: 0.2)
                 lifeCell.write()
             }
         }

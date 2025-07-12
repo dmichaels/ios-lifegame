@@ -159,20 +159,20 @@ struct ContentView: View
         .navigationViewStyle(.stack)
     }
 
-    private func normalizePoint(_ location: CGPoint) -> CGPoint {
-        return self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)
-    }
-
-    private func updateOrientation(_ current: UIDeviceOrientation, _ previous: UIDeviceOrientation) {
-        self.rotateImage()
+    private func updateImage() {
+        self.image = self.cellGridView.image
     }
 
     private func rotateImage() {
         self.imageAngle = self.orientation.rotationAngle()
     }
 
-    private func updateImage() {
-        self.image = self.cellGridView.image
+    private func updateOrientation(_ current: UIDeviceOrientation, _ previous: UIDeviceOrientation) {
+        self.rotateImage()
+    }
+
+    private func normalizePoint(_ location: CGPoint) -> CGPoint {
+        return self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)
     }
 
     private func showSettings() {
