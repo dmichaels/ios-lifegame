@@ -41,17 +41,20 @@ class Settings: ObservableObject
     @Published var inactiveColorRandomPalette: ColourPalette = ColourPalette.color
     @Published var inactiveColorRandomFilter: ColourFilter?  = nil
 
-    @Published var variantHighLife: Bool          = false
-    @Published var variantOverPopulate: Bool      = false
-    @Published var variantInactiveFade: Bool      = false
-    @Published var variantInactiveFadeAgeMax: Int = 5
-    @Published var selectModeFat: Bool            = false
-    @Published var selectModeExtraFat: Bool       = false
+    @Published var variantHighLife: Bool                     = false
+    @Published var variantOverPopulate: Bool                 = false
+    @Published var variantInactiveFade: Bool                 = false
+    @Published var variantInactiveFadeAgeMax: Int            = 5
+    @Published var selectModeFat: Bool                       = false
+    @Published var selectModeExtraFat: Bool                  = false
 
-    @Published var dragThreshold: Int             = 2
-    @Published var swipeThreshold: Int            = 100
-    @Published var soundsEnabled: Bool            = false
-    @Published var hapticsEnabled: Bool           = true
+    @Published var automationRandom: Bool                    = false
+    @Published var automationRandomInterval: Double          = CellGridView.Defaults.automationInterval
+
+    @Published var dragThreshold: Int                        = 2
+    @Published var swipeThreshold: Int                       = 100
+    @Published var soundsEnabled: Bool                       = false
+    @Published var hapticsEnabled: Bool                      = true
 
     // This just allows this Settings object to be the single place where we define the default parameters
     // for this app, which are easily accessible elsewhere, without having to define a separate Defaults class;
@@ -102,6 +105,8 @@ class Settings: ObservableObject
         self.variantInactiveFadeAgeMax = config.variantInactiveFadeAgeMax
         self.selectModeFat             = config.selectModeFat
         self.selectModeExtraFat        = config.selectModeExtraFat
+        self.automationRandom          = config.automationRandom
+        self.automationRandomInterval  = config.automationRandomInterval
 
         // LifeCellGridView specific properties.
 

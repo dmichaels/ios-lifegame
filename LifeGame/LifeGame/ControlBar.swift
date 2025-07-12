@@ -8,6 +8,8 @@ struct ControlBar: View {
     @Binding var automationMode: Bool
              var automationModeToggle: (() -> Void)
              var automationStep: (() -> Void)
+    @Binding var automationRandom: Bool
+             var automationRandomToggle: (() -> Void)
              var showSettings: (() -> Void)
              var erase: (() -> Void)
 
@@ -20,17 +22,36 @@ struct ControlBar: View {
         self.automationMode = !self.automationMode
     }
 
+    private func automationRandomInternal() -> Bool {
+        return self.automationRandom
+    }
+
+    private func automationRandomToggleInternal() {
+        self.automationRandomToggle()
+        self.automationRandom = !self.automationRandom
+    }
+
     var body: some View {
-        HStack(spacing: 36) {
-            ActionButton(self.automationModeToggleInternal, "play.fill", actionToggled: self.automationModeInternal,
+        //
+        // This spacing here controls the horizaontal distance between the icons.
+        //
+        HStack(spacing: 26) {
+            ActionButton(self.automationModeToggleInternal, "play.fill",
+                         actionToggled: self.automationModeInternal,
                          iconToggled: "pause.fill")
             ActionButton(self.automationStep, "arrow.forward.square")
+            ActionButton(self.automationRandomToggleInternal, "swirl.circle.righthalf.filled",
+                         actionToggled: self.automationRandomInternal,
+                         iconToggled: "line.3.crossed.swirl.circle",
+                         iconWidth: 22,
+                         iconToggledWidth: 22)
             ActionButton(self.erase, "arrow.counterclockwise.circle")
             ActionButton(self.selectModeToggle, "square.and.pencil", actionToggled: self.selectMode,
+                         iconToggled: "arrow.up.and.down.and.arrow.left.and.right",
                          //
                          // Some odd fine-tuning/fudging of the sizes here to prevent the control-bar from shifting around.
                          //
-                         iconToggled: "arrow.up.and.down.and.arrow.left.and.right", iconToggledWidth: 22, iconShiftY: -1)
+                         iconToggledWidth: 22, iconShiftY: -1)
             ActionButton(self.showSettings, "gear")
         }
         //
@@ -63,7 +84,7 @@ struct ControlBar: View {
                 //
                 .frame(height: 42)
                 //
-                // This padding-horizontal controls the internal left/right padding of control.
+                // This padding-horizontal controls the internal left/right padding of control as a whole.
                 //
                 .padding(.horizontal, 20)
                 //

@@ -43,6 +43,9 @@ public final class LifeCellGridView: CellGridView
     internal              var latixCells: [LatixCell] = []
     internal private(set) var selectModeFat: Bool
     internal private(set) var selectModeExtraFat: Bool
+    internal private(set) var automationRandom: Bool
+    internal private(set) var automationRandomInterval: Double
+    private               var automationRandomTimer: Timer?
 
     public init(_ config: LifeCellGridView.Config? = nil) {
         let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
@@ -59,6 +62,9 @@ public final class LifeCellGridView: CellGridView
         self.variantInactiveFadeAgeMax  = config.variantInactiveFadeAgeMax
         self.selectModeFat              = config.selectModeFat
         self.selectModeExtraFat         = config.selectModeExtraFat
+        self.automationRandom       = config.automationRandom
+        self.automationRandomInterval   = config.automationRandomInterval
+        self.automationRandomTimer      = nil
         self.dragThreshold              = config.dragThreshold
         self.swipeThreshold             = config.swipeThreshold
         self.soundsEnabled              = config.soundsEnabled
@@ -93,6 +99,8 @@ public final class LifeCellGridView: CellGridView
         self.variantInactiveFadeAgeMax = settings.variantInactiveFadeAgeMax
         self.selectModeFat = settings.selectModeFat
         self.selectModeExtraFat = settings.selectModeExtraFat
+        self.automationRandom = settings.automationRandom
+        self.automationRandomInterval = settings.automationRandomInterval
         self.soundsEnabled = settings.soundsEnabled
         self.hapticsEnabled = settings.hapticsEnabled
         self.inactiveColorRandomNumber += 2
@@ -291,6 +299,26 @@ public final class LifeCellGridView: CellGridView
     internal func latixCellDeselect(_ cell: LatixCell) {
         if let index: Int = self.latixCells.firstIndex(where: { $0 === cell }) {
             self.latixCells.remove(at: index)
+        }
+    }
+
+    internal func automationRandomToggle() {
+        self.automationRandom ? automationRandomStop() : self.automationRandomStart()
+    }
+
+    internal func automationRandomStart() {
+        self.automationRandom = true
+        self.automationRandomTimer = Timer.scheduledTimer(withTimeInterval: self.automationRandomInterval,
+                                                          repeats: true) { _ in
+            self.selectRandom()
+        }
+    }
+
+    internal func automationRandomStop() {
+        self.automationRandom = false
+        if let automationRandomTimer = self.automationRandomTimer {
+            automationRandomTimer.invalidate()
+            self.automationRandomTimer = nil
         }
     }
 }

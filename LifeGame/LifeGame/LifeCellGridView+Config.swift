@@ -20,6 +20,8 @@ extension LifeCellGridView
         public var variantInactiveFadeAgeMax: Int
         public var selectModeFat: Bool
         public var selectModeExtraFat: Bool
+        public var automationRandom: Bool
+        public var automationRandomInterval: Double
 
         public var dragThreshold: Int  = 3
         public var swipeThreshold: Int = 100
@@ -62,6 +64,8 @@ extension LifeCellGridView
             self.variantInactiveFadeAgeMax  = s?.variantInactiveFadeAgeMax  ?? v?.variantInactiveFadeAgeMax  ?? d.variantInactiveFadeAgeMax
             self.selectModeFat              = s?.selectModeFat              ?? v?.selectModeFat              ?? d.selectModeFat
             self.selectModeExtraFat         = s?.selectModeExtraFat         ?? v?.selectModeExtraFat         ?? d.selectModeExtraFat
+            self.automationRandom           = s?.automationRandom           ?? v?.automationRandom           ?? d.automationRandom
+            self.automationRandomInterval   = s?.automationRandomInterval   ?? v?.automationRandomInterval   ?? d.automationRandomInterval
             self.dragThreshold              = s?.dragThreshold              ?? v?.dragThreshold              ?? d.dragThreshold
             self.swipeThreshold             = s?.swipeThreshold             ?? v?.swipeThreshold             ?? d.swipeThreshold
             self.soundsEnabled              = s?.soundsEnabled              ?? v?.soundsEnabled              ?? d.soundsEnabled
