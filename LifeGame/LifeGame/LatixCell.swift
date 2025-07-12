@@ -41,7 +41,7 @@ public class LatixCell: Equatable {
         )
         for perimeterCellLocation in perimeterCellLocations {
             if let lifeCell: LifeCell = self._cellGridView.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
-                lifeCell.color = Colour.random(tint: self._color, tintBy: 0.7, lighten: 0.2)
+                lifeCell.color = Colour.random(tint: self._color, tintBy: 0.75, lighten: 0.25)
                 lifeCell.write()
             }
         }
@@ -70,9 +70,9 @@ public class LatixCell: Equatable {
             }
         }
 
-        let radius = r - 1
+        let radius: Int = r - 1
 
-        if let cached = Cache.locations[radius] {
+        if let cached: [CellLocation] = Cache.locations[radius] {
             return cached.map { CellLocation($0.x + cx, $0.y + cy) }
         }
 
