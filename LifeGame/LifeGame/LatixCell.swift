@@ -69,7 +69,8 @@ public class LatixCell: Equatable {
                 get { cache._locationsQueue.sync { cache._locations } }
                 set { cache._locationsQueue.sync { cache._locations = newValue } }
             }
-}
+        }
+
         let radius: Int = r - 1
 
         if let cached = cache.locations[radius] {
