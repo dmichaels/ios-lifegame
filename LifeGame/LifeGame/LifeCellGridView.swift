@@ -132,7 +132,6 @@ public final class LifeCellGridView: CellGridView
         let inactiveColorRandomColorFunction: () -> Colour = {
             Colour.random(mode: self.inactiveColorRandomPalette,
                           tint: self.inactiveColor,
-                          tintBy: nil,
                           filter: self.inactiveColorRandomFilter)
         }
         return inactiveColorRandomColorFunction
