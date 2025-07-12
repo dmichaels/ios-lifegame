@@ -137,15 +137,15 @@ public class LatixCell: Equatable {
     }
 
     private static func nextColor() -> Colour {
-        struct cache {
+        struct Cache {
             static var colors: [Colour] = [
                 Colour.red, Colour.green, Colour.blue, Colour.yellow, Colour.purple,
                 Colour.cyan, Colour.orange, Colour.magenta
             ]
             static var index: Int = 0
         }
-        let color: Colour = cache.colors[cache.index]
-        cache.index = cache.index < cache.colors.count - 1 ? cache.index + 1 : 0
+        let color: Colour = Cache.colors[Cache.index]
+        Cache.index = Cache.index < Cache.colors.count - 1 ? Cache.index + 1 : 0
         return color
     }
 
