@@ -209,12 +209,15 @@ struct ContentView: View
         }
         else {
             self.automationRandomModeTimer = Timer.scheduledTimer(withTimeInterval: self.automationRandomModeInterval, repeats: true) { _ in
+                self.cellGridView.selectRandom()
+                /*
                 let rx: Int = Int.random(in: 0...self.cellGridView.viewCellEndX)
                 let ry: Int = Int.random(in: 0...self.cellGridView.viewCellEndY)
                 if let cell: LifeCell = self.cellGridView.gridCell(viewCellX: rx, viewCellY: ry) {
                     cell.select()
                     self.updateImage()
                 }
+                */
             }
         }
     }

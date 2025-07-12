@@ -22,13 +22,16 @@ struct ControlBar: View {
 
     var body: some View {
         HStack(spacing: 36) {
-            ActionButton(self.automationModeToggleInternal, "play.fill",
-                         actionToggled: self.automationModeInternal, iconToggled: "pause.fill")
-            ActionButton(self.automationStep, "arrow.forward.to.line.compact" /* "arrow.right.to.line.square" */ /* "figure.step.training" */ )
-            ActionButton(self.erase, "eraser")
-            ActionButton(self.selectModeToggle, "square.and.pencil",
-                         actionToggled: self.selectMode, iconToggled: "arrow.up.and.down.and.arrow.left.and.right")
-            ActionButton(self.showSettings, "gear" /* "gearshape.fill" */ )
+            ActionButton(self.automationModeToggleInternal, "play.fill", actionToggled: self.automationModeInternal,
+                         iconToggled: "pause.fill")
+            ActionButton(self.automationStep, "arrow.forward.square")
+            ActionButton(self.erase, "arrow.counterclockwise.circle")
+            ActionButton(self.selectModeToggle, "square.and.pencil", actionToggled: self.selectMode,
+                         //
+                         // Some odd fine-tuning/fudging of the sizes here to prevent the control-bar from shifting around.
+                         //
+                         iconToggled: "arrow.up.and.down.and.arrow.left.and.right", iconToggledWidth: 22, iconShiftY: -1)
+            ActionButton(self.showSettings, "gear")
         }
         //
         // The padding-vertical controls how far from the bottom the control is;
@@ -88,14 +91,26 @@ struct BlurView: UIViewRepresentable {
 public struct ActionButton: View {
     private let _action: (() -> Void)
     private let _icon: String
-    private let _actionToggled: (() -> Bool)
     private let _iconToggled: String
-    private let _iconWidth: CGFloat = 24.0
+    private let _iconWidth: CGFloat
+    private let _iconToggledWidth: CGFloat
+    private let _iconShiftY: CGFloat
+    private let _iconToggledShiftY: CGFloat
+    private let _actionToggled: (() -> Bool)
     @State private var _toggled: Bool = false
-    public init(_ action: @escaping (() -> Void), _ icon: String, actionToggled: (() -> Bool)? = nil, iconToggled: String? = nil) {
+    public init(_ action: @escaping (() -> Void),
+                _ icon: String,
+                actionToggled: (() -> Bool)? = nil,
+                iconToggled: String? = nil,
+                iconWidth: Int = 24, iconToggledWidth: Int = 24,
+                iconShiftY: Int = 0, iconToggledShiftY: Int = 0) {
         self._action = action
         self._icon = icon
         self._iconToggled = iconToggled ?? icon
+        self._iconWidth = CGFloat(iconWidth)
+        self._iconToggledWidth = CGFloat(iconToggledWidth)
+        self._iconShiftY = CGFloat(iconShiftY)
+        self._iconToggledShiftY = CGFloat(iconToggledShiftY)
         self._actionToggled = actionToggled ?? { false }
     }
     public var body: some View {
@@ -105,11 +120,8 @@ public struct ActionButton: View {
         }) {
             Image(systemName: self._toggled ? self._iconToggled : self._icon)
                 .foregroundColor(.white)
-                .font(.system(size: self._iconWidth , weight: .light ))
-                //
-                // Hack for pencil-in-square icon drooping too low for some reason.
-                //
-                .offset(y: (self._toggled ? self._iconToggled : self._icon) == "square.and.pencil" ? -1 : 0)
+                .font(.system(size: self._toggled ? self._iconToggledWidth : self._iconWidth , weight: .light))
+                .offset(y: self._toggled ? self._iconToggledShiftY : self._iconShiftY)
         }
         .onAppear {
             self._toggled = self._actionToggled()
