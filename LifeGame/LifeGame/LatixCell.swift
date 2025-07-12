@@ -128,12 +128,7 @@ public class LatixCell: Equatable {
     }
 
     private static func edgeDistance(_ x: Int, _ y: Int, ncolumns: Int, nrows: Int) -> Int {
-        let corners: [(Int, Int)] = [
-            (0, 0),
-            (ncolumns - 1, 0),
-            (0, nrows - 1),
-            (ncolumns - 1, nrows - 1)
-        ]
+        let corners: [(Int, Int)] = [(0, 0), (ncolumns - 1, 0), (0, nrows - 1), (ncolumns - 1, nrows - 1)]
         return Int(ceil(corners.map { (cx, cy) in
             let fx: Float = Float(cx - x)
             let fy: Float = Float(cy - y)
