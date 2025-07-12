@@ -12,12 +12,12 @@ class Settings: ObservableObject
     @Published var viewTransparency: UInt8    = Colour.TRANSPARENT
     @Published var viewScaling: Bool          = true
 
-    @Published var cellSize: Int              = 23
+    @Published var cellSize: Int              = 13
     @Published var cellPadding: Int           = 1
     @Published var cellShape: CellShape       = CellShape.rounded
     @Published var cellShading: Bool          = false
 
-    @Published var gridColumns: Int           = 100
+    @Published var gridColumns: Int           = 150
     @Published var gridRows: Int              = 250
     @Published var fit: CellGridView.Fit      = CellGridView.Fit.enabled
     @Published var center: Bool               = true

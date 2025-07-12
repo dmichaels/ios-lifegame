@@ -147,6 +147,10 @@ public final class LifeCellGridView: CellGridView
     }
 
     internal func erase() {
+        if (self.gameMode == GameMode.latix) {
+            self.latixErase()
+            return
+        }
         for cellLocation in self.activeCells {
             if let cell: LifeCell = super.gridCell(cellLocation) {
                 cell.deactivate()
@@ -270,6 +274,13 @@ public final class LifeCellGridView: CellGridView
         self.generationNumber += 1
         for latixCell in self.latixCells {
             latixCell.expand()
+        }
+    }
+
+    internal func latixErase() {
+        self.latixCells.removeAll(keepingCapacity: true)
+        for cell in self.cells {
+            cell.write(color: self.inactiveColor)
         }
     }
 
