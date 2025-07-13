@@ -120,9 +120,11 @@ public final class LifeCellGridView: CellGridView
     }
 
     public override func createCell<T: Cell>(x: Int, y: Int, color ignore: Colour) -> T? {
-        let cell: LifeCell = LifeCell(cellGridView: self, x: x, y: y) // as? T
-        if (self.activeCells.contains(cell.location)) {
-            cell.activate(nowrite: true, nonotify: true)
+        let cell: LifeCell = LifeCell(cellGridView: self, x: x, y: y)
+        if (config.gameMode == GameMode.life) {
+            if (self.activeCells.contains(cell.location)) {
+                cell.activate(nowrite: true, nonotify: true)
+            }
         }
         return cell as? T
     }

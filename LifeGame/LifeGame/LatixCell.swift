@@ -5,8 +5,7 @@ import Utils
 public class LatixCell: Equatable {
 
     private let _cellGridView: LifeCellGridView
-    private let _x: Int
-    private let _y: Int
+    private let _location: CellLocation
     private let _color: Colour
     private var _radius: Int
     private var _radiusMax: Int
@@ -17,12 +16,16 @@ public class LatixCell: Equatable {
         LatixCell._count += 1
         self._ordinal = LatixCell._count
         self._cellGridView = cell.cellGridView
-        self._x = cell.x
-        self._y = cell.y
+        self._location = cell.location
         self._color = color
         self._radius = radius
-        self._radiusMax = LatixCell.edgeDistance(self._x, self._y, ncolumns: self._cellGridView.gridColumns,
-                                                                   nrows: self._cellGridView.gridRows)
+        self._radiusMax = LatixCell.edgeDistance(
+            self._location.x, self._location.y,
+            ncolumns: self._cellGridView.gridColumns, nrows: self._cellGridView.gridRows)
+    }
+
+    internal var location: CellLocation {
+        self._location
     }
 
     internal var age: Int {
@@ -44,7 +47,7 @@ public class LatixCell: Equatable {
         }
         self._radius += 1
         let perimeterCellLocations: [CellLocation] = LatixCell.circleCellLocations(
-            center: self._x, self._y,
+            center: self._location.x, self._location.y,
             radius: self._radius
         )
         for perimeterCellLocation in perimeterCellLocations {
@@ -66,7 +69,7 @@ public class LatixCell: Equatable {
                         // do not update this cell color, as this cell is occluded by the newer latix-cell.
                         //
                         if (LatixCell.pointWithinCircle(lifeCell.x, lifeCell.y,
-                                                        circle: newerLatixCell._x, newerLatixCell._y,
+                                                        circle: newerLatixCell._location.x, newerLatixCell._location.y,
                                                         radius: newerLatixCell._radius)) {
                             skip = true
                             break

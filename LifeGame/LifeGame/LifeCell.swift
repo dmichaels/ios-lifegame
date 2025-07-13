@@ -105,14 +105,6 @@ public final class LifeCell: Cell {
         dragging ? self.activate() : self.toggle()
     }
 
-    public var active: Bool {
-        self._active
-    }
-
-    public var inactive: Bool {
-        !self._active
-    }
-
     internal var inactiveAge: Int {
         if let inactiveGenerationNumber = self._inactiveGenerationNumber {
             return self.cellGridView.generationNumber - inactiveGenerationNumber
