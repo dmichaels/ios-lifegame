@@ -40,6 +40,7 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var variantInactiveFade: Bool
     internal private(set) var variantInactiveFadeAgeMax: Int
     private               var variantInactiveFadeCells: Set<CellLocation> = []
+    internal private(set) var variantLatixOcclude: Bool
     internal              var latixCells: [LatixCell] = []
     internal private(set) var selectModeFat: Bool
     internal private(set) var selectModeExtraFat: Bool
@@ -60,6 +61,7 @@ public final class LifeCellGridView: CellGridView
         self.variantOverPopulate        = config.variantOverPopulate
         self.variantInactiveFade        = config.variantInactiveFade
         self.variantInactiveFadeAgeMax  = config.variantInactiveFadeAgeMax
+        self.variantLatixOcclude        = config.variantLatixOcclude
         self.selectModeFat              = config.selectModeFat
         self.selectModeExtraFat         = config.selectModeExtraFat
         self.automationRandom       = config.automationRandom
@@ -97,6 +99,7 @@ public final class LifeCellGridView: CellGridView
         self.variantOverPopulate = settings.variantOverPopulate
         self.variantInactiveFade = settings.variantInactiveFade
         self.variantInactiveFadeAgeMax = settings.variantInactiveFadeAgeMax
+        self.variantLatixOcclude = settings.variantLatixOcclude
         self.selectModeFat = settings.selectModeFat
         self.selectModeExtraFat = settings.selectModeExtraFat
         self.automationRandom = settings.automationRandom

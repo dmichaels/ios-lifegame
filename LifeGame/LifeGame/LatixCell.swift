@@ -55,7 +55,7 @@ public class LatixCell: Equatable {
                 // so that the newer ones always appear visually "on top" of older ones.
                 //
                 var skip: Bool = false
-                if (true) {
+                if (self._cellGridView.variantLatixOcclude) {
                     let newerLatixCells: [LatixCell] = self._cellGridView.latixNewerCells(age: self.age)
                     for newerLatixCell in newerLatixCells {
                         //

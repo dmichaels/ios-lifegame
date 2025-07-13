@@ -65,7 +65,7 @@ struct SettingsView: View
                 }
 
                 HStack {
-                    IconLabel("Cell Shading", "square.filled.on.square")
+                    IconLabel("Cell Shading", "app.shadow")
                     Toggle("", isOn: $settings.cellShading).labelsHidden()
                 }
             }
@@ -122,6 +122,12 @@ struct SettingsView: View
                     }
                 }
                 .hide(settings.gameMode != GameMode.life)
+
+                HStack {
+                    IconLabel("Occlude Variant", "square.filled.on.square")
+                    Toggle("", isOn: $settings.variantLatixOcclude)
+                }
+                .hide(settings.gameMode != GameMode.latix)
 
                 HStack {
                     IconLabel("Speed", "waveform.path")

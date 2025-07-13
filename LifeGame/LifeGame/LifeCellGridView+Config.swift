@@ -18,6 +18,7 @@ extension LifeCellGridView
         public var variantOverPopulate: Bool
         public var variantInactiveFade: Bool
         public var variantInactiveFadeAgeMax: Int
+        public var variantLatixOcclude: Bool
         public var selectModeFat: Bool
         public var selectModeExtraFat: Bool
         public var automationRandom: Bool
@@ -62,6 +63,7 @@ extension LifeCellGridView
             self.variantOverPopulate        = s?.variantOverPopulate        ?? v?.variantOverPopulate        ?? d.variantOverPopulate
             self.variantInactiveFade        = s?.variantInactiveFade        ?? v?.variantInactiveFade        ?? d.variantInactiveFade
             self.variantInactiveFadeAgeMax  = s?.variantInactiveFadeAgeMax  ?? v?.variantInactiveFadeAgeMax  ?? d.variantInactiveFadeAgeMax
+            self.variantLatixOcclude        = s?.variantLatixOcclude        ?? v?.variantLatixOcclude        ?? d.variantLatixOcclude
             self.selectModeFat              = s?.selectModeFat              ?? v?.selectModeFat              ?? d.selectModeFat
             self.selectModeExtraFat         = s?.selectModeExtraFat         ?? v?.selectModeExtraFat         ?? d.selectModeExtraFat
             self.automationRandom           = s?.automationRandom           ?? v?.automationRandom           ?? d.automationRandom
