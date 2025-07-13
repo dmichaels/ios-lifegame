@@ -201,15 +201,35 @@ public class LatixCell: Equatable {
 
     private static func nextColor() -> Colour {
         struct Cache {
-            static var colors: [Colour] = [
-                Colour.red, Colour.green, Colour.blue, Colour.yellow, Colour.purple,
-                Colour.cyan, Colour.orange, Colour.magenta
+            private static var baseColors: [Colour] = [
+                Colour.red,
+                Colour.green,
+                Colour.blue,
+                Colour.yellow,
+                Colour.purple,
+                Colour.cyan,
+                Colour.orange,
+                Colour.magenta
             ]
-            static var index: Int = 0
+            internal static let colors: [Colour] = baseColors.flatMap { color in [
+                color, color, color, color,
+                color.lighten(by: 0.8),
+                color.lighten(by: 0.3),
+                color.darken(by: 0.8),
+                color.darken(by: 0.3),
+            ]}
+            internal static var index: Int = 0
+            internal static var indexLast: Int = 0
         }
-        let color: Colour = Cache.colors[Cache.index]
-        Cache.index = Cache.index < Cache.colors.count - 1 ? Cache.index + 1 : 0
-        return color
+        Cache.index = Int.random(in: 0...Cache.colors.count - 1)
+        if (Cache.index == Cache.indexLast) {
+            Cache.index = Int.random(in: 0...Cache.colors.count - 1)
+            if (Cache.index == Cache.indexLast) {
+                Cache.index = (Cache.indexLast + 1) % Cache.colors.count
+            }
+        }
+        Cache.indexLast = Cache.index
+        return Cache.colors[Cache.index]
     }
 
     public static func == (lhs: LatixCell, rhs: LatixCell) -> Bool {
