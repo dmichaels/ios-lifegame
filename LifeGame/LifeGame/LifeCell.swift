@@ -13,12 +13,12 @@ public final class LifeCell: Cell {
     //
     internal var _inactiveGenerationNumber: Int?
 
-    init(cellGridView: LifeCellGridView, x: Int, y: Int, active: Bool = false) {
-        self._active = active
+    init(cellGridView: LifeCellGridView, x: Int, y: Int, color: Colour? = nil) {
+        self._active = false
         self._inactiveColorRandomDynamicNumber = cellGridView.inactiveColorRandomDynamicNumber + 1
         self._inactiveColorRandomNumber = cellGridView.inactiveColorRandomNumber + 1
         self._inactiveGenerationNumber = nil
-        super.init(cellGridView: cellGridView, x: x, y: y, color: cellGridView.inactiveColor)
+        super.init(cellGridView: cellGridView, x: x, y: y, color: color ?? cellGridView.inactiveColor)
     }
 
     public override var cellGridView: LifeCellGridView {
