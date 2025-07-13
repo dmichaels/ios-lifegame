@@ -49,7 +49,7 @@ class Settings: ObservableObject
     @Published var selectModeExtraFat: Bool                  = false
 
     @Published var automationRandom: Bool                    = false
-    @Published var automationRandomInterval: Double          = CellGridView.Defaults.automationInterval
+    @Published var automationRandomInterval: Double          = 0.2
 
     @Published var dragThreshold: Int                        = 2
     @Published var swipeThreshold: Int                       = 100
