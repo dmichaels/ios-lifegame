@@ -50,24 +50,24 @@ public class LatixCell: Equatable {
         for perimeterCellLocation in perimeterCellLocations {
             if let lifeCell: LifeCell = self._cellGridView.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
                 //
-                // TODO
-                // Optionally prevent older cell expansions from overwriting newer ones,
-                // so that the newer ones always appear visually "on top" of older ones.
+                // Optionally (variantLatixOcclude) prevent older cell expansions from overwriting newer ones,
+                // so that the newer ones always appear visually "on top" of older ones, i.e. so that circles
+                // occluded one another as one might normally, visually expect.
                 //
                 var skip: Bool = false
                 if (self._cellGridView.variantLatixOcclude) {
                     let newerLatixCells: [LatixCell] = self._cellGridView.latixNewerCells(age: self.age)
                     for newerLatixCell in newerLatixCells {
                         //
-                        // If this cell is within the circle defined by the entirety of the newer/younger
-                        // latix-cell within this loop (meaning the circle whose center is the latix-cell
-                        // in this loop and its extent being defined by its current radius), then do not
-                        // update this cell color, as this cell is occluded by the newer latix-cell.
+                        // If this cell (perimeterCellLocation/lifeCell), on the perimeter of the outermost radius
+                        // of this (self) cell, is within the circle defined by the entirety of the newer/younger
+                        // latix-cell (newerLatixCell) within this loop (i.e. the circle whose center is the
+                        // latix-cell in this loop and its extent being defined by its current radius), then
+                        // do not update this cell color, as this cell is occluded by the newer latix-cell.
                         //
-                        let pointWithinCircle: Bool = LatixCell.pointWithinCircle(
-                            lifeCell.x, lifeCell.y,
-                            circle: newerLatixCell._x, newerLatixCell._y, radius: newerLatixCell._radius)
-                        if (pointWithinCircle) {
+                        if (LatixCell.pointWithinCircle(lifeCell.x, lifeCell.y,
+                                                        circle: newerLatixCell._x, newerLatixCell._y,
+                                                        radius: newerLatixCell._radius)) {
                             skip = true
                             break
                         }
@@ -171,9 +171,9 @@ public class LatixCell: Equatable {
             (fx + 1.0, fy + 1.0)  // bottom-right
         ]
         let inside: Float = points.reduce(0) { count, point in
-            let dx: Float = point.0 - cxf
-            let dy: Float = point.1 - cyf
-            return (dx * dx + dy * dy) <= rsq ? count + 1 : count
+            let ix: Float = point.0 - cxf
+            let iy: Float = point.1 - cyf
+            return (ix * ix + iy * iy) <= rsq ? count + 1 : count
         }
         return inside >= threshold
     }
