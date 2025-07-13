@@ -33,7 +33,7 @@ class Settings: ObservableObject
 
     // LifeCellGridView specific properties.
 
-    @Published var gameMode: GameMode                        = GameMode.latix
+    @Published var gameMode: GameMode                        = GameMode.life
     @Published var activeColor: Colour                       = Colour.black
     @Published var inactiveColor: Colour                     = Colour.white
     @Published var inactiveColorRandom: Bool                 = false
