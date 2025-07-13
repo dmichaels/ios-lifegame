@@ -122,11 +122,11 @@ public class LatixCell: Equatable {
             for x in -radius...radius {
                 let fx: Float = Float(x)
                 let points: [(Float, Float)] = [
-                    (fx + 0.5, fy + 0.5),
-                    (fx,       fy),
-                    (fx + 1.0, fy),
-                    (fx,       fy + 1.0),
-                    (fx + 1.0, fy + 1.0)
+                    (fx + 0.5, fy + 0.5), // center
+                    (fx,       fy),       // top-left
+                    (fx + 1.0, fy),       // top-right
+                    (fx,       fy + 1.0), // bottom-left
+                    (fx + 1.0, fy + 1.0)  // bottom-right
                 ]
                 let inside: Float = points.reduce(0) { count, point in
                     let ix: Float = point.0 - cxf
