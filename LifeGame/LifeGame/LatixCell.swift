@@ -199,7 +199,7 @@ public class LatixCell: Equatable {
 
     private static func nextColor() -> Colour {
         struct Cache {
-            private static var baseColors: [Colour] = [
+            internal static var colors: [Colour] = [
                 Colour.red,
                 Colour.green,
                 Colour.blue,
@@ -207,26 +207,41 @@ public class LatixCell: Equatable {
                 Colour.purple,
                 Colour.cyan,
                 Colour.orange,
-                Colour.magenta
+                Colour.magenta,
+                Colour.red.lighten(by: 0.4),
+                Colour.green.lighten(by: 0.4),
+                Colour.blue.lighten(by: 0.4),
+                Colour.yellow.lighten(by: 0.4),
+                Colour.purple.lighten(by: 0.4),
+                Colour.cyan.lighten(by: 0.4),
+                Colour.orange.lighten(by: 0.4),
+                Colour.magenta.lighten(by: 0.4),
+                Colour.red.darken(by: 0.4),
+                Colour.green.darken(by: 0.4),
+                Colour.blue.darken(by: 0.4),
+                Colour.yellow.darken(by: 0.4),
+                Colour.purple.darken(by: 0.4),
+                Colour.cyan.darken(by: 0.4),
+                Colour.orange.darken(by: 0.4),
+                Colour.magenta.darken(by: 0.4)
             ]
-            internal static let colors: [Colour] = baseColors.flatMap { color in [
-                color, color, color, color,
-                color.lighten(by: 0.8),
-                color.lighten(by: 0.3),
-                color.darken(by: 0.8),
-                color.darken(by: 0.3),
-            ]}
             internal static var index: Int = 0
             internal static var indexLast: Int = 0
+            internal static var randomize: Bool = false
         }
-        Cache.index = Int.random(in: 0...Cache.colors.count - 1)
-        if (Cache.index == Cache.indexLast) {
+        if (Cache.randomize) {
             Cache.index = Int.random(in: 0...Cache.colors.count - 1)
             if (Cache.index == Cache.indexLast) {
-                Cache.index = (Cache.indexLast + 1) % Cache.colors.count
+                Cache.index = Int.random(in: 0...Cache.colors.count - 1)
+                if (Cache.index == Cache.indexLast) {
+                    Cache.index = (Cache.indexLast + 1) % Cache.colors.count
+                }
             }
+            Cache.indexLast = Cache.index
         }
-        Cache.indexLast = Cache.index
+        else {
+            Cache.index = (Cache.index + 1) % Cache.colors.count
+        }
         return Cache.colors[Cache.index]
     }
 

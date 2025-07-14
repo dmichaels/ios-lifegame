@@ -64,7 +64,7 @@ public final class LifeCellGridView: CellGridView
         self.variantLatixOcclude        = config.variantLatixOcclude
         self.selectModeFat              = config.selectModeFat
         self.selectModeExtraFat         = config.selectModeExtraFat
-        self.automationRandom       = config.automationRandom
+        self.automationRandom           = config.automationRandom
         self.automationRandomInterval   = config.automationRandomInterval
         self.automationRandomTimer      = nil
         self.dragThreshold              = config.dragThreshold
@@ -295,6 +295,7 @@ public final class LifeCellGridView: CellGridView
         for cell in self.cells {
             cell.write(color: self.inactiveColor)
         }
+        self.onChangeImage()
     }
 
     internal func latixCellSelect(_ lifeCell: LifeCell) {
