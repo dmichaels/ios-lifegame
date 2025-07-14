@@ -50,6 +50,7 @@ public class LatixCell: Equatable {
             center: self._location.x, self._location.y,
             radius: self._radius
         )
+        var update: Bool = false
         for perimeterCellLocation in perimeterCellLocations {
             if let lifeCell: LifeCell = self._cellGridView.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
                 //
@@ -78,10 +79,13 @@ public class LatixCell: Equatable {
                 }
                 if (!skip) {
                     lifeCell.write(color: Colour.random(tint: self._color, tintBy: 0.75, lighten: 0.25))
+                    update = true
                 }
             }
         }
-        self._cellGridView.onChangeImage()
+        if (update) {
+            self._cellGridView.onChangeImage()
+        }
     }
 
     // Returns the list of cell locations for the perimeter of a circle centered a the given (cx,cy) cell location,
