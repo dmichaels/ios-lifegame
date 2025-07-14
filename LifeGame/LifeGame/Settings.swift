@@ -92,7 +92,7 @@ class Settings: ObservableObject
         // This center property we treat as not really persistent; we always
         // use its initial/default (noop/false) state when going to SettingsView.
         //
-        self.center                    = false
+        self.center                    = true
         self.cellAntialiasFade         = config.cellAntialiasFade
         self.cellRoundedRadius         = config.cellRoundedRadius
         self.restrictShift             = config.restrictShift

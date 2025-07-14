@@ -77,8 +77,7 @@ public class LatixCell: Equatable {
                     }
                 }
                 if (!skip) {
-                    lifeCell.color = Colour.random(tint: self._color, tintBy: 0.75, lighten: 0.25)
-                    lifeCell.write()
+                    lifeCell.write(color: Colour.random(tint: self._color, tintBy: 0.75, lighten: 0.25))
                 }
             }
         }
@@ -181,10 +180,9 @@ public class LatixCell: Equatable {
         return inside >= threshold
     }
 
-    internal static func circleCellLocationsPreload(radius: Int = 500) {
+    internal static func circleCellLocationsPreload(radius: Int = 250) {
         DispatchQueue.global(qos: .background).async {
             for r in 3...radius {
-                let debugStart: Date = Date()
                 _ = LatixCell.circleCellLocations(center: 0, 0, radius: r)
             }
         }
