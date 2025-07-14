@@ -8,6 +8,8 @@ struct SettingsView: View
     @EnvironmentObject private var settings: Settings
     @State private var cellSizeDisplay: Int? = nil
     @State private var selectMode: Int = 0
+    @State private var gridSize: GridSize = GridSize(columns: Settings.Defaults.gridColumns,
+                                                     rows: Settings.Defaults.gridRows)
 
     var body: some View {
         Form {
@@ -221,6 +223,27 @@ struct SettingsView: View
                 }
 
                 HStack {
+                    IconLabel("Grid Size", "number.circle")
+                    if (settings.fit != CellGridView.Fit.fixed) {
+                        Text("\(settings.gridColumns)x\(settings.gridRows)").font(.caption).foregroundColor(.secondary).offset(x: -20, y: 2)
+                    }
+                    Picker("", selection: $gridSize) {
+                        ForEach(GridSizeOptions, id: \.value) { option in
+                            Text(option.label).lineLimit(1).tag(option.value)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .onChange(of: gridSize) { value in
+                        settings.gridColumns = value.columns
+                        settings.gridRows = value.rows
+                    }
+                    .onAppear {
+                        gridSize = GridSize(columns: settings.gridColumns, rows: settings.gridRows)
+                    }
+                }
+                .disabled(settings.fit == CellGridView.Fit.fixed)
+
+                HStack {
                     IconLabel("Grid Center", "align.horizontal.center")
                         .disabled(settings.fit == CellGridView.Fit.fixed)
                     Toggle("", isOn: $settings.center).labelsHidden()
@@ -307,4 +330,21 @@ let SelectModeOptions: [(label: String, value: Int)] = [
     ("Default", 0),
     ("Fat", 1),
     ("Very Fat", 2)
+]
+
+struct GridSize: Hashable {
+    let columns: Int
+    let rows: Int
+}
+struct GridSizeOption: Hashable {
+    let label: String
+    let value: GridSize
+}
+let GridSizeOptions: [GridSizeOption] = [
+    GridSizeOption(label: "Very Small", value: GridSize(columns: 50, rows: 25)),
+    GridSizeOption(label: "Small",      value: GridSize(columns: 75, rows: 125)),
+    GridSizeOption(label: "Default",    value: GridSize(columns: Settings.Defaults.gridColumns,
+                                                        rows: Settings.Defaults.gridRows)),
+    GridSizeOption(label: "Large",      value: GridSize(columns: 300, rows: 500)),
+    GridSizeOption(label: "Very Large", value: GridSize(columns: 1000, rows: 1250))
 ]
