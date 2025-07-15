@@ -43,7 +43,7 @@ class Settings: ObservableObject
 
     @Published var variantHighLife: Bool                     = false
     @Published var variantOverPopulate: Bool                 = false
-    @Published var variantInactiveFade: Bool                 = false
+    @Published var variantInactiveFade: Bool                 = true
     @Published var variantInactiveFadeAgeMax: Int            = 5
     @Published var variantLatixOcclude: Bool                 = true
     @Published var selectModeFat: Bool                       = false
