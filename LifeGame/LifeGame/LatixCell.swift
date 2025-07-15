@@ -55,6 +55,7 @@ public class LatixCell: Equatable {
 
     public func expand() {
         guard self._radius <= self._radiusMax else {
+            // print("EX> \(self.location.x),\(self.location.y) \(self._radius) [\(self._radiusMax)] -> MAXED")
             self._cellGridView.latixCellDeselect(self)
             return
         }
@@ -236,14 +237,14 @@ public class LatixCell: Equatable {
                 Colour.orange.lighten(by: 0.4),
                 Colour.magenta.lighten(by: 0.4),
 
-                Colour.red.lighten(by: 0.8),
-                Colour.green.lighten(by: 0.8),
-                Colour.blue.lighten(by: 0.8),
-                Colour.yellow.lighten(by: 0.8),
-                Colour.purple.lighten(by: 0.8),
-                Colour.cyan.lighten(by: 0.8),
-                Colour.orange.lighten(by: 0.8),
-                Colour.magenta.lighten(by: 0.8),
+                Colour.red.lighten(by: 0.7),
+                Colour.green.lighten(by: 0.7),
+                Colour.blue.lighten(by: 0.7),
+                Colour.yellow.lighten(by: 0.7),
+                Colour.purple.lighten(by: 0.7),
+                Colour.cyan.lighten(by: 0.7),
+                Colour.orange.lighten(by: 0.7),
+                Colour.magenta.lighten(by: 0.7),
 
                 Colour.red.darken(by: 0.4),
                 Colour.green.darken(by: 0.4),
