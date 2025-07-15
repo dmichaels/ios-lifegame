@@ -19,9 +19,22 @@ public class LatixCell: Equatable {
         self._location = cell.location
         self._color = color
         self._radius = radius
-        self._radiusMax = LatixCell.edgeDistance(
-            self._location.x, self._location.y,
-            ncolumns: self._cellGridView.gridColumns, nrows: self._cellGridView.gridRows)
+        //
+        // Base the maximum radius on the set of visible cells in the grid-view.
+        //
+        if let viewCellLocation: ViewLocation = cell.cellGridView.viewCellLocation(gridCellX: cell.location.x,
+                                                                                   gridCellY: cell.location.y) {
+            self._radiusMax = LatixCell.edgeDistance(
+                viewCellLocation.x, viewCellLocation.y,
+                ncolumns: cell.cellGridView.viewCellEndX, nrows: cell.cellGridView.viewCellEndY)
+        }
+        else {
+            //
+            // This cell is outside of the grid-view; should not normally happen because we
+            // only create a LatixCell in response to a select/tap on an actually visible cell.
+            //
+            self._radiusMax = 0
+        }
     }
 
     internal var location: CellLocation {
