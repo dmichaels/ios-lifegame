@@ -217,6 +217,7 @@ public class LatixCell: Equatable {
     private static func nextColor() -> Colour {
         struct Cache {
             internal static var colors: [Colour] = [
+
                 Colour.red,
                 Colour.green,
                 Colour.blue,
@@ -225,6 +226,7 @@ public class LatixCell: Equatable {
                 Colour.cyan,
                 Colour.orange,
                 Colour.magenta,
+
                 Colour.red.lighten(by: 0.4),
                 Colour.green.lighten(by: 0.4),
                 Colour.blue.lighten(by: 0.4),
@@ -233,6 +235,16 @@ public class LatixCell: Equatable {
                 Colour.cyan.lighten(by: 0.4),
                 Colour.orange.lighten(by: 0.4),
                 Colour.magenta.lighten(by: 0.4),
+
+                Colour.red.lighten(by: 0.8),
+                Colour.green.lighten(by: 0.8),
+                Colour.blue.lighten(by: 0.8),
+                Colour.yellow.lighten(by: 0.8),
+                Colour.purple.lighten(by: 0.8),
+                Colour.cyan.lighten(by: 0.8),
+                Colour.orange.lighten(by: 0.8),
+                Colour.magenta.lighten(by: 0.8),
+
                 Colour.red.darken(by: 0.4),
                 Colour.green.darken(by: 0.4),
                 Colour.blue.darken(by: 0.4),
@@ -240,25 +252,24 @@ public class LatixCell: Equatable {
                 Colour.purple.darken(by: 0.4),
                 Colour.cyan.darken(by: 0.4),
                 Colour.orange.darken(by: 0.4),
-                Colour.magenta.darken(by: 0.4)
+                Colour.magenta.darken(by: 0.4),
+
+                Colour.red.darken(by: 0.8),
+                Colour.green.darken(by: 0.8),
+                Colour.blue.darken(by: 0.8),
+                Colour.yellow.darken(by: 0.8),
+                Colour.purple.darken(by: 0.8),
+                Colour.cyan.darken(by: 0.8),
+                Colour.orange.darken(by: 0.8),
+                Colour.magenta.darken(by: 0.8)
             ]
             internal static var index: Int = 0
-            internal static var indexLast: Int = 0
-            internal static var randomize: Bool = false
         }
-        if (Cache.randomize) {
-            Cache.index = Int.random(in: 0...Cache.colors.count - 1)
-            if (Cache.index == Cache.indexLast) {
-                Cache.index = Int.random(in: 0...Cache.colors.count - 1)
-                if (Cache.index == Cache.indexLast) {
-                    Cache.index = (Cache.indexLast + 1) % Cache.colors.count
-                }
-            }
-            Cache.indexLast = Cache.index
-        }
-        else {
-            Cache.index = (Cache.index + 1) % Cache.colors.count
-        }
+        Cache.index = (Cache.index + 1) % Cache.colors.count
+        //
+        // Tried randomizing but results were too, well, unpredicable and
+        // not always great; remember, random doesn't feel all that random.
+        //
         return Cache.colors[Cache.index]
     }
 
