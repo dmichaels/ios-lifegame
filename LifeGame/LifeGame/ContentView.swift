@@ -13,6 +13,7 @@ struct ContentView: View
     // the image gets incorrectly shifted (up) on orientation change et cetera; todo someday.
     //
     @State private var ignoreSafeArea: Bool = true
+    @State private var hideStatusBar: Bool = Settings.Defaults.hideStatusBar
     @State private var viewRectangle: CGRect = CGRect.zero
     @State private var image: CGImage? = nil
     @State private var imageAngle: Angle = Angle.zero
@@ -95,6 +96,7 @@ struct ContentView: View
                         }
                         self.feedback.soundsEnabled = settings.soundsEnabled
                         self.feedback.hapticsEnabled = settings.hapticsEnabled
+                        self.hideStatusBar = settings.hideStatusBar
                     }
                     else {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
@@ -125,7 +127,7 @@ struct ContentView: View
                 .navigationTitle("Home")
                 .navigationBarHidden(true)
                 .background(self.screenBackground?.color ?? self.cellGridView.viewBackground.color)
-                .statusBar(hidden: true)
+                .statusBar(hidden: self.hideStatusBar)
                 .coordinateSpace(name: "zstack")
                 .overlay(
                     Group {
@@ -201,6 +203,7 @@ struct ContentView: View
         }
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
+        self.hideStatusBar = settings.hideStatusBar
     }
 
     private func toggleShowControls() {

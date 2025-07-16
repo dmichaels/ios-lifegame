@@ -284,6 +284,11 @@ struct SettingsView: View
                     IconLabel("Unscaled Zoom", "minus.magnifyingglass")
                     Toggle("", isOn: $settings.unscaledZoom)
                 }
+
+                HStack {
+                    IconLabel("Hide Status Bar", "candybarphone")
+                    Toggle("", isOn: $settings.hideStatusBar).labelsHidden()
+                }
             }
         }
         .offset(y: -30)

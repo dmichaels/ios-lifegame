@@ -56,6 +56,7 @@ class Settings: ObservableObject
     @Published var swipeThreshold: Int                       = 100
     @Published var soundsEnabled: Bool                       = false
     @Published var hapticsEnabled: Bool                      = true
+    @Published var hideStatusBar: Bool                       = true
 
     // This just allows this Settings object to be the single place where we define the default parameters
     // for this app, which are easily accessible elsewhere, without having to define a separate Defaults class;
@@ -123,6 +124,7 @@ class Settings: ObservableObject
         self.swipeThreshold             = config.swipeThreshold
         self.soundsEnabled              = config.soundsEnabled
         self.hapticsEnabled             = config.hapticsEnabled
+        self.hideStatusBar              = config.hideStatusBar
     }
 
     public func fromConfig(_ cellGridView: LifeCellGridView)
