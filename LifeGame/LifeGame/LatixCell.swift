@@ -74,8 +74,8 @@ public class LatixCell: Equatable {
                 // Also note that, unlike the Life game mode, for Latix mode if a cell is not currently visible
                 // we don't write the cell at all, for performance reasons; with Life we do write such a (not
                 // visible) cell because it is important that the model (whether a cell is activated or not)
-                // be updated; but for Latix, if it is not visible, then screw it, not that important - if the
-                // cell-size resized smaller (increasing the number of visible cells), we will see blank cells.
+                // be updated; but for Latix, if it is not visible, then not that important - if the cell-size
+                // resized smaller (increasing the number of visible cells), we will see blank cells.
                 //
                 var skip: Bool = !self._cellGridView.cellVisible(lifeCell.x, lifeCell.y)
                 if (!skip && self._cellGridView.variantLatixOcclude) {
