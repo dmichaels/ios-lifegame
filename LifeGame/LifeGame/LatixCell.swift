@@ -55,7 +55,6 @@ public class LatixCell: Equatable {
 
     public func expand() {
         guard self._radius <= self._radiusMax else {
-            // print("EX> \(self.location.x),\(self.location.y) \(self._radius) [\(self._radiusMax)] -> MAXED")
             self._cellGridView.latixCellDeselect(self)
             return
         }
@@ -72,8 +71,8 @@ public class LatixCell: Equatable {
                 // so that the newer ones always appear visually "on top" of older ones, i.e. so that circles
                 // occluded one another as one might normally, visually expect.
                 //
-                var skip: Bool = false
-                if (self._cellGridView.variantLatixOcclude) {
+                var skip: Bool = !self._cellGridView.cellVisible(lifeCell.x, lifeCell.y)
+                if (!skip && self._cellGridView.variantLatixOcclude) {
                     let newerLatixCells: [LatixCell] = self._cellGridView.latixNewerCells(age: self.age)
                     for newerLatixCell in newerLatixCells {
                         //
@@ -226,6 +225,7 @@ public class LatixCell: Equatable {
                 Colour.cyan,
                 Colour.orange,
                 Colour.magenta,
+                Colour.black,
             ]
             internal static let colors : [Colour] = (
                 Cache._colors +
