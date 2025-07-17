@@ -64,7 +64,7 @@ struct ContentView: View
                             )
                             NavigationLink(
                                 destination: SettingsView().onDisappear {
-                                    self.onChangeSettings()
+                                    self.updateSettings()
                                 },
                                 isActive: $showSettingsView,
                                 label: { EmptyView() }
@@ -84,7 +84,7 @@ struct ContentView: View
                                                      screen: screen,
                                                      viewWidth: landscape ? screen.height : screen.width,
                                                      viewHeight: landscape ? screen.width : screen.height,
-                                                     onChangeImage: self.updateImage)
+                                                     updateImage: self.updateImage)
                         self.rotateImage()
                         self.updateImage()
                         if (self.cellGridView.automationMode) {
@@ -111,7 +111,7 @@ struct ContentView: View
                     else {
                         //
                         // TODO
-                        // Still need to clean up this initialization/re-initializion stuff and on onChangeSettings too.
+                        // Still need to clean up this initialization/re-initializion stuff and on updateSettings too.
                         //
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         if ((screen.width != self.cellGridView.screen.width) ||
@@ -190,7 +190,7 @@ struct ContentView: View
         self.showSettingsView = true
     }
 
-    private func onChangeSettings() {
+    private func updateSettings() {
         if (self.settings.gameMode == GameMode.lifehash) {
             self.settings.gridColumns = 16
             self.settings.gridRows = 16
@@ -202,13 +202,11 @@ struct ContentView: View
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
         self.hideStatusBar = settings.hideStatusBar
-        /*
         if (self.settings.gameMode == GameMode.lifehash) {
             for _ in 0..<16 {
                 self.cellGridView.nextGeneration()
             }
         }
-        */
     }
 
     private func toggleShowControls() {

@@ -103,7 +103,7 @@ public class LatixCell: Equatable {
             }
         }
         if (update) {
-            self._cellGridView.onChangeImage()
+            self._cellGridView.updateImage()
         }
     }
 

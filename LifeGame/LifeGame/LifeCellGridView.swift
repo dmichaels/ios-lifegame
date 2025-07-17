@@ -76,13 +76,13 @@ public final class LifeCellGridView: CellGridView
                                screen: Screen,
                                viewWidth: Int,
                                viewHeight: Int,
-                               onChangeImage: (() -> Void)? = nil)
+                               updateImage: (() -> Void)? = nil)
     {
         super.initialize(settings.toConfig(self),
                          screen: screen,
                          viewWidth: viewWidth,
                          viewHeight: viewHeight,
-                         onChangeImage: onChangeImage)
+                         updateImage: updateImage)
     }
 
     internal func configure(_ settings: Settings) {
@@ -137,7 +137,7 @@ public final class LifeCellGridView: CellGridView
         if (self.inactiveColorRandomDynamic) {
             self.writeCells()
         }
-        self.onChangeImage()
+        self.updateImage()
     }
 
     internal var inactiveColorRandomColor: () -> Colour {
@@ -184,7 +184,7 @@ public final class LifeCellGridView: CellGridView
         }
         self.variantInactiveFadeCells.removeAll(keepingCapacity: true)
 
-        self.onChangeImage()
+        self.updateImage()
     }
 
     internal func nextGeneration()
@@ -304,7 +304,7 @@ public final class LifeCellGridView: CellGridView
         for cell in self.cells {
             cell.write(color: self.inactiveColor)
         }
-        self.onChangeImage()
+        self.updateImage()
     }
 
     internal func latixCellSelect(_ lifeCell: LifeCell) {
