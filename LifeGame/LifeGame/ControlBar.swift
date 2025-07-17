@@ -8,8 +8,8 @@ struct ControlBar: View {
     @Binding var automationMode: Bool
              var automationModeToggle: (() -> Void)
              var automationStep: (() -> Void)
-    @Binding var automationRandom: Bool
-             var automationRandomToggle: (() -> Void)
+    @Binding var selectRandomMode: Bool
+             var selectRandomModeToggle: (() -> Void)
              var showSettings: (() -> Void)
              var erase: (() -> Void)
 
@@ -22,13 +22,13 @@ struct ControlBar: View {
         self.automationMode = !self.automationMode
     }
 
-    private func automationRandomInternal() -> Bool {
-        return self.automationRandom
+    private func selectRandomModeInternal() -> Bool {
+        return self.selectRandomMode
     }
 
-    private func automationRandomToggleInternal() {
-        self.automationRandomToggle()
-        self.automationRandom = !self.automationRandom
+    private func selectRandomModeToggleInternal() {
+        self.selectRandomModeToggle()
+        self.selectRandomMode = !self.selectRandomMode
     }
 
     var body: some View {
@@ -40,8 +40,8 @@ struct ControlBar: View {
                          actionToggled: self.automationModeInternal,
                          iconToggled: "pause.fill")
             ActionButton(self.automationStep, "arrow.forward.square")
-            ActionButton(self.automationRandomToggleInternal, "swirl.circle.righthalf.filled",
-                         actionToggled: self.automationRandomInternal,
+            ActionButton(self.selectRandomModeToggleInternal, "swirl.circle.righthalf.filled",
+                         actionToggled: self.selectRandomModeInternal,
                          iconToggled: "line.3.crossed.swirl.circle",
                          iconWidth: 22,
                          iconToggledWidth: 22)

@@ -28,7 +28,7 @@ struct ContentView: View
     // and also NOTE that we need to set/initialize this properly in the main onAppear event.
     //
     @State private var automationMode: Bool = false
-    @State private var automationRandom: Bool = false
+    @State private var selectRandomMode: Bool = false
 
     var body: some View {
         NavigationView {
@@ -77,7 +77,7 @@ struct ContentView: View
                         // See comment at top WRT setting our local automationMode state variable here.
                         //
                         self.automationMode = self.settings.automationMode
-                        self.automationRandom = self.settings.automationRandom
+                        self.selectRandomMode = self.settings.selectRandomMode
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         let landscape = self.orientation.landscape
                         self.cellGridView.initialize(self.settings,
@@ -90,8 +90,8 @@ struct ContentView: View
                         if (self.cellGridView.automationMode) {
                             self.cellGridView.automationStart()
                         }
-                        if (self.cellGridView.automationRandom) {
-                            self.cellGridView.automationRandomStart()
+                        if (self.cellGridView.selectRandomMode) {
+                            self.cellGridView.selectRandomStart()
                         }
                         self.feedback.soundsEnabled = settings.soundsEnabled
                         self.feedback.hapticsEnabled = settings.hapticsEnabled
@@ -137,8 +137,8 @@ struct ContentView: View
                                 automationMode: $automationMode,
                                 automationModeToggle: self.cellGridView.automationModeToggle,
                                 automationStep: self.cellGridView.automationStep,
-                                automationRandom: $automationRandom,
-                                automationRandomToggle: self.cellGridView.automationRandomToggle,
+                                selectRandomMode: $selectRandomMode,
+                                selectRandomModeToggle: self.cellGridView.selectRandomModeToggle,
                                 showSettings: self.showSettings,
                                 erase: self.cellGridView.erase
                             )
@@ -185,7 +185,7 @@ struct ContentView: View
 
     private func showSettings() {
         self.cellGridView.automationModePause()
-        self.cellGridView.automationRandomPause()
+        self.cellGridView.selectRandomModePause()
         self.settings.fromConfig(self.cellGridView)
         self.showSettingsView = true
     }
@@ -198,7 +198,7 @@ struct ContentView: View
         self.cellGridView.configure(self.settings)
         self.updateImage()
         self.cellGridView.automationModeResume()
-        self.cellGridView.automationRandomResume()
+        self.cellGridView.selectRandomModeResume()
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
         self.hideStatusBar = settings.hideStatusBar
