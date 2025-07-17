@@ -23,12 +23,11 @@ struct ContentView: View
     @State private var feedback: Feedback = Feedback()
     //
     // Cannot seem to get the use of settings.automationMode working for keeping the ControlBar run/pause
-    // button in sync with this property when we go to the SettingsView while this is true, i.e. where we
-    // pause the automation for the duration of the SettingsView (i.e. via automationModeSuspended); and
-    // also NOTE that we need to set/initialize this properly in the main onAppear event.
+    // button in sync with this property when we go to the SettingsView while this is true, i.e. where
+    // we pause the automation for the duration of the SettingsView (i.e. via automationModePause);
+    // and also NOTE that we need to set/initialize this properly in the main onAppear event.
     //
     @State private var automationMode: Bool = false
-    @State private var automationModeSuspended: Bool = false
     @State private var automationRandom: Bool = false
 
     var body: some View {
@@ -185,10 +184,7 @@ struct ContentView: View
     }
 
     private func showSettings() {
-        if (self.cellGridView.automationMode) {
-            self.automationModeSuspended = true
-            self.cellGridView.automationStop()
-        }
+        self.cellGridView.automationModePause()
         self.settings.fromConfig(self.cellGridView)
         self.showSettingsView = true
     }
@@ -200,11 +196,7 @@ struct ContentView: View
         }
         self.cellGridView.configure(self.settings)
         self.updateImage()
-        if (self.automationModeSuspended) {
-            self.cellGridView.automationStart()
-            self.automationModeSuspended = false
-            self.automationMode = true
-        }
+        self.cellGridView.automationModeResume()
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
         self.hideStatusBar = settings.hideStatusBar

@@ -20,7 +20,7 @@ class Settings: ObservableObject
     @Published var gridColumns: Int           = 150
     @Published var gridRows: Int              = 250
     @Published var fit: CellGridView.Fit      = CellGridView.Fit.enabled
-    @Published var center: Bool               = false
+    @Published var center: Bool               = true
 
     @Published var cellAntialiasFade: Float   = CellGridView.Defaults.cellAntialiasFade
     @Published var cellRoundedRadius: Float   = CellGridView.Defaults.cellRoundedRadius
@@ -91,10 +91,10 @@ class Settings: ObservableObject
         self.gridRows           = config.gridRows
         self.fit                = config.fit
         //
-        // This center property we treat as not really persistent; we always
-        // use its initial/default (noop/false) state when going to SettingsView.
+        // This center property we treat as not really persistent;
+        // we always use its false state when going into SettingsView.
         //
-        self.center                    = true
+        self.center                    = false
         self.cellAntialiasFade         = config.cellAntialiasFade
         self.cellRoundedRadius         = config.cellRoundedRadius
         self.restrictShift             = config.restrictShift
