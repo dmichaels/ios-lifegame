@@ -21,6 +21,7 @@ extension LifeCellGridView
         public var variantLatixOcclude: Bool
         public var selectModeFat: Bool
         public var selectModeExtraFat: Bool
+        public var lifehashValue: String
         public var automationRandom: Bool
         public var automationRandomInterval: Double
 
@@ -67,6 +68,7 @@ extension LifeCellGridView
             self.variantLatixOcclude        = s?.variantLatixOcclude        ?? v?.variantLatixOcclude        ?? d.variantLatixOcclude
             self.selectModeFat              = s?.selectModeFat              ?? v?.selectModeFat              ?? d.selectModeFat
             self.selectModeExtraFat         = s?.selectModeExtraFat         ?? v?.selectModeExtraFat         ?? d.selectModeExtraFat
+            self.lifehashValue              = s?.lifehashValue              ?? v?.lifehashValue              ?? d.lifehashValue
             self.automationRandom           = s?.automationRandom           ?? v?.automationRandom           ?? d.automationRandom
             self.automationRandomInterval   = s?.automationRandomInterval   ?? v?.automationRandomInterval   ?? d.automationRandomInterval
             self.dragThreshold              = s?.dragThreshold              ?? v?.dragThreshold              ?? d.dragThreshold

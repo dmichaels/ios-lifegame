@@ -20,7 +20,7 @@ class Settings: ObservableObject
     @Published var gridColumns: Int           = 150
     @Published var gridRows: Int              = 250
     @Published var fit: CellGridView.Fit      = CellGridView.Fit.enabled
-    @Published var center: Bool               = true
+    @Published var center: Bool               = false
 
     @Published var cellAntialiasFade: Float   = CellGridView.Defaults.cellAntialiasFade
     @Published var cellRoundedRadius: Float   = CellGridView.Defaults.cellRoundedRadius
@@ -48,6 +48,7 @@ class Settings: ObservableObject
     @Published var variantLatixOcclude: Bool                 = true
     @Published var selectModeFat: Bool                       = false
     @Published var selectModeExtraFat: Bool                  = false
+    @Published var lifehashValue: String                     = ""
 
     @Published var automationRandom: Bool                    = false
     @Published var automationRandomInterval: Double          = 0.2
@@ -93,7 +94,7 @@ class Settings: ObservableObject
         // This center property we treat as not really persistent; we always
         // use its initial/default (noop/false) state when going to SettingsView.
         //
-        self.center                    = false
+        self.center                    = true
         self.cellAntialiasFade         = config.cellAntialiasFade
         self.cellRoundedRadius         = config.cellRoundedRadius
         self.restrictShift             = config.restrictShift
@@ -108,6 +109,7 @@ class Settings: ObservableObject
         self.variantLatixOcclude       = config.variantLatixOcclude
         self.selectModeFat             = config.selectModeFat
         self.selectModeExtraFat        = config.selectModeExtraFat
+        self.lifehashValue             = config.lifehashValue
         self.automationRandom          = config.automationRandom
         self.automationRandomInterval  = config.automationRandomInterval
 

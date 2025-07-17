@@ -45,6 +45,7 @@ public final class LifeCellGridView: CellGridView
     internal              var latixCells: [LatixCell] = []
     internal private(set) var selectModeFat: Bool
     internal private(set) var selectModeExtraFat: Bool
+    internal private(set) var lifehashValue: String
     internal private(set) var automationRandom: Bool
     internal private(set) var automationRandomInterval: Double
     private               var automationRandomTimer: Timer?
@@ -65,6 +66,7 @@ public final class LifeCellGridView: CellGridView
         self.variantLatixOcclude        = config.variantLatixOcclude
         self.selectModeFat              = config.selectModeFat
         self.selectModeExtraFat         = config.selectModeExtraFat
+        self.lifehashValue              = config.lifehashValue
         self.automationRandom           = config.automationRandom
         self.automationRandomInterval   = config.automationRandomInterval
         self.automationRandomTimer      = nil
@@ -104,6 +106,7 @@ public final class LifeCellGridView: CellGridView
         self.variantLatixOcclude = settings.variantLatixOcclude
         self.selectModeFat = settings.selectModeFat
         self.selectModeExtraFat = settings.selectModeExtraFat
+        self.lifehashValue = settings.lifehashValue
         self.automationRandom = settings.automationRandom
         self.automationRandomInterval = settings.automationRandomInterval
         self.soundsEnabled = settings.soundsEnabled
@@ -124,7 +127,7 @@ public final class LifeCellGridView: CellGridView
 
     public override func createCell<T: Cell>(x: Int, y: Int, color: Colour, previous: T? = nil) -> T? {
         let cell: LifeCell = LifeCell(cellGridView: self, x: x, y: y, color: color)
-        if (config.gameMode == GameMode.life) {
+        if ((config.gameMode == GameMode.life) || (config.gameMode == GameMode.lifehash)) {
             if (self.activeCells.contains(cell.location)) {
                 cell.activate(nowrite: true, nonotify: true)
             }
@@ -168,25 +171,31 @@ public final class LifeCellGridView: CellGridView
     }
 
     internal func erase() {
+
         if (self.gameMode == GameMode.latix) {
             self.latixErase()
             return
         }
+
         for cellLocation in self.activeCells {
             if let cell: LifeCell = super.gridCell(cellLocation) {
                 cell.deactivate()
             }
         }
+        self.activeCells.removeAll(keepingCapacity: true)
+
         for cellLocation in self.variantInactiveFadeCells {
             if let cell: LifeCell = super.gridCell(cellLocation) {
                 cell._inactiveGenerationNumber = nil
                 cell.write()
             }
         }
+        self.variantInactiveFadeCells.removeAll(keepingCapacity: true)
+
         self.onChangeImage()
     }
 
-    private func nextGeneration()
+    internal func nextGeneration()
     {
         if (self.gameMode == GameMode.latix) {
             self.latixNextGeneration()

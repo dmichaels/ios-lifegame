@@ -141,6 +141,13 @@ struct SettingsView: View
                     }
                     .pickerStyle(.menu)
                 }
+
+                HStack {
+                    IconLabel("Hash Value", "long.text.page.and.pencil")
+                    TextField("", text: $settings.lifehashValue)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                }
+                .hide(settings.gameMode != GameMode.lifehash)
             }
 
             SettingsSection("COLORS") {
@@ -296,14 +303,14 @@ struct SettingsView: View
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    func cellSizeRange() -> ClosedRange<Double> {
+    private func cellSizeRange() -> ClosedRange<Double> {
         let min: Double = Double(cellGridView.minimumCellSize(cellPadding: settings.cellPadding,
                                                               cellShape: settings.cellShape))
         return min...Double(cellGridView.maximumCellSize)
     }
 }
 
-extension Settings {
+private extension Settings {
     var viewBackgroundInternal: Color {
         get { Color(self.viewBackground) }
         set { self.viewBackground = Colour(newValue) }
@@ -318,7 +325,7 @@ extension Settings {
     }
 }
 
-let AutomationIntervalOptions: [(label: String, value: Double)] = [
+private let AutomationIntervalOptions: [(label: String, value: Double)] = [
     ("Slowest", 7.0),
     ("Slower", 3.0),
     ("Slow", 2.0),
@@ -331,25 +338,27 @@ let AutomationIntervalOptions: [(label: String, value: Double)] = [
     ("Max", 0.0)
 ]
 
-let SelectModeOptions: [(label: String, value: Int)] = [
+private let SelectModeOptions: [(label: String, value: Int)] = [
     ("Default", 0),
     ("Fat", 1),
     ("Very Fat", 2)
 ]
 
-struct GridSize: Hashable {
+private struct GridSize: Hashable {
     let columns: Int
     let rows: Int
 }
-struct GridSizeOption: Hashable {
+
+private struct GridSizeOption: Hashable {
     let label: String
     let value: GridSize
 }
-let GridSizeOptions: [GridSizeOption] = [
-    GridSizeOption(label: "Very Small", value: GridSize(columns: 50, rows: 25)),
-    GridSizeOption(label: "Small",      value: GridSize(columns: 75, rows: 125)),
+
+private let GridSizeOptions: [GridSizeOption] = [
+    GridSizeOption(label: "Very Small", value: GridSize(columns: 50,   rows: 25)),
+    GridSizeOption(label: "Small",      value: GridSize(columns: 75,   rows: 125)),
     GridSizeOption(label: "Default",    value: GridSize(columns: Settings.Defaults.gridColumns,
-                                                        rows: Settings.Defaults.gridRows)),
-    GridSizeOption(label: "Large",      value: GridSize(columns: 300, rows: 500)),
+                                                                       rows: Settings.Defaults.gridRows)),
+    GridSizeOption(label: "Large",      value: GridSize(columns: 300,  rows: 500)),
     GridSizeOption(label: "Very Large", value: GridSize(columns: 1000, rows: 1250))
 ]

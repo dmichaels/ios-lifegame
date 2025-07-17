@@ -194,6 +194,10 @@ struct ContentView: View
     }
 
     private func onChangeSettings() {
+        if (self.settings.gameMode == GameMode.lifehash) {
+            self.settings.gridColumns = 16
+            self.settings.gridRows = 16
+        }
         self.cellGridView.configure(self.settings)
         self.updateImage()
         if (self.automationModeSuspended) {
@@ -204,6 +208,13 @@ struct ContentView: View
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
         self.hideStatusBar = settings.hideStatusBar
+        /*
+        if (self.settings.gameMode == GameMode.lifehash) {
+            for _ in 0..<16 {
+                self.cellGridView.nextGeneration()
+            }
+        }
+        */
     }
 
     private func toggleShowControls() {
