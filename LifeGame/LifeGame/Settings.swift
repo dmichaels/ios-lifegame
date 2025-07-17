@@ -27,9 +27,11 @@ class Settings: ObservableObject
     @Published var restrictShift: Bool        = true
     @Published var unscaledZoom: Bool         = false
    
-    @Published var selectMode: Bool           = true
-    @Published var automationMode: Bool       = true
-    @Published var automationInterval: Double = CellGridView.Defaults.automationInterval
+    @Published var selectMode: Bool                 = true
+    @Published var automationMode: Bool             = true
+    @Published var automationInterval: Double       = CellGridView.Defaults.automationInterval
+    @Published var automationRandom: Bool           = false
+    @Published var automationRandomInterval: Double = 0.2
 
     // LifeCellGridView specific properties.
 
@@ -49,9 +51,6 @@ class Settings: ObservableObject
     @Published var selectModeFat: Bool                       = false
     @Published var selectModeExtraFat: Bool                  = false
     @Published var lifehashValue: String                     = ""
-
-    @Published var automationRandom: Bool                    = false
-    @Published var automationRandomInterval: Double          = 0.2
 
     @Published var dragThreshold: Int                        = 2
     @Published var swipeThreshold: Int                       = 100

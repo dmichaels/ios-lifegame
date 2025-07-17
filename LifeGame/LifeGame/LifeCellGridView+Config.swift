@@ -22,8 +22,6 @@ extension LifeCellGridView
         public var selectModeFat: Bool
         public var selectModeExtraFat: Bool
         public var lifehashValue: String
-        public var automationRandom: Bool
-        public var automationRandomInterval: Double
 
         public var dragThreshold: Int  = 3
         public var swipeThreshold: Int = 100
@@ -69,8 +67,6 @@ extension LifeCellGridView
             self.selectModeFat              = s?.selectModeFat              ?? v?.selectModeFat              ?? d.selectModeFat
             self.selectModeExtraFat         = s?.selectModeExtraFat         ?? v?.selectModeExtraFat         ?? d.selectModeExtraFat
             self.lifehashValue              = s?.lifehashValue              ?? v?.lifehashValue              ?? d.lifehashValue
-            self.automationRandom           = s?.automationRandom           ?? v?.automationRandom           ?? d.automationRandom
-            self.automationRandomInterval   = s?.automationRandomInterval   ?? v?.automationRandomInterval   ?? d.automationRandomInterval
             self.dragThreshold              = s?.dragThreshold              ?? v?.dragThreshold              ?? d.dragThreshold
             self.swipeThreshold             = s?.swipeThreshold             ?? v?.swipeThreshold             ?? d.swipeThreshold
             self.soundsEnabled              = s?.soundsEnabled              ?? v?.soundsEnabled              ?? d.soundsEnabled
@@ -79,24 +75,27 @@ extension LifeCellGridView
 
             // CellGridView base class specific properties.
 
-            super.init(viewBackground:     s?.viewBackground     ?? v?.viewBackground     ?? d.viewBackground,
-                       viewTransparency:   s?.viewTransparency   ?? v?.viewTransparency   ?? d.viewTransparency,
-                       viewScaling:        s?.viewScaling        ?? v?.viewScaling        ?? d.viewScaling,
-                       cellSize:           s?.cellSize           ?? v?.cellSize           ?? d.cellSize,
-                       cellPadding:        s?.cellPadding        ?? v?.cellPadding        ?? d.cellPadding,
-                       cellShape:          s?.cellShape          ?? v?.cellShape          ?? d.cellShape,
-                       cellShading:        s?.cellShading        ?? v?.cellShading        ?? d.cellShading,
-                       gridColumns:        s?.gridColumns        ?? v?.gridColumns        ?? d.gridColumns,
-                       gridRows:           s?.gridRows           ?? v?.gridRows           ?? d.gridRows,
-                       fit:                s?.fit                ?? v?.fit                ?? d.fit,
-                       center:             s?.center             ?? v?.center             ?? d.center,
-                       cellAntialiasFade:  s?.cellAntialiasFade  ?? v?.cellAntialiasFade  ?? d.cellAntialiasFade,
-                       cellRoundedRadius:  s?.cellRoundedRadius  ?? v?.cellRoundedRadius  ?? d.cellRoundedRadius,
-                       restrictShift:      s?.restrictShift      ?? v?.restrictShift      ?? d.restrictShift,
-                       unscaledZoom:       s?.unscaledZoom       ?? v?.unscaledZoom       ?? d.unscaledZoom,
-                       selectMode:         s?.selectMode         ?? v?.selectMode         ?? d.selectMode,
-                       automationMode:     s?.automationMode     ?? v?.automationMode     ?? d.automationMode,
-                       automationInterval: s?.automationInterval ?? v?.automationInterval ?? d.automationInterval)
+            super.init(
+                viewBackground:           s?.viewBackground           ?? v?.viewBackground           ?? d.viewBackground,
+                viewTransparency:         s?.viewTransparency         ?? v?.viewTransparency         ?? d.viewTransparency,
+                viewScaling:              s?.viewScaling              ?? v?.viewScaling              ?? d.viewScaling,
+                cellSize:                 s?.cellSize                 ?? v?.cellSize                 ?? d.cellSize,
+                cellPadding:              s?.cellPadding              ?? v?.cellPadding              ?? d.cellPadding,
+                cellShape:                s?.cellShape                ?? v?.cellShape                ?? d.cellShape,
+                cellShading:              s?.cellShading              ?? v?.cellShading              ?? d.cellShading,
+                gridColumns:              s?.gridColumns              ?? v?.gridColumns              ?? d.gridColumns,
+                gridRows:                 s?.gridRows                 ?? v?.gridRows                 ?? d.gridRows,
+                fit:                      s?.fit                      ?? v?.fit                      ?? d.fit,
+                center:                   s?.center                   ?? v?.center                   ?? d.center,
+                cellAntialiasFade:        s?.cellAntialiasFade        ?? v?.cellAntialiasFade        ?? d.cellAntialiasFade,
+                cellRoundedRadius:        s?.cellRoundedRadius        ?? v?.cellRoundedRadius        ?? d.cellRoundedRadius,
+                restrictShift:            s?.restrictShift            ?? v?.restrictShift            ?? d.restrictShift,
+                unscaledZoom:             s?.unscaledZoom             ?? v?.unscaledZoom             ?? d.unscaledZoom,
+                selectMode:               s?.selectMode               ?? v?.selectMode               ?? d.selectMode,
+                automationMode:           s?.automationMode           ?? v?.automationMode           ?? d.automationMode,
+                automationInterval:       s?.automationInterval       ?? v?.automationInterval       ?? d.automationInterval,
+                automationRandom:         s?.automationRandom         ?? v?.automationRandom         ?? d.automationRandom,
+                automationRandomInterval: s?.automationRandomInterval ?? v?.automationRandomInterval ?? d.automationRandomInterval)
         }
     }
 }

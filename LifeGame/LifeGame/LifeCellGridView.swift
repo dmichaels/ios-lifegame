@@ -46,9 +46,6 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var selectModeFat: Bool
     internal private(set) var selectModeExtraFat: Bool
     internal private(set) var lifehashValue: String
-    internal private(set) var automationRandom: Bool
-    internal private(set) var automationRandomInterval: Double
-    private               var automationRandomTimer: Timer?
 
     public init(_ config: LifeCellGridView.Config? = nil) {
         let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
@@ -67,9 +64,6 @@ public final class LifeCellGridView: CellGridView
         self.selectModeFat              = config.selectModeFat
         self.selectModeExtraFat         = config.selectModeExtraFat
         self.lifehashValue              = config.lifehashValue
-        self.automationRandom           = config.automationRandom
-        self.automationRandomInterval   = config.automationRandomInterval
-        self.automationRandomTimer      = nil
         self.dragThreshold              = config.dragThreshold
         self.swipeThreshold             = config.swipeThreshold
         self.soundsEnabled              = config.soundsEnabled
@@ -107,8 +101,6 @@ public final class LifeCellGridView: CellGridView
         self.selectModeFat = settings.selectModeFat
         self.selectModeExtraFat = settings.selectModeExtraFat
         self.lifehashValue = settings.lifehashValue
-        self.automationRandom = settings.automationRandom
-        self.automationRandomInterval = settings.automationRandomInterval
         self.soundsEnabled = settings.soundsEnabled
         self.hapticsEnabled = settings.hapticsEnabled
         self.hideStatusBar = settings.hideStatusBar
@@ -333,25 +325,5 @@ public final class LifeCellGridView: CellGridView
             }
         }
         return newerLatixCells
-    }
-
-    internal func automationRandomToggle() {
-        self.automationRandom ? automationRandomStop() : self.automationRandomStart()
-    }
-
-    internal func automationRandomStart() {
-        self.automationRandom = true
-        self.automationRandomTimer = Timer.scheduledTimer(withTimeInterval: self.automationRandomInterval,
-                                                          repeats: true) { _ in
-            self.selectRandom()
-        }
-    }
-
-    internal func automationRandomStop() {
-        self.automationRandom = false
-        if let automationRandomTimer = self.automationRandomTimer {
-            automationRandomTimer.invalidate()
-            self.automationRandomTimer = nil
-        }
     }
 }

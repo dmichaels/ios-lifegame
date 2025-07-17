@@ -185,6 +185,7 @@ struct ContentView: View
 
     private func showSettings() {
         self.cellGridView.automationModePause()
+        self.cellGridView.automationRandomPause()
         self.settings.fromConfig(self.cellGridView)
         self.showSettingsView = true
     }
@@ -197,6 +198,7 @@ struct ContentView: View
         self.cellGridView.configure(self.settings)
         self.updateImage()
         self.cellGridView.automationModeResume()
+        self.cellGridView.automationRandomResume()
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
         self.hideStatusBar = settings.hideStatusBar
