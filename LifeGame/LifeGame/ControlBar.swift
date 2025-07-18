@@ -156,9 +156,7 @@ public struct ActionButton: View {
             if (self.toggleButton) {
                 toggle.toggle()
             }
-            if let action = self.action {
-                action()
-            }
+            self.action?()
         }) {
             Image(systemName: self.toggleButton && self.toggle ? self.iconToggled : self.icon)
                 .foregroundColor(.white)
