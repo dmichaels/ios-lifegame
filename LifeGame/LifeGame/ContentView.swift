@@ -21,14 +21,6 @@ struct ContentView: View
     @State private var showControlBar: Bool = false
     @State private var screenBackground: Colour? = nil
     @State private var feedback: Feedback = Feedback()
-    //
-    // Cannot seem to get the use of settings.automationMode working for keeping the ControlBar run/pause
-    // button in sync with this property when we go to the SettingsView while this is true, i.e. where
-    // we pause the automation for the duration of the SettingsView (i.e. via automationModePause);
-    // and also NOTE that we need to set/initialize this properly in the main onAppear event.
-    //
-    @State private var automationMode: Bool = false
-    @State private var selectRandomMode: Bool = false
 
     var body: some View {
         NavigationView {
@@ -76,8 +68,8 @@ struct ContentView: View
                         //
                         // See comment at top WRT setting our local automationMode state variable here.
                         //
-                        self.automationMode = self.settings.automationMode
-                        self.selectRandomMode = self.settings.selectRandomMode
+                        // self.automationMode = self.settings.automationMode
+                        // self.selectRandomMode = self.settings.selectRandomMode
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         let landscape = self.orientation.landscape
                         self.cellGridView.initialize(self.settings,
@@ -87,12 +79,8 @@ struct ContentView: View
                                                      updateImage: self.updateImage)
                         self.rotateImage()
                         self.updateImage()
-                        if (self.cellGridView.automationMode) {
-                            self.cellGridView.automationStart()
-                        }
-                        if (self.cellGridView.selectRandomMode) {
-                            self.cellGridView.selectRandomStart()
-                        }
+                        if (self.settings.automationMode) { self.cellGridView.automationStart() }
+                        if (self.settings.selectRandomMode) { self.cellGridView.selectRandomStart() }
                         self.feedback.soundsEnabled = settings.soundsEnabled
                         self.feedback.hapticsEnabled = settings.hapticsEnabled
                         self.hideStatusBar = settings.hideStatusBar
@@ -132,13 +120,13 @@ struct ContentView: View
                     Group {
                         if (self.showControlBar) {
                             ControlBar(
-                                selectMode: { self.cellGridView.selectMode },
+                                selectMode: $settings.selectMode,
                                 selectModeToggle: self.cellGridView.selectModeToggle,
-                                automationMode: $automationMode,
-                                automationModeToggle: self.cellGridView.automationModeToggle,
+                                automationMode: $settings.automationMode,
+                                automationModeToggle: self.automationModeToggle,
                                 automationStep: self.cellGridView.automationStep,
-                                selectRandomMode: $selectRandomMode,
-                                selectRandomModeToggle: self.cellGridView.selectRandomModeToggle,
+                                selectRandomMode: $settings.selectRandomMode,
+                                selectRandomModeToggle: self.selectRandomModeToggle,
                                 showSettings: self.showSettings,
                                 erase: self.cellGridView.erase
                             )
@@ -167,6 +155,43 @@ struct ContentView: View
         .navigationViewStyle(.stack)
     }
 
+    private func showSettings() {
+        self.automationModePause()
+        self.selectRandomModePause()
+        self.settings.fromConfig(self.cellGridView)
+        self.showSettingsView = true
+    }
+
+    private func updateSettings() {
+        if (self.settings.gameMode == GameMode.lifehash) {
+            self.settings.gridColumns = 16
+            self.settings.gridRows = 16
+        }
+        self.cellGridView.configure(self.settings)
+        self.updateImage()
+        self.feedback.soundsEnabled = settings.soundsEnabled
+        self.feedback.hapticsEnabled = settings.hapticsEnabled
+        self.hideStatusBar = settings.hideStatusBar
+        self.automationModeResume()
+        self.selectRandomModeResume()
+        if (self.settings.gameMode == GameMode.lifehash) {
+            // self.cellGridView.automationStop()
+            for _ in 0..<200 {
+                self.cellGridView.selectRandom()
+            }
+            /*
+            for _ in 0..<16 {
+                self.cellGridView.nextGeneration()
+            }
+            */
+            self.updateImage()
+        }
+    }
+
+    private func toggleShowControls() {
+        withAnimation { self.showControlBar.toggle() }
+    }
+
     private func updateImage() {
         self.image = self.cellGridView.image
     }
@@ -183,34 +208,34 @@ struct ContentView: View
         return self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)
     }
 
-    private func showSettings() {
+    private func automationModeToggle() {
+        self.cellGridView.automationModeToggle()
+        self.settings.automationMode = self.cellGridView.automationMode
+    }
+
+    private func automationModePause() {
         self.cellGridView.automationModePause()
-        self.cellGridView.selectRandomModePause()
-        self.settings.fromConfig(self.cellGridView)
-        self.showSettingsView = true
+        self.settings.automationMode = self.cellGridView.automationMode
     }
 
-    private func updateSettings() {
-        if (self.settings.gameMode == GameMode.lifehash) {
-            self.settings.gridColumns = 16
-            self.settings.gridRows = 16
-        }
-        self.cellGridView.configure(self.settings)
-        self.updateImage()
+    private func automationModeResume() {
         self.cellGridView.automationModeResume()
-        self.cellGridView.selectRandomModeResume()
-        self.feedback.soundsEnabled = settings.soundsEnabled
-        self.feedback.hapticsEnabled = settings.hapticsEnabled
-        self.hideStatusBar = settings.hideStatusBar
-        if (self.settings.gameMode == GameMode.lifehash) {
-            for _ in 0..<16 {
-                self.cellGridView.nextGeneration()
-            }
-        }
+        self.settings.automationMode = self.cellGridView.automationMode
     }
 
-    private func toggleShowControls() {
-        withAnimation { self.showControlBar.toggle() }
+    private func selectRandomModeToggle() {
+        self.cellGridView.selectRandomModeToggle()
+        self.settings.selectRandomMode = self.cellGridView.selectRandomMode
+    }
+
+    private func selectRandomModePause() {
+        self.cellGridView.selectRandomModePause()
+        self.settings.selectRandomMode = self.cellGridView.selectRandomMode
+    }
+
+    private func selectRandomModeResume() {
+        self.cellGridView.selectRandomModeResume()
+        self.settings.selectRandomMode = self.cellGridView.selectRandomMode
     }
 }
 

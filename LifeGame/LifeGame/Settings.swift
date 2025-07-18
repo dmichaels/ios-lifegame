@@ -29,7 +29,7 @@ class Settings: ObservableObject
    
     @Published var selectMode: Bool             = true
     @Published var selectRandomMode: Bool       = false
-    @Published var selectRandomInterval: Double = 0.2
+    @Published var selectRandomInterval: Double = CellGridView.Defaults.selectRandomInterval
     @Published var automationMode: Bool         = true
     @Published var automationInterval: Double   = CellGridView.Defaults.automationInterval
 

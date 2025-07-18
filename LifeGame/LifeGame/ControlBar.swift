@@ -3,7 +3,7 @@ import UIKit
 
 struct ControlBar: View {
 
-             var selectMode: (() -> Bool)
+    @Binding var selectMode: Bool
              var selectModeToggle: (() -> Void)
     @Binding var automationMode: Bool
              var automationModeToggle: (() -> Void)
@@ -13,46 +13,35 @@ struct ControlBar: View {
              var showSettings: (() -> Void)
              var erase: (() -> Void)
 
-    private func automationModeInternal() -> Bool {
-        return self.automationMode
-    }
-
-    private func automationModeToggleInternal() {
-        self.automationModeToggle()
-        self.automationMode = !self.automationMode
-    }
-
-    private func selectRandomModeInternal() -> Bool {
-        return self.selectRandomMode
-    }
-
-    private func selectRandomModeToggleInternal() {
-        self.selectRandomModeToggle()
-        self.selectRandomMode = !self.selectRandomMode
-    }
-
     var body: some View {
         //
-        // This spacing here controls the horizaontal distance between the icons.
+        // This spacing on the HStack controls the horizaontal distance between the icons.
+        // Also note some odd fine-tuning/fudging of icon-specific sizing and/or
+        // positioning (e.g. iconWidth). to prevent the ControlBar from shifting around.
+        // And note that we have to say, for example, $selectMode rather than $self.selectMode,
+        // as the $ is just Swift syntactic sugar which does not understand a self qualifier.
         //
         HStack(spacing: 26) {
-            ActionButton(self.automationModeToggleInternal, "play.fill",
-                         actionToggled: self.automationModeInternal,
+            ActionButton(toggle: $automationMode,
+                         action: self.automationModeToggle,
+                         icon: "play.fill",
                          iconToggled: "pause.fill")
-            ActionButton(self.automationStep, "arrow.forward.square")
-            ActionButton(self.selectRandomModeToggleInternal, "swirl.circle.righthalf.filled",
-                         actionToggled: self.selectRandomModeInternal,
+            ActionButton(action: self.automationStep,
+                         icon: "arrow.forward.square")
+            ActionButton(toggle: $selectRandomMode,
+                         action: self.selectRandomModeToggle,
+                         icon: "swirl.circle.righthalf.filled",
                          iconToggled: "line.3.crossed.swirl.circle",
                          iconWidth: 22,
                          iconToggledWidth: 22)
-            ActionButton(self.erase, "arrow.counterclockwise.circle")
-            ActionButton(self.selectModeToggle, "square.and.pencil", actionToggled: self.selectMode,
+            ActionButton(action: self.erase, icon: "arrow.counterclockwise.circle")
+            ActionButton(toggle: $selectMode,
+                         action: self.selectModeToggle,
+                         icon: "square.and.pencil",
                          iconToggled: "arrow.up.and.down.and.arrow.left.and.right",
-                         //
-                         // Some odd fine-tuning/fudging of the sizes here to prevent the control-bar from shifting around.
-                         //
-                         iconToggledWidth: 22, iconShiftY: -1)
-            ActionButton(self.showSettings, "gear")
+                         iconShiftY: -1,
+                         iconToggledWidth: 22)
+            ActionButton(action: self.showSettings, icon: "gear")
         }
         //
         // The padding-vertical controls how far from the bottom the control is;
@@ -110,42 +99,75 @@ struct BlurView: UIViewRepresentable {
 }
 
 public struct ActionButton: View {
-    private let _action: (() -> Void)
-    private let _icon: String
-    private let _iconToggled: String
-    private let _iconWidth: CGFloat
-    private let _iconToggledWidth: CGFloat
-    private let _iconShiftY: CGFloat
-    private let _iconToggledShiftY: CGFloat
-    private let _actionToggled: (() -> Bool)
-    @State private var _toggled: Bool = false
-    public init(_ action: @escaping (() -> Void),
-                _ icon: String,
-                actionToggled: (() -> Bool)? = nil,
-                iconToggled: String? = nil,
-                iconWidth: Int = 24, iconToggledWidth: Int = 24,
-                iconShiftY: Int = 0, iconToggledShiftY: Int = 0) {
-        self._action = action
-        self._icon = icon
-        self._iconToggled = iconToggled ?? icon
-        self._iconWidth = CGFloat(iconWidth)
-        self._iconToggledWidth = CGFloat(iconToggledWidth)
-        self._iconShiftY = CGFloat(iconShiftY)
-        self._iconToggledShiftY = CGFloat(iconToggledShiftY)
-        self._actionToggled = actionToggled ?? { false }
+
+    private let action: (() -> Void)?
+    private let icon: String
+    private let iconWidth: CGFloat
+    private let iconShiftY: CGFloat
+
+    @Binding private var toggle: Bool
+    private let iconToggled: String
+    private let iconToggledWidth: CGFloat
+    private let iconToggledShiftY: CGFloat
+    private let toggleButton: Bool
+
+    public init(action: @escaping (() -> Void),
+                icon: String,
+                iconWidth: Int = 24,
+                iconShiftY: Int = 0) {
+        self.toggleButton = false
+        //
+        // Note that self._toggle is the Swift-internal representation of self.toggle.
+        //
+        self._toggle = .constant(false)
+        self.action = action
+        self.icon = icon
+        self.iconWidth = CGFloat(iconWidth)
+        self.iconShiftY = CGFloat(iconShiftY)
+        self.iconToggled = icon // unused
+        self.iconToggledWidth = CGFloat(0) // unused
+        self.iconToggledShiftY = CGFloat(0) // unused
     }
+
+    public init(toggle: Binding<Bool>,
+                action: (() -> Void)? = nil,
+                icon: String,
+                iconToggled: String,
+                iconWidth: Int = 24,
+                iconShiftY: Int = 0,
+                iconToggledWidth: Int = 24,
+                iconToggledShiftY: Int = 0) {
+        self.toggleButton = true
+        //
+        // Note that self._toggle is the Swift-internal representation of self.toggle.
+        //
+        self._toggle = toggle
+        self.action = action
+        self.icon = icon
+        self.iconToggled = iconToggled
+        self.iconWidth = CGFloat(iconWidth)
+        self.iconShiftY = CGFloat(iconShiftY)
+        self.iconToggledWidth = CGFloat(iconToggledWidth)
+        self.iconToggledShiftY = CGFloat(iconToggledShiftY)
+    }
+
     public var body: some View {
         Button(action: {
-            self._action()
-            self._toggled = self._actionToggled()
+            if (self.toggleButton) {
+                toggle.toggle()
+            }
+            if let action = self.action {
+                action()
+            }
         }) {
-            Image(systemName: self._toggled ? self._iconToggled : self._icon)
+            Image(systemName: self.toggleButton && self.toggle ? self.iconToggled : self.icon)
                 .foregroundColor(.white)
-                .font(.system(size: self._toggled ? self._iconToggledWidth : self._iconWidth , weight: .light))
-                .offset(y: self._toggled ? self._iconToggledShiftY : self._iconShiftY)
-        }
-        .onAppear {
-            self._toggled = self._actionToggled()
+                .font(.system(size: self.toggleButton && self.toggle
+                                    ? self.iconToggledWidth
+                                    : self.iconWidth , weight: .light))
+                .offset(y: self.toggleButton && self.toggle
+                           ? self.iconToggledShiftY
+                           : self.iconShiftY)
         }
     }
 }
