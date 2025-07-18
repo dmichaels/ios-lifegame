@@ -22,26 +22,26 @@ struct ControlBar: View {
         // as the $ is just Swift syntactic sugar which does not understand a self qualifier.
         //
         HStack(spacing: 26) {
-            ActionButton(toggle: $automationMode,
-                         action: self.automationModeToggle,
-                         icon: "play.fill",
-                         iconToggled: "pause.fill")
-            ActionButton(action: self.automationStep,
-                         icon: "arrow.forward.square")
-            ActionButton(toggle: $selectRandomMode,
-                         action: self.selectRandomModeToggle,
-                         icon: "swirl.circle.righthalf.filled",
-                         iconToggled: "line.3.crossed.swirl.circle",
-                         iconWidth: 22,
-                         iconToggledWidth: 22)
-            ActionButton(action: self.erase, icon: "arrow.counterclockwise.circle")
-            ActionButton(toggle: $selectMode,
-                         action: self.selectModeToggle,
-                         icon: "square.and.pencil",
-                         iconToggled: "arrow.up.and.down.and.arrow.left.and.right",
-                         iconShiftY: -1,
-                         iconToggledWidth: 22)
-            ActionButton(action: self.showSettings, icon: "gear")
+            ControlBarButton(toggle: $automationMode,
+                             action: self.automationModeToggle,
+                             icon: "play.fill",
+                             iconToggled: "pause.fill")
+            ControlBarButton(action: self.automationStep,
+                             icon: "arrow.forward.square")
+            ControlBarButton(toggle: $selectRandomMode,
+                             action: self.selectRandomModeToggle,
+                             icon: "swirl.circle.righthalf.filled",
+                             iconToggled: "line.3.crossed.swirl.circle",
+                             iconWidth: 22,
+                             iconToggledWidth: 22)
+            ControlBarButton(action: self.erase, icon: "arrow.counterclockwise.circle")
+            ControlBarButton(toggle: $selectMode,
+                             action: self.selectModeToggle,
+                             icon: "square.and.pencil",
+                             iconToggled: "arrow.up.and.down.and.arrow.left.and.right",
+                             iconShiftY: -1,
+                             iconToggledWidth: 22)
+            ControlBarButton(action: self.showSettings, icon: "gear")
         }
         //
         // The padding-vertical controls how far from the bottom the control is;
@@ -90,44 +90,18 @@ struct ControlBar: View {
     }
 }
 
-struct BlurView: UIViewRepresentable {
-    var style: UIBlurEffect.Style
-    func makeUIView(context: Context) -> UIVisualEffectView {
-        UIVisualEffectView(effect: UIBlurEffect(style: style))
-    }
-    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {}
-}
-
-public struct ActionButton: View {
-
-    private let action: (() -> Void)?
-    private let icon: String
-    private let iconWidth: CGFloat
-    private let iconShiftY: CGFloat
+private struct ControlBarButton: View {
 
     @Binding private var toggle: Bool
-    private let iconToggled: String
-    private let iconToggledWidth: CGFloat
-    private let iconToggledShiftY: CGFloat
-    private let toggleButton: Bool
+             private let iconToggled: String
+             private let iconToggledWidth: CGFloat
+             private let iconToggledShiftY: CGFloat
+             private let toggleButton: Bool
 
-    public init(action: @escaping (() -> Void),
-                icon: String,
-                iconWidth: Int = 24,
-                iconShiftY: Int = 0) {
-        self.toggleButton = false
-        //
-        // Note that self._toggle is the Swift-internal representation of self.toggle.
-        //
-        self._toggle = .constant(false) // unused
-        self.action = action
-        self.icon = icon
-        self.iconWidth = CGFloat(iconWidth)
-        self.iconShiftY = CGFloat(iconShiftY)
-        self.iconToggled = icon // unused
-        self.iconToggledWidth = CGFloat(0) // unused
-        self.iconToggledShiftY = CGFloat(0) // unused
-    }
+             private let action: (() -> Void)?
+             private let icon: String
+             private let iconWidth: CGFloat
+             private let iconShiftY: CGFloat
 
     public init(toggle: Binding<Bool>,
                 action: (() -> Void)? = nil,
@@ -151,6 +125,24 @@ public struct ActionButton: View {
         self.iconToggledShiftY = CGFloat(iconToggledShiftY)
     }
 
+    public init(action: @escaping (() -> Void),
+                icon: String,
+                iconWidth: Int = 24,
+                iconShiftY: Int = 0) {
+        self.toggleButton = false
+        //
+        // Note that self._toggle is the Swift-internal representation of self.toggle.
+        //
+        self._toggle = .constant(false) // unused
+        self.action = action
+        self.icon = icon
+        self.iconWidth = CGFloat(iconWidth)
+        self.iconShiftY = CGFloat(iconShiftY)
+        self.iconToggled = icon // unused
+        self.iconToggledWidth = CGFloat(0) // unused
+        self.iconToggledShiftY = CGFloat(0) // unused
+    }
+
     public var body: some View {
         Button(action: {
             if (self.toggleButton) {
@@ -168,4 +160,16 @@ public struct ActionButton: View {
                            : self.iconShiftY)
         }
     }
+}
+
+private struct BlurView: UIViewRepresentable {
+    //
+    // TODO
+    // What was this for again?
+    //
+    var style: UIBlurEffect.Style
+    func makeUIView(context: Context) -> UIVisualEffectView {
+        UIVisualEffectView(effect: UIBlurEffect(style: style))
+    }
+    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {}
 }
