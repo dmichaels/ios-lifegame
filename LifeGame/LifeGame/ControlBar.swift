@@ -119,7 +119,7 @@ public struct ActionButton: View {
         //
         // Note that self._toggle is the Swift-internal representation of self.toggle.
         //
-        self._toggle = .constant(false)
+        self._toggle = .constant(false) // unused
         self.action = action
         self.icon = icon
         self.iconWidth = CGFloat(iconWidth)
