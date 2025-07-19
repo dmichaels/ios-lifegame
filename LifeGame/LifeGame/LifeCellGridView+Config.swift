@@ -52,7 +52,7 @@ extension LifeCellGridView
 
             // LifeCellGridView specific properties.
 
-            self.gameMode                  = s?.gameMode                    ?? v?.gameMode                   ?? d.gameMode
+            self.gameMode                   = s?.gameMode                   ?? v?.gameMode                   ?? d.gameMode
             self.activeColor                = s?.activeColor                ?? v?.activeColor                ?? d.activeColor
             self.inactiveColor              = s?.inactiveColor              ?? v?.inactiveColor              ?? d.inactiveColor
             self.inactiveColorRandom        = s?.inactiveColorRandom        ?? v?.inactiveColorRandom        ?? d.inactiveColorRandom

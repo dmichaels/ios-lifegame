@@ -79,7 +79,7 @@ public class LatixCell: Equatable {
                 //
                 var skip: Bool = !self._cellGridView.cellVisible(lifeCell.x, lifeCell.y)
                 if (!skip && self._cellGridView.variantLatixOcclude) {
-                    let newerLatixCells: [LatixCell] = self._cellGridView.latixNewerCells(age: self.age)
+                    let newerLatixCells: [LatixCell] = self._cellGridView.latixYoungerCells(age: self.age)
                     for newerLatixCell in newerLatixCells {
                         //
                         // If this cell (perimeterCellLocation/lifeCell), on the perimeter of the outermost radius

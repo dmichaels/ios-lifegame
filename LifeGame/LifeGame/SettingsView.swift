@@ -144,7 +144,7 @@ struct SettingsView: View
 
                 HStack {
                     IconLabel("Hash Value", "long.text.page.and.pencil")
-                    TextField("", text: $settings.lifehashValue)
+                    TextField("", text: $settings.lifehashValue).autocapitalization(.none)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
                 .hide(settings.gameMode != GameMode.lifehash)

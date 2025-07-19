@@ -164,8 +164,9 @@ struct ContentView: View
 
     private func updateSettings() {
         if (self.settings.gameMode == GameMode.lifehash) {
-            self.settings.gridColumns = 16
-            self.settings.gridRows = 16
+            self.automationStop()
+            self.cellGridView.lifehash(self.settings)
+            return
         }
         self.cellGridView.configure(self.settings)
         self.updateImage()
@@ -174,18 +175,6 @@ struct ContentView: View
         self.hideStatusBar = settings.hideStatusBar
         self.automationModeResume()
         self.selectRandomModeResume()
-        if (self.settings.gameMode == GameMode.lifehash) {
-            // self.cellGridView.automationStop()
-            for _ in 0..<200 {
-                self.cellGridView.selectRandom()
-            }
-            /*
-            for _ in 0..<16 {
-                self.cellGridView.nextGeneration()
-            }
-            */
-            self.updateImage()
-        }
     }
 
     private func toggleShowControls() {
@@ -210,6 +199,16 @@ struct ContentView: View
 
     private func automationModeToggle() {
         self.cellGridView.automationModeToggle()
+        self.settings.automationMode = self.cellGridView.automationMode
+    }
+
+    private func automationStart() {
+        self.cellGridView.automationStart()
+        self.settings.automationMode = self.cellGridView.automationMode
+    }
+
+    private func automationStop() {
+        self.cellGridView.automationStop()
         self.settings.automationMode = self.cellGridView.automationMode
     }
 
