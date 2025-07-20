@@ -135,6 +135,10 @@ struct SettingsView: View
                     IconLabel("Automation", "waveform.path")
                     Toggle("", isOn: $settings.automationMode)
                 }
+                HStack { // xyzzy/todo/temporary/test
+                    IconLabel("Select Random", "waveform.path")
+                    Toggle("", isOn: $settings.selectRandomMode)
+                }
 
                 HStack {
                     IconLabel("Speed", "waveform.path")

@@ -5,18 +5,18 @@ import Utils
 
 public final class LifeCellGridView: CellGridView
 {
-    internal private(set) var gameMode: GameMode
-    internal private(set) var activeColor: Colour
-    internal private(set) var inactiveColor: Colour
-    internal private(set) var inactiveColorRandom: Bool
-    internal private(set) var inactiveColorRandomDynamic: Bool
-    internal private(set) var inactiveColorRandomPalette: ColourPalette
-    internal private(set) var inactiveColorRandomFilter: ColourFilter?
-    internal private(set) var dragThreshold: Int
-    internal private(set) var swipeThreshold: Int
-    internal private(set) var soundsEnabled: Bool
-    internal private(set) var hapticsEnabled: Bool
-    internal private(set) var hideStatusBar: Bool
+    internal private(set) var gameMode: GameMode = Settings.Defaults.gameMode
+    internal private(set) var activeColor: Colour = Settings.Defaults.activeColor
+    internal private(set) var inactiveColor: Colour = Settings.Defaults.inactiveColor
+    internal private(set) var inactiveColorRandom: Bool = Settings.Defaults.inactiveColorRandom
+    internal private(set) var inactiveColorRandomDynamic: Bool = Settings.Defaults.inactiveColorRandomDynamic
+    internal private(set) var inactiveColorRandomPalette: ColourPalette = Settings.Defaults.inactiveColorRandomPalette
+    internal private(set) var inactiveColorRandomFilter: ColourFilter? = Settings.Defaults.inactiveColorRandomFilter
+    internal private(set) var dragThreshold: Int = Settings.Defaults.dragThreshold
+    internal private(set) var swipeThreshold: Int = Settings.Defaults.swipeThreshold
+    internal private(set) var soundsEnabled: Bool = Settings.Defaults.soundsEnabled
+    internal private(set) var hapticsEnabled: Bool = Settings.Defaults.hapticsEnabled
+    internal private(set) var hideStatusBar: Bool = Settings.Defaults.hideStatusBar
     internal private(set) var generationNumber: Int = 0
     internal private(set) var inactiveColorRandomNumber: Int = 0
     internal private(set) var inactiveColorRandomDynamicNumber: Int = 0
@@ -26,51 +26,26 @@ public final class LifeCellGridView: CellGridView
     // active if it has exactly six active neighbors, in addition to the normal
     // rule of being actived if it has exactly three active neighbors.
     //
-    internal private(set) var variantHighLife: Bool
+    internal private(set) var variantHighLife: Bool = Settings.Defaults.variantHighLife
     //
     // In the Overpoplate variant of Conway's Life, an active cell which would
     // otherwise be deactivated due to overpopulation, i.e. because it had more
     // than three active neighbors, is allowed to survive (i.e. remains active).
     //
-    internal private(set) var variantOverPopulate: Bool
+    internal private(set) var variantOverPopulate: Bool = Settings.Defaults.variantOverPopulate
     //
     // In the InactiveFade variant of Conway's Life, an inactive cell will
     // be colored in a faded fashion depending on its "age" as defined by
     // how long it has been inactive (up to variantInactiveFadeAgeMax).
     //
-    internal private(set) var variantInactiveFade: Bool
-    internal private(set) var variantInactiveFadeAgeMax: Int
+    internal private(set) var variantInactiveFade: Bool = Settings.Defaults.variantInactiveFade
+    internal private(set) var variantInactiveFadeAgeMax: Int = Settings.Defaults.variantInactiveFadeAgeMax
     private               var variantInactiveFadeCells: Set<CellLocation> = []
-    internal private(set) var variantLatixOcclude: Bool
+    internal private(set) var variantLatixOcclude: Bool = Settings.Defaults.variantLatixOcclude
     internal              var latixCells: [LatixCell] = []
-    internal private(set) var selectModeFat: Bool
-    internal private(set) var selectModeExtraFat: Bool
-    internal private(set) var lifehashValue: String
-
-    public init(_ config: LifeCellGridView.Config? = nil) {
-        let config: LifeCellGridView.Config = config ?? LifeCellGridView.Config()
-        self.gameMode                   = config.gameMode
-        self.activeColor                = config.activeColor
-        self.inactiveColor              = config.inactiveColor
-        self.inactiveColorRandom        = config.inactiveColorRandom
-        self.inactiveColorRandomDynamic = config.inactiveColorRandomDynamic
-        self.inactiveColorRandomPalette = config.inactiveColorRandomPalette
-        self.inactiveColorRandomFilter  = config.inactiveColorRandomFilter
-        self.variantHighLife            = config.variantHighLife
-        self.variantOverPopulate        = config.variantOverPopulate
-        self.variantInactiveFade        = config.variantInactiveFade
-        self.variantInactiveFadeAgeMax  = config.variantInactiveFadeAgeMax
-        self.variantLatixOcclude        = config.variantLatixOcclude
-        self.selectModeFat              = config.selectModeFat
-        self.selectModeExtraFat         = config.selectModeExtraFat
-        self.lifehashValue              = config.lifehashValue
-        self.dragThreshold              = config.dragThreshold
-        self.swipeThreshold             = config.swipeThreshold
-        self.soundsEnabled              = config.soundsEnabled
-        self.hapticsEnabled             = config.hapticsEnabled
-        self.hideStatusBar              = config.hideStatusBar
-        super.init(config)
-    }
+    internal private(set) var selectModeFat: Bool = Settings.Defaults.selectModeFat
+    internal private(set) var selectModeExtraFat: Bool = Settings.Defaults.selectModeExtraFat
+    internal private(set) var lifehashValue: String = Settings.Defaults.lifehashValue
 
     internal func initialize(_ settings: Settings,
                                screen: Screen,

@@ -170,18 +170,16 @@ struct ContentView: View
             return
         }
         self.cellGridView.configure(self.settings)
+        self.cellGridView.automationInterval = self.settings.automationInterval
+        self.cellGridView.selectRandomInterval = self.settings.selectRandomInterval
         self.updateImage()
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
         self.hideStatusBar = settings.hideStatusBar
         self.automationResume()
         self.selectRandomResume()
-        if (settings.automationMode) {
-            self.automationStart()
-        }
-        else {
-            self.automationStop()
-        }
+        settings.automationMode ? self.automationStart() : self.automationStop()
+        settings.selectRandomMode ? self.selectRandomStart() : self.selectRandomStop()
     }
 
     private func toggleShowControls() {
@@ -221,12 +219,10 @@ struct ContentView: View
 
     private func automationPause() {
         self.cellGridView.automationPause()
-        // self.settings.automationMode = self.cellGridView.automationMode
     }
 
     private func automationResume() {
         self.cellGridView.automationResume()
-        // self.settings.automationMode = self.cellGridView.automationMode
     }
 
     private func selectRandomModeToggle() {
@@ -234,14 +230,22 @@ struct ContentView: View
         self.settings.selectRandomMode = self.cellGridView.selectRandomMode
     }
 
+    private func selectRandomStart() {
+        self.cellGridView.selectRandomStart()
+        self.settings.selectRandomMode = self.cellGridView.selectRandomMode
+    }
+
+    private func selectRandomStop() {
+        self.cellGridView.selectRandomStop()
+        self.settings.selectRandomMode = self.cellGridView.selectRandomMode
+    }
+
     private func selectRandomPause() {
         self.cellGridView.selectRandomPause()
-        // self.settings.selectRandomMode = self.cellGridView.selectRandomMode
     }
 
     private func selectRandomResume() {
         self.cellGridView.selectRandomResume()
-        // self.settings.selectRandomMode = self.cellGridView.selectRandomMode
     }
 }
 

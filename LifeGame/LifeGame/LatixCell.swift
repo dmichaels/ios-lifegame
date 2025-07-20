@@ -232,6 +232,7 @@ public class LatixCell: Equatable {
                 Colour.orange,
                 Colour.magenta,
                 Colour.black,
+                Colour.white,
             ]
             internal static let colors : [Colour] = (
                 Cache._colors +
