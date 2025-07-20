@@ -131,6 +131,11 @@ struct SettingsView: View
                 }
                 .hide(settings.gameMode != GameMode.latix)
 
+                HStack { // xyzzy/todo/temporary/test
+                    IconLabel("Automation", "waveform.path")
+                    Toggle("", isOn: $settings.automationMode)
+                }
+
                 HStack {
                     IconLabel("Speed", "waveform.path")
                     Picker("", selection: $settings.automationInterval) {

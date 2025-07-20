@@ -79,7 +79,8 @@ struct ContentView: View
                                                      updateImage: self.updateImage)
                         self.rotateImage()
                         self.updateImage()
-                        if (self.settings.automationMode) { self.cellGridView.automationStart() }
+                        // if (self.settings.automationMode) { self.cellGridView.automationStart() }
+                        if (self.settings.automationMode) { self.automationStart() }
                         if (self.settings.selectRandomMode) { self.cellGridView.selectRandomStart() }
                         self.feedback.soundsEnabled = settings.soundsEnabled
                         self.feedback.hapticsEnabled = settings.hapticsEnabled
@@ -156,8 +157,8 @@ struct ContentView: View
     }
 
     private func showSettings() {
-        self.automationModePause()
-        self.selectRandomModePause()
+        self.automationPause()
+        self.selectRandomPause()
         self.settings.fromConfig(self.cellGridView)
         self.showSettingsView = true
     }
@@ -173,8 +174,14 @@ struct ContentView: View
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
         self.hideStatusBar = settings.hideStatusBar
-        self.automationModeResume()
-        self.selectRandomModeResume()
+        self.automationResume()
+        self.selectRandomResume()
+        if (settings.automationMode) {
+            self.automationStart()
+        }
+        else {
+            self.automationStop()
+        }
     }
 
     private func toggleShowControls() {
@@ -212,14 +219,14 @@ struct ContentView: View
         self.settings.automationMode = self.cellGridView.automationMode
     }
 
-    private func automationModePause() {
-        self.cellGridView.automationModePause()
-        self.settings.automationMode = self.cellGridView.automationMode
+    private func automationPause() {
+        self.cellGridView.automationPause()
+        // self.settings.automationMode = self.cellGridView.automationMode
     }
 
-    private func automationModeResume() {
-        self.cellGridView.automationModeResume()
-        self.settings.automationMode = self.cellGridView.automationMode
+    private func automationResume() {
+        self.cellGridView.automationResume()
+        // self.settings.automationMode = self.cellGridView.automationMode
     }
 
     private func selectRandomModeToggle() {
@@ -227,14 +234,14 @@ struct ContentView: View
         self.settings.selectRandomMode = self.cellGridView.selectRandomMode
     }
 
-    private func selectRandomModePause() {
-        self.cellGridView.selectRandomModePause()
-        self.settings.selectRandomMode = self.cellGridView.selectRandomMode
+    private func selectRandomPause() {
+        self.cellGridView.selectRandomPause()
+        // self.settings.selectRandomMode = self.cellGridView.selectRandomMode
     }
 
-    private func selectRandomModeResume() {
-        self.cellGridView.selectRandomModeResume()
-        self.settings.selectRandomMode = self.cellGridView.selectRandomMode
+    private func selectRandomResume() {
+        self.cellGridView.selectRandomResume()
+        // self.settings.selectRandomMode = self.cellGridView.selectRandomMode
     }
 }
 

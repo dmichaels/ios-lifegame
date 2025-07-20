@@ -75,7 +75,7 @@ class Settings: ObservableObject
     //         self.showSettingsView = true
     //     }
     //
-    public func fromConfig(_ config: LifeCellGridView.Config)
+    public func xfromConfig(_ config: LifeCellGridView.Config)
     {
         // CellGridView base class specific properties.
 
@@ -99,9 +99,9 @@ class Settings: ObservableObject
         self.restrictShift             = config.restrictShift
         self.unscaledZoom              = config.unscaledZoom
         self.selectMode                = config.selectMode
-        self.selectRandomMode          = config.selectRandomMode
+        // self.selectRandomMode          = config.selectRandomMode
         self.selectRandomInterval      = config.selectRandomInterval
-        self.automationMode            = config.automationMode
+        // self.automationMode            = config.automationMode
         self.automationInterval        = config.automationInterval
         self.variantHighLife           = config.variantHighLife
         self.variantOverPopulate       = config.variantOverPopulate
@@ -130,7 +130,58 @@ class Settings: ObservableObject
 
     public func fromConfig(_ cellGridView: LifeCellGridView)
     {
-        self.fromConfig(cellGridView.config)
+        //// self.fromConfig(cellGridView.config)
+        let config = cellGridView.config
+
+        // CellGridView base class specific properties.
+
+        self.viewBackground     = config.viewBackground
+        self.viewTransparency   = config.viewTransparency
+        self.viewScaling        = config.viewScaling
+        self.cellSize           = config.cellSize
+        self.cellPadding        = config.cellPadding
+        self.cellShape          = config.cellShape
+        self.cellShading        = config.cellShading
+        self.gridColumns        = config.gridColumns
+        self.gridRows           = config.gridRows
+        self.fit                = config.fit
+        //
+        // This center property we treat as not really persistent;
+        // we always use its false state when going into SettingsView.
+        //
+        self.center                    = false
+        self.cellAntialiasFade         = config.cellAntialiasFade
+        self.cellRoundedRadius         = config.cellRoundedRadius
+        self.restrictShift             = config.restrictShift
+        self.unscaledZoom              = config.unscaledZoom
+        self.selectMode                = config.selectMode
+        // self.selectRandomMode          = config.selectRandomMode
+        self.selectRandomInterval      = config.selectRandomInterval
+        // self.automationMode            = config.automationMode
+        self.automationInterval        = config.automationInterval
+        self.variantHighLife           = config.variantHighLife
+        self.variantOverPopulate       = config.variantOverPopulate
+        self.variantInactiveFade       = config.variantInactiveFade
+        self.variantInactiveFadeAgeMax = config.variantInactiveFadeAgeMax
+        self.variantLatixOcclude       = config.variantLatixOcclude
+        self.selectModeFat             = config.selectModeFat
+        self.selectModeExtraFat        = config.selectModeExtraFat
+        self.lifehashValue             = config.lifehashValue
+
+        // LifeCellGridView specific properties.
+
+        self.gameMode                   = config.gameMode
+        self.activeColor                = config.activeColor
+        self.inactiveColor              = config.inactiveColor
+        self.inactiveColorRandom        = config.inactiveColorRandom
+        self.inactiveColorRandomDynamic = config.inactiveColorRandomDynamic
+        self.inactiveColorRandomPalette = config.inactiveColorRandomPalette
+        self.inactiveColorRandomFilter  = config.inactiveColorRandomFilter
+        self.dragThreshold              = config.dragThreshold
+        self.swipeThreshold             = config.swipeThreshold
+        self.soundsEnabled              = config.soundsEnabled
+        self.hapticsEnabled             = config.hapticsEnabled
+        self.hideStatusBar              = config.hideStatusBar
     }
 
     // Creates and returns a new LifeCellGridView.Config (derived from CellGridView.Config)

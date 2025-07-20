@@ -195,6 +195,7 @@ public final class LifeCellGridView: CellGridView
         }
 
         self.generationNumber += 1
+        print("NEXG> \(self.generationNumber)")
         self.inactiveColorRandomDynamicNumber += 1
 
         var neighbors: [CellLocation: Int] = [:]
