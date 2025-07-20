@@ -67,8 +67,8 @@ public class LatixCell: Equatable {
         for perimeterCellLocation in perimeterCellLocations {
             if let lifeCell: LifeCell = self._cellGridView.gridCell(perimeterCellLocation.x, perimeterCellLocation.y) {
                 //
-                // Optionally (variantLatixOcclude) prevent older cell expansions from overwriting newer ones,
-                // so that the newer ones always appear visually "on top" of older ones, i.e. so that circles
+                // Optionally (variantLatixOcclude) prevent older cell expansions from overwriting younger ones,
+                // so that the younger ones always appear visually "on top" of older ones, i.e. so that circles
                 // occluded one another as one might normally, visually expect.
                 //
                 // Also note that, unlike the Life game mode, for Latix mode if a cell is not currently visible
@@ -79,18 +79,18 @@ public class LatixCell: Equatable {
                 //
                 var skip: Bool = !self._cellGridView.cellVisible(lifeCell.x, lifeCell.y)
                 if (!skip && self._cellGridView.variantLatixOcclude) {
-                    let newerLatixCells: [LatixCell] = self._cellGridView.latixYoungerCells(age: self.age)
-                    for newerLatixCell in newerLatixCells {
+                    let youngerLatixCells: [LatixCell] = self._cellGridView.latixYoungerCells(age: self.age)
+                    for youngerLatixCell in youngerLatixCells {
                         //
                         // If this cell (perimeterCellLocation/lifeCell), on the perimeter of the outermost radius
                         // of this (self) cell, is within the circle defined by the entirety of the newer/younger
-                        // latix-cell (newerLatixCell) within this loop (i.e. the circle whose center is the
+                        // latix-cell (youngerLatixCell) within this loop (i.e. the circle whose center is the
                         // latix-cell in this loop and its extent being defined by its current radius), then
-                        // do not update this cell color, as this cell is occluded by the newer latix-cell.
+                        // do not update this cell color, as this cell is occluded by the younger latix-cell.
                         //
                         if (LatixCell.pointWithinCircle(lifeCell.x, lifeCell.y,
-                                                        circle: newerLatixCell._location.x, newerLatixCell._location.y,
-                                                        radius: newerLatixCell._radius)) {
+                                                        circle: youngerLatixCell._location.x, youngerLatixCell._location.y,
+                                                        radius: youngerLatixCell._radius)) {
                             skip = true
                             break
                         }

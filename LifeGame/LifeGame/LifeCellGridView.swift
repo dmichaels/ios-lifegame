@@ -303,12 +303,12 @@ public final class LifeCellGridView: CellGridView
     }
 
     internal func latixYoungerCells(age: Int) -> [LatixCell] {
-        var newerLatixCells: [LatixCell] = []
+        var youngerLatixCells: [LatixCell] = []
         for latixCell in self.latixCells {
             if (latixCell.age < age) {
-                newerLatixCells.append(latixCell)
+                youngerLatixCells.append(latixCell)
             }
         }
-        return newerLatixCells
+        return youngerLatixCells
     }
 }
