@@ -55,9 +55,10 @@ struct ContentView: View
                                 onSwipeLeft: { /* self.showSettings() */ },
                             )
                             NavigationLink(
-                                destination: SettingsView().onDisappear {
-                                    self.updateSettings()
-                                },
+                                destination: SettingsView()
+                                    .onDisappear {
+                                        self.updateSettings()
+                                    },
                                 isActive: $showSettingsView,
                                 label: { EmptyView() }
                             )
@@ -79,9 +80,9 @@ struct ContentView: View
                                                      updateImage: self.updateImage)
                         self.rotateImage()
                         self.updateImage()
-                        // if (self.settings.automationMode) { self.cellGridView.automationStart() }
                         if (self.settings.automationMode) { self.automationStart() }
-                        if (self.settings.selectRandomMode) { self.cellGridView.selectRandomStart() }
+                        if (self.settings.selectRandomMode) { self.selectRandomStart() }
+                        self.cellGridView.selectMode = self.settings.selectMode
                         self.feedback.soundsEnabled = settings.soundsEnabled
                         self.feedback.hapticsEnabled = settings.hapticsEnabled
                         self.hideStatusBar = settings.hideStatusBar
@@ -122,7 +123,7 @@ struct ContentView: View
                         if (self.showControlBar) {
                             ControlBar(
                                 selectMode: $settings.selectMode,
-                                selectModeToggle: self.cellGridView.selectModeToggle,
+                                selectModeToggle: self.selectModeToggle,
                                 automationMode: $settings.automationMode,
                                 automationModeToggle: self.automationModeToggle,
                                 automationStep: self.cellGridView.automationStep,
@@ -223,6 +224,15 @@ struct ContentView: View
 
     private func automationResume() {
         self.cellGridView.automationResume()
+    }
+
+    private var selectMode: Bool {
+        get { self.cellGridView.selectMode }
+        set { self.cellGridView.selectMode = newValue }
+    }
+
+    private func selectModeToggle() {
+        self.cellGridView.selectModeToggle()
     }
 
     private func selectRandomModeToggle() {

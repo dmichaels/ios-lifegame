@@ -91,10 +91,8 @@ extension LifeCellGridView
                 cellRoundedRadius:    s?.cellRoundedRadius    ?? v?.cellRoundedRadius    ?? d.cellRoundedRadius,
                 restrictShift:        s?.restrictShift        ?? v?.restrictShift        ?? d.restrictShift,
                 unscaledZoom:         s?.unscaledZoom         ?? v?.unscaledZoom         ?? d.unscaledZoom,
-                selectMode:           s?.selectMode           ?? v?.selectMode           ?? d.selectMode,
-                // selectRandomMode:     s?.selectRandomMode     ?? v?.selectRandomMode     ?? d.selectRandomMode,
+                // selectMode:           s?.selectMode           ?? v?.selectMode           ?? d.selectMode,
                 selectRandomInterval: s?.selectRandomInterval ?? v?.selectRandomInterval ?? d.selectRandomInterval,
-                // automationMode:       s?.automationMode       ?? v?.automationMode       ?? d.automationMode,
                 automationInterval:   s?.automationInterval   ?? v?.automationInterval   ?? d.automationInterval)
         }
     }

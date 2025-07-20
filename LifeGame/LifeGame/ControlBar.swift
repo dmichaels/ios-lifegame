@@ -39,7 +39,7 @@ struct ControlBar: View {
                              action: self.selectModeToggle,
                              icon: "square.and.pencil",
                              iconToggled: "arrow.up.and.down.and.arrow.left.and.right",
-                             iconShiftY: -1,
+                             iconShiftY: -2,
                              iconToggledWidth: 22)
             ControlBarButton(action: self.showSettings, icon: "gear")
         }

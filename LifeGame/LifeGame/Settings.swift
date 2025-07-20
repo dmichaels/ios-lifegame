@@ -6,7 +6,8 @@ import Utils
 
 class Settings: ObservableObject
 {
-    // CellGridView base class specific properties we are interested in controlling; see CellGridView.Defaults for all.
+    // CellGridView (Config) base class specific properties we are interested in controlling.
+    // See CellGridView.Defaults for all.
 
     @Published var viewBackground: Colour       = Colour.black
     @Published var viewTransparency: UInt8      = Colour.TRANSPARENT
@@ -27,11 +28,14 @@ class Settings: ObservableObject
     @Published var restrictShift: Bool          = true
     @Published var unscaledZoom: Bool           = false
    
-    @Published var selectMode: Bool             = true
-    @Published var selectRandomMode: Bool       = false
     @Published var selectRandomInterval: Double = CellGridView.Defaults.selectRandomInterval
+    @Published var automationInterval: Double   = 0.02 // CellGridView.Defaults.automationInterval
+
+    // Other CellGridView (non-Config) base class specific properties we are interested in controlling.
+
     @Published var automationMode: Bool         = true
-    @Published var automationInterval: Double   = CellGridView.Defaults.automationInterval
+    @Published var selectMode: Bool             = false
+    @Published var selectRandomMode: Bool       = false
 
     // LifeCellGridView specific properties.
 
@@ -64,76 +68,12 @@ class Settings: ObservableObject
     //
     public static let Defaults: Settings = Settings()
 
-    // Sets up this Settings object from the given LifeCellGridView.Config.
-    // Intended to be called, for example, before showing SettingsView
-    // from ContentView, something like this:
-    //
-    //     @EnvironmentObject var cellGridView: LifeCellGridView
-    //     @EnvironmentObject var settings: Settings
-    //     func gotoSettingsView() {
-    //         self.settings.fromConfig(self.cellGridView.config)
-    //         self.showSettingsView = true
-    //     }
-    //
-    public func xfromConfig(_ config: LifeCellGridView.Config)
-    {
-        // CellGridView base class specific properties.
-
-        self.viewBackground     = config.viewBackground
-        self.viewTransparency   = config.viewTransparency
-        self.viewScaling        = config.viewScaling
-        self.cellSize           = config.cellSize
-        self.cellPadding        = config.cellPadding
-        self.cellShape          = config.cellShape
-        self.cellShading        = config.cellShading
-        self.gridColumns        = config.gridColumns
-        self.gridRows           = config.gridRows
-        self.fit                = config.fit
-        //
-        // This center property we treat as not really persistent;
-        // we always use its false state when going into SettingsView.
-        //
-        self.center                    = false
-        self.cellAntialiasFade         = config.cellAntialiasFade
-        self.cellRoundedRadius         = config.cellRoundedRadius
-        self.restrictShift             = config.restrictShift
-        self.unscaledZoom              = config.unscaledZoom
-        self.selectMode                = config.selectMode
-        // self.selectRandomMode          = config.selectRandomMode
-        self.selectRandomInterval      = config.selectRandomInterval
-        // self.automationMode            = config.automationMode
-        self.automationInterval        = config.automationInterval
-        self.variantHighLife           = config.variantHighLife
-        self.variantOverPopulate       = config.variantOverPopulate
-        self.variantInactiveFade       = config.variantInactiveFade
-        self.variantInactiveFadeAgeMax = config.variantInactiveFadeAgeMax
-        self.variantLatixOcclude       = config.variantLatixOcclude
-        self.selectModeFat             = config.selectModeFat
-        self.selectModeExtraFat        = config.selectModeExtraFat
-        self.lifehashValue             = config.lifehashValue
-
-        // LifeCellGridView specific properties.
-
-        self.gameMode                   = config.gameMode
-        self.activeColor                = config.activeColor
-        self.inactiveColor              = config.inactiveColor
-        self.inactiveColorRandom        = config.inactiveColorRandom
-        self.inactiveColorRandomDynamic = config.inactiveColorRandomDynamic
-        self.inactiveColorRandomPalette = config.inactiveColorRandomPalette
-        self.inactiveColorRandomFilter  = config.inactiveColorRandomFilter
-        self.dragThreshold              = config.dragThreshold
-        self.swipeThreshold             = config.swipeThreshold
-        self.soundsEnabled              = config.soundsEnabled
-        self.hapticsEnabled             = config.hapticsEnabled
-        self.hideStatusBar              = config.hideStatusBar
-    }
-
     public func fromConfig(_ cellGridView: LifeCellGridView)
     {
         //// self.fromConfig(cellGridView.config)
         let config = cellGridView.config
 
-        // CellGridView base class specific properties.
+        // CellGridView (Config) base class specific properties.
 
         self.viewBackground     = config.viewBackground
         self.viewTransparency   = config.viewTransparency
@@ -154,10 +94,7 @@ class Settings: ObservableObject
         self.cellRoundedRadius         = config.cellRoundedRadius
         self.restrictShift             = config.restrictShift
         self.unscaledZoom              = config.unscaledZoom
-        self.selectMode                = config.selectMode
-        // self.selectRandomMode          = config.selectRandomMode
         self.selectRandomInterval      = config.selectRandomInterval
-        // self.automationMode            = config.automationMode
         self.automationInterval        = config.automationInterval
         self.variantHighLife           = config.variantHighLife
         self.variantOverPopulate       = config.variantOverPopulate
@@ -167,6 +104,12 @@ class Settings: ObservableObject
         self.selectModeFat             = config.selectModeFat
         self.selectModeExtraFat        = config.selectModeExtraFat
         self.lifehashValue             = config.lifehashValue
+
+        // Other CellGridView (non-Config) base class specific properties.
+
+        self.automationMode             = self.automationMode
+        self.selectMode                 = self.selectMode
+        self.selectRandomMode           = self.selectRandomMode
 
         // LifeCellGridView specific properties.
 
