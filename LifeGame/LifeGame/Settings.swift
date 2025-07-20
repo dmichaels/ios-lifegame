@@ -29,7 +29,7 @@ class Settings: ObservableObject
     @Published var unscaledZoom: Bool           = false
    
     @Published var selectRandomInterval: Double = CellGridView.Defaults.selectRandomInterval
-    @Published var automationInterval: Double   = 0.02 // CellGridView.Defaults.automationInterval
+    @Published var automationInterval: Double   = CellGridView.Defaults.automationInterval
 
     // Other CellGridView (non-Config) base class specific properties we are interested in controlling.
 

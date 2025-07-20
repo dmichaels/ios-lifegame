@@ -12,15 +12,6 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var inactiveColorRandomDynamic: Bool = Settings.Defaults.inactiveColorRandomDynamic
     internal private(set) var inactiveColorRandomPalette: ColourPalette = Settings.Defaults.inactiveColorRandomPalette
     internal private(set) var inactiveColorRandomFilter: ColourFilter? = Settings.Defaults.inactiveColorRandomFilter
-    internal private(set) var dragThreshold: Int = Settings.Defaults.dragThreshold
-    internal private(set) var swipeThreshold: Int = Settings.Defaults.swipeThreshold
-    internal private(set) var soundsEnabled: Bool = Settings.Defaults.soundsEnabled
-    internal private(set) var hapticsEnabled: Bool = Settings.Defaults.hapticsEnabled
-    internal private(set) var hideStatusBar: Bool = Settings.Defaults.hideStatusBar
-    internal private(set) var generationNumber: Int = 0
-    internal private(set) var inactiveColorRandomNumber: Int = 0
-    internal private(set) var inactiveColorRandomDynamicNumber: Int = 0
-    private               var activeCells: Set<CellLocation> = []
     //
     // In the HighLife variant of Conway's Life, an inactive cell also becomes
     // active if it has exactly six active neighbors, in addition to the normal
@@ -39,20 +30,31 @@ public final class LifeCellGridView: CellGridView
     // how long it has been inactive (up to variantInactiveFadeAgeMax).
     //
     internal private(set) var variantInactiveFade: Bool = Settings.Defaults.variantInactiveFade
-    internal private(set) var variantInactiveFadeAgeMax: Int = Settings.Defaults.variantInactiveFadeAgeMax
-    private               var variantInactiveFadeCells: Set<CellLocation> = []
     internal private(set) var variantLatixOcclude: Bool = Settings.Defaults.variantLatixOcclude
-    internal              var latixCells: [LatixCell] = []
     internal private(set) var selectModeFat: Bool = Settings.Defaults.selectModeFat
     internal private(set) var selectModeExtraFat: Bool = Settings.Defaults.selectModeExtraFat
     internal private(set) var lifehashValue: String = Settings.Defaults.lifehashValue
+    internal private(set) var dragThreshold: Int = Settings.Defaults.dragThreshold
+    internal private(set) var swipeThreshold: Int = Settings.Defaults.swipeThreshold
+    internal private(set) var soundsEnabled: Bool = Settings.Defaults.soundsEnabled
+    internal private(set) var hapticsEnabled: Bool = Settings.Defaults.hapticsEnabled
+    internal private(set) var hideStatusBar: Bool = Settings.Defaults.hideStatusBar
+
+    private               var activeCells: Set<CellLocation> = []
+    private               var latixCells: [LatixCell] = []
+    internal private(set) var inactiveColorRandomNumber: Int = 0
+    internal private(set) var inactiveColorRandomDynamicNumber: Int = 0
+    internal private(set) var variantInactiveFadeAgeMax: Int = Settings.Defaults.variantInactiveFadeAgeMax
+    private               var variantInactiveFadeCells: Set<CellLocation> = []
+    internal private(set) var generationNumber: Int = 0
 
     internal func initialize(_ settings: Settings,
                                screen: Screen,
                                viewWidth: Int,
                                viewHeight: Int,
-                               updateImage: (() -> Void)? = nil)
+                               updateImage: @escaping (() -> Void))
     {
+        self.configure(settings, _initialize: true)
         super.initialize(settings.toConfig(self),
                          screen: screen,
                          viewWidth: viewWidth,
@@ -60,28 +62,34 @@ public final class LifeCellGridView: CellGridView
                          updateImage: updateImage)
     }
 
-    internal func configure(_ settings: Settings) {
-        self.gameMode = settings.gameMode
-        self.activeColor = settings.activeColor
-        self.inactiveColor = settings.inactiveColor
-        self.inactiveColorRandom = settings.inactiveColorRandom
+    internal func configure(_ settings: Settings, _initialize: Bool = false) {
+
+        super.automationMode            = settings.automationMode
+        super.selectMode                = settings.selectMode
+        super.selectRandomMode          = settings.selectRandomMode
+
+        self.gameMode                   = settings.gameMode
+        self.activeColor                = settings.activeColor
+        self.inactiveColor              = settings.inactiveColor
+        self.inactiveColorRandom        = settings.inactiveColorRandom
         self.inactiveColorRandomDynamic = settings.inactiveColorRandomDynamic
         self.inactiveColorRandomPalette = settings.inactiveColorRandomPalette
-        self.inactiveColorRandomFilter = settings.inactiveColorRandomFilter
-        self.variantHighLife = settings.variantHighLife
-        self.variantOverPopulate = settings.variantOverPopulate
-        self.variantInactiveFade = settings.variantInactiveFade
-        self.variantInactiveFadeAgeMax = settings.variantInactiveFadeAgeMax
-        self.variantLatixOcclude = settings.variantLatixOcclude
-        self.selectModeFat = settings.selectModeFat
-        self.selectModeExtraFat = settings.selectModeExtraFat
-        self.lifehashValue = settings.lifehashValue
-        self.soundsEnabled = settings.soundsEnabled
-        self.hapticsEnabled = settings.hapticsEnabled
-        self.hideStatusBar = settings.hideStatusBar
-        self.inactiveColorRandomNumber += 2
-        self.inactiveColorRandomDynamicNumber += 2
-        super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
+        self.inactiveColorRandomFilter  = settings.inactiveColorRandomFilter
+        self.variantHighLife            = settings.variantHighLife
+        self.variantOverPopulate        = settings.variantOverPopulate
+        self.variantInactiveFade        = settings.variantInactiveFade
+        self.variantInactiveFadeAgeMax  = settings.variantInactiveFadeAgeMax
+        self.variantLatixOcclude        = settings.variantLatixOcclude
+        self.selectModeFat              = settings.selectModeFat
+        self.selectModeExtraFat         = settings.selectModeExtraFat
+        self.lifehashValue              = settings.lifehashValue
+        self.soundsEnabled              = settings.soundsEnabled
+        self.hapticsEnabled             = settings.hapticsEnabled
+        self.hideStatusBar              = settings.hideStatusBar
+
+        if (!_initialize) {
+            super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
+        }
     }
 
     internal func configure(_ config: LifeCellGridView.Config) {
@@ -94,7 +102,8 @@ public final class LifeCellGridView: CellGridView
 
     public override func createCell<T: Cell>(x: Int, y: Int, color: Colour, previous: T? = nil) -> T? {
         let cell: LifeCell = LifeCell(cellGridView: self, x: x, y: y, color: color)
-        if ((config.gameMode == GameMode.life) || (config.gameMode == GameMode.lifehash)) {
+        // if ((config.gameMode == GameMode.life) || (config.gameMode == GameMode.lifehash)) {
+        if ((self.gameMode == GameMode.life) || (self.gameMode == GameMode.lifehash)) {
             if (self.activeCells.contains(cell.location)) {
                 cell.activate(nowrite: true, nonotify: true)
             }
@@ -169,9 +178,7 @@ public final class LifeCellGridView: CellGridView
             return
         }
 
-        self.generationNumber += 1
         print("NEXG> \(self.generationNumber)")
-        self.inactiveColorRandomDynamicNumber += 1
 
         var neighbors: [CellLocation: Int] = [:]
 
@@ -249,7 +256,7 @@ public final class LifeCellGridView: CellGridView
             if let cell: LifeCell = self.gridCell(oldLocation.x, oldLocation.y) {
                 cell.deactivate(nowrite: true, nonotify: true)
                 self.variantInactiveFadeCells.insert(oldLocation)
-                cell._inactiveGenerationNumber = self.generationNumber - 1
+                cell._inactiveGenerationNumber = self.generationNumber
                 cell.write()
             }
         }
@@ -265,6 +272,8 @@ public final class LifeCellGridView: CellGridView
         }
 
         self.activeCells = newActiveCells
+        self.generationNumber += 1
+        self.inactiveColorRandomDynamicNumber += 1
     }
 
     private func latixNextGeneration()

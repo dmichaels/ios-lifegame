@@ -80,9 +80,9 @@ struct ContentView: View
                                                      updateImage: self.updateImage)
                         self.rotateImage()
                         self.updateImage()
-                        if (self.settings.automationMode) { self.automationStart() }
-                        if (self.settings.selectRandomMode) { self.selectRandomStart() }
-                        self.cellGridView.selectMode = self.settings.selectMode
+                        // if (self.settings.automationMode) { self.automationStart() }
+                        // if (self.settings.selectRandomMode) { self.selectRandomStart() }
+                        // self.cellGridView.selectMode = self.settings.selectMode
                         self.feedback.soundsEnabled = settings.soundsEnabled
                         self.feedback.hapticsEnabled = settings.hapticsEnabled
                         self.hideStatusBar = settings.hideStatusBar
@@ -171,8 +171,6 @@ struct ContentView: View
             return
         }
         self.cellGridView.configure(self.settings)
-        self.cellGridView.automationInterval = self.settings.automationInterval
-        self.cellGridView.selectRandomInterval = self.settings.selectRandomInterval
         self.updateImage()
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
