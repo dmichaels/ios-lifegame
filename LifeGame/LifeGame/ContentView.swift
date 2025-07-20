@@ -150,9 +150,9 @@ struct ContentView: View
     }
 
     private func showSettings() {
+        self.settings.fromConfig(self.cellGridView)
         self.automationPause()
         self.selectRandomPause()
-        self.settings.fromConfig(self.cellGridView)
         self.showSettingsView = true
     }
 
@@ -172,8 +172,8 @@ struct ContentView: View
         //
         // Only needed if we control these from SettingsView.
         //
-        settings.automationMode ? self.automationStart() : self.automationStop()
-        settings.selectRandomMode ? self.selectRandomStart() : self.selectRandomStop()
+        // settings.automationMode ? self.automationStart() : self.automationStop()
+        // settings.selectRandomMode ? self.selectRandomStart() : self.selectRandomStop()
     }
 
     private func toggleShowControls() {
