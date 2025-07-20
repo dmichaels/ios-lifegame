@@ -33,9 +33,9 @@ class Settings: ObservableObject
 
     // Other CellGridView (non-Config) base class specific properties we are interested in controlling.
 
-    @Published var automationMode: Bool         = true
-    @Published var selectMode: Bool             = false
-    @Published var selectRandomMode: Bool       = false
+    @Published var automationMode: Bool   = true
+    @Published var selectMode: Bool       = false
+    @Published var selectRandomMode: Bool = false
 
     // LifeCellGridView specific properties.
 
@@ -58,9 +58,13 @@ class Settings: ObservableObject
 
     @Published var dragThreshold: Int                        = 2
     @Published var swipeThreshold: Int                       = 100
-    @Published var soundsEnabled: Bool                       = false
-    @Published var hapticsEnabled: Bool                      = true
-    @Published var hideStatusBar: Bool                       = true
+
+    // ContentView specific properties.
+
+    @Published var ignoreSafeArea: Bool = true
+    @Published var hideStatusBar: Bool  = true
+    @Published var soundsEnabled: Bool  = false
+    @Published var hapticsEnabled: Bool = true
 
     // This just allows this Settings object to be the single place where we define the default parameters
     // for this app, which are easily accessible elsewhere, without having to define a separate Defaults class;
@@ -70,8 +74,7 @@ class Settings: ObservableObject
 
     public func fromConfig(_ cellGridView: LifeCellGridView)
     {
-        //// self.fromConfig(cellGridView.config)
-        let config = cellGridView.config
+        let config: LifeCellGridView.Config = cellGridView.config
 
         // CellGridView (Config) base class specific properties.
 
@@ -122,9 +125,6 @@ class Settings: ObservableObject
         self.inactiveColorRandomFilter  = config.inactiveColorRandomFilter
         self.dragThreshold              = config.dragThreshold
         self.swipeThreshold             = config.swipeThreshold
-        self.soundsEnabled              = config.soundsEnabled
-        self.hapticsEnabled             = config.hapticsEnabled
-        self.hideStatusBar              = config.hideStatusBar
     }
 
     // Creates and returns a new LifeCellGridView.Config (derived from CellGridView.Config)

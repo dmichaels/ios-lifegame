@@ -7,20 +7,21 @@ struct ContentView: View
     @EnvironmentObject var cellGridView: LifeCellGridView
     @EnvironmentObject var settings: Settings
     @StateObject var orientation: OrientationObserver = OrientationObserver()
-    //
-    // This ignoreSafeArea is settable (e.g. in SettingsView); we currently always ignore the safe area;
-    // have not been able to get the geometry working in general when NOT ignoring the safe area;
-    // the image gets incorrectly shifted (up) on orientation change et cetera; todo someday.
-    //
-    @State private var ignoreSafeArea: Bool = true
-    @State private var hideStatusBar: Bool = Settings.Defaults.hideStatusBar
     @State private var viewRectangle: CGRect = CGRect.zero
     @State private var image: CGImage? = nil
     @State private var imageAngle: Angle = Angle.zero
     @State private var showSettingsView: Bool = false
     @State private var showControlBar: Bool = false
+    //
+    // This ignoreSafeArea is settable (e.g. in SettingsView); we currently always ignore the safe area;
+    // have not been able to get the geometry working in general when NOT ignoring the safe area;
+    // the image gets incorrectly shifted (up) on orientation change et cetera; todo someday.
+    //
+    @State private var ignoreSafeArea: Bool = Settings.Defaults.ignoreSafeArea
+    @State private var hideStatusBar: Bool = Settings.Defaults.hideStatusBar
+    @State private var feedback: Feedback = Feedback(sounds: Settings.Defaults.soundsEnabled,
+                                                     haptics: Settings.Defaults.hapticsEnabled)
     @State private var screenBackground: Colour? = nil
-    @State private var feedback: Feedback = Feedback()
 
     var body: some View {
         NavigationView {
@@ -69,8 +70,6 @@ struct ContentView: View
                         //
                         // See comment at top WRT setting our local automationMode state variable here.
                         //
-                        // self.automationMode = self.settings.automationMode
-                        // self.selectRandomMode = self.settings.selectRandomMode
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         let landscape = self.orientation.landscape
                         self.cellGridView.initialize(self.settings,
@@ -80,12 +79,9 @@ struct ContentView: View
                                                      updateImage: self.updateImage)
                         self.rotateImage()
                         self.updateImage()
-                        // if (self.settings.automationMode) { self.automationStart() }
-                        // if (self.settings.selectRandomMode) { self.selectRandomStart() }
-                        // self.cellGridView.selectMode = self.settings.selectMode
+                        self.hideStatusBar = settings.hideStatusBar
                         self.feedback.soundsEnabled = settings.soundsEnabled
                         self.feedback.hapticsEnabled = settings.hapticsEnabled
-                        self.hideStatusBar = settings.hideStatusBar
                     }
                     else {
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
@@ -95,14 +91,10 @@ struct ContentView: View
                     }
                     /*
                      * ACTUALLY ...
-                     * Forget why we even needed this; maybe for turning on/off ignoreSafeArea ...
-                     * which does not currently (nor ever we think) work ....
+                     * Forget why we even needed this; maybe related to turning on/off ignoreSafeArea;
+                     * which does not currently (nor ever we think) work in any case.
                      *
                     else {
-                        //
-                        // TODO
-                        // Still need to clean up this initialization/re-initializion stuff and on updateSettings too.
-                        //
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
                         if ((screen.width != self.cellGridView.screen.width) ||
                             (screen.height != self.cellGridView.screen.height)) {
@@ -172,9 +164,9 @@ struct ContentView: View
         }
         self.cellGridView.configure(self.settings)
         self.updateImage()
+        self.hideStatusBar = settings.hideStatusBar
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
-        self.hideStatusBar = settings.hideStatusBar
         self.automationResume()
         self.selectRandomResume()
         settings.automationMode ? self.automationStart() : self.automationStop()

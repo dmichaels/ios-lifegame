@@ -36,9 +36,6 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var lifehashValue: String = Settings.Defaults.lifehashValue
     internal private(set) var dragThreshold: Int = Settings.Defaults.dragThreshold
     internal private(set) var swipeThreshold: Int = Settings.Defaults.swipeThreshold
-    internal private(set) var soundsEnabled: Bool = Settings.Defaults.soundsEnabled
-    internal private(set) var hapticsEnabled: Bool = Settings.Defaults.hapticsEnabled
-    internal private(set) var hideStatusBar: Bool = Settings.Defaults.hideStatusBar
 
     private               var activeCells: Set<CellLocation> = []
     private               var latixCells: [LatixCell] = []
@@ -83,9 +80,6 @@ public final class LifeCellGridView: CellGridView
         self.selectModeFat              = settings.selectModeFat
         self.selectModeExtraFat         = settings.selectModeExtraFat
         self.lifehashValue              = settings.lifehashValue
-        self.soundsEnabled              = settings.soundsEnabled
-        self.hapticsEnabled             = settings.hapticsEnabled
-        self.hideStatusBar              = settings.hideStatusBar
 
         if (!_initialize) {
             super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)

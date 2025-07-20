@@ -25,9 +25,6 @@ extension LifeCellGridView
 
         public var dragThreshold: Int  = 3
         public var swipeThreshold: Int = 100
-        public var soundsEnabled: Bool
-        public var hapticsEnabled: Bool
-        public var hideStatusBar: Bool
 
         // Initializes this instance of LifeCellGridView.Config with the properties from the given
         // Settings; or if this is nil then with the properties from the given LifeCellGridView;
@@ -69,9 +66,6 @@ extension LifeCellGridView
             self.lifehashValue              = s?.lifehashValue              ?? v?.lifehashValue              ?? d.lifehashValue
             self.dragThreshold              = s?.dragThreshold              ?? v?.dragThreshold              ?? d.dragThreshold
             self.swipeThreshold             = s?.swipeThreshold             ?? v?.swipeThreshold             ?? d.swipeThreshold
-            self.soundsEnabled              = s?.soundsEnabled              ?? v?.soundsEnabled              ?? d.soundsEnabled
-            self.hapticsEnabled             = s?.hapticsEnabled             ?? v?.hapticsEnabled             ?? d.hapticsEnabled
-            self.hideStatusBar              = s?.hideStatusBar              ?? v?.hideStatusBar              ?? d.hideStatusBar
 
             // CellGridView base class specific properties.
 
