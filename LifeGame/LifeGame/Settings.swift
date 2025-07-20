@@ -34,7 +34,7 @@ class Settings: ObservableObject
     // Other CellGridView (non-Config) base class specific properties we are interested in controlling.
 
     @Published var automationMode: Bool   = true
-    @Published var selectMode: Bool       = false
+    @Published var selectMode: Bool       = true
     @Published var selectRandomMode: Bool = false
 
     // LifeCellGridView specific properties.

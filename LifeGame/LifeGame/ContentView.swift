@@ -163,12 +163,15 @@ struct ContentView: View
             return
         }
         self.cellGridView.configure(self.settings)
-        self.updateImage()
         self.hideStatusBar = settings.hideStatusBar
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
+        self.updateImage()
         self.automationResume()
         self.selectRandomResume()
+        //
+        // Only needed if we control these from SettingsView.
+        //
         settings.automationMode ? self.automationStart() : self.automationStop()
         settings.selectRandomMode ? self.selectRandomStart() : self.selectRandomStop()
     }

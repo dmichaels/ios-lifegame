@@ -172,8 +172,6 @@ public final class LifeCellGridView: CellGridView
             return
         }
 
-        print("NEXG> \(self.generationNumber)")
-
         var neighbors: [CellLocation: Int] = [:]
 
         // Count neighbors for all live cells and their neighbors.
