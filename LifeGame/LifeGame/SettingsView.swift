@@ -104,7 +104,6 @@ struct SettingsView: View
                     IconLabel("HighLife Variant", "lifepreserver")
                     Toggle("", isOn: $settings.variantHighLife)
                 }
-                .hide(settings.gameMode != GameMode.life)
 
                 HStack {
                     IconLabel("OverPopulate Variant", "gauge.with.dots.needle.bottom.100percent")
@@ -152,6 +151,7 @@ struct SettingsView: View
                     }
                     .pickerStyle(.menu)
                 }
+                .hide(settings.gameMode == GameMode.lifehash)
 
                 HStack {
                     IconLabel("Hash Value", "long.text.page.and.pencil")

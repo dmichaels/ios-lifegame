@@ -22,7 +22,7 @@ extension LifeCellGridView
         let ncolumns: Int = 16
         let nrows: Int = 16
 
-        for _ in 1...generationsMax {
+        for _ in 0..<generationsMax {
             let cellsActiveNextGeneration: Set<CellLocation> = LifeCellGridView.nextGeneration(
                 cellsActive: cellsActive, ncolumns: ncolumns, nrows: nrows,
                 variantOverPopulate: self.variantOverPopulate, variantHighLife: self.variantHighLife)
@@ -37,13 +37,18 @@ extension LifeCellGridView
             cellsActive = cellsActiveNextGeneration
         }
 
+        let ncolumnsSymmetrized: Int = ncolumns * 2
+        let nrowsSymmetrized: Int = nrows * 2
+        cellsActive = LifeCellGridView.symmetrize(cellsActive)
+
         self.automationStop()
         self.erase()
 
         settings.fromConfig(self)
         settings.gameMode = GameMode.lifehash
-        settings.gridColumns = ncolumns
-        settings.gridRows = nrows
+        settings.automationMode = false
+        settings.gridColumns = ncolumns * 2
+        settings.gridRows = nrows * 2
         settings.fit = .disabled
         settings.center = true
         settings.variantInactiveFade = false
@@ -163,5 +168,18 @@ extension LifeCellGridView
 
     internal static func toHex(_ signature: [UInt64]) -> String {
         return signature.map { String(format: "%016llx", $0) }.joined()
+    }
+
+    internal static func symmetrize(_ cellsActive: Set<CellLocation>, ncolumns: Int = 16, nrows: Int = 16) -> Set<CellLocation>
+    {
+        var activeCellsOutput: Set<CellLocation> = cellsActive
+        let ncolumnsOutput: Int = ncolumns * 2
+        let nrowsOutput: Int = nrows * 2
+        for cellLocation in cellsActive {
+            activeCellsOutput.insert(CellLocation(ncolumnsOutput - cellLocation.x - 1, cellLocation.y))
+            activeCellsOutput.insert(CellLocation(cellLocation.x, nrowsOutput - cellLocation.y - 1))
+            activeCellsOutput.insert(CellLocation(ncolumnsOutput - cellLocation.x - 1, nrowsOutput - cellLocation.y - 1))
+        }
+        return activeCellsOutput
     }
 }
