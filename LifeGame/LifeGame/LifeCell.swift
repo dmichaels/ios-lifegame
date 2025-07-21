@@ -139,4 +139,8 @@ public final class LifeCell: Cell {
     public func toggle(nowrite: Bool = false) {
         self._active ? self.deactivate(nowrite: nowrite) : self.activate(nowrite: nowrite)
     }
+
+    public var active: Bool {
+        self._active
+    }
 }

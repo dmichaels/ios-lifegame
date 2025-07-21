@@ -81,6 +81,17 @@ struct SettingsView: View
                         }
                     }
                     .pickerStyle(.menu)
+                    .onChange(of: settings.gameMode) { value in
+                        if ((cellGridView.gameMode == .lifehash) && (value != .lifehash)) {
+                            //
+                            // TODO
+                            // Hack to get back to normal after lifehash state.
+                            //
+                            settings.fit = CellGridView.Fit.disabled
+                            settings.gridColumns = Settings.Defaults.gridColumns
+                            settings.gridRows = Settings.Defaults.gridRows
+                        }
+                    }
                 }
 
                 HStack {

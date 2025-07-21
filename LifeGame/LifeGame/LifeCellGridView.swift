@@ -198,8 +198,7 @@ public final class LifeCellGridView: CellGridView
         // Determine which cells survive, die, or are born in the next generation.
 
         for (cellLocation, count) in neighbors {
-            let isAlive = self.activeCells.contains(cellLocation)
-            if (isAlive) {
+            if (self.activeCells.contains(cellLocation)) {
                 //
                 // Survival rules; i.e. cells that were active and are to remain active.
                 //

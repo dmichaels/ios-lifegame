@@ -2,7 +2,7 @@ import Foundation
 import CellGridView
 import Utils
 
-public class LatixCell: Equatable {
+public class LatixCell {
 
     private let _cellGridView: LifeCellGridView
     private let _location: CellLocation
@@ -252,9 +252,5 @@ public class LatixCell: Equatable {
         // not always great; remember, random doesn't feel all that random.
         //
         return Cache.colors[Cache.index]
-    }
-
-    public static func == (lhs: LatixCell, rhs: LatixCell) -> Bool {
-        return lhs === rhs
     }
 }
