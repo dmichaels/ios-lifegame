@@ -82,8 +82,7 @@ public class LatixCell {
                     !self._cellGridView.cellVisible(lifeCell.x, lifeCell.y)
                 )
                 if (!skip && self._cellGridView.variantLatixOcclude) {
-                    let youngerLatixCells: [LatixCell] = self._cellGridView.latixYoungerCells(age: self.age)
-                    for youngerLatixCell in youngerLatixCells {
+                    for youngerLatixCell in self._cellGridView.latixYoungerCells(age: self.age) {
                         //
                         // If this cell (perimeterCellLocation/lifeCell), on the perimeter of the outermost radius
                         // of this (self) cell, is within the circle defined by the entirety of the newer/younger
