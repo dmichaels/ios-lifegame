@@ -310,6 +310,11 @@ struct SettingsView: View
                 }
 
                 HStack {
+                    IconLabel("Undulation Mode", "antenna.radiowaves.left.and.right")
+                    Toggle("", isOn: $settings.undulationMode).labelsHidden()
+                }
+
+                HStack {
                     IconLabel("Hide Status Bar", "candybarphone")
                     Toggle("", isOn: $settings.hideStatusBar).labelsHidden()
                 }

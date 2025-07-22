@@ -89,7 +89,8 @@ extension LifeCellGridView
                 unscaledZoom:         s?.unscaledZoom         ?? v?.unscaledZoom         ?? d.unscaledZoom,
                 // selectMode:           s?.selectMode           ?? v?.selectMode           ?? d.selectMode,
                 selectRandomInterval: s?.selectRandomInterval ?? v?.selectRandomInterval ?? d.selectRandomInterval,
-                automationInterval:   s?.automationInterval   ?? v?.automationInterval   ?? d.automationInterval)
+                automationInterval:   s?.automationInterval   ?? v?.automationInterval   ?? d.automationInterval,
+                undulationInterval:   s?.undulationInterval   ?? v?.undulationInterval   ?? d.undulationInterval)
         }
     }
 }

@@ -30,12 +30,14 @@ class Settings: ObservableObject
    
     @Published var selectRandomInterval: Double = CellGridView.Defaults.selectRandomInterval
     @Published var automationInterval: Double   = CellGridView.Defaults.automationInterval
+    @Published var undulationInterval: Double   = CellGridView.Defaults.undulationInterval
 
     // Other CellGridView (non-Config) base class specific properties we are interested in controlling.
 
-    @Published var automationMode: Bool   = true
     @Published var selectMode: Bool       = true
     @Published var selectRandomMode: Bool = false
+    @Published var automationMode: Bool   = true
+    @Published var undulationMode: Bool   = false
 
     // LifeCellGridView specific properties.
 
@@ -100,6 +102,7 @@ class Settings: ObservableObject
         self.unscaledZoom              = config.unscaledZoom
         self.selectRandomInterval      = config.selectRandomInterval
         self.automationInterval        = config.automationInterval
+        self.undulationInterval        = config.undulationInterval
         self.variantHighLife           = config.variantHighLife
         self.variantOverPopulate       = config.variantOverPopulate
         self.variantInactiveFade       = config.variantInactiveFade
@@ -112,9 +115,10 @@ class Settings: ObservableObject
 
         // Other CellGridView (non-Config) base class specific properties.
 
-        self.automationMode             = self.automationMode
         self.selectMode                 = self.selectMode
         self.selectRandomMode           = self.selectRandomMode
+        self.automationMode             = self.automationMode
+        self.undulationMode             = self.undulationMode
 
         // LifeCellGridView specific properties.
 

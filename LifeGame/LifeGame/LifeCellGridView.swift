@@ -65,6 +65,7 @@ public final class LifeCellGridView: CellGridView
         super.automationMode            = settings.automationMode
         super.selectMode                = settings.selectMode
         super.selectRandomMode          = settings.selectRandomMode
+        super.undulationMode            = settings.undulationMode
 
         self.gameMode                   = settings.gameMode
         self.activeColor                = settings.activeColor
