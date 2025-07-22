@@ -142,6 +142,12 @@ struct SettingsView: View
                 .hide(settings.gameMode != GameMode.latix)
 
                 HStack {
+                    IconLabel("Visible Only Variant", "eye")
+                    Toggle("", isOn: $settings.variantLatixVisible)
+                }
+                .hide(settings.gameMode != GameMode.latix)
+
+                HStack {
                     IconLabel("Speed", "waveform.path")
                     Picker("", selection: $settings.automationInterval) {
                         ForEach(AutomationIntervalOptions, id: \.value) { option in

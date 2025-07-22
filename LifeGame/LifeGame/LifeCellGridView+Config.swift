@@ -19,6 +19,7 @@ extension LifeCellGridView
         public var variantInactiveFade: Bool
         public var variantInactiveFadeAgeMax: Int
         public var variantLatixOcclude: Bool
+        public var variantLatixVisible: Bool
         public var selectModeFat: Bool
         public var selectModeExtraFat: Bool
         public var lifehashValue: String
@@ -61,6 +62,7 @@ extension LifeCellGridView
             self.variantInactiveFade        = s?.variantInactiveFade        ?? v?.variantInactiveFade        ?? d.variantInactiveFade
             self.variantInactiveFadeAgeMax  = s?.variantInactiveFadeAgeMax  ?? v?.variantInactiveFadeAgeMax  ?? d.variantInactiveFadeAgeMax
             self.variantLatixOcclude        = s?.variantLatixOcclude        ?? v?.variantLatixOcclude        ?? d.variantLatixOcclude
+            self.variantLatixVisible        = s?.variantLatixVisible        ?? v?.variantLatixVisible        ?? d.variantLatixVisible
             self.selectModeFat              = s?.selectModeFat              ?? v?.selectModeFat              ?? d.selectModeFat
             self.selectModeExtraFat         = s?.selectModeExtraFat         ?? v?.selectModeExtraFat         ?? d.selectModeExtraFat
             self.lifehashValue              = s?.lifehashValue              ?? v?.lifehashValue              ?? d.lifehashValue

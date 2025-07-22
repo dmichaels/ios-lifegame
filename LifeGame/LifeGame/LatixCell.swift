@@ -77,7 +77,10 @@ public class LatixCell {
                 // be updated; but for Latix, if it is not visible, then not that important - if the cell-size
                 // resized smaller (increasing the number of visible cells), we will see blank cells.
                 //
-                var skip: Bool = !self._cellGridView.cellVisible(lifeCell.x, lifeCell.y)
+                var skip: Bool = (
+                     self._cellGridView.variantLatixVisible &&
+                    !self._cellGridView.cellVisible(lifeCell.x, lifeCell.y)
+                )
                 if (!skip && self._cellGridView.variantLatixOcclude) {
                     let youngerLatixCells: [LatixCell] = self._cellGridView.latixYoungerCells(age: self.age)
                     for youngerLatixCell in youngerLatixCells {

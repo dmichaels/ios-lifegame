@@ -31,6 +31,7 @@ public final class LifeCellGridView: CellGridView
     //
     internal private(set) var variantInactiveFade: Bool = Settings.Defaults.variantInactiveFade
     internal private(set) var variantLatixOcclude: Bool = Settings.Defaults.variantLatixOcclude
+    internal private(set) var variantLatixVisible: Bool = Settings.Defaults.variantLatixVisible
     internal private(set) var selectModeFat: Bool = Settings.Defaults.selectModeFat
     internal private(set) var selectModeExtraFat: Bool = Settings.Defaults.selectModeExtraFat
     internal private(set) var lifehashValue: String = Settings.Defaults.lifehashValue
@@ -77,6 +78,7 @@ public final class LifeCellGridView: CellGridView
         self.variantInactiveFade        = settings.variantInactiveFade
         self.variantInactiveFadeAgeMax  = settings.variantInactiveFadeAgeMax
         self.variantLatixOcclude        = settings.variantLatixOcclude
+        self.variantLatixVisible        = settings.variantLatixVisible
         self.selectModeFat              = settings.selectModeFat
         self.selectModeExtraFat         = settings.selectModeExtraFat
         self.lifehashValue              = settings.lifehashValue
