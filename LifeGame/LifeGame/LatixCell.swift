@@ -91,7 +91,8 @@ public class LatixCell {
                         // do not update this cell color, as this cell is occluded by the younger latix-cell.
                         //
                         if (LatixCell.pointWithinCircle(lifeCell.x, lifeCell.y,
-                                                        circle: youngerLatixCell._location.x, youngerLatixCell._location.y,
+                                                        circle: youngerLatixCell._location.x,
+                                                                youngerLatixCell._location.y,
                                                         radius: youngerLatixCell._radius)) {
                             skip = true
                             break
