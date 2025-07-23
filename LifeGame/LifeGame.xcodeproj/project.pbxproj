@@ -34,9 +34,22 @@
 		9811BA572DF1B4DA005A2F71 /* LifeGameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LifeGameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		98BEE1162E302AFC00F75119 /* Exceptions for "LifeGame" folder in "LifeGame" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 9811BA3F2DF1B4D9005A2F71 /* LifeGame */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9811BA422DF1B4D9005A2F71 /* LifeGame */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				98BEE1162E302AFC00F75119 /* Exceptions for "LifeGame" folder in "LifeGame" target */,
+			);
 			path = LifeGame;
 			sourceTree = "<group>";
 		};
