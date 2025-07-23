@@ -218,8 +218,8 @@
 			mainGroup = 9811BA372DF1B4D9005A2F71;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				9811BA6A2DF1B52D005A2F71 /* XCLocalSwiftPackageReference "../../ios-utils/Utils" */,
-				9811BA6D2DF1B55E005A2F71 /* XCLocalSwiftPackageReference "../../ios-cellgridview/CellGridView" */,
+				98BEE1B82E31287200F75119 /* XCRemoteSwiftPackageReference "ios-utils" */,
+				985447602E3130170029BE73 /* XCRemoteSwiftPackageReference "ios-cellgridview" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9811BA412DF1B4D9005A2F71 /* Products */;
@@ -589,16 +589,24 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		9811BA6A2DF1B52D005A2F71 /* XCLocalSwiftPackageReference "../../ios-utils/Utils" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../../ios-utils/Utils";
+/* Begin XCRemoteSwiftPackageReference section */
+		985447602E3130170029BE73 /* XCRemoteSwiftPackageReference "ios-cellgridview" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dmichaels/ios-cellgridview.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
 		};
-		9811BA6D2DF1B55E005A2F71 /* XCLocalSwiftPackageReference "../../ios-cellgridview/CellGridView" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../../ios-cellgridview/CellGridView";
+		98BEE1B82E31287200F75119 /* XCRemoteSwiftPackageReference "ios-utils" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dmichaels/ios-utils.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		9811BA6B2DF1B52D005A2F71 /* Utils */ = {

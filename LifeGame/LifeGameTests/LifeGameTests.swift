@@ -5,7 +5,7 @@
 //  Created by David Michaels on 6/5/25.
 //
 
-import Testing
+import XCTest
 @testable import LifeGame
 
 struct LifeGameTests {
