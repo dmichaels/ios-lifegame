@@ -78,7 +78,7 @@ public class LatixCell {
                 // resized smaller (increasing the number of visible cells), we will see blank cells.
                 //
                 var skip: Bool = (
-                     self._cellGridView.variantLatixVisible &&
+                     self._cellGridView.variantLatixConserve &&
                     !self._cellGridView.cellVisible(lifeCell.x, lifeCell.y)
                 )
                 if (!skip && self._cellGridView.variantLatixOcclude) {

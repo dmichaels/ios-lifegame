@@ -54,7 +54,7 @@ class Settings: ObservableObject
     @Published var variantInactiveFade: Bool                 = true
     @Published var variantInactiveFadeAgeMax: Int            = 5
     @Published var variantLatixOcclude: Bool                 = true
-    @Published var variantLatixVisible: Bool                 = true
+    @Published var variantLatixConserve: Bool                = true
     @Published var selectModeFat: Bool                       = false
     @Published var selectModeExtraFat: Bool                  = false
     @Published var lifehashValue: String                     = ""
@@ -108,7 +108,7 @@ class Settings: ObservableObject
         self.variantInactiveFade       = config.variantInactiveFade
         self.variantInactiveFadeAgeMax = config.variantInactiveFadeAgeMax
         self.variantLatixOcclude       = config.variantLatixOcclude
-        self.variantLatixVisible       = config.variantLatixVisible
+        self.variantLatixConserve      = config.variantLatixConserve
         self.selectModeFat             = config.selectModeFat
         self.selectModeExtraFat        = config.selectModeExtraFat
         self.lifehashValue             = config.lifehashValue

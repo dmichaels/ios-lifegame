@@ -104,6 +104,7 @@ struct SettingsView: View
                     IconLabel("HighLife Variant", "lifepreserver")
                     Toggle("", isOn: $settings.variantHighLife)
                 }
+                .hide(settings.gameMode != GameMode.life)
 
                 HStack {
                     IconLabel("OverPopulate Variant", "gauge.with.dots.needle.bottom.100percent")
@@ -136,14 +137,14 @@ struct SettingsView: View
                 .hide(settings.gameMode != GameMode.life)
 
                 HStack {
-                    IconLabel("Occlude Variant", "square.filled.on.square")
+                    IconLabel("Occlude Enabled", "square.filled.on.square")
                     Toggle("", isOn: $settings.variantLatixOcclude)
                 }
                 .hide(settings.gameMode != GameMode.latix)
 
                 HStack {
-                    IconLabel("Visible Only Variant", "eye")
-                    Toggle("", isOn: $settings.variantLatixVisible)
+                    IconLabel("Conserve Enabled", "eye")
+                    Toggle("", isOn: $settings.variantLatixConserve)
                 }
                 .hide(settings.gameMode != GameMode.latix)
 
