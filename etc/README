@@ -1,6 +1,9 @@
 LifeBabel
 =========
 
+o Dependencies:
+  - https://github.com/dmichaels/ios-utils.git
+  - https://github.com/dmichaels/ios-cellgridview.git
 o Used this site for icon creation:
   - https://www.appicon.co
 o Used this site to get nicer screenshot with device frame:
