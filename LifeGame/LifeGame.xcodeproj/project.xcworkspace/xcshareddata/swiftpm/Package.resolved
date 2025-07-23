@@ -1,0 +1,24 @@
+{
+  "originHash" : "e62582fcfdd8e055d4136ab4678a31530e2d9975aee91df3b5ec1c55ac41f52d",
+  "pins" : [
+    {
+      "identity" : "ios-cellgridview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dmichaels/ios-cellgridview.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "166d95e8d81eaed1e9d524ec6cd5f64db86dbae0"
+      }
+    },
+    {
+      "identity" : "ios-utils",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dmichaels/ios-utils.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "9b31a12e6725d96d97da4ac11042bc57d5db6fda"
+      }
+    }
+  ],
+  "version" : 3
+}
