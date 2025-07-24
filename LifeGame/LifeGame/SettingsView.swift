@@ -246,6 +246,7 @@ struct SettingsView: View
                         }
                     ))
                 }
+                .disabled(settings.undulationMode)
 
                 HStack {
                     IconLabel("Grid Size", "number.circle")
@@ -314,6 +315,7 @@ struct SettingsView: View
                     IconLabel("Undulation Mode", "antenna.radiowaves.left.and.right")
                     Toggle("", isOn: $settings.undulationMode).labelsHidden()
                 }
+                .disabled(settings.fit == CellGridView.Fit.fixed)
 
                 // Eh ...
                 // HStack {
