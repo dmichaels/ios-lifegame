@@ -251,7 +251,8 @@ struct SettingsView: View
                 HStack {
                     IconLabel("Grid Size", "number.circle")
                     if (settings.fit != CellGridView.Fit.fixed) {
-                        Text("\(settings.gridColumns)x\(settings.gridRows)").font(.caption).foregroundColor(.secondary).offset(x: -20, y: 2)
+                        Text("    ").font(.caption).foregroundColor(.secondary)
+                        Text("\(settings.gridColumns)x\(settings.gridRows)").font(.caption).foregroundColor(.secondary).offset(y: 2)
                     }
                     Picker("", selection: $gridSize) {
                         ForEach(GridSizeOptions, id: \.value) { option in
