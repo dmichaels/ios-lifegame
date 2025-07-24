@@ -63,6 +63,8 @@ extension LifeCellGridView
         self.updateImage()
     }
 
+    // N.B. This replicates logic/functionality from LifeCellGridView.nextGeneration().
+    //
     internal static func nextGeneration(cellsActive: Set<CellLocation>,
                                         ncolumns: Int,
                                         nrows: Int,
