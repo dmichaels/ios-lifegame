@@ -331,6 +331,11 @@ struct SettingsView: View
                     IconLabel("Hide Status Bar", "candybarphone")
                     Toggle("", isOn: $settings.hideStatusBar).labelsHidden()
                 }
+
+                HStack {
+                    IconLabel("Version", "numbersign")
+                    Text(self.version())
+                }
             }
         }
         .offset(y: -30)
@@ -342,6 +347,12 @@ struct SettingsView: View
         let min: Double = Double(cellGridView.minimumCellSize(cellPadding: settings.cellPadding,
                                                               cellShape: settings.cellShape))
         return min...Double(cellGridView.maximumCellSize)
+    }
+
+    private func version() -> String {
+        let version: String? = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let build: String? = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
+        return (version ?? "version") + (build ?? "build")
     }
 }
 
