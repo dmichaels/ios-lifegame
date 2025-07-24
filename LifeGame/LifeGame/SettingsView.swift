@@ -316,6 +316,18 @@ struct SettingsView: View
                 }
 
                 HStack {
+                    IconLabel("Undulation Speed", "waveform.path")
+                    Picker("", selection: $settings.undulationInterval) {
+                        ForEach(UndulationIntervalOptions, id: \.value) { option in
+                            Text(option.label)
+                                .tag(option.value)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                }
+                .hide(!settings.undulationMode)
+
+                HStack {
                     IconLabel("Hide Status Bar", "candybarphone")
                     Toggle("", isOn: $settings.hideStatusBar).labelsHidden()
                 }
@@ -359,6 +371,14 @@ private let AutomationIntervalOptions: [(label: String, value: Double)] = [
     ("Fastest", 0.1),
     ("Wow", 0.02),
     ("Max", 0.0)
+]
+
+private let UndulationIntervalOptions: [(label: String, value: Double)] = [
+    ("Slow", 1.2),
+    ("Medium", 0.8),
+    ("Default", 0.3),
+    ("Fast", 0.03),
+    ("Faster", 0.01)
 ]
 
 private let SelectModeOptions: [(label: String, value: Int)] = [
