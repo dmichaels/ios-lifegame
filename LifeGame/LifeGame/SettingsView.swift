@@ -315,17 +315,18 @@ struct SettingsView: View
                     Toggle("", isOn: $settings.undulationMode).labelsHidden()
                 }
 
-                HStack {
-                    IconLabel("Undulation Speed", "waveform.path")
-                    Picker("", selection: $settings.undulationInterval) {
-                        ForEach(UndulationIntervalOptions, id: \.value) { option in
-                            Text(option.label)
-                                .tag(option.value)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                }
-                .hide(!settings.undulationMode)
+                // Eh ...
+                // HStack {
+                //     IconLabel("Undulation Speed", "waveform.path")
+                //     Picker("", selection: $settings.undulationInterval) {
+                //         ForEach(UndulationIntervalOptions, id: \.value) { option in
+                //             Text(option.label)
+                //                 .tag(option.value)
+                //         }
+                //     }
+                //     .pickerStyle(.menu)
+                // }
+                // .hide(!settings.undulationMode)
 
                 HStack {
                     IconLabel("Hide Status Bar", "candybarphone")
