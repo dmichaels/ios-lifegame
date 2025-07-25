@@ -331,6 +331,11 @@ struct SettingsView: View
                 // }
                 // .hide(!settings.undulationMode)
 
+                // HStack {
+                //     IconLabel("Ignore Safe Area", "itext.rectangle")
+                //     Toggle("", isOn: $settings.ignoreSafeArea).labelsHidden()
+                // }
+
                 HStack {
                     IconLabel("Hide Status Bar", "candybarphone")
                     Toggle("", isOn: $settings.hideStatusBar).labelsHidden()

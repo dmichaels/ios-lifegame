@@ -80,6 +80,7 @@ struct ContentView: View
                         self.rotateImage()
                         self.updateImage()
                         self.hideStatusBar = settings.hideStatusBar
+                        self.ignoreSafeArea = settings.ignoreSafeArea
                         self.feedback.soundsEnabled = settings.soundsEnabled
                         self.feedback.hapticsEnabled = settings.hapticsEnabled
                     }
@@ -133,8 +134,8 @@ struct ContentView: View
                 )
             }
             //
-            // TODO: Almost working without safe area; margins
-            // off a bit; would be nice if it did as an option.
+            // TODO: Almost working without ignore safe area;
+            // margins off a bit; be nice if it optionally did.
             //
             .conditionalModifier(self.ignoreSafeArea) { view in
                 view.ignoresSafeArea()
@@ -164,6 +165,7 @@ struct ContentView: View
         }
         self.cellGridView.configure(self.settings)
         self.hideStatusBar = settings.hideStatusBar
+        self.ignoreSafeArea = settings.ignoreSafeArea
         self.feedback.soundsEnabled = settings.soundsEnabled
         self.feedback.hapticsEnabled = settings.hapticsEnabled
         self.updateImage()
