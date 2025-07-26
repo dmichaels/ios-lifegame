@@ -20,9 +20,9 @@ public class Tetromino {
         print("TT: \(self._locations) w: \(self._width) h: \(self._height)")
     }
 
-    public var locations: [CellLocation] {
-        return self._locations
-    }
+    public var locations: [CellLocation] { return self._locations }
+    public var width: Int                { return self._width }
+    public var height: Int               { return self._height }
 
     public func rotated(by rotation: Rotation = .degrees_90) -> Tetromino {
         let rotatedLocations: [CellLocation] = self._locations.map { location in
@@ -104,13 +104,13 @@ public class Tetromino {
 public class TetrisBlock
 {
     private let _tetromino: Tetromino
-    private let _cell: Cell
     private let _color: Colour
+    private var _cell: Cell
 
     public init(_ tetromino: Tetromino, at cell: Cell, color: Colour, rotation: Rotation? = nil) {
         self._tetromino = rotation != nil ? tetromino.rotated(by: rotation!) : tetromino
-        self._cell = cell
         self._color = color
+        self._cell = cell
     }
 
     public func move(_ location: CellLocation) {
