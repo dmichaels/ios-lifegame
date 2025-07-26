@@ -27,7 +27,7 @@ public final class LifeCell: Cell {
 
     public override var color: Colour {
         get {
-            if (self.cellGridView.gameMode == GameMode.latix) {
+            if (self.cellGridView.gameMode != GameMode.life) {
                 return super.color
             }
             if (self._active) {
@@ -72,6 +72,11 @@ public final class LifeCell: Cell {
             if (!dragging) {
                 self.cellGridView.latixCellSelect(self)
             }
+            return
+        }
+        if (self.cellGridView.gameMode == GameMode.tetris) {
+            let tetrisBlock: TetrisBlock = TetrisBlock(Tetromino.I, at: self, color: Colour.blue, rotation: Rotation.degrees_90)
+            tetrisBlock.write(self)
             return
         }
         if (self.cellGridView.selectModeFat || self.cellGridView.selectModeExtraFat) {

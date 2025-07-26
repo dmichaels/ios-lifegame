@@ -85,7 +85,18 @@ public final class LifeCellGridView: CellGridView
         self.lifehashValue              = settings.lifehashValue
 
         if (!_initialize) {
-            super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
+            //
+            // TODO
+            // Clean this up and probably do in ios-cellgridview.
+            //
+            var viewWidth: Int = self.viewWidth
+            var viewHeight: Int = self.viewHeight
+            if (settings.fit == .disabled) {
+                viewWidth = self.screen.width
+                viewHeight = self.screen.height
+            }
+            super.configure(settings.toConfig(self), viewWidth: viewWidth, viewHeight: viewHeight)
+            // super.configure(settings.toConfig(self), viewWidth: self.viewWidth, viewHeight: self.viewHeight)
         }
     }
 
