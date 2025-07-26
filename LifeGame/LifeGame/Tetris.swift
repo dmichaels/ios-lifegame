@@ -119,16 +119,21 @@ public class TetrisBlock
         //
     }
 
+    public func move(_ cell: Cell) {
+        self._cell = cell
+        self.write()
+    }
+
     public func rotate(by rotation: Rotation) {
         //
         // TODO
         //
     }
 
-    public func write(_ cell: Cell) {
+    public func write() {
         for location in  self._tetromino.locations {
-            let gridCellX: Int =  cell.x + location.x
-            let gridCellY: Int =  cell.y + location.y
+            let gridCellX: Int =  self._cell.x + location.x
+            let gridCellY: Int =  self._cell.y + location.y
             if let cell: LifeCell = self._cell.cellGridView.gridCell(gridCellX, gridCellY) {
                 cell.write(color: self._color)
             }
