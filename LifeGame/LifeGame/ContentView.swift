@@ -50,7 +50,14 @@ struct ContentView: View
                                 onDragEnd:   { value in self.cellGridView.onDragEnd(value) },
                                 onTap:       { value in self.cellGridView.onTap(value) ; feedback.trigger() },
                                 onDoubleTap: { self.toggleShowControls() },
-                                onLongTap:   { _ in self.toggleShowControls() },
+                                onLongTap:   { viewPoint in
+                                    if (self.cellGridView.gameMode == .tetris) {
+                                        self.cellGridView.onLongTap(viewPoint)
+                                    }
+                                    else {
+                                        self.toggleShowControls()
+                                    }
+                                },
                                 onZoom:      { value in self.cellGridView.onZoom(value) },
                                 onZoomEnd:   { value in self.cellGridView.onZoomEnd(value) },
                                 onSwipeLeft: { /* self.showSettings() */ },

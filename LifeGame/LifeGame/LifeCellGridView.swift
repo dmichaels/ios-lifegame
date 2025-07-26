@@ -40,6 +40,7 @@ public final class LifeCellGridView: CellGridView
 
     private               var activeCells: Set<CellLocation> = []
     private               var latixCells: [LatixCell] = []
+    internal              var tetrisBlocks: [TetrisBlock] = []
     internal private(set) var inactiveColorRandomNumber: Int = 0
     internal private(set) var inactiveColorRandomDynamicNumber: Int = 0
     internal private(set) var variantInactiveFadeAgeMax: Int = Settings.Defaults.variantInactiveFadeAgeMax
@@ -122,6 +123,20 @@ public final class LifeCellGridView: CellGridView
             }
         }
         return cell as? T
+    }
+
+    // public override func onTap(_ viewPoint: CGPoint) {
+        // super.onTap(viewPoint)
+        // TODO: feedback.trigger()
+    // }
+
+    public func onLongTap(_ viewPoint: CGPoint) {
+        if (self.gameMode == GameMode.tetris) {
+            for tetrisBlock in self.tetrisBlocks {
+                tetrisBlock.rotate(by: Rotation.degrees_90)
+            }
+            return
+        }
     }
 
     public override func automationStep() {
