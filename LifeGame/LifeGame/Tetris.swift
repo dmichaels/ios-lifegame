@@ -113,6 +113,18 @@ public class TetrisBlock
         self._color = color
     }
 
+    public func move(_ location: CellLocation) {
+        //
+        // TODO
+        //
+    }
+
+    public func rotate(by rotation: Rotation) {
+        //
+        // TODO
+        //
+    }
+
     public func write(_ cell: Cell) {
         for location in  self._tetromino.locations {
             let gridCellX: Int =  cell.x + location.x
