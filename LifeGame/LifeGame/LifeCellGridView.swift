@@ -133,7 +133,7 @@ public final class LifeCellGridView: CellGridView
     public func onLongTap(_ viewPoint: CGPoint) {
         if (self.gameMode == GameMode.tetris) {
             for tetrisBlock in self.tetrisBlocks {
-                tetrisBlock.rotate(by: Rotation.degrees_90)
+                tetrisBlock.rotate(by: Rotation.degrees_270)
             }
             return
         }

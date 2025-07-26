@@ -75,7 +75,7 @@ public final class LifeCell: Cell {
             return
         }
         if (self.cellGridView.gameMode == GameMode.tetris) {
-            let tetrisBlock: TetrisBlock = TetrisBlock(Tetromino.I, at: self, color: Colour.blue, rotation: Rotation.degrees_90)
+            let tetrisBlock: TetrisBlock = TetrisBlock(Tetromino.T, at: self, color: Colour.blue) // , rotation: Rotation.degrees_270)
             self.cellGridView.tetrisBlocks.append(tetrisBlock)
             tetrisBlock.write()
             return
