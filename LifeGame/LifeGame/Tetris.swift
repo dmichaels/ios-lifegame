@@ -1,3 +1,4 @@
+import Foundation
 import CellGridView
 import Utils
 
@@ -17,7 +18,6 @@ public class Tetromino {
         self._locations = locations
         self._width = (locations.map { $0.x }.max() ?? 0) + 1
         self._height = (locations.map { $0.y }.max() ?? 0) + 1
-        print("TT: \(self._locations) w: \(self._width) h: \(self._height)")
     }
 
     public var locations: [CellLocation] { return self._locations }
@@ -35,19 +35,19 @@ public class Tetromino {
                 return CellLocation(-location.y, location.x)
             }
         }
-        let minX = rotatedLocations.map { $0.x }.min() ?? 0
-        let minY = rotatedLocations.map { $0.y }.min() ?? 0
+        let minx = rotatedLocations.map { $0.x }.min() ?? 0
+        let miny = rotatedLocations.map { $0.y }.min() ?? 0
         let normalized = rotatedLocations.map {
-            CellLocation($0.x - minX, $0.y - minY)
+            CellLocation($0.x - minx, $0.y - miny)
         }
         return Tetromino(normalized)
     }
 
-    public func minus(_ tetromino: Tetromino?) -> [CellLocation] {
+    internal func minus(_ tetromino: Tetromino?) -> [CellLocation] {
         return (tetromino != nil) ? self.minusLocations(tetromino!.locations) : self.locations
     }
 
-    public func minusLocations(_ locations: [CellLocation]) -> [CellLocation] {
+    internal func minusLocations(_ locations: [CellLocation]) -> [CellLocation] {
         var result: [CellLocation] = []
         for selfLocation in self._locations {
             var skip: Bool = false
@@ -123,51 +123,86 @@ public class Tetromino {
 
 public class TetrisBlock
 {
-    private var _tetromino: Tetromino
-    private let _color: Colour
-    private var _cell: LifeCell
+    private var _locations: [CellLocation]
+    private var _color: Colour
     private var _cellGridView: LifeCellGridView
 
     public init(_ tetromino: Tetromino, at cell: LifeCell, color: Colour, rotation: Rotation? = nil) {
-        self._tetromino = rotation != nil ? tetromino.rotated(by: rotation!) : tetromino
+        self._locations = []
+        for location in TetrisBlock.rotateLocations(tetromino.locations, by: rotation) {
+            self._locations.append(CellLocation(cell.x + location.x, cell.y + location.y))
+        }
         self._color = color
-        self._cell = cell
         self._cellGridView = cell.cellGridView
     }
 
-    public func move(_ location: CellLocation) {
+    public func rotate(by rotation: Rotation = Rotation.degrees_90) {
+        self.transform(to: TetrisBlock.rotateLocations(self._locations, by: rotation))
+    }
+
+    public func move(offsetX: Int, offsetY: Int) {
+        self.transform(to: TetrisBlock.moveLocations(self._locations, offsetX, offsetY))
+    }
+
+    public func write() {
+        self.write(color: self._color)
+    }
+
+    private func write(color: Colour, minus: [CellLocation] = []) {
+        for location in self._locations {
+            var skip: Bool = false
+            for minusLocation in minus {
+                if ((minusLocation.x == location.x) && (minusLocation.y == location.y)) {
+                    skip = true
+                    break
+                }
+            }
+            if (!skip) {
+                if let cell: LifeCell = self._cellGridView.gridCell(location.x, location.y) {
+                    cell.write(color: color)
+                }
+            }
+        }
+    }
+
+    private func transform(to locationsNew: [CellLocation]) {
+        let locationsCurrent: [CellLocation] = self._locations
+        //
+        // Unwrite cells in this current block which are NOT also in the new/transformed block.
+        //
+        self.write(color: self._cellGridView.inactiveColor, minus: locationsNew)
+        //
+        // Write cells of the new/transformed block which were NOT also in this current/untransformed block.
+        //
+        self._locations = locationsNew
+        self.write(color: self._color, minus: locationsCurrent)
+    }
+
+    public static func rotateLocations(_ locations: [CellLocation], by rotation: Rotation?) -> [CellLocation] {
+        if let rotation: Rotation = rotation, locations.count > 0 {
+            let minx:   Int = locations.map { $0.x }.min()!
+            let maxx:   Int = locations.map { $0.x }.max()!
+            let miny:   Int = locations.map { $0.y }.min()!
+            let maxy:   Int = locations.map { $0.y }.max()!
+            let width:  Int = maxx - minx + 1
+            let height: Int = maxy - miny + 1
+            return locations.map { location in
+                let dx: Int = location.x - minx
+                let dy: Int = location.y - miny
+                switch rotation {
+                    case .degrees_90:  return CellLocation(minx + (height - 1 - dy), miny + dx)
+                    case .degrees_180: return CellLocation(minx + (width - 1 - dx), miny + (height - 1 - dy))
+                    case .degrees_270: return CellLocation(minx + dy, miny + (width - 1 - dx))
+                }
+            }
+        }
+        return locations
+    }
+
+    private static func moveLocations(_ locations: [CellLocation], _ offsetX: Int, _ offsetY: Int) -> [CellLocation] {
         //
         // TODO
         //
-    }
-
-    public func move(_ cell: LifeCell) {
-        self._cell = cell
-        self.write()
-    }
-
-    public func rotate(by rotation: Rotation = Rotation.degrees_270) {
-        let tetrominoCurrent: Tetromino = self._tetromino
-        let tetrominoNew: Tetromino = self._tetromino.rotated(by: rotation)
-        //
-        // Unwrite the cells in this current cell-block which are NOT also in the new/rotated cell-block.
-        //
-        self.write(color: self._cell.cellGridView.inactiveColor, minus: tetrominoNew)
-        //
-        // Write the cells in the new/rotated cell-block which were NOT also in this current/unrotated cell-block.
-        //
-        self._tetromino = tetrominoNew
-        self.write(minus: tetrominoCurrent)
-    }
-
-    public func write(color: Colour? = nil, minus: Tetromino? = nil) {
-        let color: Colour = color ?? self._color
-        for location in self._tetromino.minus(minus) {
-            let gridCellX: Int =  self._cell.x + location.x
-            let gridCellY: Int =  self._cell.y + location.y
-            if let cell: LifeCell = self._cell.cellGridView.gridCell(gridCellX, gridCellY) {
-                cell.write(color: color)
-            }
-        }
+        return locations
     }
 }
