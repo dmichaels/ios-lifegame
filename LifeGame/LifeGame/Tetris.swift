@@ -141,6 +141,7 @@ public class TetrisBlock
     }
 
     public func move(offsetX: Int, offsetY: Int) {
+        print("MOVE> \(offsetX),\(offsetY)")
         self.transform(to: TetrisBlock.moveLocations(self._locations, offsetX, offsetY))
     }
 
@@ -171,6 +172,7 @@ public class TetrisBlock
     }
 
     private func transform(to locationsNew: [CellLocation]) {
+        print("XFORM> \(self._locations[0].x) -> \(locationsNew[0].x)")
         let locationsCurrent: [CellLocation] = self._locations
         //
         // Unwrite cells in this current block which are NOT also in the new/transformed block.

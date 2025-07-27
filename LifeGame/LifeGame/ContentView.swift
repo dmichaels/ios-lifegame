@@ -11,7 +11,7 @@ struct ContentView: View
     @State private var image: CGImage? = nil
     @State private var imageAngle: Angle = Angle.zero
     @State private var showSettingsView: Bool = false
-    @State private var showControlBar: Bool = false
+    @State private var showControlBar: Bool = true
     //
     // This ignoreSafeArea is settable (e.g. in SettingsView); we currently always ignore the safe area;
     // have not been able to get the geometry working in general when NOT ignoring the safe area;

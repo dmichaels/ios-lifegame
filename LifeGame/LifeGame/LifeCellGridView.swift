@@ -48,6 +48,7 @@ public final class LifeCellGridView: CellGridView
     internal private(set) var generationNumber: Int = 0
 
     internal var _tetrisDragStartCellLocation: CellLocation? = nil
+    internal var _tetrisDragLastCellLocation: CellLocation? = nil
     internal var _debug: Bool = false
 
     internal func initialize(_ settings: Settings,
