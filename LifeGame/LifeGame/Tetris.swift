@@ -127,14 +127,19 @@ public class TetrisBlock
     private var _color: Colour
     private var _cellGridView: LifeCellGridView
 
-    public init(_ tetromino: Tetromino, at cell: LifeCell, color: Colour, rotation: Rotation? = nil) {
+    public init(_ tetromino: Tetromino, at cell: LifeCell, color: Colour, rotation: Rotation? = nil, write: Bool = false) {
         self._locations = []
         for location in TetrisBlock.rotateLocations(tetromino.locations, by: rotation) {
             self._locations.append(CellLocation(cell.x + location.x, cell.y + location.y))
         }
         self._color = color
         self._cellGridView = cell.cellGridView
+        if (write) {
+            self.write()
+        }
     }
+
+    public var locations: [CellLocation] { self._locations }
 
     public func rotate(by rotation: Rotation = Rotation.degrees_90) {
         self.transform(to: TetrisBlock.rotateLocations(self._locations, by: rotation))
@@ -211,5 +216,21 @@ public class TetrisBlock
 
     private static func moveLocations(_ locations: [CellLocation], _ offsetX: Int, _ offsetY: Int) -> [CellLocation] {
         return locations.map { CellLocation($0.x + offsetX, $0.y + offsetY) }
+    }
+}
+
+public class TetrisView {
+    internal static var blocks: [TetrisBlock] = []
+    internal static var dragStartCellLocation: CellLocation? = nil
+    internal static var dragLastCellLocation: CellLocation? = nil
+    internal static func findBlock(_ location: CellLocation) -> TetrisBlock? {
+        for block in TetrisView.blocks {
+            for blockLocation in block.locations {
+                if (blockLocation == location) {
+                    return block
+                }
+            }
+        }
+        return nil
     }
 }

@@ -68,7 +68,42 @@ public final class LifeCell: Cell {
     }
 
     public override func select(dragging: Bool? = false) {
+        print("SEL> \(self.x),\(self.y) dragging: \(dragging) \(Int(Date().timeIntervalSince1970 * 1000))")
         if (self.cellGridView.gameMode == GameMode.tetris) {
+            if (dragging != nil) {
+                if (TetrisView.dragStartCellLocation == nil) {
+                    TetrisView.dragStartCellLocation = self.location
+                    if let block: TetrisBlock = TetrisView.findBlock(self.location) {
+                        TetrisView.dragLastCellLocation = self.location
+                    }
+                }
+                else if let dragLastCellLocation: CellLocation = TetrisView.dragLastCellLocation {
+                    let offsetX: Int = self.x - dragLastCellLocation.x
+                    let offsetY: Int = self.y - dragLastCellLocation.y
+                    if ((offsetX != 0) || (offsetY != 0)) {
+                        for block in TetrisView.blocks {
+                            block.move(offsetX: offsetX, offsetY: offsetY)
+                        }
+                    }
+                    TetrisView.dragLastCellLocation = dragging == true ? self.location : nil
+                }
+                /*
+                else {
+                    if let block: TetrisBlock = TetrisView.findBlock(TetrisView.dragStartCellLocation!) {
+                        TetrisView.dragLastCellLocation = self.location
+                    }
+                }
+                */
+                if (dragging == false) {
+                    TetrisView.dragStartCellLocation = nil
+                    TetrisView.dragLastCellLocation = nil
+                }
+            }
+            else {
+                TetrisView.blocks.append(TetrisBlock(Tetromino.T, at: self, color: Colour.blue, write: true))
+            }
+            return
+/*
             if (dragging != nil) {
                 if let tetrisDragStartCellLocation = self.cellGridView._tetrisDragStartCellLocation {
                     if (self.cellGridView._tetrisDragLastCellLocation != self.location) {
@@ -105,6 +140,7 @@ public final class LifeCell: Cell {
                 tetrisBlock.write()
             }
             return
+            */
         }
         let dragging: Bool = (dragging != nil)
         if (self.cellGridView.gameMode == GameMode.latix) {

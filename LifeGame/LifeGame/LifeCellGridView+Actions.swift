@@ -5,14 +5,9 @@ import Utils
 
 extension LifeCellGridView
 {
-    // public override func onTap(_ viewPoint: CGPoint) {
-        // super.onTap(viewPoint)
-        // TODO: feedback.trigger()
-    // }
-
     public func onLongTap(_ viewPoint: CGPoint) {
         if (self.gameMode == GameMode.tetris) {
-            for tetrisBlock in self.tetrisBlocks {
+            for tetrisBlock in TetrisView.blocks {
                 tetrisBlock.rotate(by: Rotation.degrees_90)
             }
             return
@@ -21,7 +16,7 @@ extension LifeCellGridView
 
     public func onDoubleTap() {
         if (self.gameMode == GameMode.tetris) {
-            for tetrisBlock in self.tetrisBlocks {
+            for tetrisBlock in TetrisView.blocks {
                 tetrisBlock.move(offsetX: 1, offsetY: 1)
             }
             return

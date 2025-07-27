@@ -40,16 +40,11 @@ public final class LifeCellGridView: CellGridView
 
     private               var activeCells: Set<CellLocation> = []
     private               var latixCells: [LatixCell] = []
-    internal              var tetrisBlocks: [TetrisBlock] = []
     internal private(set) var inactiveColorRandomNumber: Int = 0
     internal private(set) var inactiveColorRandomDynamicNumber: Int = 0
     internal private(set) var variantInactiveFadeAgeMax: Int = Settings.Defaults.variantInactiveFadeAgeMax
     private               var variantInactiveFadeCells: Set<CellLocation> = []
     internal private(set) var generationNumber: Int = 0
-
-    internal var _tetrisDragStartCellLocation: CellLocation? = nil
-    internal var _tetrisDragLastCellLocation: CellLocation? = nil
-    internal var _debug: Bool = false
 
     internal func initialize(_ settings: Settings,
                                screen: Screen,
@@ -322,15 +317,13 @@ public final class LifeCellGridView: CellGridView
         return youngerLatixCells
     }
 
+    /*
     public override func onDrag(_ viewPoint: CGPoint) {
         super.onDrag(viewPoint)
     }
 
     public override func onDragEnd(_ viewPoint: CGPoint) {
-        if (self.gameMode == .tetris) {
-            print("ON-DRAG-END")
-            self._tetrisDragStartCellLocation = nil
-        }
         super.onDragEnd(viewPoint)
     }
+    */
 }
