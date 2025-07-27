@@ -67,17 +67,34 @@ public final class LifeCell: Cell {
         set { super.color = newValue }
     }
 
-    public override func select(dragging: Bool = false) {
+    public override func select(dragging: Bool? = false) {
+        if (self.cellGridView.gameMode == GameMode.tetris) {
+            if (dragging != nil) {
+                if let tetrisDragStartCellLocation = self.cellGridView._tetrisDragStartCellLocation {
+                    print("SEL:DRAG:CONT")
+                }
+                else {
+                    if (self.cellGridView._debug) {
+                        var x = 1
+                    }
+                    self.cellGridView._debug = true
+                    print("SEL:DRAG:START> end: \(dragging)")
+                    self.cellGridView._tetrisDragStartCellLocation = self.location
+                }
+            }
+            else {
+                print("SEL:NO-DRAG")
+                let tetrisBlock: TetrisBlock = TetrisBlock(Tetromino.T, at: self, color: Colour.blue) // , rotation: Rotation.degrees_270)
+                self.cellGridView.tetrisBlocks.append(tetrisBlock)
+                tetrisBlock.write()
+            }
+            return
+        }
+        let dragging: Bool = (dragging != nil)
         if (self.cellGridView.gameMode == GameMode.latix) {
             if (!dragging) {
                 self.cellGridView.latixCellSelect(self)
             }
-            return
-        }
-        if (self.cellGridView.gameMode == GameMode.tetris) {
-            let tetrisBlock: TetrisBlock = TetrisBlock(Tetromino.T, at: self, color: Colour.blue) // , rotation: Rotation.degrees_270)
-            self.cellGridView.tetrisBlocks.append(tetrisBlock)
-            tetrisBlock.write()
             return
         }
         if (self.cellGridView.selectModeFat || self.cellGridView.selectModeExtraFat) {

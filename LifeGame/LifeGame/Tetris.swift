@@ -144,10 +144,15 @@ public class TetrisBlock
         self.transform(to: TetrisBlock.moveLocations(self._locations, offsetX, offsetY))
     }
 
+    // Writes all of the cells comprising this block with the default/defined color.
+    //
     public func write() {
         self.write(color: self._color)
     }
 
+    // Writes all of the cells comprising this block with the given color. If the minus
+    // argument is given then ignore (do not write) any of the cell locations specified therein. 
+    //
     private func write(color: Colour, minus: [CellLocation] = []) {
         for location in self._locations {
             var skip: Bool = false
@@ -179,6 +184,9 @@ public class TetrisBlock
     }
 
     public static func rotateLocations(_ locations: [CellLocation], by rotation: Rotation?) -> [CellLocation] {
+        //
+        // Full disclosure: ChatGPT inspired implementation.
+        //
         if let rotation: Rotation = rotation, locations.count > 0 {
             let minx:   Int = locations.map { $0.x }.min()!
             let maxx:   Int = locations.map { $0.x }.max()!
@@ -200,9 +208,6 @@ public class TetrisBlock
     }
 
     private static func moveLocations(_ locations: [CellLocation], _ offsetX: Int, _ offsetY: Int) -> [CellLocation] {
-        //
-        // TODO
-        //
-        return locations
+        return locations.map { CellLocation($0.x + offsetX, $0.y + offsetY) }
     }
 }

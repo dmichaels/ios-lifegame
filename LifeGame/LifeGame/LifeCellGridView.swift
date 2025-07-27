@@ -47,6 +47,9 @@ public final class LifeCellGridView: CellGridView
     private               var variantInactiveFadeCells: Set<CellLocation> = []
     internal private(set) var generationNumber: Int = 0
 
+    internal var _tetrisDragStartCellLocation: CellLocation? = nil
+    internal var _debug: Bool = false
+
     internal func initialize(_ settings: Settings,
                                screen: Screen,
                                viewWidth: Int,
@@ -123,20 +126,6 @@ public final class LifeCellGridView: CellGridView
             }
         }
         return cell as? T
-    }
-
-    // public override func onTap(_ viewPoint: CGPoint) {
-        // super.onTap(viewPoint)
-        // TODO: feedback.trigger()
-    // }
-
-    public func onLongTap(_ viewPoint: CGPoint) {
-        if (self.gameMode == GameMode.tetris) {
-            for tetrisBlock in self.tetrisBlocks {
-                tetrisBlock.rotate(by: Rotation.degrees_90)
-            }
-            return
-        }
     }
 
     public override func automationStep() {
@@ -330,5 +319,17 @@ public final class LifeCellGridView: CellGridView
             }
         }
         return youngerLatixCells
+    }
+
+    public override func onDrag(_ viewPoint: CGPoint) {
+        super.onDrag(viewPoint)
+    }
+
+    public override func onDragEnd(_ viewPoint: CGPoint) {
+        if (self.gameMode == .tetris) {
+            print("ON-DRAG-END")
+            self._tetrisDragStartCellLocation = nil
+        }
+        super.onDragEnd(viewPoint)
     }
 }
