@@ -149,6 +149,34 @@ public class TetrisBlock
         self.transform(to: TetrisBlock.moveLocations(self._locations, offsetX, offsetY))
     }
 
+    private func transform(to locationsNew: [CellLocation], sloppy: Bool = false) {
+        guard locationsNew.count > 0 else { return }
+        let locationsCurrent: [CellLocation] = self._locations
+        if (!sloppy) {
+            //
+            // Do not allow blocks to overlop each other; so make sure that none of the cells of the
+            // new location for this block (locationsNew) does not intersect with the cells of any other
+            // existing blocks, except of course, being careful to ignore this blocks current cell location.
+            //
+            for block in TetrisView.blocks {
+                if (!TetrisBlock.sameLocations(block.locations, self._locations)) {
+                    if (TetrisBlock.intersectingLocations(block.locations, locationsNew)) {
+                        return
+                    }
+                }
+            }
+        }
+        //
+        // Unwrite cells in this current block which are NOT also in the new/transformed block.
+        //
+        self.write(color: self._cellGridView.inactiveColor, minus: locationsNew)
+        //
+        // Write cells of the new/transformed block which were NOT also in this current/untransformed block.
+        //
+        self._locations = locationsNew
+        self.write(color: self._color, minus: locationsCurrent)
+    }
+
     // Writes all of the cells comprising this block with the default/defined color.
     //
     public func write() {
@@ -173,19 +201,6 @@ public class TetrisBlock
                 }
             }
         }
-    }
-
-    private func transform(to locationsNew: [CellLocation]) {
-        let locationsCurrent: [CellLocation] = self._locations
-        //
-        // Unwrite cells in this current block which are NOT also in the new/transformed block.
-        //
-        self.write(color: self._cellGridView.inactiveColor, minus: locationsNew)
-        //
-        // Write cells of the new/transformed block which were NOT also in this current/untransformed block.
-        //
-        self._locations = locationsNew
-        self.write(color: self._color, minus: locationsCurrent)
     }
 
     public static func rotateLocations(_ locations: [CellLocation], by rotation: Rotation?) -> [CellLocation] {
@@ -215,14 +230,41 @@ public class TetrisBlock
     private static func moveLocations(_ locations: [CellLocation], _ offsetX: Int, _ offsetY: Int) -> [CellLocation] {
         return locations.map { CellLocation($0.x + offsetX, $0.y + offsetY) }
     }
+
+    private static func intersectingLocations(_ locationsA: [CellLocation], _ locationsB: [CellLocation]) -> Bool {
+        for locationA in locationsA {
+            for locationB in locationsB {
+                if (locationA == locationB) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    private static func sameLocations(_ locationsA: [CellLocation], _ locationsB: [CellLocation]) -> Bool {
+        guard locationsA.count == locationsB.count else { return false }
+        for locationA in locationsA {
+            if (!locationsB.contains(locationA)) {
+                return false
+            }
+        }
+        return true
+    }
 }
 
 public class TetrisView {
+    //
+    // DEV: Temporary static container for common Tetris stuff.
+    //
     internal static var blocks: [TetrisBlock] = []
     internal static var dragStartCellLocation: CellLocation? = nil
     internal static var dragLastCellLocation: CellLocation? = nil
     internal static var dragBlock: TetrisBlock? = nil
     internal static func findBlock(_ location: CellLocation) -> TetrisBlock? {
+        //
+        // Returns the first block which has a cell which is one of the cells in the given list of locations.
+        //
         for block in TetrisView.blocks {
             for blockLocation in block.locations {
                 if (blockLocation == location) {
