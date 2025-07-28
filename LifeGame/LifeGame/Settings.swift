@@ -20,7 +20,7 @@ class Settings: ObservableObject
 
     @Published var gridColumns: Int             = 150
     @Published var gridRows: Int                = 250
-    @Published var fit: CellGridView.Fit        = CellGridView.Fit.enabled
+    @Published var fit: CellGridView.Fit        = CellGridView.Fit.fixed // CellGridView.Fit.enabled
     @Published var center: Bool                 = false
 
     @Published var cellAntialiasFade: Float     = CellGridView.Defaults.cellAntialiasFade

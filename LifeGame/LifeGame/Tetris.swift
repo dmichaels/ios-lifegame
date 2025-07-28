@@ -120,7 +120,9 @@ internal class TetrisBlock
     }
 
     private func transform(to locationsNew: [CellLocation], sloppy: Bool = false) -> Bool {
-        guard locationsNew.count > 0 else { return false }
+        guard locationsNew.count > 0,
+              CellLocations.inrange(locationsNew, gridWidth: self._cellGridView.gridColumns,
+                                                  gridHeight: self._cellGridView.gridRows) else { return false }
         let locationsCurrent: [CellLocation] = self._locations
         if (!sloppy) {
             //
@@ -319,6 +321,15 @@ internal class CellLocations {
             if (e < dx) { error += dx }
         }
         return points
+    }
+
+    public static func inrange(_ locations: [CellLocation], gridWidth: Int, gridHeight: Int) -> Bool {
+        for location in locations {
+            if ((location.x < 0) || (location.y < 0) || (location.x >= gridWidth) || (location.y >= gridHeight)) {
+                return false
+            }
+        }
+        return true
     }
 
     public static func equal(_ locationsA: [CellLocation], _ locationsB: [CellLocation]) -> Bool {
