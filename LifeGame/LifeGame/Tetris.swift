@@ -149,13 +149,12 @@ public class TetrisBlock
         return self.transform(to: TetrisBlock.moveLocations(self._locations, offsetX, offsetY))
     }
 
-    public func stepMove(start: Cell, offsetX: Int, offsetY: Int) {
+    public func move(offsetX: Int, offsetY: Int, stepFrom: Cell) {
         guard (offsetX != 0) || (offsetY != 0) else { return }
         var skip: Bool = false
-        let endLocation: CellLocation = CellLocation(start.location.x + offsetX, start.location.y + offsetY)
-        var lastLocation: CellLocation = start.location
-        let intermediateLocations = TetrisBlock.intermediateLocations(start.location, endLocation)
-        for intermediateLocation in intermediateLocations {
+        let endLocation: CellLocation = CellLocation(stepFrom.location.x + offsetX, stepFrom.location.y + offsetY)
+        var lastLocation: CellLocation = stepFrom.location
+        for intermediateLocation in TetrisBlock.intermediateLocations(stepFrom.location, endLocation) {
             let offsetX: Int =  intermediateLocation.x - lastLocation.x
             let offsetY: Int =  intermediateLocation.y - lastLocation.y
             if (!self.move(offsetX: offsetX, offsetY: offsetY)) {
@@ -349,28 +348,8 @@ public class TetrisView {
                 let offsetY: Int = cell.y - dragLastCellLocation.y
                 if ((offsetX != 0) || (offsetY != 0)) {
                     let step: Bool = true
-                    // var skip: Bool = false
                     if (step) {
-                        TetrisView.dragBlock!.stepMove(start: cell, offsetX: offsetX, offsetY: offsetY)
-                        /*
-                        let endLocation: CellLocation = CellLocation(cell.location.x + offsetX, cell.location.y + offsetY)
-                        var lastLocation: CellLocation = cell.location
-                        let intermediateLocations = TetrisBlock.intermediateLocations(cell.location, endLocation)
-                        for intermediateLocation in intermediateLocations {
-                            let offsetX: Int =  intermediateLocation.x - lastLocation.x
-                            let offsetY: Int =  intermediateLocation.y - lastLocation.y
-                            if (!TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY)) {
-                                skip = true
-                                break
-                            }
-                            lastLocation = intermediateLocation
-                        }
-                        if (!skip) {
-                            let offsetX: Int =  endLocation.x - lastLocation.x
-                            let offsetY: Int =  endLocation.y - lastLocation.y
-                            TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY)
-                        }
-                        */
+                        TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY, stepFrom: cell)
                     }
                     else {
                         TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY)
@@ -396,7 +375,7 @@ public class TetrisView {
 
     internal static func onLongTap(_ cellGridView: CellGridView, _ viewPoint: CGPoint) {
         if let cell: LifeCell = cellGridView.gridCell(viewPoint: viewPoint) {
-            TetrisView.blocks.append(TetrisBlock(Tetromino.T, at: cell, color: Colour.blue, write: true))
+            TetrisView.blocks.append(TetrisBlock(Tetromino.L, at: cell, color: Colour.blue, write: true))
         }
     }
 }
