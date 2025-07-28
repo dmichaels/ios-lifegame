@@ -103,6 +103,10 @@ public class TetrisBlock
     }
 
     public func move(offsetX: Int, offsetY: Int, stepFrom: Cell) {
+        //
+        // Doing a straight move (above) with offset could allow us to go
+        // THROUGH a block; this does the move step-wise to disallow that.
+        //
         guard (offsetX != 0) || (offsetY != 0) else { return }
         var skip: Bool = false
         let endLocation: CellLocation = CellLocation(stepFrom.location.x + offsetX, stepFrom.location.y + offsetY)
@@ -158,8 +162,9 @@ public class TetrisBlock
         self.write(color: self._color)
     }
 
-    // Writes all of the cells comprising this block with the given color. If the minus
-    // argument is given then ignore (do not write) any of the cell locations specified therein. 
+    // Writes all of the cells comprising this block with the given color. If the minus argument is
+    // given then ignore (do not write) any of the cell locations specified therein; this facilitates
+    // parsimony with respect to not writing cells of the block which are not necessary to (re)write.
     //
     private func write(color: Colour, minus: [CellLocation] = []) {
         for location in self._locations {
