@@ -91,6 +91,7 @@ public final class LifeCell: Cell {
                 if (dragging == false) {
                     TetrisView.dragStartCellLocation = nil
                     TetrisView.dragLastCellLocation = nil
+                    TetrisView.dragBlock = nil
                 }
             }
             else {
