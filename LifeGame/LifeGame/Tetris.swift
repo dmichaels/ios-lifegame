@@ -2,7 +2,7 @@ import Foundation
 import CellGridView
 import Utils
 
-public class TetrisView {
+internal class TetrisView {
     //
     // DEV: Temporary static container for common Tetris stuff.
     //
@@ -11,21 +11,7 @@ public class TetrisView {
     internal static var dragLastCellLocation: CellLocation? = nil
     internal static var dragBlock: TetrisBlock? = nil
 
-    internal static func findBlock(_ location: CellLocation) -> TetrisBlock? {
-        //
-        // Returns the first block which has a cell which is one of the cells in the given list of locations.
-        //
-        for block in TetrisView.blocks {
-            for blockLocation in block.locations {
-                if (blockLocation == location) {
-                    return block
-                }
-            }
-        }
-        return nil
-    }
-
-    internal static func onCellSelect(_ cellGridView: CellGridView, _ cell: Cell, dragging: Bool?) {
+    public static func onCellSelect(_ cellGridView: CellGridView, _ cell: Cell, dragging: Bool?) {
         if (dragging != nil) {
             //
             // DEV: On tap/drag on a block, move it.
@@ -40,15 +26,7 @@ public class TetrisView {
             else if let dragLastCellLocation: CellLocation = TetrisView.dragLastCellLocation {
                 let offsetX: Int = cell.x - dragLastCellLocation.x
                 let offsetY: Int = cell.y - dragLastCellLocation.y
-                if ((offsetX != 0) || (offsetY != 0)) {
-                    let step: Bool = true
-                    if (step) {
-                        TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY, stepFrom: cell)
-                    }
-                    else {
-                        TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY)
-                    }
-                }
+                TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY, stepFrom: cell)
                 TetrisView.dragLastCellLocation = dragging == true ? cell.location : nil
             }
             if (dragging == false) {
@@ -67,14 +45,28 @@ public class TetrisView {
         }
     }
 
-    internal static func onLongTap(_ cellGridView: CellGridView, _ viewPoint: CGPoint) {
+    public static func onLongTap(_ cellGridView: CellGridView, _ viewPoint: CGPoint) {
         if let cell: LifeCell = cellGridView.gridCell(viewPoint: viewPoint) {
             TetrisView.blocks.append(TetrisBlock(Tetromino.L, at: cell, color: Colour.blue, write: true))
         }
     }
+
+    public static func findBlock(_ location: CellLocation) -> TetrisBlock? {
+        //
+        // Returns the first block which has a cell which is one of the cells in the given list of locations.
+        //
+        for block in TetrisView.blocks {
+            for blockLocation in block.locations {
+                if (blockLocation == location) {
+                    return block
+                }
+            }
+        }
+        return nil
+    }
 }
 
-public class TetrisBlock
+internal class TetrisBlock
 {
     private var _locations: [CellLocation]
     private var _color: Colour
@@ -186,58 +178,10 @@ public class TetrisBlock
 
 public class Tetromino {
 
-    private let _locations: [CellLocation]
-    private let _width: Int
-    private let _height: Int
+    public let locations: [CellLocation]
 
     public init(_ locations: [CellLocation]) {
-        self._locations = locations
-        self._width = (locations.map { $0.x }.max() ?? 0) + 1
-        self._height = (locations.map { $0.y }.max() ?? 0) + 1
-    }
-
-    public var locations: [CellLocation] { return self._locations }
-    public var width: Int                { return self._width }
-    public var height: Int               { return self._height }
-
-    public func rotated(by rotation: Rotation = .degrees_90) -> Tetromino {
-        let rotatedLocations: [CellLocation] = self._locations.map { location in
-            switch rotation {
-            case .degrees_90:
-                return CellLocation(location.y, -location.x)
-            case .degrees_180:
-                return CellLocation(-location.x, -location.y)
-            case .degrees_270:
-                return CellLocation(-location.y, location.x)
-            }
-        }
-        let minx = rotatedLocations.map { $0.x }.min() ?? 0
-        let miny = rotatedLocations.map { $0.y }.min() ?? 0
-        let normalized = rotatedLocations.map {
-            CellLocation($0.x - minx, $0.y - miny)
-        }
-        return Tetromino(normalized)
-    }
-
-    internal func minus(_ tetromino: Tetromino?) -> [CellLocation] {
-        return (tetromino != nil) ? self.minusLocations(tetromino!.locations) : self.locations
-    }
-
-    internal func minusLocations(_ locations: [CellLocation]) -> [CellLocation] {
-        var result: [CellLocation] = []
-        for selfLocation in self._locations {
-            var skip: Bool = false
-            for location in locations {
-                if (location == selfLocation) {
-                    skip = true
-                    break
-                }
-            }
-            if (!skip) {
-                result.append(selfLocation)
-            }
-        }
-        return result
+        self.locations = locations
     }
 
     public static let O: Tetromino = Tetromino(
@@ -303,9 +247,9 @@ public enum Rotation {
     case degrees_270
 }
 
-public class CellLocations {
+internal class CellLocations {
 
-    internal static func rotate(_ locations: [CellLocation], by rotation: Rotation?) -> [CellLocation] {
+    public static func rotate(_ locations: [CellLocation], by rotation: Rotation?) -> [CellLocation] {
         //
         // Full disclosure: ChatGPT inspired implementation.
         //
@@ -329,11 +273,11 @@ public class CellLocations {
         return locations
     }
 
-    internal static func move(_ locations: [CellLocation], _ offsetX: Int, _ offsetY: Int) -> [CellLocation] {
+    public static func move(_ locations: [CellLocation], _ offsetX: Int, _ offsetY: Int) -> [CellLocation] {
         return locations.map { CellLocation($0.x + offsetX, $0.y + offsetY) }
     }
 
-    internal static func intersecting(_ locationsA: [CellLocation], _ locationsB: [CellLocation]) -> Bool {
+    public static func intersecting(_ locationsA: [CellLocation], _ locationsB: [CellLocation]) -> Bool {
         for locationA in locationsA {
             for locationB in locationsB {
                 if (locationA == locationB) {
@@ -344,17 +288,7 @@ public class CellLocations {
         return false
     }
 
-    internal static func equal(_ locationsA: [CellLocation], _ locationsB: [CellLocation]) -> Bool {
-        guard locationsA.count == locationsB.count else { return false }
-        for locationA in locationsA {
-            if (!locationsB.contains(locationA)) {
-                return false
-            }
-        }
-        return true
-    }
-
-    internal static func intermediate(_ locationA: CellLocation, _ locationB: CellLocation) -> [CellLocation] {
+    public static func intermediate(_ locationA: CellLocation, _ locationB: CellLocation) -> [CellLocation] {
         //
         // Full disclosure: ChatGPT inspired implementation.
         //
@@ -385,5 +319,15 @@ public class CellLocations {
             if (e < dx) { error += dx }
         }
         return points
+    }
+
+    public static func equal(_ locationsA: [CellLocation], _ locationsB: [CellLocation]) -> Bool {
+        guard locationsA.count == locationsB.count else { return false }
+        for locationA in locationsA {
+            if (!locationsB.contains(locationA)) {
+                return false
+            }
+        }
+        return true
     }
 }
