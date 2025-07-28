@@ -11,4 +11,11 @@ extension LifeCellGridView
             return
         }
     }
+
+    public func onDoubleTap() {
+        if (self.gameMode == GameMode.tetris) {
+            TetrisView.onDoubleTap(self)
+            return
+        }
+    }
 }

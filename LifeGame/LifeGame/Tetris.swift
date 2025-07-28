@@ -47,8 +47,18 @@ internal class TetrisView {
 
     public static func onLongTap(_ cellGridView: CellGridView, _ viewPoint: CGPoint) {
         if let cell: LifeCell = cellGridView.gridCell(viewPoint: viewPoint) {
-            TetrisView.blocks.append(TetrisBlock(Tetromino.L, at: cell, color: Colour.blue, write: true))
+            TetrisView.blocks.append(TetrisBlock(Tetromino.L, at: cell, write: true))
         }
+    }
+
+    public static func onDoubleTap(_ cellGridView: LifeCellGridView) {
+        TetrisView.blocks.append(TetrisBlock(Tetromino.O, at: CellLocation(3,  2), cellGridView, write: true))
+        TetrisView.blocks.append(TetrisBlock(Tetromino.I, at: CellLocation(3,  7), cellGridView, write: true))
+        TetrisView.blocks.append(TetrisBlock(Tetromino.S, at: CellLocation(3, 12), cellGridView, write: true))
+        TetrisView.blocks.append(TetrisBlock(Tetromino.Z, at: CellLocation(3, 17), cellGridView, write: true))
+        TetrisView.blocks.append(TetrisBlock(Tetromino.L, at: CellLocation(3, 23), cellGridView, write: true))
+        TetrisView.blocks.append(TetrisBlock(Tetromino.J, at: CellLocation(3, 28), cellGridView, write: true))
+        TetrisView.blocks.append(TetrisBlock(Tetromino.T, at: CellLocation(3, 33), cellGridView, write: true))
     }
 
     public static func findBlock(_ location: CellLocation) -> TetrisBlock? {
@@ -72,13 +82,25 @@ internal class TetrisBlock
     private var _color: Colour
     private var _cellGridView: LifeCellGridView
 
-    public init(_ tetromino: Tetromino, at cell: LifeCell, color: Colour, rotation: Rotation? = nil, write: Bool = false) {
+    convenience public init(_ tetromino: Tetromino,
+                            at cell: LifeCell,
+                            color: Colour? = nil,
+                            rotation: Rotation? = nil, write: Bool = false)
+    {
+        self.init(tetromino, at: cell.location, cell.cellGridView, color: color, rotation: rotation, write: write)
+    }
+
+    public init(_ tetromino: Tetromino,
+                at location: CellLocation, _ cellGridView: LifeCellGridView,
+                color: Colour? = nil,
+                rotation: Rotation? = nil, write: Bool = false)
+    {
         self._locations = []
-        for location in CellLocations.rotate(tetromino.locations, by: rotation) {
-            self._locations.append(CellLocation(cell.x + location.x, cell.y + location.y))
+        for tetrominoLocation in CellLocations.rotate(tetromino.locations, by: rotation) {
+            self._locations.append(CellLocation(location.x + tetrominoLocation.x, location.y + tetrominoLocation.y))
         }
-        self._color = color
-        self._cellGridView = cell.cellGridView
+        self._color = color ?? tetromino.color
+        self._cellGridView = cellGridView
         if (write) {
             self.write()
         }
@@ -181,9 +203,11 @@ internal class TetrisBlock
 public class Tetromino {
 
     public let locations: [CellLocation]
+    public let color: Colour
 
-    public init(_ locations: [CellLocation]) {
+    private init(_ locations: [CellLocation], color: Colour) {
         self.locations = locations
+        self.color = color
     }
 
     public static let O: Tetromino = Tetromino(
@@ -192,7 +216,7 @@ public class Tetromino {
         CellLocation(1, 0), // ▢▢
         CellLocation(0, 1), //
         CellLocation(1, 1)  //
-    ])
+    ], color: Colour.yellow)
 
     public static let I: Tetromino = Tetromino(
     [
@@ -200,7 +224,7 @@ public class Tetromino {
         CellLocation(0, 1), // ▢
         CellLocation(0, 2), // ▢
         CellLocation(0, 3)  // ▢
-    ])
+    ], color: Colour.cyan)
 
     public static let S: Tetromino = Tetromino(
     [
@@ -208,7 +232,7 @@ public class Tetromino {
         CellLocation(2, 0), // ▢▢
         CellLocation(0, 1), //
         CellLocation(1, 1)  //
-    ])
+    ], color: Colour.green)
 
     public static let Z: Tetromino = Tetromino(
     [
@@ -216,7 +240,7 @@ public class Tetromino {
         CellLocation(1, 0), //  ▢▢
         CellLocation(1, 1), //
         CellLocation(2, 1)  //
-    ])
+    ], color: Colour.red)
 
     public static let L: Tetromino = Tetromino(
     [
@@ -224,7 +248,7 @@ public class Tetromino {
         CellLocation(0, 1), // ▢
         CellLocation(0, 2), // ▢▢
         CellLocation(1, 2)  //
-    ])
+    ], color: Colour.orange)
 
     public static let J: Tetromino = Tetromino(
     [
@@ -232,7 +256,7 @@ public class Tetromino {
         CellLocation(1, 1), //  ▢
         CellLocation(0, 2), // ▢▢
         CellLocation(1, 2)  //
-    ])
+    ], color: Colour.blue)
 
     public static let T: Tetromino = Tetromino(
     [
@@ -240,7 +264,7 @@ public class Tetromino {
         CellLocation(1, 0), //  ▢
         CellLocation(2, 0), //
         CellLocation(1, 1)  //
-    ])
+    ], color: Colour.purple)
 }
 
 public enum Rotation {
