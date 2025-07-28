@@ -7,8 +7,11 @@ extension LifeCellGridView
 {
     public func onLongTap(_ viewPoint: CGPoint) {
         if (self.gameMode == GameMode.tetris) {
-            for tetrisBlock in TetrisView.blocks {
-                tetrisBlock.rotate(by: Rotation.degrees_90)
+            //
+            // DEV: On long tap, create a new block.
+            //
+            if let cell: LifeCell = self.gridCell(viewPoint: viewPoint) {
+                TetrisView.blocks.append(TetrisBlock(Tetromino.T, at: cell, color: Colour.blue, write: true))
             }
             return
         }
@@ -16,9 +19,6 @@ extension LifeCellGridView
 
     public func onDoubleTap() {
         if (self.gameMode == GameMode.tetris) {
-            for tetrisBlock in TetrisView.blocks {
-                tetrisBlock.move(offsetX: 1, offsetY: 1)
-            }
             return
         }
     }

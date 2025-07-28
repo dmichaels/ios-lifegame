@@ -68,12 +68,15 @@ public final class LifeCell: Cell {
     }
 
     public override func select(dragging: Bool? = false) {
-        print("SEL> \(self.x),\(self.y) dragging: \(dragging) \(Int(Date().timeIntervalSince1970 * 1000))")
         if (self.cellGridView.gameMode == GameMode.tetris) {
             if (dragging != nil) {
+                //
+                // DEV: On tap/drag on a block, move it.
+                //
                 if (TetrisView.dragStartCellLocation == nil) {
                     TetrisView.dragStartCellLocation = self.location
                     if let block: TetrisBlock = TetrisView.findBlock(self.location) {
+                        TetrisView.dragBlock = block
                         TetrisView.dragLastCellLocation = self.location
                     }
                 }
@@ -81,66 +84,24 @@ public final class LifeCell: Cell {
                     let offsetX: Int = self.x - dragLastCellLocation.x
                     let offsetY: Int = self.y - dragLastCellLocation.y
                     if ((offsetX != 0) || (offsetY != 0)) {
-                        for block in TetrisView.blocks {
-                            block.move(offsetX: offsetX, offsetY: offsetY)
-                        }
+                        TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY)
                     }
                     TetrisView.dragLastCellLocation = dragging == true ? self.location : nil
                 }
-                /*
-                else {
-                    if let block: TetrisBlock = TetrisView.findBlock(TetrisView.dragStartCellLocation!) {
-                        TetrisView.dragLastCellLocation = self.location
-                    }
-                }
-                */
                 if (dragging == false) {
                     TetrisView.dragStartCellLocation = nil
                     TetrisView.dragLastCellLocation = nil
                 }
             }
             else {
-                TetrisView.blocks.append(TetrisBlock(Tetromino.T, at: self, color: Colour.blue, write: true))
-            }
-            return
-/*
-            if (dragging != nil) {
-                if let tetrisDragStartCellLocation = self.cellGridView._tetrisDragStartCellLocation {
-                    if (self.cellGridView._tetrisDragLastCellLocation != self.location) {
-                        // let horizontalOffset: Int = self.x - tetrisDragStartCellLocation.x
-                        let horizontalOffset: Int = self.x - self.cellGridView._tetrisDragLastCellLocation!.x
-                        self.cellGridView._tetrisDragLastCellLocation = self.location
-                        print("SELECT/DRAGGING/CONTINUE> tetrisDragLastCellLocation.x: \(self.cellGridView._tetrisDragLastCellLocation!.x) tetrisDragStartCellLocation.x: \(self.cellGridView._tetrisDragStartCellLocation!.x) self: \(self.x) offset: \(horizontalOffset)")
-                        if (horizontalOffset != 0) {
-                            for block in self.cellGridView.tetrisBlocks {
-                                block.move(offsetX: horizontalOffset, offsetY: 0)
-                            }
-                        }
-                    }
-                    else {
-                        print("SELECT/DRAGGING/CONTINUE/SAME> tetrisDragStartCellLocation.x: \(self.cellGridView._tetrisDragStartCellLocation!.x) self: \(self.x)")
-                    }
-                }
-                else {
-                    if (self.cellGridView._debug) {
-                        var x = 1
-                    }
-                    self.cellGridView._debug = true
-                    print("SEL:DRAG:START> end: \(dragging)")
-                    self.cellGridView._tetrisDragStartCellLocation = self.location
-                    self.cellGridView._tetrisDragLastCellLocation = self.location
-                    print("SELECT/DRAGGING/START> tetrisDragStartCellLocation.x: \(self.cellGridView._tetrisDragStartCellLocation!.x) self: \(self.x)")
+                //
+                // DEV: On single tap on a block, rotate it.
+                //
+                if let block: TetrisBlock = TetrisView.findBlock(self.location) {
+                    block.rotate(by: Rotation.degrees_270)
                 }
             }
-            else {
-                print("SEL:NO-DRAG")
-                self.cellGridView._tetrisDragStartCellLocation = nil
-                let tetrisBlock: TetrisBlock = TetrisBlock(Tetromino.T, at: self, color: Colour.blue) // , rotation: Rotation.degrees_270)
-                self.cellGridView.tetrisBlocks.append(tetrisBlock)
-                tetrisBlock.write()
-            }
             return
-            */
         }
         let dragging: Bool = (dragging != nil)
         if (self.cellGridView.gameMode == GameMode.latix) {

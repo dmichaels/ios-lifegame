@@ -223,6 +223,7 @@ public class TetrisView {
     internal static var blocks: [TetrisBlock] = []
     internal static var dragStartCellLocation: CellLocation? = nil
     internal static var dragLastCellLocation: CellLocation? = nil
+    internal static var dragBlock: TetrisBlock? = nil
     internal static func findBlock(_ location: CellLocation) -> TetrisBlock? {
         for block in TetrisView.blocks {
             for blockLocation in block.locations {
