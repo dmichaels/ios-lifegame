@@ -69,39 +69,7 @@ public final class LifeCell: Cell {
 
     public override func select(dragging: Bool? = false) {
         if (self.cellGridView.gameMode == GameMode.tetris) {
-            if (dragging != nil) {
-                //
-                // DEV: On tap/drag on a block, move it.
-                //
-                if (TetrisView.dragStartCellLocation == nil) {
-                    TetrisView.dragStartCellLocation = self.location
-                    if let block: TetrisBlock = TetrisView.findBlock(self.location) {
-                        TetrisView.dragBlock = block
-                        TetrisView.dragLastCellLocation = self.location
-                    }
-                }
-                else if let dragLastCellLocation: CellLocation = TetrisView.dragLastCellLocation {
-                    let offsetX: Int = self.x - dragLastCellLocation.x
-                    let offsetY: Int = self.y - dragLastCellLocation.y
-                    if ((offsetX != 0) || (offsetY != 0)) {
-                        TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY)
-                    }
-                    TetrisView.dragLastCellLocation = dragging == true ? self.location : nil
-                }
-                if (dragging == false) {
-                    TetrisView.dragStartCellLocation = nil
-                    TetrisView.dragLastCellLocation = nil
-                    TetrisView.dragBlock = nil
-                }
-            }
-            else {
-                //
-                // DEV: On single tap on a block, rotate it.
-                //
-                if let block: TetrisBlock = TetrisView.findBlock(self.location) {
-                    block.rotate(by: Rotation.degrees_270)
-                }
-            }
+            TetrisView.onCellSelect(cellGridView, self, dragging: dragging)
             return
         }
         let dragging: Bool = (dragging != nil)

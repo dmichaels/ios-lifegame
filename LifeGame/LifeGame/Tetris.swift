@@ -261,6 +261,7 @@ public class TetrisView {
     internal static var dragStartCellLocation: CellLocation? = nil
     internal static var dragLastCellLocation: CellLocation? = nil
     internal static var dragBlock: TetrisBlock? = nil
+
     internal static func findBlock(_ location: CellLocation) -> TetrisBlock? {
         //
         // Returns the first block which has a cell which is one of the cells in the given list of locations.
@@ -273,5 +274,47 @@ public class TetrisView {
             }
         }
         return nil
+    }
+
+    internal static func onCellSelect(_ cellGridView: CellGridView, _ cell: Cell, dragging: Bool?) {
+        if (dragging != nil) {
+            //
+            // DEV: On tap/drag on a block, move it.
+            //
+            if (TetrisView.dragStartCellLocation == nil) {
+                TetrisView.dragStartCellLocation = cell.location
+                if let block: TetrisBlock = TetrisView.findBlock(cell.location) {
+                    TetrisView.dragBlock = block
+                    TetrisView.dragLastCellLocation = cell.location
+                }
+            }
+            else if let dragLastCellLocation: CellLocation = TetrisView.dragLastCellLocation {
+                let offsetX: Int = cell.x - dragLastCellLocation.x
+                let offsetY: Int = cell.y - dragLastCellLocation.y
+                if ((offsetX != 0) || (offsetY != 0)) {
+                    TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY)
+                }
+                TetrisView.dragLastCellLocation = dragging == true ? cell.location : nil
+            }
+            if (dragging == false) {
+                TetrisView.dragStartCellLocation = nil
+                TetrisView.dragLastCellLocation = nil
+                TetrisView.dragBlock = nil
+            }
+        }
+        else {
+            //
+            // DEV: On single tap on a block, rotate it.
+            //
+            if let block: TetrisBlock = TetrisView.findBlock(cell.location) {
+                block.rotate(by: Rotation.degrees_270)
+            }
+        }
+    }
+
+    internal static func onLongTap(_ cellGridView: CellGridView, _ viewPoint: CGPoint) {
+        if let cell: LifeCell = cellGridView.gridCell(viewPoint: viewPoint) {
+            TetrisView.blocks.append(TetrisBlock(Tetromino.T, at: cell, color: Colour.blue, write: true))
+        }
     }
 }
