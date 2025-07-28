@@ -68,17 +68,21 @@ public final class LifeCell: Cell {
     }
 
     public override func select(dragging: Bool? = false) {
+
         if (self.cellGridView.gameMode == GameMode.tetris) {
             TetrisView.onCellSelect(cellGridView, self, dragging: dragging)
             return
         }
+
         let dragging: Bool = (dragging != nil)
+
         if (self.cellGridView.gameMode == GameMode.latix) {
             if (!dragging) {
                 self.cellGridView.latixCellSelect(self)
             }
             return
         }
+
         if (self.cellGridView.selectModeFat || self.cellGridView.selectModeExtraFat) {
             if let aboveCell: LifeCell = self.cellGridView.gridCell(self.x, self.y - 1) {
                 dragging ? aboveCell.activate() : aboveCell.toggle()

@@ -49,14 +49,7 @@ struct ContentView: View
                                 onDrag:      { value in self.cellGridView.onDrag(value) },
                                 onDragEnd:   { value in self.cellGridView.onDragEnd(value) },
                                 onTap:       { value in self.cellGridView.onTap(value) ; feedback.trigger() },
-                                onDoubleTap: {
-                                    if (self.cellGridView.gameMode == .tetris) {
-                                        self.cellGridView.onDoubleTap()
-                                    }
-                                    else {
-                                        self.toggleShowControls()
-                                    }
-                                },
+                                onDoubleTap: { self.toggleShowControls() },
                                 onLongTap:   { viewPoint in
                                     if (self.cellGridView.gameMode == .tetris) {
                                         self.cellGridView.onLongTap(viewPoint)
