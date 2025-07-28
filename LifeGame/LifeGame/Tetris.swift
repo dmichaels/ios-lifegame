@@ -141,16 +141,16 @@ public class TetrisBlock
 
     public var locations: [CellLocation] { self._locations }
 
-    public func rotate(by rotation: Rotation = Rotation.degrees_90) {
-        self.transform(to: TetrisBlock.rotateLocations(self._locations, by: rotation))
+    public func rotate(by rotation: Rotation = Rotation.degrees_90) -> Bool {
+        return self.transform(to: TetrisBlock.rotateLocations(self._locations, by: rotation))
     }
 
-    public func move(offsetX: Int, offsetY: Int) {
-        self.transform(to: TetrisBlock.moveLocations(self._locations, offsetX, offsetY))
+    public func move(offsetX: Int, offsetY: Int) -> Bool {
+        return self.transform(to: TetrisBlock.moveLocations(self._locations, offsetX, offsetY))
     }
 
-    private func transform(to locationsNew: [CellLocation], sloppy: Bool = false) {
-        guard locationsNew.count > 0 else { return }
+    private func transform(to locationsNew: [CellLocation], sloppy: Bool = false) -> Bool {
+        guard locationsNew.count > 0 else { return false }
         let locationsCurrent: [CellLocation] = self._locations
         if (!sloppy) {
             //
@@ -161,7 +161,7 @@ public class TetrisBlock
             for block in TetrisView.blocks {
                 if (!TetrisBlock.sameLocations(block.locations, self._locations)) {
                     if (TetrisBlock.intersectingLocations(block.locations, locationsNew)) {
-                        return
+                        return false
                     }
                 }
             }
@@ -175,6 +175,7 @@ public class TetrisBlock
         //
         self._locations = locationsNew
         self.write(color: self._color, minus: locationsCurrent)
+        return true
     }
 
     // Writes all of the cells comprising this block with the default/defined color.
@@ -251,6 +252,39 @@ public class TetrisBlock
         }
         return true
     }
+
+    internal static func intermediateLocations(_ locationA: CellLocation, _ locationB: CellLocation) -> [CellLocation] {
+        //
+        // Full disclosure: ChatGPT inspired implementation.
+        //
+        var points: [CellLocation] = []
+        let xa: Int = locationA.x
+        let ya: Int = locationA.y
+        let xb: Int = locationB.x
+        let yb: Int = locationB.y
+        let dx: Int = abs(xb - xa)
+        let dy: Int = abs(yb - ya)
+        if max(dx, dy) <= 1 {
+            return []
+        }
+        let sx: Int = xa < xb ? 1 : -1
+        let sy: Int = ya < yb ? 1 : -1
+        var x: Int = xa
+        var y: Int = ya
+        var error: Int = dx - dy
+        while true {
+            x += (x != xb ? sx : 0)
+            y += (y != yb ? sy : 0)
+            if ((x == xb) && (y == yb)) {
+                break
+            }
+            points.append(CellLocation(x, y))
+            let e: Int = 2 * error
+            if (e > -dy) { error -= dy }
+            if (e < dx) { error += dx }
+        }
+        return points
+    }
 }
 
 public class TetrisView {
@@ -292,7 +326,30 @@ public class TetrisView {
                 let offsetX: Int = cell.x - dragLastCellLocation.x
                 let offsetY: Int = cell.y - dragLastCellLocation.y
                 if ((offsetX != 0) || (offsetY != 0)) {
-                    TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY)
+                    let step: Bool = true
+                    var skip: Bool = false
+                    if (step) {
+                        let endLocation: CellLocation = CellLocation(cell.location.x + offsetX, cell.location.y + offsetY)
+                        var lastLocation: CellLocation = cell.location
+                        let intermediateLocations = TetrisBlock.intermediateLocations(cell.location, endLocation)
+                        for intermediateLocation in intermediateLocations {
+                            let offsetX: Int =  intermediateLocation.x - lastLocation.x
+                            let offsetY: Int =  intermediateLocation.y - lastLocation.y
+                            if (!TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY)) {
+                                skip = true
+                                break
+                            }
+                            lastLocation = intermediateLocation
+                        }
+                        if (!skip) {
+                            let offsetX: Int =  endLocation.x - lastLocation.x
+                            let offsetY: Int =  endLocation.y - lastLocation.y
+                            TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY)
+                        }
+                    }
+                    else {
+                        TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY)
+                    }
                 }
                 TetrisView.dragLastCellLocation = dragging == true ? cell.location : nil
             }
