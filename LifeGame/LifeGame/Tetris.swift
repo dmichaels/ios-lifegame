@@ -123,27 +123,19 @@ internal class TetrisBlock
         // THROUGH a block; this does the move step-wise to disallow that.
         //
         guard (offsetX != 0) || (offsetY != 0) else { return false }
-        var moved: Bool = false, skip: Bool = false
         let endLocation: CellLocation = CellLocation(stepFrom.location.x + offsetX, stepFrom.location.y + offsetY)
         var lastLocation: CellLocation = stepFrom.location
         for intermediateLocation in CellLocations.intermediate(stepFrom.location, endLocation) {
             let offsetX: Int =  intermediateLocation.x - lastLocation.x
             let offsetY: Int =  intermediateLocation.y - lastLocation.y
             if (!self.move(offsetX: offsetX, offsetY: offsetY)) {
-                skip = true
-                break
+                return false
             }
             lastLocation = intermediateLocation
-            moved = true
         }
-        if (!skip) {
-            let offsetX: Int = endLocation.x - lastLocation.x
-            let offsetY: Int = endLocation.y - lastLocation.y
-            if (self.move(offsetX: offsetX, offsetY: offsetY)) {
-                moved = true
-            }
-        }
-        return moved
+        let offsetX: Int = endLocation.x - lastLocation.x
+        let offsetY: Int = endLocation.y - lastLocation.y
+        return self.move(offsetX: offsetX, offsetY: offsetY)
     }
 
     private func transform(to locationsNew: [CellLocation]) -> Bool {
