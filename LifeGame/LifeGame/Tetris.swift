@@ -26,8 +26,9 @@ internal class TetrisView {
             else if let dragLastCellLocation: CellLocation = TetrisView.dragLastCellLocation {
                 let offsetX: Int = cell.x - dragLastCellLocation.x
                 let offsetY: Int = cell.y - dragLastCellLocation.y
-                TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY, stepFrom: cell)
-                TetrisView.dragLastCellLocation = dragging == true ? cell.location : nil
+                if (TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY, stepFrom: cell)) {
+                    TetrisView.dragLastCellLocation = dragging == true ? cell.location : nil
+                }
             }
             if (dragging == false) {
                 TetrisView.dragStartCellLocation = nil
@@ -116,13 +117,14 @@ internal class TetrisBlock
         return self.transform(to: CellLocations.move(self._locations, offsetX, offsetY))
     }
 
-    public func move(offsetX: Int, offsetY: Int, stepFrom: Cell) {
+    public func move(offsetX: Int, offsetY: Int, stepFrom: Cell) -> Bool {
         //
         // Doing a straight move (above) with offset could allow us to go
         // THROUGH a block; this does the move step-wise to disallow that.
         //
-        guard (offsetX != 0) || (offsetY != 0) else { return }
+        guard (offsetX != 0) || (offsetY != 0) else { return false }
         var skip: Bool = false
+        var moved: Bool = false
         let endLocation: CellLocation = CellLocation(stepFrom.location.x + offsetX, stepFrom.location.y + offsetY)
         var lastLocation: CellLocation = stepFrom.location
         for intermediateLocation in CellLocations.intermediate(stepFrom.location, endLocation) {
@@ -133,12 +135,16 @@ internal class TetrisBlock
                 break
             }
             lastLocation = intermediateLocation
+            moved = true
         }
         if (!skip) {
             let offsetX: Int = endLocation.x - lastLocation.x
             let offsetY: Int = endLocation.y - lastLocation.y
-            self.move(offsetX: offsetX, offsetY: offsetY)
+            if (self.move(offsetX: offsetX, offsetY: offsetY)) {
+                moved = true
+            }
         }
+        return moved
     }
 
     private func transform(to locationsNew: [CellLocation]) -> Bool {

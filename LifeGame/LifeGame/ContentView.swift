@@ -21,7 +21,7 @@ struct ContentView: View
     @State private var hideStatusBar: Bool = Settings.Defaults.hideStatusBar
     @State private var feedback: Feedback = Feedback(sounds: Settings.Defaults.soundsEnabled,
                                                      haptics: Settings.Defaults.hapticsEnabled)
-    @State private var screenBackground: Colour? = nil
+    @State private var screenBackground: Colour? = Colour.red // nil
 
     var body: some View {
         NavigationView {
@@ -46,9 +46,30 @@ struct ContentView: View
                                 swipeThreshold: self.cellGridView.swipeThreshold,
                                 normalizePoint: self.normalizePoint,
                                 orientation: self.orientation,
-                                onDrag:      { value in self.cellGridView.onDrag(value) },
+                                // onDrag:      { value in self.cellGridView.onDrag(value) },
+                                onDrag:      { value in
+                                    // TODO
+                                    var outofbounds: Bool = false
+                                    if (Int(ceil(value.y)) >= (image.height / 3)) {
+                                        print("OUT-OF-BOUNDS")
+                                        outofbounds = true
+                                    }
+                                    if (true || !outofbounds) {
+                                        self.cellGridView.onDrag(value)
+                                    }
+                                },
                                 onDragEnd:   { value in self.cellGridView.onDragEnd(value) },
-                                onTap:       { value in self.cellGridView.onTap(value) ; feedback.trigger() },
+                                // onTap:       { value in self.cellGridView.onTap(value) ; feedback.trigger() },
+                                onTap:       { value in
+                                    var outofbounds: Bool = false
+                                    if (Int(ceil(value.y)) >= (image.height / 3)) {
+                                        print("OUT-OF-BOUNDS")
+                                        outofbounds = true
+                                    }
+                                    self.cellGridView.onTap(value)
+                                    feedback.trigger()
+                                    print("TAP: \(value) image: \(image.width)x\(image.height) viewPoint: \(ViewPoint(value))")
+                                },
                                 onDoubleTap: {
                                     if (self.cellGridView.gameMode == .tetris) {
                                         self.cellGridView.onDoubleTap()
