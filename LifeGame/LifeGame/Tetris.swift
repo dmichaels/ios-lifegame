@@ -123,8 +123,7 @@ internal class TetrisBlock
         // THROUGH a block; this does the move step-wise to disallow that.
         //
         guard (offsetX != 0) || (offsetY != 0) else { return false }
-        var skip: Bool = false
-        var moved: Bool = false
+        var moved: Bool = false, skip: Bool = false
         let endLocation: CellLocation = CellLocation(stepFrom.location.x + offsetX, stepFrom.location.y + offsetY)
         var lastLocation: CellLocation = stepFrom.location
         for intermediateLocation in CellLocations.intermediate(stepFrom.location, endLocation) {
