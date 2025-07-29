@@ -141,22 +141,20 @@ internal class TetrisBlock
         }
     }
 
-    private func transform(to locationsNew: [CellLocation], sloppy: Bool = false) -> Bool {
+    private func transform(to locationsNew: [CellLocation]) -> Bool {
         guard locationsNew.count > 0,
               CellLocations.inrange(locationsNew, gridWidth: self._cellGridView.gridColumns,
                                                   gridHeight: self._cellGridView.gridRows) else { return false }
         let locationsCurrent: [CellLocation] = self._locations
-        if (!sloppy) {
-            //
-            // Do not allow blocks to overlop each other; so make sure that none of the cells of the
-            // new location for this block (locationsNew) does not intersect with the cells of any other
-            // existing blocks, except of course, being careful to ignore this blocks current cell location.
-            //
-            for block in TetrisView.blocks {
-                if (!CellLocations.equal(block.locations, self._locations)) {
-                    if (CellLocations.intersecting(block.locations, locationsNew)) {
-                        return false
-                    }
+        //
+        // Do not allow blocks to overlap each other; so make sure that none of the cells of the
+        // new location for this block (locationsNew) intersect with the cells of any other existing
+        // blocks, except of course, being careful to ignore the cell location of this current block.
+        //
+        for block in TetrisView.blocks {
+            if (!CellLocations.equal(block.locations, self._locations)) {
+                if (CellLocations.intersecting(block.locations, locationsNew)) {
+                    return false
                 }
             }
         }
