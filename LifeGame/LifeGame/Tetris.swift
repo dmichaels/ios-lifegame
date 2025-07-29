@@ -198,6 +198,19 @@ internal class TetrisBlock
             }
         }
     }
+
+    private func filled(row: Int) -> Bool {
+        guard row < self._cellGridView.gridRows else { return false }
+        var filled: Set<Int> = []
+        for block in TetrisView.blocks {
+            for location in block.locations {
+                if (location.y == row) {
+                    filled.insert(location.x)
+                }
+            }
+        }
+        return filled.count == self._cellGridView.gridColumns
+    }
 }
 
 public class Tetromino {
