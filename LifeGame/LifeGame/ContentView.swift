@@ -11,7 +11,7 @@ struct ContentView: View
     @State private var image: CGImage? = nil
     @State private var imageAngle: Angle = Angle.zero
     @State private var showSettingsView: Bool = false
-    @State private var showControlBar: Bool = true
+    @State private var showControlBar: Bool = false
     //
     // This ignoreSafeArea is settable (e.g. in SettingsView); we currently always ignore the safe area;
     // have not been able to get the geometry working in general when NOT ignoring the safe area;
@@ -22,23 +22,32 @@ struct ContentView: View
     @State private var feedback: Feedback = Feedback(sounds: Settings.Defaults.soundsEnabled,
                                                      haptics: Settings.Defaults.hapticsEnabled)
     @State private var screenBackground: Colour? = Colour.red // nil
+    @State private var debug_geometry: AnyView? = nil
 
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
+                let x = 1
                 ZStack {
                     if let image = self.image {
                         Image(decorative: image, scale: self.cellGridView.viewScale)
                             .background(GeometryReader { geo in Color.clear
                                 .onAppear {
+                                    let zstackRectangle: CGRect = geo.frame(in: .named("zstack"))
+                                    let zstackOrigin: CGPoint = zstackRectangle.origin
+                                    let zstackSize: CGSize = zstackRectangle.size
                                     let parentOrigin: CGPoint = geo.frame(in: .named("zstack")).origin
+                                    print("IMOA> zo: \(zstackOrigin) zs: \(zstackSize) is: \(image.width)x\(image.height) [\(image.width / 3)x\(image.height / 3)] vs: \(cellGridView.viewWidth)x\(cellGridView.viewHeight) geo: \(geo.size.width)x\(geo.size.height) geometry: \(geometry.size.width)x\(geometry.size.height)")
                                     self.viewRectangle = CGRect(origin: self.orientation.landscape
                                                                         ? CGPoint(x: parentOrigin.y, y: parentOrigin.x)
                                                                         : parentOrigin,
-                                                                size: CGSize(width: self.cellGridView.viewWidth,
-                                                                             height: self.cellGridView.viewHeight))
+                                                                // size: CGSize(width: self.cellGridView.viewWidth,
+                                                                //              height: self.cellGridView.viewHeight))
+                                                                   size: CGSize(width: geometry.size.width,
+                                                                                height: geometry.size.height))
                                 }
                             })
+                            .coordinateSpace(name: "image")
                             .frame(width: geometry.size.width, height: geometry.size.height)
                             .rotationEffect(self.imageAngle)
                             .onSmartGesture(
@@ -46,31 +55,11 @@ struct ContentView: View
                                 swipeThreshold: self.cellGridView.swipeThreshold,
                                 normalizePoint: self.normalizePoint,
                                 orientation: self.orientation,
-                                // onDrag:      { value in self.cellGridView.onDrag(value) },
-                                onDrag:      { value in
-                                    // TODO
-                                    var outofbounds: Bool = false
-                                    if (Int(ceil(value.y)) >= (image.height / 3)) {
-                                        print("OUT-OF-BOUNDS")
-                                        outofbounds = true
-                                    }
-                                    if (true || !outofbounds) {
-                                        self.cellGridView.onDrag(value)
-                                    }
-                                },
+                                onDrag:      { value in self.cellGridView.onDrag(value) },
                                 onDragEnd:   { value in self.cellGridView.onDragEnd(value) },
-                                // onTap:       { value in self.cellGridView.onTap(value) ; feedback.trigger() },
-                                onTap:       { value in
-                                    var outofbounds: Bool = false
-                                    if (Int(ceil(value.y)) >= (image.height / 3)) {
-                                        print("OUT-OF-BOUNDS")
-                                        outofbounds = true
-                                    }
-                                    self.cellGridView.onTap(value)
-                                    feedback.trigger()
-                                    print("TAP: \(value) image: \(image.width)x\(image.height) viewPoint: \(ViewPoint(value))")
-                                },
+                                onTap:       { value in self.cellGridView.onTap(value) ; feedback.trigger() },
                                 onDoubleTap: {
+                                    print("ODT: po: \(geometry) im: \(image.width)x\(image.height)")
                                     if (self.cellGridView.gameMode == .tetris) {
                                         self.cellGridView.onDoubleTap()
                                     }
@@ -100,12 +89,20 @@ struct ContentView: View
                             )
                     }
                 }
+                .gesture(
+                    DragGesture()
+                        .onChanged { (foovalue: DragGesture.Value) in
+                            // let foo = foovalue.location(in: .named("foo"))
+                            var x = 1
+                        }
+                )
                 .onAppear {
                     if (!self.cellGridView.initialized) {
                         //
                         // See comment at top WRT setting our local automationMode state variable here.
                         //
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
+                        print("ZSOA> screen: \(screen.width)x\(screen.height) vr: \(self.viewRectangle)")
                         let landscape = self.orientation.landscape
                         self.cellGridView.initialize(self.settings,
                                                      screen: screen,
@@ -230,6 +227,7 @@ struct ContentView: View
     }
 
     private func normalizePoint(_ location: CGPoint) -> CGPoint {
+        print("NORM> \(location) -> \(self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)) vr: \(self.viewRectangle) vs: \(cellGridView.viewWidth)x\(cellGridView.viewHeight) is: \(image!.width)x\(image!.height) isu: \(image!.width / 3)x\(image!.height / 3)")
         return self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)
     }
 

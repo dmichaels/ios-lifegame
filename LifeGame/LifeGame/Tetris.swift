@@ -2,9 +2,11 @@ import Foundation
 import CellGridView
 import Utils
 
-internal class TetrisView {
+internal class TetrisView
+{
     //
     // DEV: Temporary static container for common Tetris stuff.
+    // Eventually derive from CellGridView propertly.
     //
     internal static var blocks: [TetrisBlock] = []
     internal static var dragStartCellLocation: CellLocation? = nil
@@ -12,6 +14,7 @@ internal class TetrisView {
     internal static var dragBlock: TetrisBlock? = nil
 
     public static func onCellSelect(_ cellGridView: CellGridView, _ cell: Cell, dragging: Bool?) {
+        print("OCS> cell: \(cell.x),\(cell.y) dragging: \(dragging)")
         if (dragging != nil) {
             //
             // DEV: On tap/drag on a block, move it.
@@ -27,6 +30,7 @@ internal class TetrisView {
                 let offsetX: Int = cell.x - dragLastCellLocation.x
                 let offsetY: Int = cell.y - dragLastCellLocation.y
                 if (TetrisView.dragBlock!.move(offsetX: offsetX, offsetY: offsetY, stepFrom: cell)) {
+                    TetrisView.dragBlock!.checkFilled()
                     TetrisView.dragLastCellLocation = dragging == true ? cell.location : nil
                 }
             }
@@ -194,22 +198,43 @@ internal class TetrisBlock
         }
     }
 
-    private func filled(row: Int) -> Bool {
+    internal func checkFilled() {
+        for row in 0..<self._cellGridView.gridRows {
+            self.filled(row: row)
+        }
+    }
+
+    internal func filled(row: Int) -> Bool {
         guard row < self._cellGridView.gridRows else { return false }
         var filled: Set<Int> = []
+        var filledLocations: Set<CellLocation> = []
         for block in TetrisView.blocks {
             for location in block.locations {
                 if (location.y == row) {
                     filled.insert(location.x)
+                    filledLocations.insert(location)
                 }
             }
         }
-        return filled.count == self._cellGridView.gridColumns
+        let result: Bool = (filled.count == self._cellGridView.gridColumns)
+        if (result) {
+            for filledLocation in filledLocations {
+                if let cell: LifeCell = self._cellGridView.gridCell(filledLocation.x, filledLocation.y) {
+                    cell.write(color: Colour.black)
+                    self._cellGridView.updateImage()
+                }
+            }
+        }
+        return result
     }
 }
 
-public class Tetromino {
+internal class TetrisBlockPile
+{
+}
 
+public class Tetromino
+{
     public let locations: [CellLocation]
     public let color: Colour
 
