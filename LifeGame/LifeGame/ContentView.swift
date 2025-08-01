@@ -55,18 +55,7 @@ struct ContentView: View
                                 swipeThreshold: self.cellGridView.swipeThreshold,
                                 normalizePoint: self.normalizePoint,
                                 orientation: self.orientation,
-                                onDrag:      { value in self.cellGridView.onDrag(value) },
-                                onDragEnd:   { value in self.cellGridView.onDragEnd(value) },
                                 onTap:       { value in self.cellGridView.onTap(value) ; feedback.trigger() },
-                                onDoubleTap: {
-                                    print("ODT: po: \(geometry) im: \(image.width)x\(image.height)")
-                                    if (self.cellGridView.gameMode == .tetris) {
-                                        self.cellGridView.onDoubleTap()
-                                    }
-                                    else {
-                                        self.toggleShowControls()
-                                    }
-                                },
                                 onLongTap:   { viewPoint in
                                     if (self.cellGridView.gameMode == .tetris) {
                                         self.cellGridView.onLongTap(viewPoint)
@@ -75,6 +64,17 @@ struct ContentView: View
                                         self.toggleShowControls()
                                     }
                                 },
+                                onDoubleTap: { _ in
+                                    print("ODT: po: \(geometry) im: \(image.width)x\(image.height)")
+                                    if (self.cellGridView.gameMode == .tetris) {
+                                        self.cellGridView.onDoubleTap()
+                                    }
+                                    else {
+                                        self.toggleShowControls()
+                                    }
+                                },
+                                onDrag:      { value in self.cellGridView.onDrag(value) },
+                                onDragEnd:   { value in self.cellGridView.onDragEnd(value) },
                                 onZoom:      { value in self.cellGridView.onZoom(value) },
                                 onZoomEnd:   { value in self.cellGridView.onZoomEnd(value) },
                                 onSwipeLeft: { /* self.showSettings() */ },
