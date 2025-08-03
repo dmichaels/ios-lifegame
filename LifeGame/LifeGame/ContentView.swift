@@ -23,6 +23,7 @@ struct ContentView: View
                                                      haptics: Settings.Defaults.hapticsEnabled)
     @State private var screenBackground: Colour? = Colour.red // nil
     @State private var debug_geometry: AnyView? = nil
+    @State private var hmm_i_though_i_count_not_do_this_screen: Screen = Screen(size: UIScreen.main.bounds.size, scale: UIScreen.main.scale)
 
     var body: some View {
         NavigationView {
@@ -64,8 +65,8 @@ struct ContentView: View
                                         self.toggleShowControls()
                                     }
                                 },
-                                onDoubleTap: { _ in
-                                    print("ODT: po: \(geometry) im: \(image.width)x\(image.height)")
+                                onDoubleTap: { value in
+                                    print("ODT(\(value)): po: \(geometry) im: \(image.width)x\(image.height)")
                                     if (self.cellGridView.gameMode == .tetris) {
                                         self.cellGridView.onDoubleTap()
                                     }
