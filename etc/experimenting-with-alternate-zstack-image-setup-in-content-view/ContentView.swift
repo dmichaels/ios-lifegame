@@ -13,10 +13,10 @@ struct ContentView: View {
     @State private var imageSizeLarge = false
     @State private var containerSize: CGSize = .zero
     @State private var containerBackground: Color? = Color.yellow
+    @State private var showSettingsView: Bool = false
     @State private var hideStatusBar: Bool = false
     @State private var ignoreSafeArea: Bool = false
-    @State private var showSettingsView: Bool = false
-    @StateObject var orientation: OrientationObserver = OrientationObserver()
+    @StateObject private var orientation: OrientationObserver = OrientationObserver()
 
     var body: some View {
         NavigationView {
@@ -36,9 +36,7 @@ struct ContentView: View {
                                         print("TAP> \(imagePoint) is: \(imageSize.width)x\(imageSize.height) zg: \(containerGeometry.size) zs: \(containerSize) ssv: \(self.showSettingsView)")
                                         self.changeImage()
                                     },
-                                    onSwipeLeft: {
-                                        self.gotoSettings()
-                                    }
+                                    onSwipeLeft: { self.showSettingsView = true }
                                 )
                         }
                         NavigationLink(destination: SettingsView(), isActive: $showSettingsView) { EmptyView() }.hidden()
@@ -46,16 +44,14 @@ struct ContentView: View {
                     .onAppear {
                         self.containerSize = containerGeometry.size
                         self.imagePosition = CGPoint(x: (self.containerSize.width - self.imageSize.width) / 2,
-                                                    y: (self.containerSize.height - self.imageSize.height) / 2)
+                                                     y: (self.containerSize.height - self.imageSize.height) / 2)
                         self.image = self.createImage(maxSize: self.containerSize, large: self.imageSizeLarge)
                         print("ZSTACK-ONAPPEAR> zs: \(self.containerSize.width)x\(self.containerSize.height) is: \(imageSize.width)x\(imageSize.height)")
                         self.updateSettings()
                     }
                 }
             }
-            .onSmartGesture(
-                onTap: { imagePoint in print("ZSTACK-TAP> \(imagePoint) zs: \(self.containerSize.width)x\(self.containerSize.height) is: \(imageSize.width)x\(imageSize.height)") }
-            )
+            .onSmartGesture( onTap: { imagePoint in print("ZSTACK-TAP> \(imagePoint) zs: \(self.containerSize.width)x\(self.containerSize.height) is: \(imageSize.width)x\(imageSize.height)") })
             .safeArea(ignore: ignoreSafeArea)
             .statusBar(hidden: hideStatusBar)
             .toolBar(hidden: ignoreSafeArea, showSettingsView: $showSettingsView)
@@ -64,17 +60,12 @@ struct ContentView: View {
         .onDisappear { self.orientation.deregister() }
     }
 
-    private func gotoSettings() {
-        self.showSettingsView = true
-    }
-
     private func updateSettings() {
         if (self.showSettingsView) {
             //
             // Note that showSettingsView gets set back to false automatically
             // by SwiftUI after the SettingView show/return cycle completes.
             //
-            print("update-settings")
             hideStatusBar = self.settings.hideStatusBar
             ignoreSafeArea = self.settings.ignoreSafeArea
         }
@@ -154,7 +145,7 @@ struct SettingsView: View {
 extension View {
     @ViewBuilder
     func toolBar(hidden: Bool, showSettingsView: Binding<Bool>) -> some View {
-        if hidden {
+        if (hidden) {
             self
         } else {
             self.toolbar {
