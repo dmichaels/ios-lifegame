@@ -7,7 +7,7 @@
       "location" : "https://github.com/dmichaels/ios-cellgridview.git",
       "state" : {
         "branch" : "main",
-        "revision" : "dd4a36cb7a0c76c026bd759e5a1fa6cc6deae610"
+        "revision" : "b25a8834834cdd2e50c0dd12d049da60ee13f29e"
       }
     },
     {
@@ -16,7 +16,7 @@
       "location" : "https://github.com/dmichaels/ios-utils.git",
       "state" : {
         "branch" : "main",
-        "revision" : "29ff8dc499d17205684f33c775537344c852f4fe"
+        "revision" : "470ae147d40275dec66e5a4221a9f5a0f1444cd2"
       }
     }
   ],
