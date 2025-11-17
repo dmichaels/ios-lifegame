@@ -21,7 +21,7 @@ struct ContentView: View
     @State private var hideStatusBar: Bool = Settings.Defaults.hideStatusBar
     @State private var feedback: Feedback = Feedback(sounds: Settings.Defaults.soundsEnabled,
                                                      haptics: Settings.Defaults.hapticsEnabled)
-    @State private var screenBackground: Colour? = Colour.red // nil
+    @State private var screenBackground: Colour? = Colour.darkGray // nil
     @State private var debug_geometry: AnyView? = nil
     @State private var hmm_i_though_i_count_not_do_this_screen: Screen = Screen(size: UIScreen.main.bounds.size, scale: UIScreen.main.scale)
 
