@@ -69,7 +69,7 @@ public final class LifeCell: Cell {
 
     public override func select(dragging: Bool? = false) {
 
-        print("SEL> \(self.x),\(self.y)")
+        // print("SEL> \(self.x),\(self.y)")
         if (self.cellGridView.gameMode == GameMode.tetris) {
             TetrisView.onCellSelect(cellGridView, self, dragging: dragging)
             return

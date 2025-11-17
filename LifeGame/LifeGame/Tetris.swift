@@ -14,7 +14,7 @@ internal class TetrisView
     internal static var dragBlock: TetrisBlock? = nil
 
     public static func onCellSelect(_ cellGridView: CellGridView, _ cell: Cell, dragging: Bool?) {
-        print("OCS> cell: \(cell.x),\(cell.y) dragging: \(dragging)")
+        // print("OCS> cell: \(cell.x),\(cell.y) dragging: \(dragging)")
         if (dragging != nil) {
             //
             // DEV: On tap/drag on a block, move it.

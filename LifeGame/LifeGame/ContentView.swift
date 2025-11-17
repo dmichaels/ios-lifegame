@@ -38,7 +38,7 @@ struct ContentView: View
                                     let zstackOrigin: CGPoint = zstackRectangle.origin
                                     let zstackSize: CGSize = zstackRectangle.size
                                     let parentOrigin: CGPoint = geo.frame(in: .named("zstack")).origin
-                                    print("IMOA> zo: \(zstackOrigin) zs: \(zstackSize) is: \(image.width)x\(image.height) [\(image.width / 3)x\(image.height / 3)] vs: \(cellGridView.viewWidth)x\(cellGridView.viewHeight) geo: \(geo.size.width)x\(geo.size.height) geometry: \(geometry.size.width)x\(geometry.size.height)")
+                                    // print("IMOA> zo: \(zstackOrigin) zs: \(zstackSize) is: \(image.width)x\(image.height) [\(image.width / 3)x\(image.height / 3)] vs: \(cellGridView.viewWidth)x\(cellGridView.viewHeight) geo: \(geo.size.width)x\(geo.size.height) geometry: \(geometry.size.width)x\(geometry.size.height)")
                                     self.viewRectangle = CGRect(origin: self.orientation.landscape
                                                                         ? CGPoint(x: parentOrigin.y, y: parentOrigin.x)
                                                                         : parentOrigin,
@@ -66,7 +66,7 @@ struct ContentView: View
                                     }
                                 },
                                 onDoubleTap: { value in
-                                    print("ODT(\(value)): po: \(geometry) im: \(image.width)x\(image.height)")
+                                    // print("ODT(\(value)): po: \(geometry) im: \(image.width)x\(image.height)")
                                     if (self.cellGridView.gameMode == .tetris) {
                                         self.cellGridView.onDoubleTap()
                                     }
@@ -103,7 +103,7 @@ struct ContentView: View
                         // See comment at top WRT setting our local automationMode state variable here.
                         //
                         let screen: Screen = Screen(size: geometry.size, scale: UIScreen.main.scale)
-                        print("ZSOA> screen: \(screen.width)x\(screen.height) vr: \(self.viewRectangle)")
+                        // print("ZSOA> screen: \(screen.width)x\(screen.height) vr: \(self.viewRectangle)")
                         let landscape = self.orientation.landscape
                         self.cellGridView.initialize(self.settings,
                                                      screen: screen,
@@ -228,7 +228,7 @@ struct ContentView: View
     }
 
     private func normalizePoint(_ location: CGPoint) -> CGPoint {
-        print("NORM> \(location) -> \(self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)) vr: \(self.viewRectangle) vs: \(cellGridView.viewWidth)x\(cellGridView.viewHeight) is: \(image!.width)x\(image!.height) isu: \(image!.width / 3)x\(image!.height / 3)")
+        // print("NORM> \(location) -> \(self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)) vr: \(self.viewRectangle) vs: \(cellGridView.viewWidth)x\(cellGridView.viewHeight) is: \(image!.width)x\(image!.height) isu: \(image!.width / 3)x\(image!.height / 3)")
         return self.orientation.normalizePoint(screenPoint: location, view: self.viewRectangle)
     }
 
